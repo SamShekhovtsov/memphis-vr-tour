@@ -1,0 +1,31 @@
+**/node_modules/
+**/dist/
+**/.vite/
+**/.turbo/
+**/.env
+**/.env.*
+**/*.log
+
+# Large or generated media should use source control intentionally.
+**/*.mp4
+**/*.mov
+**/*.avi
+**/*.mkv
+
+# Generated asset workspaces.
+**/content/generated/
+**/content/processed/
+
+# Unreal generated folders.
+**/engines/unreal/Binaries/
+**/engines/unreal/DerivedDataCache/
+**/engines/unreal/Intermediate/
+**/engines/unreal/Saved/
+
+# Unity generated folders.
+**/engines/unity/Library/
+**/engines/unity/Logs/
+**/engines/unity/Temp/
+**/engines/unity/Obj/
+**/engines/unity/Build/
+**/engines/unity/Builds/

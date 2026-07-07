@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ancient Memphis: White Walls</title>
+  </head>
+  <body>
+    <canvas id="renderCanvas" aria-label="Ancient Memphis 3D tour viewport"></canvas>
+
+    <main class="hud" aria-label="Tour controls">
+      <section class="status-panel" aria-live="polite">
+        <div class="brand-block">
+          <span>Ancient Memphis</span>
+          <strong>White Walls</strong>
+        </div>
+        <div class="stop-block">
+          <span id="periodLabel">Early Dynastic / Old Kingdom</span>
+          <h1 id="stopTitle">Loading</h1>
+          <p id="stopSummary"></p>
+          <span id="evidencePill" class="evidence-pill">Inferred</span>
+        </div>
+      </section>
+
+      <nav class="toolbar" aria-label="Tour actions">
+        <button id="playTour" type="button">
+          <i data-lucide="play" aria-hidden="true"></i>
+          <span>Play route</span>
+        </button>
+        <button id="resetTour" type="button" aria-label="Reset route">
+          <i data-lucide="rotate-ccw" aria-hidden="true"></i>
+        </button>
+        <button id="toggleEvidence" type="button" aria-pressed="false">
+          <i data-lucide="layers-3" aria-hidden="true"></i>
+          <span>Evidence</span>
+        </button>
+        <button id="toggleNarrator" type="button" aria-pressed="false">
+          <i data-lucide="headphones" aria-hidden="true"></i>
+          <span>Narrator</span>
+        </button>
+        <button id="enterVr" type="button">
+          <i data-lucide="glasses" aria-hidden="true"></i>
+          <span>VR</span>
+        </button>
+      </nav>
+
+      <section id="evidenceLegend" class="legend" hidden>
+        <span><b class="dot confirmed"></b>Confirmed</span>
+        <span><b class="dot inferred"></b>Inferred</span>
+        <span><b class="dot speculative"></b>Speculative</span>
+      </section>
+    </main>
+
+    <aside id="errorPanel" class="error-panel" role="alert" hidden></aside>
+
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

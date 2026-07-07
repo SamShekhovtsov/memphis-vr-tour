@@ -1,0 +1,21 @@
+{
+  "FileVersion": 3,
+  "EngineAssociation": "",
+  "Category": "Virtual Reality",
+  "Description": "High-fidelity VR target for Egypt VR Tour.",
+  "Modules": [],
+  "Plugins": [
+    {
+      "Name": "OpenXR",
+      "Enabled": true
+    },
+    {
+      "Name": "EnhancedInput",
+      "Enabled": true
+    },
+    {
+      "Name": "EditorScriptingUtilities",
+      "Enabled": true
+    }
+  ]
+}

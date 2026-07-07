@@ -1,0 +1,106 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://egyptvr.local/schema/tour.schema.json",
+  "title": "Egypt VR Tour Manifest",
+  "type": "object",
+  "required": [
+    "id",
+    "title",
+    "period",
+    "location",
+    "durationSeconds",
+    "summary",
+    "stops"
+  ],
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "title": {
+      "type": "string"
+    },
+    "period": {
+      "type": "string"
+    },
+    "location": {
+      "type": "string"
+    },
+    "durationSeconds": {
+      "type": "number",
+      "minimum": 60
+    },
+    "summary": {
+      "type": "string"
+    },
+    "stops": {
+      "type": "array",
+      "minItems": 2,
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "title",
+          "summary",
+          "evidenceLevel",
+          "position",
+          "referenceNotes"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "summary": {
+            "type": "string"
+          },
+          "evidenceLevel": {
+            "enum": [
+              "confirmed",
+              "inferred",
+              "speculative"
+            ]
+          },
+          "position": {
+            "$ref": "#/$defs/vector3"
+          },
+          "lookAt": {
+            "$ref": "#/$defs/vector3"
+          },
+          "durationHintSeconds": {
+            "type": "number",
+            "minimum": 1
+          },
+          "referenceNotes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "vector3": {
+      "type": "array",
+      "prefixItems": [
+        {
+          "type": "number"
+        },
+        {
+          "type": "number"
+        },
+        {
+          "type": "number"
+        }
+      ],
+      "items": false,
+      "minItems": 3,
+      "maxItems": 3
+    }
+  }
+}

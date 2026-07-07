@@ -1,0 +1,21 @@
+{
+  "name": "egypt-vr-tour",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Shared browser and VR project base for historically plausible ancient Egyptian walkthroughs.",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "npm --workspace @egyptvr/web-tour run dev",
+    "build": "npm run build --workspaces",
+    "typecheck": "npm run typecheck --workspaces"
+  },
+  "engines": {
+    "node": ">=22.0.0"
+  },
+  "devDependencies": {
+    "jpeg-js": "^0.4.4"
+  }
+}
