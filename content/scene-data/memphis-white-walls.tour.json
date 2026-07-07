@@ -4,28 +4,40 @@
   "title": "Ancient Memphis: A Walk Through the White Walls",
   "period": "Early Dynastic / Old Kingdom, anchored to Kom el-Fakhry and early Ptah precinct research",
   "location": "Memphis, Egypt",
-  "durationSeconds": 180,
+  "durationSeconds": 210,
   "summary": "A compact living-history walk from the Nile edge through an inhabited Memphis district toward an early Ptah precinct reconstruction.",
   "stops": [
     {
       "id": "nile-arrival",
       "title": "Nile Arrival",
-      "summary": "The visitor begins beside the river approach, with boats, reeds, workers, and the city edge ahead.",
+      "summary": "The visitor begins beside a Nile branch or canal landing, with boats, reeds, mooring posts, storage jars, and the city edge ahead.",
       "evidenceLevel": "inferred",
-      "position": [-32, 1.7, -42],
-      "lookAt": [-18, 1.6, -22],
+      "position": [-30, 1.7, -50],
+      "lookAt": [-45, 1.4, -52],
       "durationHintSeconds": 30,
       "referenceNotes": [
-        "Nile access is essential to Memphis, but this exact landing composition is provisional."
+        "Nile access is essential to Memphis, but this exact landing and canal-edge composition is provisional."
       ]
     },
     {
-      "id": "mudbrick-street",
-      "title": "Mudbrick Street",
-      "summary": "A narrow residential street uses mudbrick massing, plastered surfaces, courtyards, storage jars, and shade cloth.",
+      "id": "white-walls-threshold",
+      "title": "White Walls Threshold",
       "evidenceLevel": "inferred",
-      "position": [-14, 1.7, -16],
-      "lookAt": [-3, 1.6, 4],
+      "summary": "A white-plastered mudbrick edge marks the transition from river infrastructure into the ancient city district.",
+      "position": [-23, 1.7, -31],
+      "lookAt": [-14, 1.6, -18],
+      "durationHintSeconds": 25,
+      "referenceNotes": [
+        "The White Walls identity is historically important for Memphis, but the exact early city-wall placement and form remain debated."
+      ]
+    },
+    {
+      "id": "kom-el-fakhry-street",
+      "title": "Kom el-Fakhry Street",
+      "summary": "A narrow mudbrick residential lane uses clustered houses, plastered courtyards, storage bins, jars, and shade cloth.",
+      "evidenceLevel": "inferred",
+      "position": [-14, 1.7, -12],
+      "lookAt": [-3, 1.6, 6],
       "durationHintSeconds": 35,
       "referenceNotes": [
         "Domestic architecture is inferred from Kom el-Fakhry / Memphite settlement archaeology and comparable period material culture."
@@ -36,8 +48,8 @@
       "title": "Craftsmen Area",
       "summary": "Pottery, basketry, stone dressing, and low workshop structures connect the district to Memphis craft and temple economy.",
       "evidenceLevel": "inferred",
-      "position": [5, 1.7, 10],
-      "lookAt": [0, 1.6, 34],
+      "position": [6, 1.7, 15],
+      "lookAt": [0, 1.6, 36],
       "durationHintSeconds": 35,
       "referenceNotes": [
         "Craft activity is supported by Memphis/Ptah associations and workshop references, but this exact compact placement is reconstructed."
@@ -48,7 +60,7 @@
       "title": "Early Ptah Precinct",
       "summary": "A walled sacred approach marks the transition from city life into the early Ptah / Hwt-ka-Ptah cult precinct.",
       "evidenceLevel": "inferred",
-      "position": [0, 1.7, 44],
+      "position": [0, 1.7, 49],
       "lookAt": [0, 1.6, 68],
       "durationHintSeconds": 40,
       "referenceNotes": [
@@ -60,9 +72,9 @@
       "title": "Painted Ptah Shrine",
       "summary": "Painted walls, incense, ritual objects, and filtered light show a cinematic inner shrine reconstruction.",
       "evidenceLevel": "speculative",
-      "position": [0, 1.7, 77],
+      "position": [0, 1.7, 84],
       "lookAt": [0, 1.6, 96],
-      "durationHintSeconds": 40,
+      "durationHintSeconds": 45,
       "referenceNotes": [
         "The interior is the emotional climax, but exact iconography and layout must remain speculative until source licensing and expert review."
       ]

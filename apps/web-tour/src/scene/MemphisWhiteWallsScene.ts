@@ -37,6 +37,8 @@ interface SceneMaterials {
   wood: StandardMaterial;
   linen: StandardMaterial;
   stone: StandardMaterial;
+  limestone: StandardMaterial;
+  copper: StandardMaterial;
   paint: StandardMaterial;
   shadow: StandardMaterial;
   smoke: StandardMaterial;
@@ -185,6 +187,8 @@ function createMaterials(scene: Scene): SceneMaterials {
   const wood = material(scene, "wood", Color3.FromHexString("#5b3828"));
   const linen = material(scene, "linen", Color3.FromHexString("#eee5cf"));
   const stone = material(scene, "whiteStone", Color3.FromHexString("#d8d0bc"));
+  const limestone = material(scene, "limestone", Color3.FromHexString("#cfc5ab"));
+  const copper = material(scene, "copper", Color3.FromHexString("#9b6543"));
   const shadow = material(scene, "deepShade", Color3.FromHexString("#2a2620"));
   shadow.alpha = 0.82;
 
@@ -207,6 +211,8 @@ function createMaterials(scene: Scene): SceneMaterials {
     wood,
     linen,
     stone,
+    limestone,
+    copper,
     paint,
     shadow,
     smoke,
@@ -265,21 +271,38 @@ function createBaseDistrict(scene: Scene, materials: SceneMaterials): Mesh {
 }
 
 function createNileEdge(scene: Scene, materials: SceneMaterials): void {
-  const river = MeshBuilder.CreateGround("nileRiver", { width: 42, height: 158, subdivisions: 8 }, scene);
-  river.position.x = -48;
+  const river = MeshBuilder.CreateGround("nileBranch", { width: 32, height: 158, subdivisions: 8 }, scene);
+  river.position.x = -53;
   river.position.y = 0.015;
   river.material = materials.river;
 
+  const quay = MeshBuilder.CreateBox("riverLandingQuay", { width: 7, height: 0.34, depth: 17 }, scene);
+  quay.position = new Vector3(-33.5, 0.17, -47);
+  quay.material = materials.limestone;
+  quay.checkCollisions = true;
+
+  const ramp = MeshBuilder.CreateBox("landingRamp", { width: 5.8, height: 0.18, depth: 10 }, scene);
+  ramp.position = new Vector3(-29.5, 0.09, -37);
+  ramp.rotation.x = -0.04;
+  ramp.material = materials.mudbrick;
+  ramp.checkCollisions = true;
+
+  for (let index = 0; index < 5; index += 1) {
+    const post = MeshBuilder.CreateCylinder(`mooringPost-${index}`, { height: 1.05, diameter: 0.18, tessellation: 10 }, scene);
+    post.position = new Vector3(-36.6, 0.52, -54 + index * 3.4);
+    post.material = materials.wood;
+  }
+
   for (let z = -66; z < 62; z += 7) {
     const reed = MeshBuilder.CreateCylinder(`reed-${z}`, { height: 1.6, diameter: 0.08 }, scene);
-    reed.position = new Vector3(-27 + Math.sin(z) * 1.2, 0.8, z);
+    reed.position = new Vector3(-36 + Math.sin(z) * 1.2, 0.8, z);
     reed.rotation.z = Math.sin(z * 0.2) * 0.18;
     reed.material = materials.reed;
   }
 
   for (let index = 0; index < 3; index += 1) {
     const boatRoot = new TransformNode(`boat-${index}`, scene);
-    boatRoot.position = new Vector3(-43 - index * 4, 0.22, -38 + index * 31);
+    boatRoot.position = new Vector3(-47 - index * 4, 0.22, -52 + index * 29);
 
     const hull = MeshBuilder.CreateBox(`boat-hull-${index}`, { width: 5.4, depth: 1.2, height: 0.34 }, scene);
     hull.parent = boatRoot;
@@ -296,26 +319,66 @@ function createNileEdge(scene: Scene, materials: SceneMaterials): void {
     sail.parent = boatRoot;
     sail.material = materials.linen;
   }
+
+  for (let index = 0; index < 10; index += 1) {
+    const jar = MeshBuilder.CreateCylinder(`landingJar-${index}`, {
+      height: 0.68,
+      diameterTop: 0.34,
+      diameterBottom: 0.26,
+      tessellation: 14
+    }, scene);
+    jar.position = new Vector3(-28 + (index % 5) * 0.9, 0.34, -51 + Math.floor(index / 5) * 2.5);
+    jar.material = materials.mudbrick;
+  }
 }
 
 function createResidentialStreet(scene: Scene, materials: SceneMaterials): void {
-  for (let index = 0; index < 9; index += 1) {
-    const z = -30 + index * 5.6;
-    createMudbrickHouse(scene, materials, new Vector3(-18, 1.45, z), new Vector3(7.5, 2.9, 4.2));
-    createMudbrickHouse(scene, materials, new Vector3(-4, 1.2, z + 2.4), new Vector3(5.8, 2.4, 3.8));
+  createWhiteWallsThreshold(scene, materials);
+
+  const drain = MeshBuilder.CreateBox("streetDrainageChannel", { width: 0.46, height: 0.08, depth: 44 }, scene);
+  drain.position = new Vector3(-9.4, 0.055, -8);
+  drain.material = materials.shadow;
+
+  for (let index = 0; index < 8; index += 1) {
+    const z = -26 + index * 5.8;
+    createMudbrickHouse(scene, materials, new Vector3(-18.5, 1.25, z), new Vector3(7.2, 2.5, 4.1));
+    createMudbrickHouse(scene, materials, new Vector3(-3.6, 1.12, z + 2.1), new Vector3(5.8, 2.24, 3.6));
 
     if (index % 2 === 0) {
       const awning = MeshBuilder.CreateBox(`awning-${index}`, { width: 5.6, height: 0.08, depth: 2.4 }, scene);
-      awning.position = new Vector3(-10.8, 2.55, z + 1);
+      awning.position = new Vector3(-10.6, 2.35, z + 1);
       awning.rotation.z = 0.08;
       awning.material = materials.linen;
     }
+
+    if (index % 3 === 1) {
+      createCourtyard(scene, materials, new Vector3(-14.8, 0.03, z + 2.6));
+    }
   }
 
-  for (let index = 0; index < 12; index += 1) {
+  for (let index = 0; index < 16; index += 1) {
     const jar = MeshBuilder.CreateCylinder(`storageJar-${index}`, { height: 0.9, diameterTop: 0.46, diameterBottom: 0.34 }, scene);
-    jar.position = new Vector3(-20 + (index % 4) * 1.4, 0.45, -22 + Math.floor(index / 4) * 11);
+    jar.position = new Vector3(-21 + (index % 4) * 1.15, 0.45, -21 + Math.floor(index / 4) * 9.2);
     jar.material = materials.mudbrick;
+  }
+
+  const well = MeshBuilder.CreateCylinder("districtWell", { height: 0.74, diameter: 1.5, tessellation: 24 }, scene);
+  well.position = new Vector3(-7, 0.37, 5);
+  well.material = materials.limestone;
+
+  const wellVoid = MeshBuilder.CreateCylinder("districtWellVoid", { height: 0.76, diameter: 0.82, tessellation: 24 }, scene);
+  wellVoid.position = new Vector3(-7, 0.4, 5);
+  wellVoid.material = materials.shadow;
+
+  for (let index = 0; index < 5; index += 1) {
+    const bin = MeshBuilder.CreateCylinder(`grainBin-${index}`, {
+      height: 1.35,
+      diameterTop: 1.25,
+      diameterBottom: 1.05,
+      tessellation: 16
+    }, scene);
+    bin.position = new Vector3(-22 + index * 1.7, 0.68, 21);
+    bin.material = materials.plaster;
   }
 }
 
@@ -336,12 +399,65 @@ function createMudbrickHouse(scene: Scene, materials: SceneMaterials, position: 
   }, scene);
   plasterBand.position = new Vector3(position.x, position.y + size.y / 2 - 0.32, position.z);
   plasterBand.material = materials.plaster;
+
+  const doorway = MeshBuilder.CreateBox(`house-doorway-${position.x}-${position.z}`, {
+    width: 1.05,
+    height: 1.55,
+    depth: 0.08
+  }, scene);
+  doorway.position = new Vector3(position.x + size.x / 2 + 0.03, 0.78, position.z - size.z * 0.2);
+  doorway.material = materials.shadow;
+}
+
+function createWhiteWallsThreshold(scene: Scene, materials: SceneMaterials): void {
+  const wallSpecs = [
+    { name: "whiteWallWestSegment", position: new Vector3(-35.5, 2.1, -33), size: new Vector3(13, 4.2, 1.2) },
+    { name: "whiteWallEastSegment", position: new Vector3(-6, 2.1, -33), size: new Vector3(24, 4.2, 1.2) }
+  ];
+
+  wallSpecs.forEach((spec) => {
+    const wall = MeshBuilder.CreateBox(spec.name, {
+      width: spec.size.x,
+      height: spec.size.y,
+      depth: spec.size.z
+    }, scene);
+    wall.position = spec.position;
+    wall.material = materials.plaster;
+    wall.checkCollisions = true;
+
+    const base = MeshBuilder.CreateBox(`${spec.name}MudbrickCore`, {
+      width: spec.size.x,
+      height: 0.8,
+      depth: spec.size.z + 0.12
+    }, scene);
+    base.position = new Vector3(spec.position.x, 0.4, spec.position.z);
+    base.material = materials.mudbrick;
+  });
+
+  const gateLintel = MeshBuilder.CreateBox("whiteWallGateLintel", { width: 10, height: 0.55, depth: 1.35 }, scene);
+  gateLintel.position = new Vector3(-23.2, 3.35, -33);
+  gateLintel.material = materials.plaster;
+
+  const guardStore = MeshBuilder.CreateBox("riverGateStorehouse", { width: 5.2, height: 2.5, depth: 4.6 }, scene);
+  guardStore.position = new Vector3(-31.5, 1.25, -26.5);
+  guardStore.material = materials.mudbrick;
+  guardStore.checkCollisions = true;
+}
+
+function createCourtyard(scene: Scene, materials: SceneMaterials, position: Vector3): void {
+  const floor = MeshBuilder.CreateBox(`courtyardFloor-${position.z}`, { width: 4.3, height: 0.06, depth: 3.6 }, scene);
+  floor.position = position;
+  floor.material = materials.plaster;
+
+  const hearth = MeshBuilder.CreateCylinder(`courtyardHearth-${position.z}`, { height: 0.16, diameter: 0.95, tessellation: 18 }, scene);
+  hearth.position = new Vector3(position.x - 1.1, 0.16, position.z + 0.5);
+  hearth.material = materials.shadow;
 }
 
 function createCraftsmenArea(scene: Scene, materials: SceneMaterials): void {
   for (let index = 0; index < 8; index += 1) {
     const table = MeshBuilder.CreateBox(`craftTable-${index}`, { width: 2.2, height: 0.18, depth: 1.1 }, scene);
-    table.position = new Vector3(8 + (index % 2) * 5, 0.72, -2 + Math.floor(index / 2) * 5.6);
+    table.position = new Vector3(8 + (index % 2) * 5, 0.72, 2 + Math.floor(index / 2) * 5.6);
     table.material = materials.wood;
 
     const shade = MeshBuilder.CreateBox(`craftShade-${index}`, { width: 3.4, height: 0.08, depth: 2.4 }, scene);
@@ -351,7 +467,7 @@ function createCraftsmenArea(scene: Scene, materials: SceneMaterials): void {
 
   for (let index = 0; index < 6; index += 1) {
     const kiln = MeshBuilder.CreateCylinder(`kiln-${index}`, { height: 1.3, diameter: 1.25, tessellation: 18 }, scene);
-    kiln.position = new Vector3(18, 0.65, -4 + index * 5.2);
+    kiln.position = new Vector3(18, 0.65, 0 + index * 5.2);
     kiln.material = materials.mudbrick;
   }
 
@@ -362,76 +478,103 @@ function createCraftsmenArea(scene: Scene, materials: SceneMaterials): void {
       diameterBottom: 0.26,
       tessellation: 16
     }, scene);
-    vessel.position = new Vector3(3 + (index % 6) * 1.2, 0.31, 7 + Math.floor(index / 6) * 1.2);
+    vessel.position = new Vector3(3 + (index % 6) * 1.2, 0.31, 14 + Math.floor(index / 6) * 1.2);
     vessel.material = materials.mudbrick;
+  }
+
+  const stoneBlock = MeshBuilder.CreateBox("stoneDressingBlock", { width: 2.4, height: 0.7, depth: 1.2 }, scene);
+  stoneBlock.position = new Vector3(11.5, 0.35, 28);
+  stoneBlock.material = materials.limestone;
+
+  for (let index = 0; index < 4; index += 1) {
+    const tool = MeshBuilder.CreateBox(`copperTool-${index}`, { width: 0.12, height: 0.08, depth: 1.1 }, scene);
+    tool.position = new Vector3(8.6 + index * 0.5, 0.86, 19);
+    tool.rotation.y = 0.4 + index * 0.2;
+    tool.material = materials.copper;
   }
 }
 
 function createTemple(scene: Scene, materials: SceneMaterials): void {
-  const court = MeshBuilder.CreateGround("templeCourt", { width: 26, height: 34 }, scene);
-  court.position.z = 55;
-  court.position.y = 0.03;
-  court.material = materials.plaster;
+  const outerCourt = MeshBuilder.CreateGround("ptahPrecinctCourt", { width: 28, height: 44 }, scene);
+  outerCourt.position.z = 69;
+  outerCourt.position.y = 0.03;
+  outerCourt.material = materials.plaster;
 
-  const leftPylon = MeshBuilder.CreateBox("leftPylon", { width: 8, height: 10, depth: 4.4 }, scene);
-  leftPylon.position = new Vector3(-6.5, 5, 50);
-  leftPylon.material = materials.stone;
-  leftPylon.checkCollisions = true;
+  createPrecinctWall(scene, materials, "ptahFrontWallWest", new Vector3(-8.5, 2.05, 48), new Vector3(11, 4.1, 1.4));
+  createPrecinctWall(scene, materials, "ptahFrontWallEast", new Vector3(8.5, 2.05, 48), new Vector3(11, 4.1, 1.4));
+  createPrecinctWall(scene, materials, "ptahWestWall", new Vector3(-14, 2.05, 70), new Vector3(1.4, 4.1, 45));
+  createPrecinctWall(scene, materials, "ptahEastWall", new Vector3(14, 2.05, 70), new Vector3(1.4, 4.1, 45));
+  createPrecinctWall(scene, materials, "ptahBackWall", new Vector3(0, 2.05, 92), new Vector3(28, 4.1, 1.4));
 
-  const rightPylon = leftPylon.clone("rightPylon");
-  rightPylon.position.x = 6.5;
-
-  const lintel = MeshBuilder.CreateBox("templeLintel", { width: 18, height: 1.4, depth: 4.6 }, scene);
-  lintel.position = new Vector3(0, 8.7, 50);
-  lintel.material = materials.stone;
+  const gateLintel = MeshBuilder.CreateBox("ptahPrecinctGateLintel", { width: 7.2, height: 0.55, depth: 1.5 }, scene);
+  gateLintel.position = new Vector3(0, 3.5, 48);
+  gateLintel.material = materials.plaster;
 
   for (let side = -1; side <= 1; side += 2) {
-    for (let index = 0; index < 4; index += 1) {
-      const column = MeshBuilder.CreateCylinder(`forecourtColumn-${side}-${index}`, {
-        height: 5.8,
-        diameter: 1.05,
-        tessellation: 24
+    for (let index = 0; index < 3; index += 1) {
+      const post = MeshBuilder.CreateCylinder(`ptahCourtTimberPost-${side}-${index}`, {
+        height: 3.2,
+        diameter: 0.34,
+        tessellation: 12
       }, scene);
-      column.position = new Vector3(side * 8.5, 2.9, 58 + index * 5.5);
-      column.material = materials.stone;
-      column.checkCollisions = true;
+      post.position = new Vector3(side * 5.8, 1.6, 57 + index * 6.2);
+      post.material = materials.wood;
+      post.checkCollisions = true;
     }
   }
 
-  const hallFloor = MeshBuilder.CreateGround("paintedHallFloor", { width: 22, height: 28 }, scene);
-  hallFloor.position.z = 82;
-  hallFloor.position.y = 0.04;
-  hallFloor.material = materials.shadow;
+  const processionalStrip = MeshBuilder.CreateBox("ptahPackedEarthAxis", { width: 4.2, height: 0.07, depth: 37 }, scene);
+  processionalStrip.position = new Vector3(0, 0.08, 67);
+  processionalStrip.material = materials.limestone;
 
-  createPaintedWall(scene, materials, "paintedBackWall", new Vector3(0, 3.1, 96), new Vector3(22, 6.2, 0.22));
-  createPaintedWall(scene, materials, "paintedLeftWall", new Vector3(-11, 3.1, 82), new Vector3(0.22, 6.2, 28));
-  createPaintedWall(scene, materials, "paintedRightWall", new Vector3(11, 3.1, 82), new Vector3(0.22, 6.2, 28));
+  const shrineCourt = MeshBuilder.CreateGround("ptahInnerShrineFloor", { width: 18, height: 18 }, scene);
+  shrineCourt.position.z = 84;
+  shrineCourt.position.y = 0.04;
+  shrineCourt.material = materials.shadow;
 
-  for (let x = -6; x <= 6; x += 6) {
-    for (let z = 75; z <= 89; z += 7) {
-      const column = MeshBuilder.CreateCylinder(`interiorColumn-${x}-${z}`, {
-        height: 6.2,
-        diameter: 1.1,
-        tessellation: 26
+  createPaintedWall(scene, materials, "paintedBackWall", new Vector3(0, 2.7, 94), new Vector3(17, 5.4, 0.28));
+  createPaintedWall(scene, materials, "paintedLeftWall", new Vector3(-8.5, 2.7, 85), new Vector3(0.28, 5.4, 18));
+  createPaintedWall(scene, materials, "paintedRightWall", new Vector3(8.5, 2.7, 85), new Vector3(0.28, 5.4, 18));
+
+  const roof = MeshBuilder.CreateBox("ptahShrineFlatRoof", { width: 17.4, height: 0.42, depth: 18.5 }, scene);
+  roof.position = new Vector3(0, 5.65, 85);
+  roof.material = materials.wood;
+
+  for (let x = -5.2; x <= 5.2; x += 5.2) {
+    for (let z = 79; z <= 88; z += 9) {
+      const pier = MeshBuilder.CreateBox(`earlyShrinePier-${x}-${z}`, {
+        width: 0.82,
+        height: 4.5,
+        depth: 0.82
       }, scene);
-      column.position = new Vector3(x, 3.1, z);
-      column.material = materials.stone;
-      column.checkCollisions = true;
-
-      const capital = MeshBuilder.CreateCylinder(`interiorCapital-${x}-${z}`, {
-        height: 0.6,
-        diameterTop: 1.45,
-        diameterBottom: 1.05,
-        tessellation: 26
-      }, scene);
-      capital.position = new Vector3(x, 6.35, z);
-      capital.material = materials.plaster;
+      pier.position = new Vector3(x, 2.25, z);
+      pier.material = materials.limestone;
+      pier.checkCollisions = true;
     }
   }
 
   const altar = MeshBuilder.CreateBox("lowOfferingTable", { width: 3.8, height: 0.8, depth: 1.5 }, scene);
-  altar.position = new Vector3(0, 0.4, 91);
-  altar.material = materials.stone;
+  altar.position = new Vector3(0, 0.4, 89);
+  altar.material = materials.limestone;
+
+  const cultBlock = MeshBuilder.CreateBox("ptahCultFocusBlock", { width: 1.4, height: 1.8, depth: 0.9 }, scene);
+  cultBlock.position = new Vector3(0, 0.9, 93);
+  cultBlock.material = materials.stone;
+}
+
+function createPrecinctWall(scene: Scene, materials: SceneMaterials, name: string, position: Vector3, size: Vector3): void {
+  const wall = MeshBuilder.CreateBox(name, { width: size.x, height: size.y, depth: size.z }, scene);
+  wall.position = position;
+  wall.material = materials.plaster;
+  wall.checkCollisions = true;
+
+  const mudbrickBase = MeshBuilder.CreateBox(`${name}MudbrickBase`, {
+    width: size.x + 0.05,
+    height: 1,
+    depth: size.z + 0.05
+  }, scene);
+  mudbrickBase.position = new Vector3(position.x, 0.5, position.z);
+  mudbrickBase.material = materials.mudbrick;
 }
 
 function createPaintedWall(scene: Scene, materials: SceneMaterials, name: string, position: Vector3, size: Vector3): void {
