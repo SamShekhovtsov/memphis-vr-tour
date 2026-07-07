@@ -1,0 +1,88 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://egyptvr.local/schema/source-register.schema.json",
+  "title": "Egypt VR Source Register",
+  "type": "object",
+  "required": [
+    "checkedDate",
+    "scope",
+    "sources"
+  ],
+  "properties": {
+    "checkedDate": {
+      "type": "string",
+      "format": "date"
+    },
+    "scope": {
+      "type": "string"
+    },
+    "sources": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "title",
+          "url",
+          "category",
+          "relevance",
+          "licenseStatus",
+          "allowedUses",
+          "blockedUses",
+          "reviewNotes"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "url": {
+            "type": "string",
+            "format": "uri"
+          },
+          "category": {
+            "enum": [
+              "location-specific",
+              "open-collection",
+              "language",
+              "geospatial",
+              "aggregator",
+              "restricted-reference"
+            ]
+          },
+          "relevance": {
+            "type": "string"
+          },
+          "licenseStatus": {
+            "type": "string"
+          },
+          "allowedUses": {
+            "type": "array",
+            "items": {
+              "enum": [
+                "dataset-ok",
+                "rag-ok",
+                "human-reference",
+                "runtime-ok",
+                "permission-needed"
+              ]
+            }
+          },
+          "blockedUses": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "reviewNotes": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

@@ -1,0 +1,282 @@
+{
+  "$schema": "./source-register.schema.json",
+  "checkedDate": "2026-07-07",
+  "scope": "Ancient Memphis MVP: early Ptah / Hwt-ka-Ptah precinct and Kom el-Fakhry / Mit Rahina settlement evidence.",
+  "sources": [
+    {
+      "id": "unesco-memphis-necropolis",
+      "title": "UNESCO: Memphis and its Necropolis",
+      "url": "https://whc.unesco.org/en/list/86/",
+      "category": "location-specific",
+      "relevance": "World Heritage context for Memphis, Saqqara, Mit Rahina, and monument landscape.",
+      "licenseStatus": "Official web page; no broad ML-training license recorded in this pass.",
+      "allowedUses": ["rag-ok", "human-reference"],
+      "blockedUses": ["image/video/model fine-tuning", "runtime media use without separate rights check"],
+      "reviewNotes": "Use for concise cited facts and scope validation."
+    },
+    {
+      "id": "british-museum-ptah-temple-term",
+      "title": "British Museum: Temple of Ptah, Memphis",
+      "url": "https://www.britishmuseum.org/collection/term/x30320",
+      "category": "location-specific",
+      "relevance": "Identifier for Hwt-ka-Ptah / Hut-Ka-Ptah as the Great Temple of Memphis.",
+      "licenseStatus": "British Museum images are generally CC BY-NC-SA for non-commercial use or require licensing; item pages must be checked individually.",
+      "allowedUses": ["human-reference"],
+      "blockedUses": ["commercial fine-tuning", "runtime media without compatible license"],
+      "reviewNotes": "Use text facts with citation; avoid image datasets unless explicit permission or compatible license exists."
+    },
+    {
+      "id": "mota-ptah-blocks",
+      "title": "Egypt Ministry of Tourism and Antiquities: Temple of Ptah blocks",
+      "url": "https://egymonuments.gov.eg/news/excavations-unveil-a-portion-of-the-temple-of-ptah/",
+      "category": "location-specific",
+      "relevance": "Official update about blocks believed to belong to the Great Temple of Ptah.",
+      "licenseStatus": "MoTA media hub states all rights reserved.",
+      "allowedUses": ["human-reference"],
+      "blockedUses": ["fine-tuning", "runtime media", "bulk media extraction"],
+      "reviewNotes": "Use as official citation only unless MoTA grants permission."
+    },
+    {
+      "id": "aera-memphis",
+      "title": "AERA: Memphis",
+      "url": "https://aeraweb.org/projects/memphis/",
+      "category": "location-specific",
+      "relevance": "Mit Rahina, Kom el-Fakhry field school, Ptah Temple West Gate, and project bibliography.",
+      "licenseStatus": "AERA page footer states all rights reserved.",
+      "allowedUses": ["human-reference"],
+      "blockedUses": ["fine-tuning", "runtime media", "bulk PDF/media ingestion without permission"],
+      "reviewNotes": "Very important for reconstruction notes, but do not train on images or PDFs without permission."
+    },
+    {
+      "id": "sfar-kom-el-fakhry",
+      "title": "SFAR: Kom el-Fakhry Archaeological Project",
+      "url": "https://www.sphinxarchaeology.org/komelfakhry",
+      "category": "location-specific",
+      "relevance": "Current project page for Kom el-Fakhry / MKAP.",
+      "licenseStatus": "No broad open ML-training license found in this pass.",
+      "allowedUses": ["human-reference"],
+      "blockedUses": ["fine-tuning", "runtime media", "bulk media extraction"],
+      "reviewNotes": "Use for source discovery and factual research notes. Ask permission for dataset or media reuse."
+    },
+    {
+      "id": "lockwood-jarce-mkap-2023",
+      "title": "JARCE: Rediscovering Memphis preliminary report",
+      "url": "https://lockwoodonlinejournals.com/index.php/jarce/article/view/2855",
+      "category": "location-specific",
+      "relevance": "Recent publication metadata for the 2023 MKAP season at Kom el-Fakhry.",
+      "licenseStatus": "Publisher page; article license not verified in this pass.",
+      "allowedUses": ["human-reference"],
+      "blockedUses": ["fine-tuning", "full-text RAG ingestion without license review"],
+      "reviewNotes": "Use title/abstract/citation only until full license is reviewed."
+    },
+    {
+      "id": "petrie-memphis-i",
+      "title": "Petrie: Memphis I",
+      "url": "https://archive.org/details/memphisi00petr",
+      "category": "location-specific",
+      "relevance": "Early excavation report for Memphis.",
+      "licenseStatus": "1909 publication; candidate public-domain source, but item-level status must be recorded before bulk use.",
+      "allowedUses": ["dataset-ok", "rag-ok", "human-reference"],
+      "blockedUses": ["use without item-level public-domain note"],
+      "reviewNotes": "Good candidate for OCR/RAG and plate study once local rights verification is logged."
+    },
+    {
+      "id": "petrie-memphis-ii",
+      "title": "Petrie: The Palace of Apries (Memphis II)",
+      "url": "https://archive.org/details/palaceofapriesme00petr",
+      "category": "location-specific",
+      "relevance": "Memphis excavation report; later-period palace context.",
+      "licenseStatus": "1909 publication; candidate public-domain source, but item-level status must be recorded before bulk use.",
+      "allowedUses": ["dataset-ok", "rag-ok", "human-reference"],
+      "blockedUses": ["use without item-level public-domain note"],
+      "reviewNotes": "Useful as Memphis topographic context, not an Old Kingdom temple plan."
+    },
+    {
+      "id": "petrie-memphis-iii",
+      "title": "Petrie: Meydum and Memphis III",
+      "url": "https://archive.org/details/meydummemphisiii00petr",
+      "category": "location-specific",
+      "relevance": "Memphis and comparative archaeological publication.",
+      "licenseStatus": "1910 publication; candidate public-domain source, but item-level status must be recorded before bulk use.",
+      "allowedUses": ["dataset-ok", "rag-ok", "human-reference"],
+      "blockedUses": ["use without item-level public-domain note"],
+      "reviewNotes": "Useful for historical research and public-domain plate/OCR experiments."
+    },
+    {
+      "id": "wikimedia-ptah-memphis",
+      "title": "Wikimedia Commons: Temple of Ptah in Memphis",
+      "url": "https://commons.wikimedia.org/wiki/Category:Temple_of_Ptah_in_Memphis",
+      "category": "aggregator",
+      "relevance": "Open media category for Ptah temple remains and related artifacts.",
+      "licenseStatus": "File-level licenses vary; Commons requires free licenses or public-domain status.",
+      "allowedUses": ["human-reference", "runtime-ok"],
+      "blockedUses": ["fine-tuning without per-file license capture; non-CC0 files in training unless legal review approves"],
+      "reviewNotes": "Prefer CC0/public-domain files for datasets. Preserve author, license, and file URL."
+    },
+    {
+      "id": "wikimedia-mit-rahina",
+      "title": "Wikimedia Commons: Mit Rahina",
+      "url": "https://commons.wikimedia.org/wiki/Category:Mit_Rahina",
+      "category": "aggregator",
+      "relevance": "Open media category for modern Mit Rahina and Memphis remains.",
+      "licenseStatus": "File-level licenses vary; Commons requires free licenses or public-domain status.",
+      "allowedUses": ["human-reference", "runtime-ok"],
+      "blockedUses": ["fine-tuning without per-file license capture; non-CC0 files in training unless legal review approves"],
+      "reviewNotes": "Use as discovery, not as blanket license approval."
+    },
+    {
+      "id": "met-open-access",
+      "title": "The Met Open Access",
+      "url": "https://www.metmuseum.org/hubs/open-access",
+      "category": "open-collection",
+      "relevance": "Large ancient Egyptian collection with public-domain images and metadata.",
+      "licenseStatus": "Open Access images/data under CC0 where designated.",
+      "allowedUses": ["dataset-ok", "rag-ok", "runtime-ok", "human-reference"],
+      "blockedUses": ["items not marked Open Access/CC0"],
+      "reviewNotes": "Primary safe source for visual style, artifacts, clothing, tools, reliefs, and daily-life references."
+    },
+    {
+      "id": "met-old-kingdom-cattle-relief",
+      "title": "The Met: Relief depicting cattle farming",
+      "url": "https://www.metmuseum.org/art/collection/search/551094",
+      "category": "open-collection",
+      "relevance": "Old Kingdom relief with people, animals, clothing, and paint traces.",
+      "licenseStatus": "Object page marks image as Public Domain.",
+      "allowedUses": ["dataset-ok", "rag-ok", "runtime-ok", "human-reference"],
+      "blockedUses": ["none after item-level provenance capture"],
+      "reviewNotes": "Good seed for wall/relief and everyday-life visual references."
+    },
+    {
+      "id": "cleveland-open-access",
+      "title": "Cleveland Museum of Art Open Access",
+      "url": "https://www.clevelandart.org/open-access",
+      "category": "open-collection",
+      "relevance": "Egyptian collection with CC0 public-domain object images and metadata.",
+      "licenseStatus": "CC0 for designated public-domain artworks/images/data.",
+      "allowedUses": ["dataset-ok", "rag-ok", "runtime-ok", "human-reference"],
+      "blockedUses": ["non-CC0 restricted items"],
+      "reviewNotes": "Good source for Egyptian art/object style references."
+    },
+    {
+      "id": "smithsonian-open-access",
+      "title": "Smithsonian Open Access",
+      "url": "https://www.si.edu/openaccess",
+      "category": "open-collection",
+      "relevance": "CC0 2D/3D assets and metadata where designated Open Access.",
+      "licenseStatus": "CC0 for Open Access items; exceptions apply.",
+      "allowedUses": ["dataset-ok", "rag-ok", "runtime-ok", "human-reference"],
+      "blockedUses": ["non-CC0 items, trademarks, culturally sensitive restricted materials"],
+      "reviewNotes": "Useful for object/3D references when relevant Egyptian material exists."
+    },
+    {
+      "id": "walters-rights",
+      "title": "Walters Art Museum image rights",
+      "url": "https://thewalters.org/about/policies/rights-reproductions/",
+      "category": "open-collection",
+      "relevance": "Public-domain Egyptian objects with CC0 digital images and metadata where applicable.",
+      "licenseStatus": "CC0 for public-domain digital images and metadata through Walters interfaces; exceptions apply.",
+      "allowedUses": ["dataset-ok", "rag-ok", "runtime-ok", "human-reference"],
+      "blockedUses": ["restricted/loan/copyrighted items"],
+      "reviewNotes": "Use item-level checks before inclusion."
+    },
+    {
+      "id": "penn-museum-collections-data",
+      "title": "Penn Museum collections data terms",
+      "url": "https://www.penn.museum/about/statements-and-policies/terms-and-conditions",
+      "category": "open-collection",
+      "relevance": "Egyptian collection metadata.",
+      "licenseStatus": "Downloaded collections datasets are CC BY 4.0; images are excluded.",
+      "allowedUses": ["rag-ok", "human-reference"],
+      "blockedUses": ["image fine-tuning from Penn collection images without permission"],
+      "reviewNotes": "Good metadata source with attribution; do not treat images as included."
+    },
+    {
+      "id": "tla-website",
+      "title": "Thesaurus Linguae Aegyptiae",
+      "url": "https://thesaurus-linguae-aegyptiae.de/",
+      "category": "language",
+      "relevance": "Major lemmatized ancient Egyptian corpus and lemma resource.",
+      "licenseStatus": "Website use has registration/copyright conditions; use direct datasets where available.",
+      "allowedUses": ["human-reference"],
+      "blockedUses": ["scraping or bulk training from website without permission"],
+      "reviewNotes": "Use for lookup and citation. Prefer official Hugging Face datasets for ML."
+    },
+    {
+      "id": "tla-earlier-egyptian-hf",
+      "title": "TLA Earlier Egyptian original dataset on Hugging Face",
+      "url": "https://huggingface.co/datasets/thesaurus-linguae-aegyptiae/tla-Earlier_Egyptian_original-v18-premium",
+      "category": "language",
+      "relevance": "Earlier Egyptian sentences with hieroglyphs, transliteration, lemmatization, and German translation.",
+      "licenseStatus": "CC BY-SA 4.0; dataset card explicitly lists language-model training uses.",
+      "allowedUses": ["dataset-ok", "rag-ok", "human-reference"],
+      "blockedUses": ["reconstructing entire ancient source texts; ignoring share-alike/attribution obligations"],
+      "reviewNotes": "Best candidate for Ancient Egyptian language experiments; still needs expert review for app text."
+    },
+    {
+      "id": "project-gutenberg-egyptian-literature",
+      "title": "Project Gutenberg: The Literature of the Ancient Egyptians",
+      "url": "https://www.gutenberg.org/files/15932/15932-h/15932-h.htm",
+      "category": "language",
+      "relevance": "Public-domain historical translations and background.",
+      "licenseStatus": "Project Gutenberg public-domain status in the USA with PG license conditions.",
+      "allowedUses": ["dataset-ok", "rag-ok", "human-reference"],
+      "blockedUses": ["using outdated translations as final truth without modern review"],
+      "reviewNotes": "Useful for background; Egyptology is outdated and must be checked."
+    },
+    {
+      "id": "natural-earth",
+      "title": "Natural Earth",
+      "url": "https://www.naturalearthdata.com/about/terms-of-use/",
+      "category": "geospatial",
+      "relevance": "Public-domain base map data.",
+      "licenseStatus": "Public domain.",
+      "allowedUses": ["dataset-ok", "runtime-ok", "human-reference"],
+      "blockedUses": ["none after provenance capture"],
+      "reviewNotes": "Useful for broad geography, not exact ancient Nile reconstruction."
+    },
+    {
+      "id": "openstreetmap",
+      "title": "OpenStreetMap copyright and license",
+      "url": "https://www.openstreetmap.org/copyright",
+      "category": "geospatial",
+      "relevance": "Modern coordinate and map context around Mit Rahina.",
+      "licenseStatus": "Open Database License with attribution and share-alike requirements.",
+      "allowedUses": ["human-reference", "runtime-ok"],
+      "blockedUses": ["mixing into proprietary database without ODbL compliance"],
+      "reviewNotes": "Keep OSM-derived data separate and attributed."
+    },
+    {
+      "id": "mota-media-hub",
+      "title": "Egypt Ministry Media Hub",
+      "url": "https://egymonuments.gov.eg/en/media-hub/",
+      "category": "restricted-reference",
+      "relevance": "Official media, images, video, 3D/360 when available.",
+      "licenseStatus": "All rights reserved.",
+      "allowedUses": ["human-reference"],
+      "blockedUses": ["fine-tuning", "runtime media", "bulk media extraction", "uploading to generative tools"],
+      "reviewNotes": "Use only as a citation/source-discovery layer unless permission is granted."
+    },
+    {
+      "id": "digital-egypt-ucl",
+      "title": "Digital Egypt for Universities",
+      "url": "https://www.ucl.ac.uk/museums-static/digitalegypt/",
+      "category": "restricted-reference",
+      "relevance": "Educational context, object pages, site reconstructions, diagrams, plans.",
+      "licenseStatus": "UCL describes the site's media as copyrighted; third-party metadata suggests non-commercial terms in some mirrors.",
+      "allowedUses": ["human-reference"],
+      "blockedUses": ["commercial fine-tuning", "runtime media", "bulk media extraction"],
+      "reviewNotes": "Useful for research orientation. Get permission or item-level license before dataset use."
+    },
+    {
+      "id": "digital-giza",
+      "title": "Digital Giza",
+      "url": "https://giza.fas.harvard.edu/",
+      "category": "restricted-reference",
+      "relevance": "Old Kingdom comparative architecture, tomb scenes, documentation, and 3D reconstruction methods.",
+      "licenseStatus": "Free research access; item-level rights must be checked.",
+      "allowedUses": ["human-reference"],
+      "blockedUses": ["fine-tuning or runtime media without item-level license"],
+      "reviewNotes": "Useful comparator, not direct Memphis source. Do not scrape as dataset."
+    }
+  ]
+}

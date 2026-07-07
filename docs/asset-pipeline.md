@@ -20,3 +20,9 @@ Use AI and procedural tools to draft quickly, then curate aggressively. The proj
 - Fine-tune small adapters or LoRAs only on content that is licensed or otherwise allowed for that purpose.
 - Use retrieval for Egyptian history and language instead of assuming the model knows the period.
 - Keep confirmed, inferred, and speculative labels attached to generated assets.
+
+## Source Policy
+
+See [Step 3 Source And ML Policy](research/step-03-source-and-ml-policy.md) and the source register at `content/source-references/memphis-source-register.json`.
+
+Important rule: material that is not shown directly in the app may still be restricted for model training, embedding, or upload into third-party generation tools. Use CC0, public-domain, owned, commissioned, or explicitly ML-permitted sources for datasets and fine-tuning.
