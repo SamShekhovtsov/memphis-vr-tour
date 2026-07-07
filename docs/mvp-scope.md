@@ -6,7 +6,7 @@ Ancient Memphis: A Walk Through the White Walls
 
 ## First Slice
 
-A compact, historically scoped district around early Memphis. The exact temple selection is a research task for Step 2, so the first runnable scene uses a provisional temple district layout.
+A compact, historically scoped district around early Memphis. Step 2 selects a paired anchor: Kom el-Fakhry / Mit Rahina for living-city evidence, and the early Ptah / Hwt-ka-Ptah precinct for the sacred endpoint.
 
 The first slice includes:
 
@@ -26,3 +26,5 @@ The target guided route is 2 to 5 minutes. The initial manifest uses 180 seconds
 ## Production Rule
 
 The prototype can be rough geometrically, but the project structure must already support the final promise: cinematic reconstruction with transparent evidence labels and careful provenance.
+
+See [Step 2 Site Selection](research/step-02-site-selection.md) for the current temple/district decision.

@@ -2,10 +2,10 @@
   "$schema": "../../packages/shared-scene/schema/tour.schema.json",
   "id": "memphis-white-walls-early-kingdom",
   "title": "Ancient Memphis: A Walk Through the White Walls",
-  "period": "Early Dynastic / Old Kingdom, provisional research scope",
+  "period": "Early Dynastic / Old Kingdom, anchored to Kom el-Fakhry and early Ptah precinct research",
   "location": "Memphis, Egypt",
   "durationSeconds": 180,
-  "summary": "A compact living-history walk from the Nile edge through an inhabited district toward a reconstructed temple space.",
+  "summary": "A compact living-history walk from the Nile edge through an inhabited Memphis district toward an early Ptah precinct reconstruction.",
   "stops": [
     {
       "id": "nile-arrival",
@@ -28,43 +28,43 @@
       "lookAt": [-3, 1.6, 4],
       "durationHintSeconds": 35,
       "referenceNotes": [
-        "Domestic architecture is inferred from Egyptian settlement archaeology and comparable period material culture."
+        "Domestic architecture is inferred from Kom el-Fakhry / Memphite settlement archaeology and comparable period material culture."
       ]
     },
     {
       "id": "craft-area",
       "title": "Craftsmen Area",
-      "summary": "Pottery, basketry, stone dressing, and low workshop structures make the district feel economically alive.",
-      "evidenceLevel": "speculative",
+      "summary": "Pottery, basketry, stone dressing, and low workshop structures connect the district to Memphis craft and temple economy.",
+      "evidenceLevel": "inferred",
       "position": [5, 1.7, 10],
       "lookAt": [0, 1.6, 34],
       "durationHintSeconds": 35,
       "referenceNotes": [
-        "The specific placement of workshops in this compact route is artistic reconstruction until site-specific evidence is selected."
+        "Craft activity is supported by Memphis/Ptah associations and workshop references, but this exact compact placement is reconstructed."
       ]
     },
     {
       "id": "temple-exterior",
-      "title": "Temple Exterior",
-      "summary": "A ceremonial exterior marks the transition from city life into sacred architecture.",
-      "evidenceLevel": "speculative",
+      "title": "Early Ptah Precinct",
+      "summary": "A walled sacred approach marks the transition from city life into the early Ptah / Hwt-ka-Ptah cult precinct.",
+      "evidenceLevel": "inferred",
       "position": [0, 1.7, 44],
       "lookAt": [0, 1.6, 68],
       "durationHintSeconds": 40,
       "referenceNotes": [
-        "The final temple form depends on Step 2 research into the best Memphis temple anchor."
+        "The Temple of Ptah is the selected sacred anchor, but the Early Dynastic / Old Kingdom exterior form is inferred rather than directly preserved."
       ]
     },
     {
       "id": "painted-interior",
-      "title": "Painted Interior",
-      "summary": "Painted walls, columns, incense, and ritual ambience show the intended reconstruction language.",
+      "title": "Painted Ptah Shrine",
+      "summary": "Painted walls, incense, ritual objects, and filtered light show a cinematic inner shrine reconstruction.",
       "evidenceLevel": "speculative",
       "position": [0, 1.7, 77],
       "lookAt": [0, 1.6, 96],
       "durationHintSeconds": 40,
       "referenceNotes": [
-        "Interior paint is a product goal, but specific iconography must be evidence-reviewed before production use."
+        "The interior is the emotional climax, but exact iconography and layout must remain speculative until source licensing and expert review."
       ]
     }
   ]
