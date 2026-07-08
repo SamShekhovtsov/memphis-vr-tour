@@ -147,6 +147,23 @@
       ]
     },
     {
+      "id": "generated-hero-street-material-atlas",
+      "label": "Generated hero street dust, footprint, roughness, normal, and AO texture set",
+      "assetType": "texture",
+      "origin": "generated",
+      "runtimeUrl": "/assets/generated/textures/hero-street-ground.jpg",
+      "generatedBy": "tools/generate-runtime-assets.mjs",
+      "evidenceLevel": "inferred",
+      "runtimeAllowed": true,
+      "sourceIds": [],
+      "referenceSourceIds": ["met-open-access", "met-old-kingdom-cattle-relief", "cleveland-open-access", "petrie-memphis-i"],
+      "licenseStatus": "Project-generated synthetic PBR-style texture set; no source media copied.",
+      "notes": [
+        "Includes hero-street-ground.jpg, hero-street-normal.jpg, hero-street-roughness.jpg, and hero-street-ao.jpg.",
+        "Used to give the residential corridor packed dust, footprints, stones, straw, and worn walking lanes."
+      ]
+    },
+    {
       "id": "generated-modular-glb-kit-nile-arrival",
       "label": "Generated modular GLB kit for Nile arrival assets",
       "assetType": "geometry",

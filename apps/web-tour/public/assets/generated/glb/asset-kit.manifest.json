@@ -74,6 +74,30 @@
       "licenseStatus": "Project-authored synthetic/procedural model; no source media copied."
     },
     {
+      "id": "hero-street-corridor",
+      "fileName": "hero_street_corridor.glb",
+      "label": "Authored dense hero street corridor",
+      "category": "residential-street",
+      "evidenceLevel": "inferred",
+      "runtimeAssetId": "generated-modular-glb-kit-residential-street",
+      "referenceSourceIds": [
+        "aera-memphis",
+        "sfar-kom-el-fakhry",
+        "petrie-memphis-i",
+        "met-open-access",
+        "cleveland-open-access"
+      ],
+      "notes": [
+        "Project-authored two-row mudbrick street corridor with inward-facing facades.",
+        "Includes worn doors, small windows, awnings, roof clutter, plaster patches, cracks, pottery, baskets, sacks, straw, stones, and work surfaces.",
+        "Layout follows docs/design/memphis-hero-district-plan.md and avoids overlapping architecture systems."
+      ],
+      "runtimeUrl": "/assets/generated/glb/hero_street_corridor.glb",
+      "origin": "project-authored procedural Blender mesh",
+      "runtimeAllowed": true,
+      "licenseStatus": "Project-authored synthetic/procedural model; no source media copied."
+    },
+    {
       "id": "mudbrick-house-cluster",
       "fileName": "mudbrick_house_cluster.glb",
       "label": "Mudbrick residential house cluster",
@@ -112,6 +136,28 @@
         "Decorative density pass for the living-city route."
       ],
       "runtimeUrl": "/assets/generated/glb/residential_market_details.glb",
+      "origin": "project-authored procedural Blender mesh",
+      "runtimeAllowed": true,
+      "licenseStatus": "Project-authored synthetic/procedural model; no source media copied."
+    },
+    {
+      "id": "animated-street-actors",
+      "fileName": "animated_street_actors.glb",
+      "label": "Animated early Memphis street actors",
+      "category": "residential-street",
+      "evidenceLevel": "speculative",
+      "runtimeAssetId": "generated-modular-glb-kit-residential-street",
+      "referenceSourceIds": [
+        "met-old-kingdom-cattle-relief",
+        "met-open-access",
+        "tla-earlier-egyptian-hf"
+      ],
+      "notes": [
+        "Project-authored articulated GLB figures with walking, carrying, idle, and work-loop object animation.",
+        "Clothing is intentionally restrained: plain linen kilts and sheath-like linen garments suitable for an Old Kingdom visual direction.",
+        "This is a first browser-safe character pass; future work should replace it with expert-reviewed skeletal character rigs."
+      ],
+      "runtimeUrl": "/assets/generated/glb/animated_street_actors.glb",
       "origin": "project-authored procedural Blender mesh",
       "runtimeAllowed": true,
       "licenseStatus": "Project-authored synthetic/procedural model; no source media copied."

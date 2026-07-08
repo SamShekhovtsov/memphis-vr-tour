@@ -35,6 +35,7 @@ const glbRoot = "/assets/generated/glb/";
 
 interface SceneMaterials {
   sand: PBRMaterial;
+  heroGround: PBRMaterial;
   mudbrick: PBRMaterial;
   plaster: PBRMaterial;
   river: PBRMaterial;
@@ -107,6 +108,7 @@ interface ModularAssetPlacement {
   rotationY?: number;
   scale?: number;
   collides?: boolean;
+  animated?: boolean;
 }
 
 export async function createMemphisWhiteWallsScene(
@@ -164,7 +166,7 @@ export async function createMemphisWhiteWallsScene(
   const evidenceRoot = createEvidenceMarkers(scene, manifest, materials);
   evidenceRoot.setEnabled(false);
 
-  const walkers = createAmbientWalkers(scene, materials);
+  const walkers: WalkerRoutine[] = [];
   const smokeNodes = createSmoke(scene, materials);
   const birds = createBirds(scene, materials);
   const soundscape = createSoundscape(scene);
@@ -272,6 +274,15 @@ function createMaterials(scene: Scene): SceneMaterials {
     bump: true,
     bumpLevel: 0.1
   });
+  const heroGround = material(scene, "heroStreetGround", "#b68a55", {
+    textureName: "hero-street-ground.jpg",
+    bumpTextureName: "hero-street-normal.jpg",
+    uScale: 1.25,
+    vScale: 4.8,
+    roughness: 0.96,
+    bump: true,
+    bumpLevel: 0.1
+  });
   const plaster = material(scene, "plaster", "#ece1c7", {
     textureName: "plaster-aged.jpg",
     uScale: 2.2,
@@ -357,6 +368,7 @@ function createMaterials(scene: Scene): SceneMaterials {
 
   return {
     sand,
+    heroGround,
     mudbrick,
     plaster,
     river,
@@ -386,6 +398,7 @@ function createMaterials(scene: Scene): SceneMaterials {
 
 interface MaterialOptions {
   textureName?: string;
+  bumpTextureName?: string;
   uScale?: number;
   vScale?: number;
   roughness?: number;
@@ -407,8 +420,8 @@ function material(scene: Scene, name: string, color: string, options: MaterialOp
     mat.albedoTexture = createTiledTexture(scene, options.textureName, options.uScale ?? 1, options.vScale ?? 1);
   }
 
-  if (options.bump && options.textureName) {
-    mat.bumpTexture = createTiledTexture(scene, options.textureName, options.uScale ?? 1, options.vScale ?? 1);
+  if (options.bump && (options.bumpTextureName || options.textureName)) {
+    mat.bumpTexture = createTiledTexture(scene, options.bumpTextureName ?? options.textureName!, options.uScale ?? 1, options.vScale ?? 1);
     mat.bumpTexture.level = options.bumpLevel ?? 0.05;
   }
 
@@ -497,9 +510,16 @@ async function loadModularAssetKit(scene: Scene): Promise<void> {
         mesh.checkCollisions = placement.collides ?? false;
         mesh.isPickable = false;
 
-        if (!placement.collides) {
+        if (!placement.collides && !placement.animated) {
           mesh.freezeWorldMatrix();
         }
+      }
+
+      if (placement.animated && "animationGroups" in instance) {
+        instance.animationGroups?.forEach((group, index) => {
+          group.speedRatio = 0.82 + index * 0.04;
+          group.start(true);
+        });
       }
     }
   } catch (error) {
@@ -538,49 +558,20 @@ function createModularAssetPlacements(): ModularAssetPlacement[] {
       scale: 0.82 + (index % 3) * 0.08
     })),
     {
-      assetId: "mudbrick-house-cluster",
-      name: "glbStreetHousesSouth",
-      position: new Vector3(-17.4, 0, -28),
-      rotationY: 0.03,
-      scale: 1.02,
+      assetId: "hero-street-corridor",
+      name: "glbHeroStreetCorridor",
+      position: new Vector3(0, 0, 0),
+      rotationY: 0,
+      scale: 1,
       collides: true
     },
     {
-      assetId: "mudbrick-house-cluster",
-      name: "glbStreetHousesMiddle",
-      position: new Vector3(-4.2, 0, -11.5),
-      rotationY: Math.PI,
-      scale: 0.92,
-      collides: true
-    },
-    {
-      assetId: "mudbrick-house-cluster",
-      name: "glbStreetHousesNorth",
-      position: new Vector3(-15.8, 0, 17),
-      rotationY: -0.08,
-      scale: 1.08,
-      collides: true
-    },
-    {
-      assetId: "residential-market-details",
-      name: "glbStreetDetailsSouth",
-      position: new Vector3(-10.8, 0.02, -24.5),
-      rotationY: 0.22,
-      scale: 1
-    },
-    {
-      assetId: "residential-market-details",
-      name: "glbStreetDetailsMiddle",
-      position: new Vector3(-9, 0.02, -1.5),
-      rotationY: -0.1,
-      scale: 0.88
-    },
-    {
-      assetId: "residential-market-details",
-      name: "glbStreetDetailsNorth",
-      position: new Vector3(-11.5, 0.02, 22.5),
-      rotationY: 0.36,
-      scale: 0.96
+      assetId: "animated-street-actors",
+      name: "glbAnimatedStreetActors",
+      position: new Vector3(0, 0, 0),
+      rotationY: 0,
+      scale: 1,
+      animated: true
     }
   ];
 }
@@ -672,6 +663,10 @@ function createNileEdge(scene: Scene, materials: SceneMaterials): void {
 
 function createResidentialStreet(scene: Scene, materials: SceneMaterials): void {
   createWhiteWallsThreshold(scene, materials);
+
+  const heroStreetGround = MeshBuilder.CreateGround("heroStreetGroundDetail", { width: 10.5, height: 70, subdivisions: 6 }, scene);
+  heroStreetGround.position = new Vector3(-10.5, 0.048, 4);
+  heroStreetGround.material = materials.heroGround;
 
   const drain = MeshBuilder.CreateBox("streetDrainageChannel", { width: 0.46, height: 0.08, depth: 44 }, scene);
   drain.position = new Vector3(-9.4, 0.055, -8);

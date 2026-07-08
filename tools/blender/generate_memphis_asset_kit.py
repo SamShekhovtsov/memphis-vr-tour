@@ -61,6 +61,20 @@ ASSETS = [
         ],
     },
     {
+        "id": "hero-street-corridor",
+        "fileName": "hero_street_corridor.glb",
+        "label": "Authored dense hero street corridor",
+        "category": "residential-street",
+        "evidenceLevel": "inferred",
+        "runtimeAssetId": "generated-modular-glb-kit-residential-street",
+        "referenceSourceIds": ["aera-memphis", "sfar-kom-el-fakhry", "petrie-memphis-i", "met-open-access", "cleveland-open-access"],
+        "notes": [
+            "Project-authored two-row mudbrick street corridor with inward-facing facades.",
+            "Includes worn doors, small windows, awnings, roof clutter, plaster patches, cracks, pottery, baskets, sacks, straw, stones, and work surfaces.",
+            "Layout follows docs/design/memphis-hero-district-plan.md and avoids overlapping architecture systems."
+        ],
+    },
+    {
         "id": "mudbrick-house-cluster",
         "fileName": "mudbrick_house_cluster.glb",
         "label": "Mudbrick residential house cluster",
@@ -84,6 +98,20 @@ ASSETS = [
         "notes": [
             "Project-authored jars, baskets, mats, awnings, ropes, benches, crates, and small vessels.",
             "Decorative density pass for the living-city route."
+        ],
+    },
+    {
+        "id": "animated-street-actors",
+        "fileName": "animated_street_actors.glb",
+        "label": "Animated early Memphis street actors",
+        "category": "residential-street",
+        "evidenceLevel": "speculative",
+        "runtimeAssetId": "generated-modular-glb-kit-residential-street",
+        "referenceSourceIds": ["met-old-kingdom-cattle-relief", "met-open-access", "tla-earlier-egyptian-hf"],
+        "notes": [
+            "Project-authored articulated GLB figures with walking, carrying, idle, and work-loop object animation.",
+            "Clothing is intentionally restrained: plain linen kilts and sheath-like linen garments suitable for an Old Kingdom visual direction.",
+            "This is a first browser-safe character pass; future work should replace it with expert-reviewed skeletal character rigs."
         ],
     },
     {
@@ -549,6 +577,271 @@ def build_mudbrick_house_cluster(materials: dict[str, bpy.types.Material]) -> No
         make_jar(f"roofJar-{index}", (-2.9 + index * 0.42, 0.18, 2.48), materials["mudbrick"], 0.55)
 
 
+def make_facade_house(
+    name: str,
+    center_x: float,
+    center_y: float,
+    depth: float,
+    frontage: float,
+    height: float,
+    side_dir: int,
+    materials: dict[str, bpy.types.Material],
+    awning: bool,
+) -> None:
+    rng = random.Random(name)
+    facade_x = center_x + side_dir * depth * 0.5
+
+    cube(f"{name}-mudbrickMass", (center_x, center_y, height * 0.5), (depth, frontage, height), materials["mudbrick"], bevel=0.055)
+    cube(
+        f"{name}-facadePlaster",
+        (facade_x + side_dir * 0.026, center_y, height * 0.54),
+        (0.052, frontage * 0.9, height * 0.7),
+        materials["plaster"],
+        bevel=0.012,
+    )
+    cube(f"{name}-roofLipFront", (facade_x + side_dir * 0.08, center_y, height + 0.14), (0.28, frontage, 0.28), materials["mudbrick"], bevel=0.02)
+    cube(f"{name}-roofLipBack", (center_x - side_dir * depth * 0.47, center_y, height + 0.14), (0.22, frontage, 0.28), materials["mudbrick"], bevel=0.02)
+    cube(f"{name}-roofLipA", (center_x, center_y - frontage * 0.5, height + 0.14), (depth, 0.18, 0.28), materials["mudbrick"], bevel=0.02)
+    cube(f"{name}-roofLipB", (center_x, center_y + frontage * 0.5, height + 0.14), (depth, 0.18, 0.28), materials["mudbrick"], bevel=0.02)
+
+    door_y = center_y + rng.uniform(-frontage * 0.22, frontage * 0.22)
+    cube(f"{name}-doorShadow", (facade_x + side_dir * 0.065, door_y, 0.72), (0.08, 0.78, 1.42), materials["dark"], bevel=0.008)
+    cube(f"{name}-doorLintel", (facade_x + side_dir * 0.11, door_y, 1.46), (0.16, 1.02, 0.18), materials["wood"], bevel=0.006)
+    cube(f"{name}-leftDoorJamb", (facade_x + side_dir * 0.11, door_y - 0.48, 0.72), (0.14, 0.12, 1.35), materials["wood"], bevel=0.006)
+    cube(f"{name}-rightDoorJamb", (facade_x + side_dir * 0.11, door_y + 0.48, 0.72), (0.14, 0.12, 1.35), materials["wood"], bevel=0.006)
+
+    for window_index in range(2):
+        wy = center_y + (-0.33 + window_index * 0.66) * frontage
+        if abs(wy - door_y) < 0.8:
+            wy += 0.7
+        cube(f"{name}-smallWindow-{window_index}", (facade_x + side_dir * 0.062, wy, height * 0.62), (0.07, 0.44, 0.42), materials["dark"], bevel=0.005)
+        cube(f"{name}-windowFrame-{window_index}", (facade_x + side_dir * 0.105, wy, height * 0.62), (0.08, 0.58, 0.56), materials["wood"], bevel=0.004)
+
+    for patch_index in range(4):
+        py = center_y + rng.uniform(-frontage * 0.42, frontage * 0.42)
+        pz = rng.uniform(0.45, height * 0.88)
+        cube(
+            f"{name}-plasterPatch-{patch_index}",
+            (facade_x + side_dir * 0.082, py, pz),
+            (0.035, rng.uniform(0.28, 0.78), rng.uniform(0.12, 0.38)),
+            materials["plaster" if patch_index % 2 else "limestone"],
+            bevel=0,
+        )
+
+    for crack_index in range(3):
+        py = center_y + rng.uniform(-frontage * 0.43, frontage * 0.43)
+        pz = rng.uniform(0.55, height * 0.9)
+        cube(
+            f"{name}-hairlineCrack-{crack_index}",
+            (facade_x + side_dir * 0.105, py, pz),
+            (0.022, rng.uniform(0.02, 0.045), rng.uniform(0.36, 0.82)),
+            materials["dark"],
+            rot=(0, 0, rng.uniform(-0.25, 0.25)),
+            bevel=0,
+        )
+
+    for roof_index in range(2):
+        if roof_index % 2 == 0:
+            make_jar(
+                f"{name}-roofJar-{roof_index}",
+                (center_x + rng.uniform(-depth * 0.24, depth * 0.24), center_y + rng.uniform(-frontage * 0.35, frontage * 0.35), height + 0.18),
+                materials["mudbrick"],
+                rng.uniform(0.45, 0.65),
+            )
+        else:
+            cube(
+                f"{name}-roofBundle-{roof_index}",
+                (center_x + rng.uniform(-depth * 0.22, depth * 0.22), center_y + rng.uniform(-frontage * 0.36, frontage * 0.36), height + 0.12),
+                (0.5, 0.9, 0.14),
+                materials["dry_reed"],
+                rot=(0, 0, rng.uniform(-0.2, 0.2)),
+                bevel=0.015,
+            )
+
+    if awning:
+        awning_depth = rng.uniform(1.5, 2.25)
+        awning_width = frontage * rng.uniform(0.64, 0.82)
+        awning_x = facade_x + side_dir * awning_depth * 0.52
+        awning_y = center_y + rng.uniform(-frontage * 0.08, frontage * 0.08)
+        cube(
+            f"{name}-streetAwningCloth",
+            (awning_x, awning_y, 2.32),
+            (awning_depth, awning_width, 0.055),
+            materials["linen"],
+            rot=(rng.uniform(-0.04, 0.04), rng.uniform(-0.07, 0.07), 0),
+            bevel=0.01,
+        )
+        post_x = facade_x + side_dir * (awning_depth - 0.14)
+        for post_y in [awning_y - awning_width * 0.44, awning_y + awning_width * 0.44]:
+            cylinder(f"{name}-awningPost-{post_y}", (post_x, post_y, 1.08), 0.035, 2.16, materials["wood"], 8)
+            cylinder_between(
+                f"{name}-awningRope-{post_y}",
+                (facade_x + side_dir * 0.08, post_y, 2.25),
+                (post_x, post_y, 2.18),
+                0.012,
+                materials["dry_reed"],
+                6,
+            )
+
+    if rng.random() > 0.35:
+        cloth_y = center_y + rng.uniform(-frontage * 0.3, frontage * 0.3)
+        cube(
+            f"{name}-hangingCloth",
+            (facade_x + side_dir * 0.11, cloth_y, 1.65),
+            (0.06, 0.92, 0.76),
+            materials["linen"],
+            bevel=0.008,
+        )
+
+
+def make_edge_props(
+    name: str,
+    facade_x: float,
+    center_y: float,
+    side_dir: int,
+    materials: dict[str, bpy.types.Material],
+    seed: int,
+) -> None:
+    rng = random.Random(seed)
+    edge_x = facade_x + side_dir * rng.uniform(0.45, 1.05)
+
+    for index in range(rng.randint(1, 2)):
+        make_jar(
+            f"{name}-edgeJar-{index}",
+            (edge_x + side_dir * rng.uniform(-0.2, 0.42), center_y + rng.uniform(-1.8, 1.8), 0.28),
+            materials["mudbrick"],
+            rng.uniform(0.62, 0.95),
+        )
+
+    for index in range(rng.randint(1, 2)):
+        make_basket(
+            f"{name}-edgeBasket-{index}",
+            (edge_x + side_dir * rng.uniform(-0.1, 0.36), center_y + rng.uniform(-1.7, 1.7), 0.2),
+            materials,
+            rng.uniform(0.7, 1.08),
+        )
+
+    if rng.random() > 0.42:
+        cube(f"{name}-workBench", (edge_x + side_dir * 0.16, center_y, 0.48), (0.72, 2.0, 0.16), materials["wood"], bevel=0.025)
+        for offset in [-0.75, 0.75]:
+            cube(f"{name}-benchLeg-{offset}", (edge_x + side_dir * 0.16, center_y + offset, 0.24), (0.16, 0.16, 0.48), materials["wood"], bevel=0.012)
+
+    if rng.random() > 0.35:
+        cube(
+            f"{name}-linenSack",
+            (edge_x + side_dir * rng.uniform(0.2, 0.5), center_y + rng.uniform(-1.5, 1.5), 0.18),
+            (0.5, 0.72, 0.32),
+            materials["linen"],
+            rot=(0, 0, rng.uniform(-0.28, 0.28)),
+            bevel=0.035,
+        )
+
+
+def add_hero_ground_details(materials: dict[str, bpy.types.Material]) -> None:
+    rng = random.Random("hero-ground-details")
+
+    for index in range(28):
+        x = rng.uniform(-13.8, -7.2)
+        y = rng.uniform(-28, 35)
+        cube(
+            f"streetFootprint-{index}",
+            (x, y, 0.022),
+            (rng.uniform(0.18, 0.28), rng.uniform(0.34, 0.52), 0.018),
+            materials["dark"],
+            rot=(0, 0, rng.uniform(-0.55, 0.55)),
+            bevel=0.018,
+        )
+
+    for index in range(36):
+        uv_sphere(
+            f"streetPebble-{index}",
+            (rng.uniform(-14.6, -6.4), rng.uniform(-29, 36), 0.04),
+            rng.uniform(0.035, 0.11),
+            materials["limestone" if index % 3 else "mudbrick"],
+            scale=(1.2, 0.8, 0.32),
+            segments=8,
+        )
+
+    for index in range(24):
+        x = rng.uniform(-14.4, -6.6)
+        y = rng.uniform(-29, 36)
+        cylinder_between(
+            f"streetStraw-{index}",
+            (x, y, 0.045),
+            (x + rng.uniform(-0.35, 0.35), y + rng.uniform(-0.35, 0.35), 0.055),
+            rng.uniform(0.006, 0.012),
+            materials["dry_reed"],
+            5,
+        )
+
+    for index in range(8):
+        cube(
+            f"brokenPotteryShard-{index}",
+            (rng.uniform(-14.2, -6.8), rng.uniform(-26, 33), 0.055),
+            (rng.uniform(0.16, 0.35), rng.uniform(0.08, 0.22), 0.035),
+            materials["mudbrick"],
+            rot=(0, 0, rng.uniform(0, math.tau)),
+            bevel=0.01,
+        )
+
+
+def build_hero_street_corridor(materials: dict[str, bpy.types.Material]) -> None:
+    random.seed("hero-street-corridor")
+    left_center_x = -17.55
+    right_center_x = -3.25
+    depth = 5.2
+    cursor = -28.0
+    house_specs = [5.4, 6.2, 4.8, 6.8, 5.6, 7.1, 5.2, 6.4]
+
+    for index, frontage in enumerate(house_specs):
+        center_y = cursor + frontage * 0.5
+        left_height = 2.2 + (index % 4) * 0.28
+        right_height = 2.0 + ((index + 2) % 5) * 0.24
+        make_facade_house(
+            f"heroLeftHouse-{index}",
+            left_center_x + math.sin(index * 0.8) * 0.18,
+            center_y,
+            depth + (index % 3) * 0.28,
+            frontage,
+            left_height,
+            1,
+            materials,
+            index % 2 == 0,
+        )
+        make_facade_house(
+            f"heroRightHouse-{index}",
+            right_center_x + math.cos(index * 0.7) * 0.16,
+            center_y + (0.45 if index % 2 else -0.25),
+            depth + ((index + 1) % 3) * 0.22,
+            frontage * (0.92 + (index % 3) * 0.04),
+            right_height,
+            -1,
+            materials,
+            index % 3 != 1,
+        )
+        make_edge_props(f"heroLeftProps-{index}", left_center_x + depth * 0.5, center_y, 1, materials, index * 17 + 3)
+        make_edge_props(f"heroRightProps-{index}", right_center_x - depth * 0.5, center_y, -1, materials, index * 19 + 7)
+        cursor += frontage + 0.22
+
+    for index, y in enumerate([-18, -3.5, 15.5]):
+        cube(
+            f"crossStreetShadeCloth-{index}",
+            (-10.45, y, 3.08 + (index % 2) * 0.16),
+            (8.35, 5.2 + (index % 2) * 1.1, 0.052),
+            materials["linen"],
+            rot=(random.uniform(-0.035, 0.035), random.uniform(-0.04, 0.04), 0),
+            bevel=0.012,
+        )
+        cylinder_between(f"crossStreetRopeA-{index}", (-14.45, y - 2.25, 3.18), (-6.35, y - 2.0, 3.05), 0.014, materials["dry_reed"], 6)
+        cylinder_between(f"crossStreetRopeB-{index}", (-14.55, y + 2.2, 3.08), (-6.25, y + 2.1, 3.2), 0.014, materials["dry_reed"], 6)
+
+    cube("heroStreetDistantGateLeft", (-15.9, 35.8, 1.5), (3.0, 2.0, 3.0), materials["plaster"], bevel=0.035)
+    cube("heroStreetDistantGateRight", (-5.1, 35.8, 1.5), (3.0, 2.0, 3.0), materials["plaster"], bevel=0.035)
+    cube("heroStreetDistantLintel", (-10.5, 35.8, 3.0), (8.0, 1.9, 0.44), materials["plaster"], bevel=0.025)
+
+    add_hero_ground_details(materials)
+
+
 def build_residential_market_details(materials: dict[str, bpy.types.Material]) -> None:
     for index in range(14):
         x = -2.8 + (index % 7) * 0.92
@@ -598,6 +891,159 @@ def make_npc(name: str, loc: tuple[float, float, float], materials: dict[str, bp
     cylinder_between(f"{name}-rightLeg", (x + 0.1 * scale, y, z + 0.24 * scale), (x + 0.18 * scale, y - 0.1 * pose, z), 0.05 * scale, materials["skin"], 8)
 
 
+def empty(name: str, loc: tuple[float, float, float], parent: bpy.types.Object | None = None) -> bpy.types.Object:
+    obj = bpy.data.objects.new(name, None)
+    bpy.context.collection.objects.link(obj)
+    obj.empty_display_type = "PLAIN_AXES"
+    obj.empty_display_size = 0.18
+    obj.location = loc
+    if parent:
+        obj.parent = parent
+        obj.matrix_parent_inverse = parent.matrix_world.inverted()
+    return obj
+
+
+def parent_keep_world(obj: bpy.types.Object, parent: bpy.types.Object) -> None:
+    obj.parent = parent
+    obj.matrix_parent_inverse = parent.matrix_world.inverted()
+
+
+def key_rotation(obj: bpy.types.Object, frame: int, rot: tuple[float, float, float]) -> None:
+    obj.rotation_euler = rot
+    obj.keyframe_insert(data_path="rotation_euler", frame=frame)
+
+
+def key_location(obj: bpy.types.Object, frame: int, loc: tuple[float, float, float]) -> None:
+    obj.location = loc
+    obj.keyframe_insert(data_path="location", frame=frame)
+
+
+def make_articulated_limb(
+    name: str,
+    root: bpy.types.Object,
+    joint: tuple[float, float, float],
+    length: float,
+    radius: float,
+    material: bpy.types.Material,
+    vertices: int = 10,
+) -> bpy.types.Object:
+    pivot = empty(f"{name}-pivot", joint, root)
+    limb = cylinder(f"{name}-limb", (joint[0], joint[1], joint[2] - length * 0.5), radius, length, material, vertices, bevel=0.004)
+    parent_keep_world(limb, pivot)
+    return pivot
+
+
+def set_linear_animation(objects: list[bpy.types.Object]) -> None:
+    for obj in objects:
+        if not obj.animation_data or not obj.animation_data.action:
+            continue
+        for curve in obj.animation_data.action.fcurves:
+            for keyframe in curve.keyframe_points:
+                keyframe.interpolation = "LINEAR"
+
+
+def make_articulated_actor(
+    name: str,
+    loc: tuple[float, float, float],
+    materials: dict[str, bpy.types.Material],
+    scale: float,
+    yaw: float,
+    role: str,
+    phase: float,
+) -> None:
+    root = empty(name, loc)
+    root.rotation_euler = (0, 0, yaw)
+
+    x, y, z = loc
+    body_mat = materials["skin"]
+    linen_mat = materials["linen"]
+    hair_mat = materials["hair"]
+
+    torso = cylinder(f"{name}-torso", (x, y, z + 0.9 * scale), 0.18 * scale, 0.72 * scale, body_mat, 14, bevel=0.004)
+    parent_keep_world(torso, root)
+
+    if role == "carrier":
+        dress = cone(f"{name}-linenDress", (x, y, z + 0.55 * scale), 0.28 * scale, 0.22 * scale, 0.76 * scale, linen_mat, 16)
+        parent_keep_world(dress, root)
+    else:
+        kilt = cone(f"{name}-linenKilt", (x, y, z + 0.44 * scale), 0.28 * scale, 0.19 * scale, 0.42 * scale, linen_mat, 16)
+        parent_keep_world(kilt, root)
+
+    head = uv_sphere(f"{name}-head", (x, y, z + 1.36 * scale), 0.17 * scale, body_mat, scale=(0.95, 0.9, 1.08), segments=14)
+    parent_keep_world(head, root)
+
+    hair = cube(f"{name}-hair", (x, y - 0.025 * scale, z + 1.47 * scale), (0.3 * scale, 0.24 * scale, 0.18 * scale), hair_mat, bevel=0.025)
+    parent_keep_world(hair, root)
+
+    left_arm = make_articulated_limb(f"{name}-leftArm", root, (x - 0.22 * scale, y, z + 1.08 * scale), 0.58 * scale, 0.043 * scale, body_mat)
+    right_arm = make_articulated_limb(f"{name}-rightArm", root, (x + 0.22 * scale, y, z + 1.08 * scale), 0.58 * scale, 0.043 * scale, body_mat)
+    left_leg = make_articulated_limb(f"{name}-leftLeg", root, (x - 0.09 * scale, y, z + 0.38 * scale), 0.48 * scale, 0.052 * scale, body_mat)
+    right_leg = make_articulated_limb(f"{name}-rightLeg", root, (x + 0.09 * scale, y, z + 0.38 * scale), 0.48 * scale, 0.052 * scale, body_mat)
+
+    animated_objects = [root, left_arm, right_arm, left_leg, right_leg]
+
+    if role == "carrier":
+        jar_root = empty(f"{name}-headJarRoot", (x, y, z + 1.68 * scale), root)
+        jar = cone(f"{name}-headJar", (x, y, z + 1.82 * scale), 0.17 * scale, 0.11 * scale, 0.32 * scale, materials["mudbrick"], 16, bevel=0.004)
+        parent_keep_world(jar, jar_root)
+        animated_objects.append(jar_root)
+    else:
+        jar_root = None
+
+    if role == "worker":
+        block = cube(f"{name}-workBlock", (x + 0.44 * scale, y + 0.36 * scale, z + 0.34 * scale), (0.58 * scale, 0.44 * scale, 0.28 * scale), materials["limestone"], bevel=0.015)
+        parent_keep_world(block, root)
+        tool = cylinder(f"{name}-woodTool", (x + 0.32 * scale, y + 0.17 * scale, z + 0.82 * scale), 0.025 * scale, 0.46 * scale, materials["wood"], 8, rot=(math.radians(64), 0, 0))
+        parent_keep_world(tool, right_arm)
+
+    loop_frames = [1, 17, 33, 49, 65, 81, 97]
+    root_base = loc
+    for frame in loop_frames:
+        t = (frame - 1) / 96 * math.tau + phase
+        stride = math.sin(t)
+        counter = math.sin(t + math.pi)
+        bob = abs(stride) * 0.025 * scale
+        key_location(root, frame, (root_base[0], root_base[1], root_base[2] + bob))
+
+        if role == "worker":
+            key_rotation(left_arm, frame, (math.radians(18), 0, math.radians(-10)))
+            key_rotation(right_arm, frame, (math.radians(-72 + stride * 34), 0, math.radians(12)))
+            key_rotation(left_leg, frame, (math.radians(5), 0, 0))
+            key_rotation(right_leg, frame, (math.radians(-4), 0, 0))
+        elif role == "idle":
+            key_rotation(left_arm, frame, (math.radians(8 + stride * 7), 0, math.radians(-4)))
+            key_rotation(right_arm, frame, (math.radians(-4 + counter * 7), 0, math.radians(4)))
+            key_rotation(left_leg, frame, (math.radians(1), 0, 0))
+            key_rotation(right_leg, frame, (math.radians(-1), 0, 0))
+        elif role == "carrier":
+            key_rotation(left_arm, frame, (math.radians(-78 + stride * 5), 0, math.radians(-19)))
+            key_rotation(right_arm, frame, (math.radians(-78 + counter * 5), 0, math.radians(19)))
+            key_rotation(left_leg, frame, (stride * 0.34, 0, 0))
+            key_rotation(right_leg, frame, (counter * 0.34, 0, 0))
+            if jar_root:
+                key_rotation(jar_root, frame, (0, 0, math.radians(stride * 1.8)))
+        else:
+            key_rotation(left_arm, frame, (stride * 0.46, 0, math.radians(-4)))
+            key_rotation(right_arm, frame, (counter * 0.46, 0, math.radians(4)))
+            key_rotation(left_leg, frame, (counter * 0.44, 0, 0))
+            key_rotation(right_leg, frame, (stride * 0.44, 0, 0))
+
+    set_linear_animation(animated_objects)
+
+
+def build_animated_street_actors(materials: dict[str, bpy.types.Material]) -> None:
+    bpy.context.scene.frame_start = 1
+    bpy.context.scene.frame_end = 97
+    bpy.context.scene.render.fps = 24
+
+    make_articulated_actor("actorCarrierNorth", (-11.75, -16.5, 0.05), materials, 0.98, 0, "carrier", 0.2)
+    make_articulated_actor("actorCarrierSouth", (-9.65, -20.5, 0.05), materials, 0.94, 0, "carrier", 2.4)
+    make_articulated_actor("actorMarketWalker", (-12.45, 2.4, 0.05), materials, 1.0, math.radians(8), "walker", 1.1)
+    make_articulated_actor("actorDoorwayIdle", (-7.45, 10.2, 0.05), materials, 0.96, math.radians(-82), "idle", 3.0)
+    make_articulated_actor("actorStoneWorker", (-7.65, -1.5, 0.05), materials, 1.02, math.radians(-72), "worker", 0.6)
+    make_articulated_actor("actorStreetWalkerFar", (-11.0, 20.5, 0.05), materials, 0.9, math.radians(-5), "walker", 4.1)
+
+
 def build_street_npc_placeholders(materials: dict[str, bpy.types.Material]) -> None:
     for index in range(7):
         make_npc(
@@ -614,8 +1060,10 @@ BUILDERS = {
     "nile-boat-large": build_nile_boat_large,
     "date-palm-cluster": build_date_palm_cluster,
     "reed-bank-cluster": build_reed_bank_cluster,
+    "hero-street-corridor": build_hero_street_corridor,
     "mudbrick-house-cluster": build_mudbrick_house_cluster,
     "residential-market-details": build_residential_market_details,
+    "animated-street-actors": build_animated_street_actors,
     "street-npc-placeholders": build_street_npc_placeholders,
 }
 
@@ -623,7 +1071,8 @@ BUILDERS = {
 def export_asset(asset: dict[str, object]) -> None:
     reset_scene()
     materials = create_materials()
-    BUILDERS[str(asset["id"])](materials)
+    asset_id = str(asset["id"])
+    BUILDERS[asset_id](materials)
     bpy.ops.object.select_all(action="SELECT")
     bpy.ops.export_scene.gltf(
         filepath=str(OUT_DIR / str(asset["fileName"])),
@@ -631,7 +1080,36 @@ def export_asset(asset: dict[str, object]) -> None:
         use_selection=True,
         export_apply=True,
         export_yup=True,
+        export_animations=True,
+        export_frame_range=True,
+        export_force_sampling=True,
     )
+
+
+def optimize_scene_for_export(asset_id: str) -> None:
+    meshes = [obj for obj in bpy.context.scene.objects if obj.type == "MESH"]
+
+    if not meshes:
+        return
+
+    bpy.ops.object.select_all(action="DESELECT")
+    for obj in meshes:
+        obj.select_set(True)
+
+    bpy.context.view_layer.objects.active = meshes[0]
+    bpy.ops.object.convert(target="MESH")
+
+    meshes = [obj for obj in bpy.context.scene.objects if obj.type == "MESH"]
+    if len(meshes) <= 1:
+        return
+
+    bpy.ops.object.select_all(action="DESELECT")
+    for obj in meshes:
+        obj.select_set(True)
+
+    bpy.context.view_layer.objects.active = meshes[0]
+    bpy.ops.object.join()
+    bpy.context.object.name = f"{asset_id}-merged"
 
 
 def write_manifest() -> None:

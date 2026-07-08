@@ -24,7 +24,11 @@ const textureAssets = [
   writeJpeg("woven-linen.jpg", createLinenTexture(textureSize, textureSize), 88),
   writeJpeg("nile-water.jpg", createWaterTexture(textureSize, textureSize), 86),
   writeJpeg("acacia-wood.jpg", createWoodTexture(textureSize, textureSize), 86),
-  writeJpeg("worn-copper.jpg", createCopperTexture(textureSize, textureSize), 88)
+  writeJpeg("worn-copper.jpg", createCopperTexture(textureSize, textureSize), 88),
+  writeJpeg("hero-street-ground.jpg", createHeroStreetGroundTexture(textureSize, textureSize), 88),
+  writeJpeg("hero-street-normal.jpg", createHeroStreetNormalTexture(textureSize, textureSize), 90),
+  writeJpeg("hero-street-roughness.jpg", createHeroStreetRoughnessTexture(textureSize, textureSize), 88),
+  writeJpeg("hero-street-ao.jpg", createHeroStreetAoTexture(textureSize, textureSize), 88)
 ];
 
 const audioAssets = [
@@ -78,6 +82,113 @@ function createSandTexture(width, height) {
 
   addSpeckles(image, 2400, "#7c5c35", 0.22, 17);
   addSpeckles(image, 1800, "#fff0bd", 0.16, 31);
+  return image;
+}
+
+function createHeroStreetGroundTexture(width, height) {
+  const image = createImage(width, height, "#b98755");
+  const random = seededRandom(1203);
+
+  forEachPixel(image, (x, y) => {
+    const n = layeredNoise(x, y, 1203, [
+      [0.006, 30],
+      [0.026, 18],
+      [0.085, 8]
+    ]);
+    const wornCenter = 1 - Math.abs(x / width - 0.5) * 1.65;
+    const track = Math.max(0, wornCenter) * 14;
+    const ripple = Math.sin(y * 0.024 + n * 0.05) * 5;
+    return mixHex("#7b5232", "#dfbd83", clamp01(0.48 + (n + ripple + track) / 92));
+  });
+
+  for (let index = 0; index < 78; index += 1) {
+    drawSoftEllipse(
+      image,
+      random() * width,
+      random() * height,
+      8 + random() * 7,
+      18 + random() * 11,
+      "#6f482d",
+      0.22,
+      random() * Math.PI
+    );
+  }
+
+  for (let index = 0; index < 46; index += 1) {
+    const x = random() * width;
+    const y = random() * height;
+    drawLine(image, x, y, x + (random() - 0.5) * 80, y + (random() - 0.5) * 32, "#d5bd7e");
+  }
+
+  addSpeckles(image, 4600, "#5f3e28", 0.18, 1207);
+  addSpeckles(image, 2600, "#e8cd96", 0.16, 1209);
+  addHairlineCracks(image, 18, "#5b3c26", 0.18, 1211);
+  return image;
+}
+
+function createHeroStreetNormalTexture(width, height) {
+  const image = createImage(width, height, "#8080ff");
+
+  forEachPixel(image, (x, y) => {
+    const dx = layeredNoise(x + 3, y, 1301, [
+      [0.012, 22],
+      [0.07, 10],
+      [0.18, 4]
+    ]) - layeredNoise(x - 3, y, 1301, [
+      [0.012, 22],
+      [0.07, 10],
+      [0.18, 4]
+    ]);
+    const dy = layeredNoise(x, y + 3, 1301, [
+      [0.012, 22],
+      [0.07, 10],
+      [0.18, 4]
+    ]) - layeredNoise(x, y - 3, 1301, [
+      [0.012, 22],
+      [0.07, 10],
+      [0.18, 4]
+    ]);
+
+    return {
+      r: Math.round(clamp01(0.5 + dx / 110) * 255),
+      g: Math.round(clamp01(0.5 + dy / 110) * 255),
+      b: 240,
+      a: 255
+    };
+  });
+
+  return image;
+}
+
+function createHeroStreetRoughnessTexture(width, height) {
+  const image = createImage(width, height, "#d8d8d8");
+
+  forEachPixel(image, (x, y) => {
+    const n = layeredNoise(x, y, 1401, [
+      [0.01, 22],
+      [0.06, 9],
+      [0.18, 4]
+    ]);
+    const value = Math.round(clamp01(0.78 + n / 120) * 255);
+    return { r: value, g: value, b: value, a: 255 };
+  });
+
+  return image;
+}
+
+function createHeroStreetAoTexture(width, height) {
+  const image = createImage(width, height, "#e6e6e6");
+
+  forEachPixel(image, (x, y) => {
+    const edgeShade = Math.abs(x / width - 0.5) * 0.46;
+    const n = layeredNoise(x, y, 1501, [
+      [0.009, 18],
+      [0.04, 8]
+    ]);
+    const value = Math.round(clamp01(0.88 - edgeShade + n / 130) * 255);
+    return { r: value, g: value, b: value, a: 255 };
+  });
+
   return image;
 }
 
@@ -391,7 +502,11 @@ function createProvenanceManifest() {
     "woven-linen.jpg",
     "nile-water.jpg",
     "acacia-wood.jpg",
-    "worn-copper.jpg"
+    "worn-copper.jpg",
+    "hero-street-ground.jpg",
+    "hero-street-normal.jpg",
+    "hero-street-roughness.jpg",
+    "hero-street-ao.jpg"
   ];
   const audioNames = [
     "nile-water-boats.wav",
@@ -458,6 +573,28 @@ function drawLine(image, x0, y0, x1, y1, color) {
   for (let step = 0; step <= steps; step += 1) {
     const t = step / Math.max(1, steps);
     setPixel(image, x0 + (x1 - x0) * t, y0 + (y1 - y0) * t, color);
+  }
+}
+
+function drawSoftEllipse(image, centerX, centerY, radiusX, radiusY, color, opacity, rotation) {
+  const parsed = parseHex(color);
+  const cos = Math.cos(rotation);
+  const sin = Math.sin(rotation);
+  const extent = Math.ceil(Math.max(radiusX, radiusY));
+
+  for (let y = Math.floor(centerY - extent); y <= centerY + extent; y += 1) {
+    for (let x = Math.floor(centerX - extent); x <= centerX + extent; x += 1) {
+      const dx = x - centerX;
+      const dy = y - centerY;
+      const rx = dx * cos - dy * sin;
+      const ry = dx * sin + dy * cos;
+      const distance = (rx / radiusX) ** 2 + (ry / radiusY) ** 2;
+
+      if (distance <= 1) {
+        const edge = 1 - Math.min(1, distance);
+        setPixel(image, x, y, mixColor(getPixel(image, x, y), parsed, opacity * edge));
+      }
+    }
   }
 }
 

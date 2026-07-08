@@ -123,6 +123,54 @@
         "smithsonian-open-access"
       ],
       "licenseStatus": "Project-generated synthetic texture; safe for runtime use by this project."
+    },
+    {
+      "file": "/assets/generated/textures/hero-street-ground.jpg",
+      "origin": "generated",
+      "sourceIds": [],
+      "referenceSourceIds": [
+        "met-open-access",
+        "met-old-kingdom-cattle-relief",
+        "cleveland-open-access",
+        "smithsonian-open-access"
+      ],
+      "licenseStatus": "Project-generated synthetic texture; safe for runtime use by this project."
+    },
+    {
+      "file": "/assets/generated/textures/hero-street-normal.jpg",
+      "origin": "generated",
+      "sourceIds": [],
+      "referenceSourceIds": [
+        "met-open-access",
+        "met-old-kingdom-cattle-relief",
+        "cleveland-open-access",
+        "smithsonian-open-access"
+      ],
+      "licenseStatus": "Project-generated synthetic texture; safe for runtime use by this project."
+    },
+    {
+      "file": "/assets/generated/textures/hero-street-roughness.jpg",
+      "origin": "generated",
+      "sourceIds": [],
+      "referenceSourceIds": [
+        "met-open-access",
+        "met-old-kingdom-cattle-relief",
+        "cleveland-open-access",
+        "smithsonian-open-access"
+      ],
+      "licenseStatus": "Project-generated synthetic texture; safe for runtime use by this project."
+    },
+    {
+      "file": "/assets/generated/textures/hero-street-ao.jpg",
+      "origin": "generated",
+      "sourceIds": [],
+      "referenceSourceIds": [
+        "met-open-access",
+        "met-old-kingdom-cattle-relief",
+        "cleveland-open-access",
+        "smithsonian-open-access"
+      ],
+      "licenseStatus": "Project-generated synthetic texture; safe for runtime use by this project."
     }
   ],
   "audio": [
