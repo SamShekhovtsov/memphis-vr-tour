@@ -1,0 +1,67 @@
+{
+  "$schema": "../scene-data/runtime-assets.schema.json",
+  "tourId": "memphis-white-walls-early-kingdom",
+  "checkedDate": "2026-07-07",
+  "assets": [
+    {
+      "id": "procedural-nile-landing",
+      "label": "Procedural Nile landing and quay props",
+      "assetType": "geometry",
+      "origin": "procedural",
+      "evidenceLevel": "inferred",
+      "runtimeAllowed": true,
+      "sourceIds": [],
+      "referenceSourceIds": ["unesco-memphis-necropolis", "natural-earth", "openstreetmap"],
+      "licenseStatus": "Project-authored procedural geometry; no source media copied.",
+      "notes": [
+        "Used for browser runtime.",
+        "Reference sources guide broad placement only."
+      ]
+    },
+    {
+      "id": "procedural-kom-el-fakhry-street",
+      "label": "Procedural mudbrick street and courtyard cluster",
+      "assetType": "geometry",
+      "origin": "procedural",
+      "evidenceLevel": "inferred",
+      "runtimeAllowed": true,
+      "sourceIds": [],
+      "referenceSourceIds": ["aera-memphis", "sfar-kom-el-fakhry", "petrie-memphis-i"],
+      "licenseStatus": "Project-authored procedural geometry; no protected source media copied.",
+      "notes": [
+        "Mudbrick volumes, jars, bins, and awnings are authored primitives.",
+        "Restricted references are used only for human research direction."
+      ]
+    },
+    {
+      "id": "procedural-ptah-precinct-exterior",
+      "label": "Procedural early Ptah precinct exterior",
+      "assetType": "geometry",
+      "origin": "procedural",
+      "evidenceLevel": "inferred",
+      "runtimeAllowed": true,
+      "sourceIds": [],
+      "referenceSourceIds": ["british-museum-ptah-temple-term", "mota-ptah-blocks", "aera-memphis"],
+      "licenseStatus": "Project-authored procedural geometry; no protected source media copied.",
+      "notes": [
+        "Walled approach and gate proportions are route design choices.",
+        "Later-period Ptah evidence is treated as context, not a direct Old Kingdom plan."
+      ]
+    },
+    {
+      "id": "procedural-painted-shrine-surfaces",
+      "label": "Procedural painted shrine surfaces",
+      "assetType": "material",
+      "origin": "procedural",
+      "evidenceLevel": "speculative",
+      "runtimeAllowed": true,
+      "sourceIds": [],
+      "referenceSourceIds": ["met-open-access", "met-old-kingdom-cattle-relief", "cleveland-open-access", "smithsonian-open-access"],
+      "licenseStatus": "Project-authored material colors and simple motifs; no museum media copied.",
+      "notes": [
+        "Future source-derived textures must use sourceIds and item-level licenses.",
+        "For now, motifs remain decorative and non-textual."
+      ]
+    }
+  ]
+}

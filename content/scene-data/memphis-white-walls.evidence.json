@@ -1,0 +1,169 @@
+{
+  "$schema": "./evidence.schema.json",
+  "tourId": "memphis-white-walls-early-kingdom",
+  "checkedDate": "2026-07-07",
+  "records": [
+    {
+      "stopId": "nile-arrival",
+      "evidenceLevel": "inferred",
+      "claims": [
+        {
+          "claim": "The arrival is placed in the Nile-side Memphis landscape around Mit Rahina, but the exact ancient branch, landing, and quay composition are not fixed by the current MVP sources.",
+          "sourceIds": ["unesco-memphis-necropolis", "natural-earth"],
+          "confidence": "medium",
+          "useType": "human-reference"
+        },
+        {
+          "claim": "Modern geospatial sources can help orient the user near Memphis/Mit Rahina, while the ancient water edge remains a historically plausible reconstruction.",
+          "sourceIds": ["natural-earth", "openstreetmap"],
+          "confidence": "medium",
+          "useType": "human-reference"
+        }
+      ],
+      "reconstructionNotes": [
+        "Boats, reeds, mooring posts, storage jars, and the first-person staging are authored procedural scene elements.",
+        "No modern satellite imagery, tourist video frames, or protected site media are used as runtime assets."
+      ],
+      "reviewNotes": [
+        "Later research should separate ancient Nile/canal hypotheses from modern map orientation."
+      ]
+    },
+    {
+      "stopId": "white-walls-threshold",
+      "evidenceLevel": "inferred",
+      "claims": [
+        {
+          "claim": "The threshold represents the White Walls identity of early Memphis as a city-edge moment, not a surveyed early wall alignment.",
+          "sourceIds": ["unesco-memphis-necropolis", "aera-memphis"],
+          "confidence": "medium",
+          "useType": "human-reference"
+        },
+        {
+          "claim": "Early Memphis excavation reports remain useful context for topography and material culture, but they do not give this browser MVP an exact Early Dynastic gate plan.",
+          "sourceIds": ["petrie-memphis-i", "petrie-memphis-iii"],
+          "confidence": "medium",
+          "useType": "human-reference"
+        }
+      ],
+      "reconstructionNotes": [
+        "The white-plastered mudbrick edge is a symbolic and cinematic transition into the city district.",
+        "Wall height, finish, and street approach are tuned for a readable 2 to 5 minute walkthrough."
+      ],
+      "reviewNotes": [
+        "Ask an Egyptologist to review terminology and whether this stop should be named threshold, wall edge, or district entrance."
+      ]
+    },
+    {
+      "stopId": "kom-el-fakhry-street",
+      "evidenceLevel": "inferred",
+      "claims": [
+        {
+          "claim": "Kom el-Fakhry / Mit Rahina is the selected living-city anchor because it is a documented mound within ancient Memphis and central to current settlement-focused research.",
+          "sourceIds": ["aera-memphis", "sfar-kom-el-fakhry", "lockwood-jarce-mkap-2023"],
+          "confidence": "medium",
+          "useType": "human-reference"
+        },
+        {
+          "claim": "The narrow lane, mudbrick houses, courtyards, bins, jars, and shade cloth are inferred from Memphite settlement evidence and comparable Egyptian domestic material culture.",
+          "sourceIds": ["aera-memphis", "sfar-kom-el-fakhry", "petrie-memphis-i"],
+          "confidence": "medium",
+          "useType": "human-reference"
+        }
+      ],
+      "reconstructionNotes": [
+        "The exact street alignment, building footprints, house interiors, and daily routines are composed for the guided route.",
+        "A future research pass should decide which features are specifically Old Kingdom and which are broader Memphite comparators."
+      ],
+      "reviewNotes": [
+        "Do not train on AERA/SFAR photos or PDFs without written permission or a compatible license."
+      ]
+    },
+    {
+      "stopId": "craft-area",
+      "evidenceLevel": "inferred",
+      "claims": [
+        {
+          "claim": "The craft focus is tied to Memphis, Ptah, and temple-economy associations, but the exact workshop placement in this compact route is reconstructed.",
+          "sourceIds": ["british-museum-ptah-temple-term", "aera-memphis"],
+          "confidence": "medium",
+          "useType": "human-reference"
+        },
+        {
+          "claim": "CC0 and public-domain museum objects can safely inform tools, clothing, animal handling, relief style, and craft props for future generated assets.",
+          "sourceIds": ["met-open-access", "met-old-kingdom-cattle-relief", "cleveland-open-access"],
+          "confidence": "high",
+          "useType": "dataset-ok"
+        }
+      ],
+      "reconstructionNotes": [
+        "Pottery, basketry, stone dressing, awnings, and NPC labor loops are project-authored procedural content.",
+        "The scene should keep source-derived visual study limited to CC0, public-domain, owned, commissioned, or explicitly permitted references."
+      ],
+      "reviewNotes": [
+        "A later asset pass should create a per-object provenance sheet before downloading museum media."
+      ]
+    },
+    {
+      "stopId": "temple-exterior",
+      "evidenceLevel": "inferred",
+      "claims": [
+        {
+          "claim": "The temple endpoint is anchored to the Great Temple of Ptah / Hwt-Ka-Ptah at Memphis, near the Mit Rahina ruin field.",
+          "sourceIds": ["british-museum-ptah-temple-term", "unesco-memphis-necropolis"],
+          "confidence": "high",
+          "useType": "human-reference"
+        },
+        {
+          "claim": "Official reports of Ptah temple blocks support the long sacred importance of the precinct, but the cited blocks are later material and do not define an Old Kingdom exterior plan.",
+          "sourceIds": ["mota-ptah-blocks"],
+          "confidence": "medium",
+          "useType": "human-reference"
+        },
+        {
+          "claim": "The walled axial approach is an inferred architectural endpoint for the MVP route rather than a direct copy of a preserved Early Dynastic or Old Kingdom temple facade.",
+          "sourceIds": ["aera-memphis", "petrie-memphis-i"],
+          "confidence": "medium",
+          "useType": "human-reference"
+        }
+      ],
+      "reconstructionNotes": [
+        "The precinct wall, forecourt proportions, gate, banners, and processional pacing are authored for legibility and atmosphere.",
+        "Protected images from official or museum pages are not bundled into the runtime."
+      ],
+      "reviewNotes": [
+        "The next research pass should separate early Ptah evidence from later Ramesside and Late Period remains."
+      ]
+    },
+    {
+      "stopId": "painted-interior",
+      "evidenceLevel": "speculative",
+      "claims": [
+        {
+          "claim": "Open collection material can inform painted relief color language, clothing, tools, animals, and ritual visual vocabulary, but it should not be treated as a site-specific Memphis wall program.",
+          "sourceIds": ["met-open-access", "met-old-kingdom-cattle-relief", "cleveland-open-access", "smithsonian-open-access"],
+          "confidence": "medium",
+          "useType": "dataset-ok"
+        },
+        {
+          "claim": "The exact early Ptah inner shrine layout and iconography are not preserved for this MVP, so the interior climax remains speculative.",
+          "sourceIds": ["british-museum-ptah-temple-term", "mota-ptah-blocks", "aera-memphis"],
+          "confidence": "low",
+          "useType": "human-reference"
+        },
+        {
+          "claim": "Any Egyptian-language inscriptions or audio should be generated through a corpus/reference layer and later expert review, not by asking a general language model to invent ancient Egyptian.",
+          "sourceIds": ["tla-website", "tla-earlier-egyptian-hf"],
+          "confidence": "high",
+          "useType": "human-reference"
+        }
+      ],
+      "reconstructionNotes": [
+        "Painted walls, incense, ritual objects, filtered light, and priestly ambience are cinematic reconstruction.",
+        "For the browser MVP, wall markings should remain decorative unless the text is verified and sourced."
+      ],
+      "reviewNotes": [
+        "Before final art production, create a separate iconography brief and language review checklist."
+      ]
+    }
+  ]
+}

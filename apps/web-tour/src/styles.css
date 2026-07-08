@@ -46,6 +46,7 @@ button {
 
 .status-panel,
 .legend,
+.evidence-detail,
 .error-panel {
   border: 1px solid rgba(255, 244, 216, 0.18);
   background: rgba(22, 21, 18, 0.76);
@@ -183,6 +184,84 @@ button {
   display: none;
 }
 
+.evidence-detail {
+  max-height: min(42vh, 390px);
+  display: grid;
+  gap: 12px;
+  overflow: auto;
+  padding: 13px 14px;
+  border-radius: 8px;
+  color: #f7f1e3;
+  pointer-events: auto;
+  scrollbar-color: rgba(158, 200, 202, 0.6) rgba(255, 255, 255, 0.08);
+}
+
+.evidence-detail[hidden] {
+  display: none;
+}
+
+.evidence-detail__header {
+  display: grid;
+  gap: 4px;
+}
+
+.evidence-detail__header span,
+.evidence-detail__group > span {
+  color: #9ec8ca;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+.evidence-detail__header strong {
+  color: #ffffff;
+  font-size: 1rem;
+  line-height: 1.2;
+}
+
+.evidence-detail p {
+  margin: 0;
+  color: #e8ddc8;
+  font-size: 0.84rem;
+  line-height: 1.45;
+}
+
+.evidence-detail__group {
+  display: grid;
+  gap: 7px;
+}
+
+.evidence-detail ul {
+  display: grid;
+  gap: 7px;
+  margin: 0;
+  padding-left: 18px;
+}
+
+.evidence-detail li {
+  color: #efe4cf;
+  font-size: 0.82rem;
+  line-height: 1.42;
+}
+
+.evidence-detail li small {
+  display: block;
+  margin-top: 3px;
+  color: #b9c5bd;
+  font-size: 0.72rem;
+}
+
+.evidence-detail a {
+  color: #b7e4e6;
+  text-decoration-color: rgba(183, 228, 230, 0.45);
+  text-underline-offset: 3px;
+}
+
+.evidence-detail a:hover {
+  color: #ffffff;
+}
+
 .dot {
   width: 9px;
   height: 9px;
@@ -238,5 +317,10 @@ button {
   .toolbar button {
     min-height: 40px;
     padding-inline: 10px;
+  }
+
+  .evidence-detail {
+    max-height: 38vh;
+    padding: 12px;
   }
 }

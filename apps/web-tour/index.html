@@ -49,6 +49,29 @@
         <span><b class="dot inferred"></b>Inferred</span>
         <span><b class="dot speculative"></b>Speculative</span>
       </section>
+
+      <section id="evidenceDetail" class="evidence-detail" aria-live="polite" hidden>
+        <div class="evidence-detail__header">
+          <span id="evidenceDetailLevel">Inferred</span>
+          <strong id="evidenceDetailTitle">Evidence</strong>
+        </div>
+        <p id="evidenceDetailDescription"></p>
+
+        <div class="evidence-detail__group">
+          <span>Supported by</span>
+          <ul id="evidenceClaims"></ul>
+        </div>
+
+        <div class="evidence-detail__group">
+          <span>Reconstruction</span>
+          <ul id="reconstructionNotes"></ul>
+        </div>
+
+        <div class="evidence-detail__group">
+          <span>Sources</span>
+          <ul id="evidenceSources"></ul>
+        </div>
+      </section>
     </main>
 
     <aside id="errorPanel" class="error-panel" role="alert" hidden></aside>

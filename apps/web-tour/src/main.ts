@@ -1,13 +1,27 @@
 import { Engine } from "@babylonjs/core";
 import "@babylonjs/loaders";
 import { createIcons, icons } from "lucide";
-import type { EvidenceLevel, TourManifest, TourStop } from "@egyptvr/shared-scene";
-import { evidenceColors, evidenceLabels } from "@egyptvr/shared-scene";
+import type {
+  EvidenceLevel,
+  EvidenceManifest,
+  EvidenceRecord,
+  SourceRegister,
+  SourceRegisterSource,
+  TourManifest,
+  TourStop
+} from "@egyptvr/shared-scene";
+import { evidenceColors, evidenceDescriptions, evidenceLabels } from "@egyptvr/shared-scene";
+import evidenceData from "../../../content/scene-data/memphis-white-walls.evidence.json";
 import tourData from "../../../content/scene-data/memphis-white-walls.tour.json";
+import sourceRegisterData from "../../../content/source-references/memphis-source-register.json";
 import { createMemphisWhiteWallsScene } from "./scene/MemphisWhiteWallsScene";
 import "./styles.css";
 
 const manifest = tourData as unknown as TourManifest;
+const evidenceManifest = evidenceData as unknown as EvidenceManifest;
+const sourceRegister = sourceRegisterData as unknown as SourceRegister;
+const evidenceByStopId = new Map(evidenceManifest.records.map((record) => [record.stopId, record]));
+const sourcesById = new Map(sourceRegister.sources.map((source) => [source.id, source]));
 
 const canvas = getElement<HTMLCanvasElement>("#renderCanvas");
 const errorPanel = getElement<HTMLElement>("#errorPanel");
@@ -21,6 +35,16 @@ const toggleEvidence = document.querySelector<HTMLButtonElement>("#toggleEvidenc
 const toggleNarrator = document.querySelector<HTMLButtonElement>("#toggleNarrator");
 const enterVr = document.querySelector<HTMLButtonElement>("#enterVr");
 const evidenceLegend = document.querySelector<HTMLElement>("#evidenceLegend");
+const evidenceDetail = getElement<HTMLElement>("#evidenceDetail");
+const evidenceDetailLevel = getElement<HTMLElement>("#evidenceDetailLevel");
+const evidenceDetailTitle = getElement<HTMLElement>("#evidenceDetailTitle");
+const evidenceDetailDescription = getElement<HTMLElement>("#evidenceDetailDescription");
+const evidenceClaims = getElement<HTMLUListElement>("#evidenceClaims");
+const reconstructionNotes = getElement<HTMLUListElement>("#reconstructionNotes");
+const evidenceSources = getElement<HTMLUListElement>("#evidenceSources");
+
+let currentStop = manifest.stops[0];
+let evidenceModeVisible = false;
 
 function getElement<TElement extends Element>(selector: string): TElement {
   const element = document.querySelector<TElement>(selector);
@@ -34,6 +58,7 @@ function getElement<TElement extends Element>(selector: string): TElement {
 
 createIcons({ icons });
 periodLabel.textContent = manifest.period;
+evidenceDetail.hidden = true;
 
 function showError(message: string): void {
   errorPanel.textContent = message;
@@ -57,6 +82,82 @@ function updateStop(stop: TourStop): void {
   evidencePill.style.setProperty("--evidence-color", evidenceColors[stop.evidenceLevel]);
 }
 
+function updateEvidenceDetail(stop: TourStop): void {
+  const record = evidenceByStopId.get(stop.id);
+
+  evidenceDetailTitle.textContent = stop.title;
+  evidenceDetailLevel.textContent = evidenceLabels[record?.evidenceLevel ?? stop.evidenceLevel];
+  evidenceDetailLevel.style.setProperty("--evidence-color", evidenceColors[record?.evidenceLevel ?? stop.evidenceLevel]);
+  evidenceDetailDescription.textContent = evidenceDescriptions[record?.evidenceLevel ?? stop.evidenceLevel];
+
+  evidenceClaims.replaceChildren();
+  reconstructionNotes.replaceChildren();
+  evidenceSources.replaceChildren();
+
+  if (!record) {
+    appendPlainListItem(evidenceClaims, "No evidence record is available for this stop yet.");
+    appendPlainListItem(reconstructionNotes, "Treat this stop as unreconciled until content validation is updated.");
+    return;
+  }
+
+  for (const claim of record.claims) {
+    const item = document.createElement("li");
+    const text = document.createElement("span");
+    const meta = document.createElement("small");
+
+    text.textContent = claim.claim;
+    meta.textContent = `${capitalize(claim.confidence)} confidence - ${formatUseType(claim.useType)}`;
+    item.append(text, meta);
+    evidenceClaims.append(item);
+  }
+
+  for (const note of record.reconstructionNotes) {
+    appendPlainListItem(reconstructionNotes, note);
+  }
+
+  for (const source of getClaimSources(record)) {
+    const item = document.createElement("li");
+    const link = document.createElement("a");
+    const meta = document.createElement("small");
+
+    link.href = source.url;
+    link.target = "_blank";
+    link.rel = "noreferrer";
+    link.textContent = source.title;
+    meta.textContent = source.licenseStatus;
+    item.append(link, meta);
+    evidenceSources.append(item);
+  }
+}
+
+function appendPlainListItem(list: HTMLUListElement, value: string): void {
+  const item = document.createElement("li");
+  item.textContent = value;
+  list.append(item);
+}
+
+function getClaimSources(record: EvidenceRecord): SourceRegisterSource[] {
+  const sourceIds = new Set(record.claims.flatMap((claim) => claim.sourceIds));
+  const sources: SourceRegisterSource[] = [];
+
+  for (const sourceId of sourceIds) {
+    const source = sourcesById.get(sourceId);
+    if (source) {
+      sources.push(source);
+    }
+  }
+
+  return sources;
+}
+
+function capitalize(value: string): string {
+  return value.charAt(0).toUpperCase() + value.slice(1);
+}
+
+function formatUseType(value: string): string {
+  return value.replaceAll("-", " ");
+}
+
 async function boot(): Promise<void> {
   const engine = new Engine(canvas, true, {
     adaptToDeviceRatio: true,
@@ -68,10 +169,13 @@ async function boot(): Promise<void> {
   const controller = await createMemphisWhiteWallsScene(engine, canvas, manifest);
 
   controller.onStopChanged((stop) => {
+    currentStop = stop;
     updateStop(stop);
+    updateEvidenceDetail(stop);
   });
 
-  updateStop(manifest.stops[0]);
+  updateStop(currentStop);
+  updateEvidenceDetail(currentStop);
 
   playTour?.addEventListener("click", () => {
     const isPlaying = controller.toggleAutoplay();
@@ -81,6 +185,9 @@ async function boot(): Promise<void> {
 
   resetTour?.addEventListener("click", () => {
     controller.resetTour();
+    currentStop = manifest.stops[0];
+    updateStop(currentStop);
+    updateEvidenceDetail(currentStop);
     if (playTour) {
       playTour.querySelector("span")!.textContent = "Play route";
     }
@@ -89,10 +196,13 @@ async function boot(): Promise<void> {
 
   toggleEvidence?.addEventListener("click", () => {
     const isVisible = controller.toggleEvidence();
+    evidenceModeVisible = isVisible;
     setButtonPressed(toggleEvidence, isVisible);
     if (evidenceLegend) {
       evidenceLegend.hidden = !isVisible;
     }
+    evidenceDetail.hidden = !evidenceModeVisible;
+    updateEvidenceDetail(currentStop);
   });
 
   toggleNarrator?.addEventListener("click", () => {

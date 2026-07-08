@@ -14,7 +14,9 @@
 
 # Generated asset workspaces.
 **/content/generated/
-**/content/processed/
+**/content/processed/*
+!**/content/processed/
+!**/content/processed/runtime-assets.manifest.json
 
 # Unreal generated folders.
 **/engines/unreal/Binaries/

@@ -1,0 +1,322 @@
+import { readFile } from "node:fs/promises";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
+
+const rootDir = path.resolve(fileURLToPath(new URL("..", import.meta.url)));
+
+const paths = {
+  evidence: path.join(rootDir, "content", "scene-data", "memphis-white-walls.evidence.json"),
+  runtimeAssets: path.join(rootDir, "content", "processed", "runtime-assets.manifest.json"),
+  sourceRegister: path.join(rootDir, "content", "source-references", "memphis-source-register.json"),
+  tour: path.join(rootDir, "content", "scene-data", "memphis-white-walls.tour.json")
+};
+
+const evidenceLevels = new Set(["confirmed", "inferred", "speculative"]);
+const confidenceLevels = new Set(["high", "medium", "low"]);
+const sourceUseClasses = new Set([
+  "dataset-ok",
+  "rag-ok",
+  "human-reference",
+  "runtime-ok",
+  "permission-needed"
+]);
+const runtimeAssetOrigins = new Set(["procedural", "generated", "owned", "source-derived"]);
+const runtimeAssetTypes = new Set(["geometry", "material", "texture", "audio", "narration", "data"]);
+
+const errors = [];
+
+async function readJson(filePath) {
+  const raw = await readFile(filePath, "utf8");
+  return JSON.parse(raw);
+}
+
+function addError(message) {
+  errors.push(message);
+}
+
+function requireString(value, label) {
+  if (typeof value !== "string" || value.trim().length === 0) {
+    addError(`${label} must be a non-empty string.`);
+    return false;
+  }
+
+  return true;
+}
+
+function requireArray(value, label) {
+  if (!Array.isArray(value)) {
+    addError(`${label} must be an array.`);
+    return false;
+  }
+
+  return true;
+}
+
+function buildSourceMap(sourceRegister) {
+  const sourcesById = new Map();
+
+  if (!requireArray(sourceRegister.sources, "sourceRegister.sources")) {
+    return sourcesById;
+  }
+
+  for (const source of sourceRegister.sources) {
+    if (!requireString(source.id, "source.id")) {
+      continue;
+    }
+
+    if (sourcesById.has(source.id)) {
+      addError(`Duplicate source id "${source.id}".`);
+      continue;
+    }
+
+    sourcesById.set(source.id, source);
+    requireString(source.title, `source "${source.id}" title`);
+    requireString(source.url, `source "${source.id}" url`);
+
+    if (!requireArray(source.allowedUses, `source "${source.id}" allowedUses`)) {
+      continue;
+    }
+
+    for (const allowedUse of source.allowedUses) {
+      if (!sourceUseClasses.has(allowedUse)) {
+        addError(`Source "${source.id}" has unknown allowed use "${allowedUse}".`);
+      }
+    }
+  }
+
+  return sourcesById;
+}
+
+function validateEvidence(tour, evidence, sourcesById) {
+  if (evidence.tourId !== tour.id) {
+    addError(`Evidence tourId "${evidence.tourId}" does not match tour id "${tour.id}".`);
+  }
+
+  if (!requireArray(tour.stops, "tour.stops") || !requireArray(evidence.records, "evidence.records")) {
+    return;
+  }
+
+  const stopsById = new Map();
+  const recordsByStopId = new Map();
+
+  for (const stop of tour.stops) {
+    if (!requireString(stop.id, "tour stop id")) {
+      continue;
+    }
+
+    if (stopsById.has(stop.id)) {
+      addError(`Duplicate tour stop id "${stop.id}".`);
+    }
+
+    stopsById.set(stop.id, stop);
+
+    if (!evidenceLevels.has(stop.evidenceLevel)) {
+      addError(`Tour stop "${stop.id}" has unknown evidence level "${stop.evidenceLevel}".`);
+    }
+  }
+
+  for (const record of evidence.records) {
+    if (!requireString(record.stopId, "evidence record stopId")) {
+      continue;
+    }
+
+    if (recordsByStopId.has(record.stopId)) {
+      addError(`Duplicate evidence record for stop "${record.stopId}".`);
+      continue;
+    }
+
+    recordsByStopId.set(record.stopId, record);
+
+    const stop = stopsById.get(record.stopId);
+    if (!stop) {
+      addError(`Evidence record references missing stop "${record.stopId}".`);
+      continue;
+    }
+
+    if (record.evidenceLevel !== stop.evidenceLevel) {
+      addError(
+        `Evidence level mismatch for "${record.stopId}": tour is "${stop.evidenceLevel}", evidence is "${record.evidenceLevel}".`
+      );
+    }
+
+    validateEvidenceRecord(record, sourcesById);
+  }
+
+  for (const stop of tour.stops) {
+    if (!recordsByStopId.has(stop.id)) {
+      addError(`Tour stop "${stop.id}" is missing an evidence record.`);
+    }
+  }
+}
+
+function validateEvidenceRecord(record, sourcesById) {
+  if (!evidenceLevels.has(record.evidenceLevel)) {
+    addError(`Evidence record "${record.stopId}" has unknown evidence level "${record.evidenceLevel}".`);
+  }
+
+  if (!requireArray(record.claims, `evidence "${record.stopId}" claims`)) {
+    return;
+  }
+
+  if (record.claims.length === 0) {
+    addError(`Evidence record "${record.stopId}" must have at least one claim.`);
+  }
+
+  if (!requireArray(record.reconstructionNotes, `evidence "${record.stopId}" reconstructionNotes`)) {
+    return;
+  }
+
+  if (record.reconstructionNotes.length === 0) {
+    addError(`Evidence record "${record.stopId}" must have at least one reconstruction note.`);
+  }
+
+  for (const [claimIndex, claim] of record.claims.entries()) {
+    const label = `evidence "${record.stopId}" claim ${claimIndex + 1}`;
+    requireString(claim.claim, `${label} text`);
+
+    if (!confidenceLevels.has(claim.confidence)) {
+      addError(`${label} has unknown confidence "${claim.confidence}".`);
+    }
+
+    if (!sourceUseClasses.has(claim.useType)) {
+      addError(`${label} has unknown useType "${claim.useType}".`);
+    }
+
+    if (!requireArray(claim.sourceIds, `${label} sourceIds`)) {
+      continue;
+    }
+
+    if (claim.sourceIds.length === 0) {
+      addError(`${label} must reference at least one source.`);
+    }
+
+    for (const sourceId of claim.sourceIds) {
+      const source = sourcesById.get(sourceId);
+
+      if (!source) {
+        addError(`${label} references missing source "${sourceId}".`);
+        continue;
+      }
+
+      if (!source.allowedUses.includes(claim.useType)) {
+        addError(
+          `${label} uses "${claim.useType}" but source "${sourceId}" only allows ${source.allowedUses.join(", ")}.`
+        );
+      }
+    }
+  }
+}
+
+function validateRuntimeAssets(runtimeAssets, tour, sourcesById) {
+  if (runtimeAssets.tourId !== tour.id) {
+    addError(`Runtime asset tourId "${runtimeAssets.tourId}" does not match tour id "${tour.id}".`);
+  }
+
+  if (!requireArray(runtimeAssets.assets, "runtimeAssets.assets")) {
+    return;
+  }
+
+  const assetIds = new Set();
+
+  for (const asset of runtimeAssets.assets) {
+    if (!requireString(asset.id, "runtime asset id")) {
+      continue;
+    }
+
+    if (assetIds.has(asset.id)) {
+      addError(`Duplicate runtime asset id "${asset.id}".`);
+      continue;
+    }
+
+    assetIds.add(asset.id);
+    requireString(asset.label, `runtime asset "${asset.id}" label`);
+    requireString(asset.licenseStatus, `runtime asset "${asset.id}" licenseStatus`);
+
+    if (!runtimeAssetTypes.has(asset.assetType)) {
+      addError(`Runtime asset "${asset.id}" has unknown assetType "${asset.assetType}".`);
+    }
+
+    if (!runtimeAssetOrigins.has(asset.origin)) {
+      addError(`Runtime asset "${asset.id}" has unknown origin "${asset.origin}".`);
+    }
+
+    if (!evidenceLevels.has(asset.evidenceLevel)) {
+      addError(`Runtime asset "${asset.id}" has unknown evidenceLevel "${asset.evidenceLevel}".`);
+    }
+
+    if (typeof asset.runtimeAllowed !== "boolean") {
+      addError(`Runtime asset "${asset.id}" runtimeAllowed must be a boolean.`);
+    }
+
+    if (!requireArray(asset.sourceIds, `runtime asset "${asset.id}" sourceIds`)) {
+      continue;
+    }
+
+    if (asset.origin === "source-derived" && asset.sourceIds.length === 0) {
+      addError(`Source-derived runtime asset "${asset.id}" must list direct sourceIds.`);
+    }
+
+    validateDirectRuntimeSources(asset, sourcesById);
+    validateReferenceSources(asset, sourcesById);
+  }
+}
+
+function validateDirectRuntimeSources(asset, sourcesById) {
+  for (const sourceId of asset.sourceIds) {
+    const source = sourcesById.get(sourceId);
+
+    if (!source) {
+      addError(`Runtime asset "${asset.id}" references missing direct source "${sourceId}".`);
+      continue;
+    }
+
+    const canUseInRuntime = source.allowedUses.includes("runtime-ok") || source.allowedUses.includes("dataset-ok");
+
+    if (asset.runtimeAllowed && !canUseInRuntime) {
+      addError(
+        `Runtime asset "${asset.id}" directly uses source "${sourceId}", but the source is not runtime-ok or dataset-ok.`
+      );
+    }
+  }
+}
+
+function validateReferenceSources(asset, sourcesById) {
+  if (asset.referenceSourceIds === undefined) {
+    return;
+  }
+
+  if (!requireArray(asset.referenceSourceIds, `runtime asset "${asset.id}" referenceSourceIds`)) {
+    return;
+  }
+
+  for (const sourceId of asset.referenceSourceIds) {
+    const source = sourcesById.get(sourceId);
+
+    if (!source) {
+      addError(`Runtime asset "${asset.id}" references missing research source "${sourceId}".`);
+    }
+  }
+}
+
+const [sourceRegister, tour, evidence, runtimeAssets] = await Promise.all([
+  readJson(paths.sourceRegister),
+  readJson(paths.tour),
+  readJson(paths.evidence),
+  readJson(paths.runtimeAssets)
+]);
+
+const sourcesById = buildSourceMap(sourceRegister);
+validateEvidence(tour, evidence, sourcesById);
+validateRuntimeAssets(runtimeAssets, tour, sourcesById);
+
+if (errors.length > 0) {
+  console.error("Content validation failed:");
+  for (const error of errors) {
+    console.error(`- ${error}`);
+  }
+  process.exitCode = 1;
+} else {
+  console.log(
+    `Content validation passed: ${tour.stops.length} tour stops, ${evidence.records.length} evidence records, ${runtimeAssets.assets.length} runtime asset records, ${sourcesById.size} sources.`
+  );
+}
