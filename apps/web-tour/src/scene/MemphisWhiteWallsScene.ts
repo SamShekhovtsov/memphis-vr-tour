@@ -57,6 +57,15 @@ interface WalkerRoutine {
   end: Vector3;
   speed: number;
   phase: number;
+  parts: WalkerParts;
+}
+
+interface WalkerParts {
+  leftArm: TransformNode;
+  rightArm: TransformNode;
+  leftLeg: TransformNode;
+  rightLeg: TransformNode;
+  carriedLoad?: TransformNode;
 }
 
 interface BirdRoutine {
@@ -521,27 +530,6 @@ function createModularAssetPlacements(): ModularAssetPlacement[] {
       rotationY: 0.14,
       scale: 0.9
     },
-    {
-      assetId: "date-palm-cluster",
-      name: "glbPalmClusterLanding",
-      position: new Vector3(-33.6, 0, -24.5),
-      rotationY: 0.35,
-      scale: 1.12
-    },
-    {
-      assetId: "date-palm-cluster",
-      name: "glbPalmClusterMidBank",
-      position: new Vector3(-33.2, 0, 6),
-      rotationY: -0.45,
-      scale: 0.96
-    },
-    {
-      assetId: "date-palm-cluster",
-      name: "glbPalmClusterFarBank",
-      position: new Vector3(-32.7, 0, 33),
-      rotationY: 0.18,
-      scale: 0.82
-    },
     ...[-63, -43, -23, -3, 17, 37, 57].map((z, index) => ({
       assetId: "reed-bank-cluster",
       name: `glbReedBank-${index}`,
@@ -593,20 +581,6 @@ function createModularAssetPlacements(): ModularAssetPlacement[] {
       position: new Vector3(-11.5, 0.02, 22.5),
       rotationY: 0.36,
       scale: 0.96
-    },
-    {
-      assetId: "street-npc-placeholders",
-      name: "glbNileArrivalNpcGroup",
-      position: new Vector3(-30.2, 0, -48.2),
-      rotationY: Math.PI / 2,
-      scale: 0.94
-    },
-    {
-      assetId: "street-npc-placeholders",
-      name: "glbStreetNpcGroup",
-      position: new Vector3(-7.2, 0, 8),
-      rotationY: -0.18,
-      scale: 0.86
     }
   ];
 }
@@ -688,6 +662,12 @@ function createNileEdge(scene: Scene, materials: SceneMaterials): void {
   for (let index = 0; index < 4; index += 1) {
     createBasket(scene, materials, new Vector3(-30.6 + index * 1.15, 0.24, -55.6));
   }
+
+  createDatePalm(scene, materials, new Vector3(-34.2, 0, -20), 0.96);
+  createDatePalm(scene, materials, new Vector3(-32.6, 0, -10.5), 0.72);
+  createDatePalm(scene, materials, new Vector3(-33.5, 0, 4), 1.08);
+  createDatePalm(scene, materials, new Vector3(-32.4, 0, 19), 0.84);
+  createDatePalm(scene, materials, new Vector3(-33.1, 0, 34), 0.9);
 }
 
 function createResidentialStreet(scene: Scene, materials: SceneMaterials): void {
@@ -697,35 +677,6 @@ function createResidentialStreet(scene: Scene, materials: SceneMaterials): void 
   drain.position = new Vector3(-9.4, 0.055, -8);
   drain.material = materials.shadow;
 
-  for (let index = 0; index < 8; index += 1) {
-    const z = -26 + index * 5.8;
-    createMudbrickHouse(scene, materials, new Vector3(-18.5, 1.25, z), new Vector3(7.2, 2.5, 4.1));
-    createMudbrickHouse(scene, materials, new Vector3(-3.6, 1.12, z + 2.1), new Vector3(5.8, 2.24, 3.6));
-
-    if (index % 2 === 0) {
-      const awning = MeshBuilder.CreateBox(`awning-${index}`, { width: 5.6, height: 0.08, depth: 2.4 }, scene);
-      awning.position = new Vector3(-10.6, 2.35, z + 1);
-      awning.rotation.z = 0.08;
-      awning.rotation.x = index % 4 === 0 ? 0.06 : -0.04;
-      awning.material = materials.linen;
-
-      const rope = MeshBuilder.CreateCylinder(`awningRope-${index}`, { height: 5.8, diameter: 0.035, tessellation: 6 }, scene);
-      rope.position = new Vector3(-10.6, 2.29, z - 0.25);
-      rope.rotation.z = Math.PI / 2;
-      rope.material = materials.wood;
-    }
-
-    if (index % 3 === 1) {
-      createCourtyard(scene, materials, new Vector3(-14.8, 0.03, z + 2.6));
-    }
-  }
-
-  for (let index = 0; index < 16; index += 1) {
-    const jar = MeshBuilder.CreateCylinder(`storageJar-${index}`, { height: 0.9, diameterTop: 0.46, diameterBottom: 0.34 }, scene);
-    jar.position = new Vector3(-21 + (index % 4) * 1.15, 0.45, -21 + Math.floor(index / 4) * 9.2);
-    jar.material = materials.mudbrick;
-  }
-
   const well = MeshBuilder.CreateCylinder("districtWell", { height: 0.74, diameter: 1.5, tessellation: 24 }, scene);
   well.position = new Vector3(-7, 0.37, 5);
   well.material = materials.limestone;
@@ -734,23 +685,15 @@ function createResidentialStreet(scene: Scene, materials: SceneMaterials): void 
   wellVoid.position = new Vector3(-7, 0.4, 5);
   wellVoid.material = materials.shadow;
 
-  for (let index = 0; index < 5; index += 1) {
-    const bin = MeshBuilder.CreateCylinder(`grainBin-${index}`, {
-      height: 1.35,
-      diameterTop: 1.25,
-      diameterBottom: 1.05,
+  for (let index = 0; index < 6; index += 1) {
+    const jar = MeshBuilder.CreateCylinder(`wellJar-${index}`, {
+      height: 0.78,
+      diameterTop: 0.34,
+      diameterBottom: 0.44,
       tessellation: 16
     }, scene);
-    bin.position = new Vector3(-22 + index * 1.7, 0.68, 21);
-    bin.material = materials.plaster;
-  }
-
-  for (let index = 0; index < 9; index += 1) {
-    createFloorMat(scene, materials, new Vector3(-12.5 + (index % 3) * 3.2, 0.08, -19 + Math.floor(index / 3) * 13));
-  }
-
-  for (let index = 0; index < 8; index += 1) {
-    createBasket(scene, materials, new Vector3(-5.2 + (index % 4) * 1.3, 0.24, -22 + Math.floor(index / 4) * 19));
+    jar.position = new Vector3(-8.4 + (index % 3) * 0.68, 0.39, 3.6 + Math.floor(index / 3) * 2.65);
+    jar.material = materials.mudbrick;
   }
 }
 
@@ -1010,28 +953,64 @@ function createWaterHighlight(scene: Scene, materials: SceneMaterials, position:
 }
 
 function createDatePalm(scene: Scene, materials: SceneMaterials, position: Vector3, scale: number): void {
-  const trunk = MeshBuilder.CreateCylinder(`datePalmTrunk-${position.z}`, {
-    height: 4.8 * scale,
-    diameterTop: 0.32 * scale,
-    diameterBottom: 0.48 * scale,
-    tessellation: 9
-  }, scene);
-  trunk.position = new Vector3(position.x, 2.4 * scale, position.z);
-  trunk.rotation.z = Math.sin(position.z) * 0.08;
-  trunk.material = materials.wood;
+  const trunkHeight = 4.8 * scale;
+  const segmentCount = 9;
+  const bend = Math.sin(position.z * 0.17) * 0.22 * scale;
 
-  for (let index = 0; index < 8; index += 1) {
+  for (let index = 0; index < segmentCount; index += 1) {
+    const mix = index / segmentCount;
+    const segment = MeshBuilder.CreateCylinder(`datePalmTrunk-${position.z}-${index}`, {
+      height: trunkHeight / segmentCount + 0.08 * scale,
+      diameterTop: (0.36 - mix * 0.08) * scale,
+      diameterBottom: (0.46 - mix * 0.08) * scale,
+      tessellation: 9
+    }, scene);
+    segment.position = new Vector3(
+      position.x + bend * mix,
+      (trunkHeight / segmentCount) * (index + 0.5),
+      position.z + Math.sin(index * 0.8 + position.x) * 0.035 * scale
+    );
+    segment.rotation.z = Math.sin(index * 0.45 + position.z) * 0.035;
+    segment.material = materials.wood;
+    segment.isPickable = false;
+  }
+
+  const crown = new Vector3(position.x + bend, trunkHeight + 0.05 * scale, position.z);
+
+  for (let index = 0; index < 16; index += 1) {
+    const angle = (Math.PI * 2 * index) / 16;
     const leaf = MeshBuilder.CreatePlane(`datePalmLeaf-${position.z}-${index}`, {
-      width: 0.62 * scale,
-      height: 3.2 * scale,
+      width: (0.34 + (index % 3) * 0.08) * scale,
+      height: (2.7 + (index % 4) * 0.24) * scale,
       sideOrientation: Mesh.DOUBLESIDE
     }, scene);
-    leaf.position = new Vector3(position.x, 4.75 * scale, position.z);
-    leaf.rotation.y = (Math.PI * 2 * index) / 8;
-    leaf.rotation.x = Math.PI / 2.8;
-    leaf.rotation.z = 0.22 + Math.sin(index) * 0.12;
+    leaf.position = new Vector3(
+      crown.x + Math.cos(angle) * 0.42 * scale,
+      crown.y - 0.16 * scale,
+      crown.z + Math.sin(angle) * 0.42 * scale
+    );
+    leaf.rotation.y = angle;
+    leaf.rotation.x = Math.PI / 2.6 + Math.sin(index * 1.7) * 0.12;
+    leaf.rotation.z = 0.18 + Math.cos(index) * 0.16;
     leaf.material = materials.reed;
     leaf.isPickable = false;
+  }
+
+  for (let index = 0; index < 11; index += 1) {
+    const date = MeshBuilder.CreateSphere(`datePalmFruit-${position.z}-${index}`, {
+      diameterX: 0.08 * scale,
+      diameterY: 0.12 * scale,
+      diameterZ: 0.08 * scale,
+      segments: 8
+    }, scene);
+    const angle = index * 1.68;
+    date.position = new Vector3(
+      crown.x + Math.cos(angle) * 0.22 * scale,
+      crown.y - (0.28 + (index % 4) * 0.08) * scale,
+      crown.z + Math.sin(angle) * 0.22 * scale
+    );
+    date.material = materials.mudbrick;
+    date.isPickable = false;
   }
 }
 
@@ -1144,51 +1123,165 @@ function createEvidenceMarkers(scene: Scene, manifest: TourManifest, materials: 
 }
 
 function createAmbientWalkers(scene: Scene, materials: SceneMaterials): WalkerRoutine[] {
-  const routes: Array<[Vector3, Vector3]> = [
-    [new Vector3(-24, 0, -32), new Vector3(-7, 0, -10)],
-    [new Vector3(-11, 0, -2), new Vector3(-3, 0, 22)],
-    [new Vector3(11, 0, 1), new Vector3(19, 0, 19)],
-    [new Vector3(8, 0, 24), new Vector3(-5, 0, 38)],
-    [new Vector3(-7, 0, 54), new Vector3(7, 0, 65)]
+  const routes: Array<{ start: Vector3; end: Vector3; carry?: boolean; scale?: number; speed?: number }> = [
+    { start: new Vector3(-31, 0, -54), end: new Vector3(-27.5, 0, -38), carry: true, scale: 0.98, speed: 0.24 },
+    { start: new Vector3(-23, 0, -31), end: new Vector3(-8.5, 0, -14), scale: 0.96, speed: 0.27 },
+    { start: new Vector3(-12.5, 0, -22), end: new Vector3(-6.5, 0, 4), carry: true, scale: 0.94, speed: 0.23 },
+    { start: new Vector3(-7.2, 0, -4), end: new Vector3(-12.2, 0, 20), scale: 1.02, speed: 0.21 },
+    { start: new Vector3(7.5, 0, 3), end: new Vector3(18.5, 0, 19), scale: 0.95, speed: 0.26 },
+    { start: new Vector3(8, 0, 24), end: new Vector3(-4.5, 0, 38), carry: true, scale: 0.92, speed: 0.22 },
+    { start: new Vector3(-7, 0, 54), end: new Vector3(7, 0, 65), scale: 1, speed: 0.2 }
   ];
 
-  return routes.map(([start, end], index) => {
+  return routes.map(({ start, end, carry, scale = 1, speed }, index) => {
     const root = new TransformNode(`ambientWalker-${index}`, scene);
     root.position = start.clone();
-
-    const body = MeshBuilder.CreateCylinder(`walkerBody-${index}`, {
-      height: 1.25,
-      diameterTop: 0.38,
-      diameterBottom: 0.45,
-      tessellation: 14
-    }, scene);
-    body.position.y = 0.78;
-    body.parent = root;
-    body.material = index % 2 === 0 ? materials.linen : materials.plaster;
-
-    const head = MeshBuilder.CreateSphere(`walkerHead-${index}`, { diameter: 0.34, segments: 14 }, scene);
-    head.position.y = 1.57;
-    head.parent = root;
-    head.material = materials.mudbrick;
+    const parts = createHumanFigure(scene, materials, root, index, scale, Boolean(carry));
 
     return {
       root,
       start,
       end,
-      speed: 0.25 + index * 0.04,
-      phase: index * 1.7
+      speed: speed ?? 0.25 + index * 0.04,
+      phase: index * 1.7,
+      parts
     };
   });
+}
+
+function createHumanFigure(
+  scene: Scene,
+  materials: SceneMaterials,
+  root: TransformNode,
+  index: number,
+  scale: number,
+  carryLoad: boolean
+): WalkerParts {
+  const skin = materials.mudbrick;
+  const clothing = index % 2 === 0 ? materials.linen : materials.plaster;
+
+  const torso = MeshBuilder.CreateCylinder(`walkerTorso-${index}`, {
+    height: 0.72 * scale,
+    diameterTop: 0.24 * scale,
+    diameterBottom: 0.32 * scale,
+    tessellation: 14
+  }, scene);
+  torso.position.y = 0.96 * scale;
+  torso.parent = root;
+  torso.material = skin;
+
+  const kilt = MeshBuilder.CreateCylinder(`walkerKilt-${index}`, {
+    height: 0.46 * scale,
+    diameterTop: 0.36 * scale,
+    diameterBottom: 0.46 * scale,
+    tessellation: 14
+  }, scene);
+  kilt.position.y = 0.58 * scale;
+  kilt.parent = root;
+  kilt.material = clothing;
+
+  const sash = MeshBuilder.CreateBox(`walkerSash-${index}`, {
+    width: 0.38 * scale,
+    height: 0.08 * scale,
+    depth: 0.08 * scale
+  }, scene);
+  sash.position = new Vector3(0, 0.82 * scale, -0.18 * scale);
+  sash.parent = root;
+  sash.material = clothing;
+
+  const head = MeshBuilder.CreateSphere(`walkerHead-${index}`, {
+    diameterX: 0.28 * scale,
+    diameterY: 0.32 * scale,
+    diameterZ: 0.28 * scale,
+    segments: 14
+  }, scene);
+  head.position.y = 1.47 * scale;
+  head.parent = root;
+  head.material = skin;
+
+  const hair = MeshBuilder.CreateBox(`walkerHair-${index}`, {
+    width: 0.3 * scale,
+    height: 0.2 * scale,
+    depth: 0.24 * scale
+  }, scene);
+  hair.position = new Vector3(0, 1.6 * scale, -0.02 * scale);
+  hair.parent = root;
+  hair.material = materials.shadow;
+
+  const leftArm = createHumanLimb(scene, `walkerLeftArm-${index}`, root, materials, new Vector3(-0.26 * scale, 0.95 * scale, 0), 0.58 * scale, 0.055 * scale);
+  const rightArm = createHumanLimb(scene, `walkerRightArm-${index}`, root, materials, new Vector3(0.26 * scale, 0.95 * scale, 0), 0.58 * scale, 0.055 * scale);
+  const leftLeg = createHumanLimb(scene, `walkerLeftLeg-${index}`, root, materials, new Vector3(-0.12 * scale, 0.28 * scale, 0), 0.56 * scale, 0.065 * scale);
+  const rightLeg = createHumanLimb(scene, `walkerRightLeg-${index}`, root, materials, new Vector3(0.12 * scale, 0.28 * scale, 0), 0.56 * scale, 0.065 * scale);
+
+  let carriedLoad: TransformNode | undefined;
+
+  if (carryLoad) {
+    carriedLoad = new TransformNode(`walkerCarriedLoad-${index}`, scene);
+    carriedLoad.parent = root;
+    carriedLoad.position.y = 1.84 * scale;
+
+    const jar = MeshBuilder.CreateCylinder(`walkerHeadJar-${index}`, {
+      height: 0.42 * scale,
+      diameterTop: 0.18 * scale,
+      diameterBottom: 0.3 * scale,
+      tessellation: 16
+    }, scene);
+    jar.parent = carriedLoad;
+    jar.material = materials.mudbrick;
+
+    leftArm.rotation.x = -0.55;
+    rightArm.rotation.x = -0.55;
+    leftArm.rotation.z = -0.38;
+    rightArm.rotation.z = 0.38;
+  }
+
+  return {
+    leftArm,
+    rightArm,
+    leftLeg,
+    rightLeg,
+    carriedLoad
+  };
+}
+
+function createHumanLimb(
+  scene: Scene,
+  name: string,
+  root: TransformNode,
+  materials: SceneMaterials,
+  position: Vector3,
+  height: number,
+  diameter: number
+): TransformNode {
+  const limb = MeshBuilder.CreateCylinder(name, {
+    height,
+    diameter,
+    tessellation: 10
+  }, scene);
+  limb.position = position;
+  limb.parent = root;
+  limb.material = materials.mudbrick;
+  return limb;
 }
 
 function updateWalkers(walkers: WalkerRoutine[], time: number): void {
   walkers.forEach((walker) => {
     const mix = (Math.sin(time * walker.speed + walker.phase) + 1) / 2;
     const position = Vector3.Lerp(walker.start, walker.end, mix);
+    const stride = Math.sin(time * 5.4 + walker.phase) * 0.42;
+    position.y += Math.abs(stride) * 0.035;
     walker.root.position.copyFrom(position);
 
     const direction = walker.end.subtract(walker.start);
     walker.root.rotation.y = Math.atan2(direction.x, direction.z) + (mix > 0.5 ? Math.PI : 0);
+    walker.parts.leftArm.rotation.x = walker.parts.carriedLoad ? -0.52 + stride * 0.12 : stride;
+    walker.parts.rightArm.rotation.x = walker.parts.carriedLoad ? -0.52 - stride * 0.12 : -stride;
+    walker.parts.leftLeg.rotation.x = -stride * 0.78;
+    walker.parts.rightLeg.rotation.x = stride * 0.78;
+
+    if (walker.parts.carriedLoad) {
+      walker.parts.carriedLoad.rotation.z = Math.sin(time * 2.2 + walker.phase) * 0.035;
+    }
   });
 }
 
