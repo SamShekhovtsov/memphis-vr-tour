@@ -32,6 +32,8 @@ type StopListener = (stop: TourStop) => void;
 const textureRoot = "/assets/generated/textures/";
 const audioRoot = "/assets/generated/audio/";
 const glbRoot = "/assets/generated/glb/";
+const heroStreetOffsetX = -11.5;
+const heroStreetCenterX = -22;
 
 interface SceneMaterials {
   sand: PBRMaterial;
@@ -560,7 +562,7 @@ function createModularAssetPlacements(): ModularAssetPlacement[] {
     {
       assetId: "hero-street-corridor",
       name: "glbHeroStreetCorridor",
-      position: new Vector3(0, 0, 0),
+      position: new Vector3(heroStreetOffsetX, 0, 0),
       rotationY: 0,
       scale: 1,
       collides: true
@@ -568,7 +570,7 @@ function createModularAssetPlacements(): ModularAssetPlacement[] {
     {
       assetId: "animated-street-actors",
       name: "glbAnimatedStreetActors",
-      position: new Vector3(0, 0, 0),
+      position: new Vector3(heroStreetOffsetX, 0, 0),
       rotationY: 0,
       scale: 1,
       animated: true
@@ -665,19 +667,19 @@ function createResidentialStreet(scene: Scene, materials: SceneMaterials): void 
   createWhiteWallsThreshold(scene, materials);
 
   const heroStreetGround = MeshBuilder.CreateGround("heroStreetGroundDetail", { width: 10.5, height: 70, subdivisions: 6 }, scene);
-  heroStreetGround.position = new Vector3(-10.5, 0.048, 4);
+  heroStreetGround.position = new Vector3(heroStreetCenterX, 0.048, 4);
   heroStreetGround.material = materials.heroGround;
 
   const drain = MeshBuilder.CreateBox("streetDrainageChannel", { width: 0.46, height: 0.08, depth: 44 }, scene);
-  drain.position = new Vector3(-9.4, 0.055, -8);
+  drain.position = new Vector3(heroStreetCenterX + 1.1, 0.055, -8);
   drain.material = materials.shadow;
 
   const well = MeshBuilder.CreateCylinder("districtWell", { height: 0.74, diameter: 1.5, tessellation: 24 }, scene);
-  well.position = new Vector3(-7, 0.37, 5);
+  well.position = new Vector3(heroStreetCenterX + 3.5, 0.37, 5);
   well.material = materials.limestone;
 
   const wellVoid = MeshBuilder.CreateCylinder("districtWellVoid", { height: 0.76, diameter: 0.82, tessellation: 24 }, scene);
-  wellVoid.position = new Vector3(-7, 0.4, 5);
+  wellVoid.position = new Vector3(heroStreetCenterX + 3.5, 0.4, 5);
   wellVoid.material = materials.shadow;
 
   for (let index = 0; index < 6; index += 1) {
@@ -687,7 +689,7 @@ function createResidentialStreet(scene: Scene, materials: SceneMaterials): void 
       diameterBottom: 0.44,
       tessellation: 16
     }, scene);
-    jar.position = new Vector3(-8.4 + (index % 3) * 0.68, 0.39, 3.6 + Math.floor(index / 3) * 2.65);
+    jar.position = new Vector3(heroStreetCenterX + 2.1 + (index % 3) * 0.68, 0.39, 3.6 + Math.floor(index / 3) * 2.65);
     jar.material = materials.mudbrick;
   }
 }
@@ -764,8 +766,8 @@ function createWhiteWallsThreshold(scene: Scene, materials: SceneMaterials): voi
   gateLintel.position = new Vector3(-23.2, 3.35, -33);
   gateLintel.material = materials.plaster;
 
-  const guardStore = MeshBuilder.CreateBox("riverGateStorehouse", { width: 5.2, height: 2.5, depth: 4.6 }, scene);
-  guardStore.position = new Vector3(-31.5, 1.25, -26.5);
+  const guardStore = MeshBuilder.CreateBox("riverGateStorehouse", { width: 4.8, height: 2.5, depth: 4.6 }, scene);
+  guardStore.position = new Vector3(-37.2, 1.25, -26.5);
   guardStore.material = materials.mudbrick;
   guardStore.checkCollisions = true;
 }

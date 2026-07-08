@@ -835,10 +835,6 @@ def build_hero_street_corridor(materials: dict[str, bpy.types.Material]) -> None
         cylinder_between(f"crossStreetRopeA-{index}", (-14.45, y - 2.25, 3.18), (-6.35, y - 2.0, 3.05), 0.014, materials["dry_reed"], 6)
         cylinder_between(f"crossStreetRopeB-{index}", (-14.55, y + 2.2, 3.08), (-6.25, y + 2.1, 3.2), 0.014, materials["dry_reed"], 6)
 
-    cube("heroStreetDistantGateLeft", (-15.9, 35.8, 1.5), (3.0, 2.0, 3.0), materials["plaster"], bevel=0.035)
-    cube("heroStreetDistantGateRight", (-5.1, 35.8, 1.5), (3.0, 2.0, 3.0), materials["plaster"], bevel=0.035)
-    cube("heroStreetDistantLintel", (-10.5, 35.8, 3.0), (8.0, 1.9, 0.44), materials["plaster"], bevel=0.025)
-
     add_hero_ground_details(materials)
 
 

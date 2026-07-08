@@ -25,7 +25,7 @@
       "evidenceLevel": "inferred",
       "summary": "A white-plastered mudbrick edge marks the transition from river infrastructure into the ancient city district.",
       "position": [-23, 1.7, -31],
-      "lookAt": [-14, 1.6, -18],
+      "lookAt": [-22, 1.6, -18],
       "durationHintSeconds": 25,
       "referenceNotes": [
         "The White Walls identity is historically important for Memphis, but the exact early city-wall placement and form remain debated."
@@ -36,8 +36,8 @@
       "title": "Kom el-Fakhry Street",
       "summary": "A narrow mudbrick residential lane uses clustered houses, plastered courtyards, storage bins, jars, and shade cloth.",
       "evidenceLevel": "inferred",
-      "position": [-14, 1.7, -12],
-      "lookAt": [-3, 1.6, 6],
+      "position": [-22, 1.7, -12],
+      "lookAt": [-22, 1.6, 10],
       "durationHintSeconds": 35,
       "referenceNotes": [
         "Domestic architecture is inferred from Kom el-Fakhry / Memphite settlement archaeology and comparable period material culture."
@@ -48,8 +48,8 @@
       "title": "Craftsmen Area",
       "summary": "Pottery, basketry, stone dressing, and low workshop structures connect the district to Memphis craft and temple economy.",
       "evidenceLevel": "inferred",
-      "position": [6, 1.7, 15],
-      "lookAt": [0, 1.6, 36],
+      "position": [-18, 1.7, 22],
+      "lookAt": [-4, 1.6, 42],
       "durationHintSeconds": 35,
       "referenceNotes": [
         "Craft activity is supported by Memphis/Ptah associations and workshop references, but this exact compact placement is reconstructed."
