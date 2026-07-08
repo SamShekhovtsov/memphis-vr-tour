@@ -9,7 +9,9 @@
   ],
   "scripts": {
     "dev": "npm --workspace @egyptvr/web-tour run dev",
-    "build": "npm run validate:content && npm run build --workspaces",
+    "build": "npm run generate:assets && npm run validate:content && npm run build --workspaces",
+    "generate:assets": "node tools/generate-runtime-assets.mjs",
+    "generate:glb": "node tools/run-blender-asset-kit.mjs",
     "validate:content": "node tools/validate-content.mjs",
     "typecheck": "npm run typecheck --workspaces"
   },

@@ -1,13 +1,15 @@
 import {
   Color3,
   Color4,
-  DynamicTexture,
+  DirectionalLight,
   Engine,
   HemisphericLight,
   Mesh,
   MeshBuilder,
+  PBRMaterial,
+  PointLight,
   Scene,
-  StandardMaterial,
+  SceneLoader,
   Texture,
   TransformNode,
   UniversalCamera,
@@ -27,22 +29,26 @@ export interface MemphisSceneController {
 }
 
 type StopListener = (stop: TourStop) => void;
+const textureRoot = "/assets/generated/textures/";
+const audioRoot = "/assets/generated/audio/";
+const glbRoot = "/assets/generated/glb/";
 
 interface SceneMaterials {
-  sand: StandardMaterial;
-  mudbrick: StandardMaterial;
-  plaster: StandardMaterial;
-  river: StandardMaterial;
-  reed: StandardMaterial;
-  wood: StandardMaterial;
-  linen: StandardMaterial;
-  stone: StandardMaterial;
-  limestone: StandardMaterial;
-  copper: StandardMaterial;
-  paint: StandardMaterial;
-  shadow: StandardMaterial;
-  smoke: StandardMaterial;
-  evidence: Record<EvidenceLevel, StandardMaterial>;
+  sand: PBRMaterial;
+  mudbrick: PBRMaterial;
+  plaster: PBRMaterial;
+  river: PBRMaterial;
+  reed: PBRMaterial;
+  wood: PBRMaterial;
+  linen: PBRMaterial;
+  stone: PBRMaterial;
+  limestone: PBRMaterial;
+  copper: PBRMaterial;
+  paint: PBRMaterial;
+  shadow: PBRMaterial;
+  smoke: PBRMaterial;
+  ember: PBRMaterial;
+  evidence: Record<EvidenceLevel, PBRMaterial>;
 }
 
 interface WalkerRoutine {
@@ -53,19 +59,65 @@ interface WalkerRoutine {
   phase: number;
 }
 
+interface BirdRoutine {
+  root: TransformNode;
+  radius: number;
+  height: number;
+  speed: number;
+  phase: number;
+}
+
+interface Soundscape {
+  setEnabled(enabled: boolean): void;
+}
+
+interface AmbientLoop {
+  fileName: string;
+  volume: number;
+  element?: HTMLAudioElement;
+}
+
+interface ModularAssetKitManifest {
+  id: string;
+  assets: ModularAssetEntry[];
+}
+
+interface ModularAssetEntry {
+  id: string;
+  fileName: string;
+  label: string;
+  category: "nile-arrival" | "residential-street";
+  evidenceLevel: EvidenceLevel;
+  runtimeAssetId: string;
+}
+
+interface ModularAssetPlacement {
+  assetId: string;
+  name: string;
+  position: Vector3;
+  rotationY?: number;
+  scale?: number;
+  collides?: boolean;
+}
+
 export async function createMemphisWhiteWallsScene(
   engine: Engine,
   canvas: HTMLCanvasElement,
   manifest: TourManifest
 ): Promise<MemphisSceneController> {
   const scene = new Scene(engine);
-  scene.clearColor = new Color4(0.62, 0.8, 0.9, 1);
-  scene.ambientColor = new Color3(0.72, 0.64, 0.52);
+  scene.clearColor = new Color4(0.73, 0.82, 0.88, 1);
+  scene.ambientColor = new Color3(0.78, 0.68, 0.54);
+  scene.fogColor = Color3.FromHexString("#dec69a");
   scene.fogMode = Scene.FOGMODE_EXP2;
-  scene.fogDensity = 0.006;
+  scene.fogDensity = 0.0048;
   scene.collisionsEnabled = true;
+  scene.imageProcessingConfiguration.exposure = 1.16;
+  scene.imageProcessingConfiguration.contrast = 1.24;
+  scene.imageProcessingConfiguration.toneMappingEnabled = true;
 
   const materials = createMaterials(scene);
+  createSkyDome(scene);
   const firstStop = manifest.stops[0];
   const camera = new UniversalCamera("visitorCamera", vectorFromTuple(firstStop.position), scene);
   camera.setTarget(vectorFromTuple(firstStop.lookAt ?? firstStop.position));
@@ -76,11 +128,21 @@ export async function createMemphisWhiteWallsScene(
   camera.ellipsoid = new Vector3(0.45, 0.8, 0.45);
   camera.checkCollisions = true;
 
-  new HemisphericLight("skyLight", new Vector3(0, 1, 0), scene).intensity = 0.76;
-  const sun = new HemisphericLight("warmBounce", new Vector3(0.6, 1, -0.25), scene);
-  sun.diffuse = new Color3(1, 0.78, 0.5);
-  sun.groundColor = new Color3(0.36, 0.27, 0.18);
-  sun.intensity = 0.42;
+  const skyLight = new HemisphericLight("skyLight", new Vector3(0, 1, 0), scene);
+  skyLight.diffuse = Color3.FromHexString("#f4e1b5");
+  skyLight.groundColor = Color3.FromHexString("#6a4c35");
+  skyLight.intensity = 0.68;
+
+  const sun = new DirectionalLight("lowGoldSun", new Vector3(-0.46, -0.86, 0.24), scene);
+  sun.position = new Vector3(52, 74, -82);
+  sun.diffuse = Color3.FromHexString("#ffd28f");
+  sun.specular = Color3.FromHexString("#fff1c7");
+  sun.intensity = 2.2;
+
+  const shrineGlow = new PointLight("shrineOilLampGlow", new Vector3(0, 2.2, 90), scene);
+  shrineGlow.diffuse = Color3.FromHexString("#f2a451");
+  shrineGlow.intensity = 0.56;
+  shrineGlow.range = 17;
 
   const ground = createBaseDistrict(scene, materials);
   createNileEdge(scene, materials);
@@ -88,12 +150,15 @@ export async function createMemphisWhiteWallsScene(
   createCraftsmenArea(scene, materials);
   createTemple(scene, materials);
   createRouteLine(scene, manifest, materials);
+  await loadModularAssetKit(scene);
 
   const evidenceRoot = createEvidenceMarkers(scene, manifest, materials);
   evidenceRoot.setEnabled(false);
 
   const walkers = createAmbientWalkers(scene, materials);
   const smokeNodes = createSmoke(scene, materials);
+  const birds = createBirds(scene, materials);
+  const soundscape = createSoundscape(scene);
 
   let autoplay = false;
   let evidenceVisible = false;
@@ -121,8 +186,11 @@ export async function createMemphisWhiteWallsScene(
       }
     }
 
-    updateWalkers(walkers, performance.now() / 1000);
-    updateSmoke(smokeNodes, performance.now() / 1000);
+    const time = performance.now() / 1000;
+    updateWalkers(walkers, time);
+    updateSmoke(smokeNodes, time);
+    updateBirds(birds, time);
+    animateMaterials(materials, time);
     const nearestStop = findNearestStop(manifest.stops, camera.position);
 
     if (nearestStop.id !== currentStop.id) {
@@ -146,6 +214,7 @@ export async function createMemphisWhiteWallsScene(
     },
     toggleNarrator() {
       narratorEnabled = !narratorEnabled;
+      soundscape.setEnabled(narratorEnabled);
       return narratorEnabled;
     },
     async enterVr() {
@@ -178,29 +247,104 @@ export async function createMemphisWhiteWallsScene(
 }
 
 function createMaterials(scene: Scene): SceneMaterials {
-  const sand = material(scene, "sand", Color3.FromHexString("#caa86f"));
-  sand.specularColor = Color3.Black();
+  const sand = material(scene, "sand", "#caa86f", {
+    textureName: "sand-grain.jpg",
+    uScale: 8,
+    vScale: 12,
+    roughness: 0.96,
+    bump: true,
+    bumpLevel: 0.08
+  });
+  const mudbrick = material(scene, "mudbrick", "#8f6541", {
+    textureName: "mudbrick-pbr.jpg",
+    uScale: 2.8,
+    vScale: 2.8,
+    roughness: 0.92,
+    bump: true,
+    bumpLevel: 0.1
+  });
+  const plaster = material(scene, "plaster", "#ece1c7", {
+    textureName: "plaster-aged.jpg",
+    uScale: 2.2,
+    vScale: 2.2,
+    roughness: 0.88,
+    bump: true,
+    bumpLevel: 0.05
+  });
+  const reed = material(scene, "reed", "#5c7d4b", {
+    textureName: "reed-bundle.jpg",
+    uScale: 1.7,
+    vScale: 2.8,
+    roughness: 0.86
+  });
+  const wood = material(scene, "wood", "#5b3828", {
+    textureName: "acacia-wood.jpg",
+    uScale: 1.5,
+    vScale: 3,
+    roughness: 0.72,
+    bump: true,
+    bumpLevel: 0.06
+  });
+  const linen = material(scene, "linen", "#eee5cf", {
+    textureName: "woven-linen.jpg",
+    uScale: 2.6,
+    vScale: 2.6,
+    roughness: 0.94,
+    bump: true,
+    bumpLevel: 0.045
+  });
+  const stone = material(scene, "whiteStone", "#d8d0bc", {
+    textureName: "limestone-cut.jpg",
+    uScale: 1.4,
+    vScale: 1.4,
+    roughness: 0.82
+  });
+  const limestone = material(scene, "limestone", "#cfc5ab", {
+    textureName: "limestone-cut.jpg",
+    uScale: 1.7,
+    vScale: 1.7,
+    roughness: 0.78,
+    bump: true,
+    bumpLevel: 0.04
+  });
+  const copper = material(scene, "copper", "#9b6543", {
+    textureName: "worn-copper.jpg",
+    roughness: 0.48,
+    metallic: 0.62
+  });
+  const shadow = material(scene, "deepShade", "#2a2620", {
+    alpha: 0.82,
+    roughness: 1
+  });
 
-  const mudbrick = material(scene, "mudbrick", Color3.FromHexString("#8f6541"));
-  const plaster = material(scene, "plaster", Color3.FromHexString("#ece1c7"));
-  const reed = material(scene, "reed", Color3.FromHexString("#5c7d4b"));
-  const wood = material(scene, "wood", Color3.FromHexString("#5b3828"));
-  const linen = material(scene, "linen", Color3.FromHexString("#eee5cf"));
-  const stone = material(scene, "whiteStone", Color3.FromHexString("#d8d0bc"));
-  const limestone = material(scene, "limestone", Color3.FromHexString("#cfc5ab"));
-  const copper = material(scene, "copper", Color3.FromHexString("#9b6543"));
-  const shadow = material(scene, "deepShade", Color3.FromHexString("#2a2620"));
-  shadow.alpha = 0.82;
+  const river = material(scene, "river", "#2b7f91", {
+    textureName: "nile-water.jpg",
+    uScale: 3,
+    vScale: 8,
+    alpha: 0.82,
+    roughness: 0.18
+  });
 
-  const river = material(scene, "river", Color3.FromHexString("#2b7f91"));
-  river.alpha = 0.78;
-  river.specularColor = Color3.FromHexString("#d7ffff");
+  const smoke = material(scene, "smoke", "#e4ded2", {
+    alpha: 0.18,
+    roughness: 1,
+    emissive: Color3.FromHexString("#7b7165")
+  });
+  smoke.backFaceCulling = false;
 
-  const smoke = material(scene, "smoke", Color3.FromHexString("#e4ded2"));
-  smoke.alpha = 0.22;
+  const ember = material(scene, "kilnEmber", "#e36b32", {
+    roughness: 0.55,
+    emissive: Color3.FromHexString("#f16f35")
+  });
 
-  const paint = material(scene, "paintedWall", Color3.White());
-  paint.diffuseTexture = createPaintedWallTexture(scene);
+  const paint = material(scene, "paintedWall", "#ffffff", {
+    textureName: "painted-relief-wall.jpg",
+    uScale: 1.05,
+    vScale: 1,
+    roughness: 0.72,
+    bump: true,
+    bumpLevel: 0.025
+  });
 
   return {
     sand,
@@ -216,57 +360,285 @@ function createMaterials(scene: Scene): SceneMaterials {
     paint,
     shadow,
     smoke,
+    ember,
     evidence: {
-      confirmed: material(scene, "evidenceConfirmed", Color3.FromHexString(evidenceColors.confirmed)),
-      inferred: material(scene, "evidenceInferred", Color3.FromHexString(evidenceColors.inferred)),
-      speculative: material(scene, "evidenceSpeculative", Color3.FromHexString(evidenceColors.speculative))
+      confirmed: material(scene, "evidenceConfirmed", evidenceColors.confirmed, {
+        emissive: Color3.FromHexString(evidenceColors.confirmed)
+      }),
+      inferred: material(scene, "evidenceInferred", evidenceColors.inferred, {
+        emissive: Color3.FromHexString(evidenceColors.inferred)
+      }),
+      speculative: material(scene, "evidenceSpeculative", evidenceColors.speculative, {
+        emissive: Color3.FromHexString(evidenceColors.speculative)
+      })
     }
   };
 }
 
-function material(scene: Scene, name: string, color: Color3): StandardMaterial {
-  const mat = new StandardMaterial(name, scene);
-  mat.diffuseColor = color;
-  mat.specularColor = new Color3(0.08, 0.07, 0.05);
+interface MaterialOptions {
+  textureName?: string;
+  uScale?: number;
+  vScale?: number;
+  roughness?: number;
+  metallic?: number;
+  alpha?: number;
+  bump?: boolean;
+  bumpLevel?: number;
+  emissive?: Color3;
+}
+
+function material(scene: Scene, name: string, color: string, options: MaterialOptions = {}): PBRMaterial {
+  const mat = new PBRMaterial(name, scene);
+  mat.albedoColor = Color3.FromHexString(color);
+  mat.metallic = options.metallic ?? 0;
+  mat.roughness = options.roughness ?? 0.82;
+  mat.environmentIntensity = 0.48;
+
+  if (options.textureName) {
+    mat.albedoTexture = createTiledTexture(scene, options.textureName, options.uScale ?? 1, options.vScale ?? 1);
+  }
+
+  if (options.bump && options.textureName) {
+    mat.bumpTexture = createTiledTexture(scene, options.textureName, options.uScale ?? 1, options.vScale ?? 1);
+    mat.bumpTexture.level = options.bumpLevel ?? 0.05;
+  }
+
+  if (options.alpha !== undefined) {
+    mat.alpha = options.alpha;
+  }
+
+  if (options.emissive) {
+    mat.emissiveColor = options.emissive;
+  }
+
   return mat;
 }
 
-function createPaintedWallTexture(scene: Scene): Texture {
-  const texture = new DynamicTexture("paintedWallBands", { width: 1024, height: 512 }, scene, false);
-  const ctx = texture.getContext();
-
-  ctx.fillStyle = "#ead9ad";
-  ctx.fillRect(0, 0, 1024, 512);
-
-  const bands = ["#2d7792", "#b64b38", "#e5b94c", "#1e5f4d"];
-  bands.forEach((color, index) => {
-    ctx.fillStyle = color;
-    ctx.fillRect(0, 54 + index * 32, 1024, 14);
-  });
-
-  for (let x = 44; x < 980; x += 116) {
-    ctx.fillStyle = "#1e5f4d";
-    ctx.fillRect(x, 230, 18, 128);
-    ctx.beginPath();
-    ctx.arc(x + 9, 208, 32, 0, Math.PI * 2);
-    ctx.fill();
-    ctx.fillStyle = "#b64b38";
-    ctx.fillRect(x - 20, 360, 58, 18);
-  }
-
-  ctx.fillStyle = "rgba(62, 43, 26, 0.34)";
-  for (let x = 18; x < 1024; x += 64) {
-    ctx.fillRect(x, 430, 32, 22);
-  }
-
-  texture.update();
+function createTiledTexture(scene: Scene, fileName: string, uScale: number, vScale: number): Texture {
+  const texture = new Texture(`${textureRoot}${fileName}`, scene, false, true, Texture.TRILINEAR_SAMPLINGMODE);
+  texture.uScale = uScale;
+  texture.vScale = vScale;
+  texture.wrapU = Texture.WRAP_ADDRESSMODE;
+  texture.wrapV = Texture.WRAP_ADDRESSMODE;
   return texture;
 }
 
+function createSkyDome(scene: Scene): void {
+  const sky = MeshBuilder.CreateSphere("goldenDesertSky", { diameter: 220, segments: 24, sideOrientation: Mesh.BACKSIDE }, scene);
+  const mat = new PBRMaterial("goldenDesertSkyMaterial", scene);
+  mat.unlit = true;
+  mat.albedoColor = Color3.FromHexString("#bfd9df");
+  mat.emissiveColor = Color3.FromHexString("#dcbf8a");
+  mat.backFaceCulling = false;
+  sky.material = mat;
+  sky.isPickable = false;
+}
+
+async function loadModularAssetKit(scene: Scene): Promise<void> {
+  try {
+    const response = await fetch(`${glbRoot}asset-kit.manifest.json`);
+
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.status}`);
+    }
+
+    const manifest = (await response.json()) as ModularAssetKitManifest;
+    const entriesById = new Map(manifest.assets.map((entry) => [entry.id, entry]));
+    const placements = createModularAssetPlacements();
+    const containers = new Map<string, Awaited<ReturnType<typeof SceneLoader.LoadAssetContainerAsync>>>();
+
+    await Promise.all(
+      [...new Set(placements.map((placement) => placement.assetId))].map(async (assetId) => {
+        const entry = entriesById.get(assetId);
+
+        if (!entry) {
+          console.warn(`Memphis GLB asset "${assetId}" is missing from the asset-kit manifest.`);
+          return;
+        }
+
+        const container = await SceneLoader.LoadAssetContainerAsync(glbRoot, entry.fileName, scene);
+        containers.set(assetId, container);
+      })
+    );
+
+    for (const placement of placements) {
+      const entry = entriesById.get(placement.assetId);
+      const container = containers.get(placement.assetId);
+
+      if (!entry || !container) {
+        continue;
+      }
+
+      const instance = container.instantiateModelsToScene((sourceName) => `${placement.name}-${sourceName}`, false);
+      const root = new TransformNode(placement.name, scene);
+      root.position.copyFrom(placement.position);
+      root.rotation.y = placement.rotationY ?? 0;
+      root.scaling.setAll(placement.scale ?? 1);
+      root.metadata = {
+        category: entry.category,
+        evidenceLevel: entry.evidenceLevel,
+        runtimeAssetId: entry.runtimeAssetId
+      };
+
+      for (const node of instance.rootNodes) {
+        node.parent = root;
+      }
+
+      for (const mesh of root.getChildMeshes(false)) {
+        mesh.checkCollisions = placement.collides ?? false;
+        mesh.isPickable = false;
+
+        if (!placement.collides) {
+          mesh.freezeWorldMatrix();
+        }
+      }
+    }
+  } catch (error) {
+    console.warn("Memphis modular GLB asset kit could not be loaded.", error);
+  }
+}
+
+function createModularAssetPlacements(): ModularAssetPlacement[] {
+  return [
+    {
+      assetId: "nile-boat-large",
+      name: "glbNileBoatLandingMain",
+      position: new Vector3(-47.4, 0.16, -51.6),
+      rotationY: 0.06,
+      scale: 1.12
+    },
+    {
+      assetId: "nile-boat-large",
+      name: "glbNileBoatMooredNorth",
+      position: new Vector3(-51.8, 0.13, -24),
+      rotationY: -0.18,
+      scale: 0.82
+    },
+    {
+      assetId: "nile-boat-large",
+      name: "glbNileBoatMooredSouth",
+      position: new Vector3(-49.6, 0.12, 23.5),
+      rotationY: 0.14,
+      scale: 0.9
+    },
+    {
+      assetId: "date-palm-cluster",
+      name: "glbPalmClusterLanding",
+      position: new Vector3(-33.6, 0, -24.5),
+      rotationY: 0.35,
+      scale: 1.12
+    },
+    {
+      assetId: "date-palm-cluster",
+      name: "glbPalmClusterMidBank",
+      position: new Vector3(-33.2, 0, 6),
+      rotationY: -0.45,
+      scale: 0.96
+    },
+    {
+      assetId: "date-palm-cluster",
+      name: "glbPalmClusterFarBank",
+      position: new Vector3(-32.7, 0, 33),
+      rotationY: 0.18,
+      scale: 0.82
+    },
+    ...[-63, -43, -23, -3, 17, 37, 57].map((z, index) => ({
+      assetId: "reed-bank-cluster",
+      name: `glbReedBank-${index}`,
+      position: new Vector3(-36.1 + (index % 2) * 0.5, 0, z),
+      rotationY: index * 0.38,
+      scale: 0.82 + (index % 3) * 0.08
+    })),
+    {
+      assetId: "mudbrick-house-cluster",
+      name: "glbStreetHousesSouth",
+      position: new Vector3(-17.4, 0, -28),
+      rotationY: 0.03,
+      scale: 1.02,
+      collides: true
+    },
+    {
+      assetId: "mudbrick-house-cluster",
+      name: "glbStreetHousesMiddle",
+      position: new Vector3(-4.2, 0, -11.5),
+      rotationY: Math.PI,
+      scale: 0.92,
+      collides: true
+    },
+    {
+      assetId: "mudbrick-house-cluster",
+      name: "glbStreetHousesNorth",
+      position: new Vector3(-15.8, 0, 17),
+      rotationY: -0.08,
+      scale: 1.08,
+      collides: true
+    },
+    {
+      assetId: "residential-market-details",
+      name: "glbStreetDetailsSouth",
+      position: new Vector3(-10.8, 0.02, -24.5),
+      rotationY: 0.22,
+      scale: 1
+    },
+    {
+      assetId: "residential-market-details",
+      name: "glbStreetDetailsMiddle",
+      position: new Vector3(-9, 0.02, -1.5),
+      rotationY: -0.1,
+      scale: 0.88
+    },
+    {
+      assetId: "residential-market-details",
+      name: "glbStreetDetailsNorth",
+      position: new Vector3(-11.5, 0.02, 22.5),
+      rotationY: 0.36,
+      scale: 0.96
+    },
+    {
+      assetId: "street-npc-placeholders",
+      name: "glbNileArrivalNpcGroup",
+      position: new Vector3(-30.2, 0, -48.2),
+      rotationY: Math.PI / 2,
+      scale: 0.94
+    },
+    {
+      assetId: "street-npc-placeholders",
+      name: "glbStreetNpcGroup",
+      position: new Vector3(-7.2, 0, 8),
+      rotationY: -0.18,
+      scale: 0.86
+    }
+  ];
+}
+
+function animateMaterials(materials: SceneMaterials, time: number): void {
+  const waterTexture = materials.river.albedoTexture;
+  if (waterTexture instanceof Texture) {
+    waterTexture.uOffset = time * 0.012;
+    waterTexture.vOffset = Math.sin(time * 0.12) * 0.035;
+  }
+
+  materials.river.alpha = 0.78 + Math.sin(time * 0.7) * 0.035;
+}
+
 function createBaseDistrict(scene: Scene, materials: SceneMaterials): Mesh {
-  const ground = MeshBuilder.CreateGround("districtGround", { width: 96, height: 150, subdivisions: 8 }, scene);
+  const ground = MeshBuilder.CreateGround("districtGround", { width: 96, height: 150, subdivisions: 16 }, scene);
   ground.material = materials.sand;
   ground.checkCollisions = true;
+
+  for (let index = 0; index < 7; index += 1) {
+    const mound = MeshBuilder.CreateSphere(`distantSandMound-${index}`, {
+      diameterX: 18 + index * 2,
+      diameterY: 1.8 + (index % 2) * 0.7,
+      diameterZ: 7 + (index % 3) * 2,
+      segments: 12
+    }, scene);
+    mound.position = new Vector3(18 + index * 9, -0.45, -62 + index * 19);
+    mound.rotation.y = index * 0.42;
+    mound.material = materials.sand;
+    mound.isPickable = false;
+  }
+
   return ground;
 }
 
@@ -275,6 +647,15 @@ function createNileEdge(scene: Scene, materials: SceneMaterials): void {
   river.position.x = -53;
   river.position.y = 0.015;
   river.material = materials.river;
+
+  const wetBank = MeshBuilder.CreateGround("wetNileBank", { width: 8, height: 158, subdivisions: 4 }, scene);
+  wetBank.position.x = -35.8;
+  wetBank.position.y = 0.025;
+  wetBank.material = materials.reed;
+
+  for (let index = 0; index < 9; index += 1) {
+    createWaterHighlight(scene, materials, new Vector3(-55 + Math.sin(index) * 5, 0.035, -64 + index * 15.5), index);
+  }
 
   const quay = MeshBuilder.CreateBox("riverLandingQuay", { width: 7, height: 0.34, depth: 17 }, scene);
   quay.position = new Vector3(-33.5, 0.17, -47);
@@ -293,33 +674,6 @@ function createNileEdge(scene: Scene, materials: SceneMaterials): void {
     post.material = materials.wood;
   }
 
-  for (let z = -66; z < 62; z += 7) {
-    const reed = MeshBuilder.CreateCylinder(`reed-${z}`, { height: 1.6, diameter: 0.08 }, scene);
-    reed.position = new Vector3(-36 + Math.sin(z) * 1.2, 0.8, z);
-    reed.rotation.z = Math.sin(z * 0.2) * 0.18;
-    reed.material = materials.reed;
-  }
-
-  for (let index = 0; index < 3; index += 1) {
-    const boatRoot = new TransformNode(`boat-${index}`, scene);
-    boatRoot.position = new Vector3(-47 - index * 4, 0.22, -52 + index * 29);
-
-    const hull = MeshBuilder.CreateBox(`boat-hull-${index}`, { width: 5.4, depth: 1.2, height: 0.34 }, scene);
-    hull.parent = boatRoot;
-    hull.material = materials.wood;
-
-    const mast = MeshBuilder.CreateCylinder(`boat-mast-${index}`, { height: 2.6, diameter: 0.08 }, scene);
-    mast.position.y = 1.38;
-    mast.parent = boatRoot;
-    mast.material = materials.wood;
-
-    const sail = MeshBuilder.CreatePlane(`boat-sail-${index}`, { width: 1.4, height: 1.8 }, scene);
-    sail.position = new Vector3(0.52, 1.42, 0);
-    sail.rotation.y = Math.PI / 2;
-    sail.parent = boatRoot;
-    sail.material = materials.linen;
-  }
-
   for (let index = 0; index < 10; index += 1) {
     const jar = MeshBuilder.CreateCylinder(`landingJar-${index}`, {
       height: 0.68,
@@ -329,6 +683,10 @@ function createNileEdge(scene: Scene, materials: SceneMaterials): void {
     }, scene);
     jar.position = new Vector3(-28 + (index % 5) * 0.9, 0.34, -51 + Math.floor(index / 5) * 2.5);
     jar.material = materials.mudbrick;
+  }
+
+  for (let index = 0; index < 4; index += 1) {
+    createBasket(scene, materials, new Vector3(-30.6 + index * 1.15, 0.24, -55.6));
   }
 }
 
@@ -348,7 +706,13 @@ function createResidentialStreet(scene: Scene, materials: SceneMaterials): void 
       const awning = MeshBuilder.CreateBox(`awning-${index}`, { width: 5.6, height: 0.08, depth: 2.4 }, scene);
       awning.position = new Vector3(-10.6, 2.35, z + 1);
       awning.rotation.z = 0.08;
+      awning.rotation.x = index % 4 === 0 ? 0.06 : -0.04;
       awning.material = materials.linen;
+
+      const rope = MeshBuilder.CreateCylinder(`awningRope-${index}`, { height: 5.8, diameter: 0.035, tessellation: 6 }, scene);
+      rope.position = new Vector3(-10.6, 2.29, z - 0.25);
+      rope.rotation.z = Math.PI / 2;
+      rope.material = materials.wood;
     }
 
     if (index % 3 === 1) {
@@ -380,6 +744,14 @@ function createResidentialStreet(scene: Scene, materials: SceneMaterials): void 
     bin.position = new Vector3(-22 + index * 1.7, 0.68, 21);
     bin.material = materials.plaster;
   }
+
+  for (let index = 0; index < 9; index += 1) {
+    createFloorMat(scene, materials, new Vector3(-12.5 + (index % 3) * 3.2, 0.08, -19 + Math.floor(index / 3) * 13));
+  }
+
+  for (let index = 0; index < 8; index += 1) {
+    createBasket(scene, materials, new Vector3(-5.2 + (index % 4) * 1.3, 0.24, -22 + Math.floor(index / 4) * 19));
+  }
 }
 
 function createMudbrickHouse(scene: Scene, materials: SceneMaterials, position: Vector3, size: Vector3): void {
@@ -407,6 +779,22 @@ function createMudbrickHouse(scene: Scene, materials: SceneMaterials, position: 
   }, scene);
   doorway.position = new Vector3(position.x + size.x / 2 + 0.03, 0.78, position.z - size.z * 0.2);
   doorway.material = materials.shadow;
+
+  const roofLip = MeshBuilder.CreateBox(`house-rooflip-${position.x}-${position.z}`, {
+    width: size.x + 0.24,
+    height: 0.18,
+    depth: size.z + 0.24
+  }, scene);
+  roofLip.position = new Vector3(position.x, position.y + size.y / 2 + 0.11, position.z);
+  roofLip.material = materials.plaster;
+
+  const smallWindow = MeshBuilder.CreateBox(`house-window-${position.x}-${position.z}`, {
+    width: 0.62,
+    height: 0.42,
+    depth: 0.07
+  }, scene);
+  smallWindow.position = new Vector3(position.x - size.x / 2 - 0.03, position.y + 0.38, position.z + size.z * 0.24);
+  smallWindow.material = materials.shadow;
 }
 
 function createWhiteWallsThreshold(scene: Scene, materials: SceneMaterials): void {
@@ -462,13 +850,20 @@ function createCraftsmenArea(scene: Scene, materials: SceneMaterials): void {
 
     const shade = MeshBuilder.CreateBox(`craftShade-${index}`, { width: 3.4, height: 0.08, depth: 2.4 }, scene);
     shade.position = new Vector3(table.position.x, 2.28, table.position.z);
+    shade.rotation.x = Math.sin(index) * 0.06;
     shade.material = materials.linen;
+
+    createBasket(scene, materials, new Vector3(table.position.x - 1.25, 0.24, table.position.z + 1.1));
   }
 
   for (let index = 0; index < 6; index += 1) {
     const kiln = MeshBuilder.CreateCylinder(`kiln-${index}`, { height: 1.3, diameter: 1.25, tessellation: 18 }, scene);
     kiln.position = new Vector3(18, 0.65, 0 + index * 5.2);
     kiln.material = materials.mudbrick;
+
+    const mouth = MeshBuilder.CreateBox(`kilnMouth-${index}`, { width: 0.52, height: 0.34, depth: 0.08 }, scene);
+    mouth.position = new Vector3(17.38, 0.43, 0 + index * 5.2);
+    mouth.material = index % 2 === 0 ? materials.ember : materials.shadow;
   }
 
   for (let index = 0; index < 18; index += 1) {
@@ -492,6 +887,13 @@ function createCraftsmenArea(scene: Scene, materials: SceneMaterials): void {
     tool.rotation.y = 0.4 + index * 0.2;
     tool.material = materials.copper;
   }
+
+  for (let index = 0; index < 5; index += 1) {
+    const chip = MeshBuilder.CreateBox(`limestoneChip-${index}`, { width: 0.32, height: 0.11, depth: 0.22 }, scene);
+    chip.position = new Vector3(10.2 + index * 0.54, 0.08, 29.1 + Math.sin(index) * 0.5);
+    chip.rotation.y = index * 0.7;
+    chip.material = materials.limestone;
+  }
 }
 
 function createTemple(scene: Scene, materials: SceneMaterials): void {
@@ -510,6 +912,9 @@ function createTemple(scene: Scene, materials: SceneMaterials): void {
   gateLintel.position = new Vector3(0, 3.5, 48);
   gateLintel.material = materials.plaster;
 
+  createReliefPanel(scene, materials, new Vector3(-4.1, 2.25, 47.2), new Vector3(3.4, 1.3, 0.08), "ptahGateReliefWest");
+  createReliefPanel(scene, materials, new Vector3(4.1, 2.25, 47.2), new Vector3(3.4, 1.3, 0.08), "ptahGateReliefEast");
+
   for (let side = -1; side <= 1; side += 2) {
     for (let index = 0; index < 3; index += 1) {
       const post = MeshBuilder.CreateCylinder(`ptahCourtTimberPost-${side}-${index}`, {
@@ -520,6 +925,10 @@ function createTemple(scene: Scene, materials: SceneMaterials): void {
       post.position = new Vector3(side * 5.8, 1.6, 57 + index * 6.2);
       post.material = materials.wood;
       post.checkCollisions = true;
+
+      const banner = MeshBuilder.CreateBox(`ptahCourtBanner-${side}-${index}`, { width: 0.08, height: 1.35, depth: 0.72 }, scene);
+      banner.position = new Vector3(side * 5.8, 2.6, 57 + index * 6.2);
+      banner.material = index % 2 === 0 ? materials.linen : materials.paint;
     }
   }
 
@@ -557,6 +966,10 @@ function createTemple(scene: Scene, materials: SceneMaterials): void {
   altar.position = new Vector3(0, 0.4, 89);
   altar.material = materials.limestone;
 
+  createOfferingSet(scene, materials, new Vector3(0, 0.84, 88.4));
+  createBrazier(scene, materials, new Vector3(-2.4, 0.4, 89.9), "leftShrineBrazier");
+  createBrazier(scene, materials, new Vector3(2.4, 0.4, 89.9), "rightShrineBrazier");
+
   const cultBlock = MeshBuilder.CreateBox("ptahCultFocusBlock", { width: 1.4, height: 1.8, depth: 0.9 }, scene);
   cultBlock.position = new Vector3(0, 0.9, 93);
   cultBlock.material = materials.stone;
@@ -582,6 +995,115 @@ function createPaintedWall(scene: Scene, materials: SceneMaterials, name: string
   wall.position = position;
   wall.material = materials.paint;
   wall.checkCollisions = true;
+}
+
+function createWaterHighlight(scene: Scene, materials: SceneMaterials, position: Vector3, index: number): void {
+  const glint = MeshBuilder.CreateBox(`nileGlint-${index}`, {
+    width: 6.5 + (index % 3) * 1.8,
+    height: 0.018,
+    depth: 0.08
+  }, scene);
+  glint.position = position;
+  glint.rotation.y = Math.sin(index) * 0.18;
+  glint.material = materials.linen;
+  glint.isPickable = false;
+}
+
+function createDatePalm(scene: Scene, materials: SceneMaterials, position: Vector3, scale: number): void {
+  const trunk = MeshBuilder.CreateCylinder(`datePalmTrunk-${position.z}`, {
+    height: 4.8 * scale,
+    diameterTop: 0.32 * scale,
+    diameterBottom: 0.48 * scale,
+    tessellation: 9
+  }, scene);
+  trunk.position = new Vector3(position.x, 2.4 * scale, position.z);
+  trunk.rotation.z = Math.sin(position.z) * 0.08;
+  trunk.material = materials.wood;
+
+  for (let index = 0; index < 8; index += 1) {
+    const leaf = MeshBuilder.CreatePlane(`datePalmLeaf-${position.z}-${index}`, {
+      width: 0.62 * scale,
+      height: 3.2 * scale,
+      sideOrientation: Mesh.DOUBLESIDE
+    }, scene);
+    leaf.position = new Vector3(position.x, 4.75 * scale, position.z);
+    leaf.rotation.y = (Math.PI * 2 * index) / 8;
+    leaf.rotation.x = Math.PI / 2.8;
+    leaf.rotation.z = 0.22 + Math.sin(index) * 0.12;
+    leaf.material = materials.reed;
+    leaf.isPickable = false;
+  }
+}
+
+function createBasket(scene: Scene, materials: SceneMaterials, position: Vector3): void {
+  const basket = MeshBuilder.CreateCylinder(`basket-${position.x}-${position.z}`, {
+    height: 0.48,
+    diameterTop: 0.72,
+    diameterBottom: 0.54,
+    tessellation: 14
+  }, scene);
+  basket.position = position;
+  basket.material = materials.reed;
+
+  const rim = MeshBuilder.CreateTorus(`basketRim-${position.x}-${position.z}`, {
+    diameter: 0.72,
+    thickness: 0.045,
+    tessellation: 18
+  }, scene);
+  rim.position = new Vector3(position.x, position.y + 0.24, position.z);
+  rim.material = materials.wood;
+}
+
+function createFloorMat(scene: Scene, materials: SceneMaterials, position: Vector3): void {
+  const mat = MeshBuilder.CreateBox(`wovenMat-${position.x}-${position.z}`, { width: 2.2, height: 0.035, depth: 1.18 }, scene);
+  mat.position = position;
+  mat.rotation.y = Math.sin(position.z) * 0.45;
+  mat.material = materials.linen;
+}
+
+function createReliefPanel(scene: Scene, materials: SceneMaterials, position: Vector3, size: Vector3, name: string): void {
+  const panel = MeshBuilder.CreateBox(name, { width: size.x, height: size.y, depth: size.z }, scene);
+  panel.position = position;
+  panel.material = materials.paint;
+}
+
+function createOfferingSet(scene: Scene, materials: SceneMaterials, position: Vector3): void {
+  for (let index = 0; index < 5; index += 1) {
+    const vessel = MeshBuilder.CreateCylinder(`offeringCup-${index}`, {
+      height: 0.34,
+      diameterTop: 0.28,
+      diameterBottom: 0.18,
+      tessellation: 14
+    }, scene);
+    vessel.position = new Vector3(position.x - 0.82 + index * 0.42, position.y, position.z);
+    vessel.material = index % 2 === 0 ? materials.copper : materials.limestone;
+  }
+
+  for (let index = 0; index < 4; index += 1) {
+    const loaf = MeshBuilder.CreateSphere(`offeringLoaf-${index}`, {
+      diameterX: 0.34,
+      diameterY: 0.18,
+      diameterZ: 0.24,
+      segments: 10
+    }, scene);
+    loaf.position = new Vector3(position.x - 0.48 + index * 0.32, position.y + 0.26, position.z + 0.36);
+    loaf.material = materials.mudbrick;
+  }
+}
+
+function createBrazier(scene: Scene, materials: SceneMaterials, position: Vector3, name: string): void {
+  const bowl = MeshBuilder.CreateCylinder(name, {
+    height: 0.34,
+    diameterTop: 0.72,
+    diameterBottom: 0.48,
+    tessellation: 18
+  }, scene);
+  bowl.position = position;
+  bowl.material = materials.copper;
+
+  const ember = MeshBuilder.CreateSphere(`${name}Ember`, { diameter: 0.38, segments: 12 }, scene);
+  ember.position = new Vector3(position.x, position.y + 0.22, position.z);
+  ember.material = materials.ember;
 }
 
 function createRouteLine(scene: Scene, manifest: TourManifest, materials: SceneMaterials): void {
@@ -686,6 +1208,125 @@ function updateSmoke(nodes: TransformNode[], time: number): void {
     node.position.y = 1.1 + index * 0.32 + Math.sin(time * 0.7 + index) * 0.18;
     node.scaling.setAll(0.84 + Math.sin(time * 0.55 + index) * 0.08);
   });
+}
+
+function createBirds(scene: Scene, materials: SceneMaterials): BirdRoutine[] {
+  return Array.from({ length: 7 }, (_, index) => {
+    const root = new TransformNode(`distantBird-${index}`, scene);
+    const wingColor = index % 2 === 0 ? "#4d4333" : "#5d5948";
+
+    const leftWing = MeshBuilder.CreateLines(`distantBirdLeftWing-${index}`, {
+      points: [new Vector3(0, 0, 0), new Vector3(-0.55, 0.12, 0.18)]
+    }, scene);
+    leftWing.color = Color3.FromHexString(wingColor);
+    leftWing.parent = root;
+
+    const rightWing = MeshBuilder.CreateLines(`distantBirdRightWing-${index}`, {
+      points: [new Vector3(0, 0, 0), new Vector3(0.55, 0.12, 0.18)]
+    }, scene);
+    rightWing.color = Color3.FromHexString(wingColor);
+    rightWing.parent = root;
+
+    const body = MeshBuilder.CreateSphere(`distantBirdBody-${index}`, { diameter: 0.08, segments: 6 }, scene);
+    body.material = materials.shadow;
+    body.parent = root;
+
+    return {
+      root,
+      radius: 44 + index * 3.7,
+      height: 14 + (index % 3) * 2.1,
+      speed: 0.035 + index * 0.006,
+      phase: index * 1.17
+    };
+  });
+}
+
+function updateBirds(birds: BirdRoutine[], time: number): void {
+  birds.forEach((bird) => {
+    const angle = time * bird.speed + bird.phase;
+    bird.root.position = new Vector3(
+      Math.sin(angle) * bird.radius - 8,
+      bird.height + Math.sin(time * 1.4 + bird.phase) * 0.6,
+      Math.cos(angle * 0.86) * 52 + 18
+    );
+    bird.root.rotation.y = -angle + Math.PI / 2;
+    bird.root.scaling.setAll(0.9 + Math.sin(time * 5.4 + bird.phase) * 0.08);
+  });
+}
+
+function createSoundscape(scene: Scene): Soundscape {
+  const loops: AmbientLoop[] = [
+    { fileName: "nile-water-boats.wav", volume: 0.52 },
+    { fileName: "birds-wind-insects.wav", volume: 0.28 },
+    { fileName: "market-craft-murmur.wav", volume: 0.42 },
+    { fileName: "temple-incense-chant.wav", volume: 0.34 },
+    { fileName: "dust-footsteps.wav", volume: 0.18 }
+  ];
+
+  loops.forEach((loop) => {
+    ensureAudio(loop);
+  });
+
+  scene.onDisposeObservable.add(() => {
+    loops.forEach((loop) => {
+      loop.element?.pause();
+    });
+  });
+
+  return {
+    setEnabled(enabled: boolean) {
+      loops.forEach((loop) => {
+        const audio = ensureAudio(loop);
+
+        if (!audio) {
+          return;
+        }
+
+        if (enabled) {
+          audio.volume = loop.volume;
+          audio.dataset.soundscapeState = "play-requested";
+          void audio.play().catch((error: unknown) => {
+            audio.dataset.soundscapeState = "blocked";
+            console.warn("Soundscape playback was blocked by the browser.", error);
+          }).then(() => {
+            if (!audio.paused) {
+              audio.dataset.soundscapeState = "playing";
+            }
+          });
+        } else {
+          audio.pause();
+          audio.dataset.soundscapeState = "paused";
+        }
+      });
+    }
+  };
+}
+
+function ensureAudio(loop: AmbientLoop): HTMLAudioElement | undefined {
+  if (loop.element) {
+    return loop.element;
+  }
+
+  if (typeof document === "undefined") {
+    return undefined;
+  }
+
+  const audio =
+    document.querySelector<HTMLAudioElement>(`audio[data-soundscape-file="${loop.fileName}"]`) ??
+    document.createElement("audio");
+
+  if (!audio.parentElement) {
+    audio.dataset.soundscapeFile = loop.fileName;
+    audio.src = `${audioRoot}${loop.fileName}`;
+    document.body.append(audio);
+  }
+
+  audio.loop = true;
+  audio.preload = "auto";
+  audio.volume = loop.volume;
+  audio.load();
+  loop.element = audio;
+  return audio;
 }
 
 function sampleRoute(points: Vector3[], progress: number): Vector3 {

@@ -296,6 +296,22 @@ button {
   display: none;
 }
 
+.soundscape-audio {
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.soundscape-audio audio {
+  width: 1px;
+  height: 1px;
+}
+
 @media (max-width: 640px) {
   .hud {
     inset: 10px 10px auto 10px;

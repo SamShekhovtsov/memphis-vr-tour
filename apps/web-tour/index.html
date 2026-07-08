@@ -35,8 +35,8 @@
           <span>Evidence</span>
         </button>
         <button id="toggleNarrator" type="button" aria-pressed="false">
-          <i data-lucide="headphones" aria-hidden="true"></i>
-          <span>Narrator</span>
+          <i data-lucide="volume-2" aria-hidden="true"></i>
+          <span>Soundscape</span>
         </button>
         <button id="enterVr" type="button">
           <i data-lucide="glasses" aria-hidden="true"></i>
@@ -73,6 +73,14 @@
         </div>
       </section>
     </main>
+
+    <div id="soundscapeAudio" class="soundscape-audio" aria-hidden="true">
+      <audio data-soundscape-file="nile-water-boats.wav" preload="auto" loop src="/assets/generated/audio/nile-water-boats.wav"></audio>
+      <audio data-soundscape-file="birds-wind-insects.wav" preload="auto" loop src="/assets/generated/audio/birds-wind-insects.wav"></audio>
+      <audio data-soundscape-file="market-craft-murmur.wav" preload="auto" loop src="/assets/generated/audio/market-craft-murmur.wav"></audio>
+      <audio data-soundscape-file="temple-incense-chant.wav" preload="auto" loop src="/assets/generated/audio/temple-incense-chant.wav"></audio>
+      <audio data-soundscape-file="dust-footsteps.wav" preload="auto" loop src="/assets/generated/audio/dust-footsteps.wav"></audio>
+    </div>
 
     <aside id="errorPanel" class="error-panel" role="alert" hidden></aside>
 

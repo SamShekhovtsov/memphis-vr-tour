@@ -1,0 +1,95 @@
+{
+  "$schema": "./reference-pack.schema.json",
+  "id": "memphis-white-walls-beauty-pass-v1",
+  "checkedDate": "2026-07-08",
+  "scope": "License-safe visual and audio direction for Ancient Memphis: A Walk Through the White Walls, focused on early Ptah / Hwt-ka-Ptah precinct and Kom el-Fakhry / Mit Rahina settlement evidence.",
+  "policy": [
+    "Use CC0, public-domain, owned, commissioned, or explicitly permitted source media for dataset/fine-tuning experiments.",
+    "Use restricted site-specific pages only as human research references and evidence notes.",
+    "Runtime assets in this pass are generated procedurally by the project and do not copy source media pixels, scans, photos, video frames, or audio."
+  ],
+  "approvedReferenceSources": [
+    {
+      "sourceId": "met-open-access",
+      "useType": "dataset-ok",
+      "role": "Broad Egyptian object, relief, clothing, tool, animal, and material-culture visual study."
+    },
+    {
+      "sourceId": "met-old-kingdom-cattle-relief",
+      "useType": "dataset-ok",
+      "role": "Old Kingdom relief color, line rhythm, figures, clothing, animals, and agricultural ambience."
+    },
+    {
+      "sourceId": "cleveland-open-access",
+      "useType": "dataset-ok",
+      "role": "CC0 Egyptian collection references for objects, relief fragments, and material details."
+    },
+    {
+      "sourceId": "smithsonian-open-access",
+      "useType": "dataset-ok",
+      "role": "CC0 2D/3D object references where Egyptian material is relevant."
+    },
+    {
+      "sourceId": "natural-earth",
+      "useType": "dataset-ok",
+      "role": "Broad geospatial and landscape orientation only."
+    },
+    {
+      "sourceId": "unesco-memphis-necropolis",
+      "useType": "human-reference",
+      "role": "Memphis and Mit Rahina landscape context; not media training input."
+    },
+    {
+      "sourceId": "aera-memphis",
+      "useType": "human-reference",
+      "role": "Kom el-Fakhry, Mit Rahina, Ptah precinct, and archaeological framing; not media training input."
+    },
+    {
+      "sourceId": "sfar-kom-el-fakhry",
+      "useType": "human-reference",
+      "role": "Kom el-Fakhry project context; not media training input."
+    },
+    {
+      "sourceId": "british-museum-ptah-temple-term",
+      "useType": "human-reference",
+      "role": "Hwt-ka-Ptah / Great Temple of Memphis identifier; not image training input."
+    },
+    {
+      "sourceId": "mota-ptah-blocks",
+      "useType": "human-reference",
+      "role": "Official Ptah precinct context; not media training input."
+    },
+    {
+      "sourceId": "tla-earlier-egyptian-hf",
+      "useType": "dataset-ok",
+      "role": "Future text/language tooling for verified inscriptions and transliteration, not speech audio in this pass."
+    }
+  ],
+  "runtimeAssetTargets": [
+    {
+      "id": "mudbrick-pbr",
+      "evidenceLevel": "inferred",
+      "description": "Sun-baked mudbrick, plaster dust, mortar seams, and surface roughness for houses and low walls."
+    },
+    {
+      "id": "plaster-limestone-pbr",
+      "evidenceLevel": "inferred",
+      "description": "White Walls threshold, Ptah precinct exterior, cut limestone, and worn plaster."
+    },
+    {
+      "id": "painted-relief-surfaces",
+      "evidenceLevel": "speculative",
+      "description": "Decorative painted shrine texture inspired by Old Kingdom visual language, without copying source media or claiming exact Memphis iconography."
+    },
+    {
+      "id": "river-and-reed-materials",
+      "evidenceLevel": "inferred",
+      "description": "Nile-side water, reeds, boats, mooring posts, baskets, and cloth surfaces."
+    },
+    {
+      "id": "soundscape-loops",
+      "evidenceLevel": "speculative",
+      "description": "Synthetic Nile, birds, market, footsteps, and temple ambience; no copied recordings and no claimed authentic ancient speech."
+    }
+  ]
+}

@@ -100,6 +100,8 @@ export interface RuntimeAssetRecord {
   label: string;
   assetType: RuntimeAssetType;
   origin: RuntimeAssetOrigin;
+  runtimeUrl?: string;
+  generatedBy?: string;
   evidenceLevel: EvidenceLevel;
   runtimeAllowed: boolean;
   sourceIds: readonly string[];

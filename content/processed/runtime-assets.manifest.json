@@ -1,7 +1,7 @@
 {
   "$schema": "../scene-data/runtime-assets.schema.json",
   "tourId": "memphis-white-walls-early-kingdom",
-  "checkedDate": "2026-07-07",
+  "checkedDate": "2026-07-08",
   "assets": [
     {
       "id": "procedural-nile-landing",
@@ -49,18 +49,168 @@
       ]
     },
     {
-      "id": "procedural-painted-shrine-surfaces",
-      "label": "Procedural painted shrine surfaces",
-      "assetType": "material",
-      "origin": "procedural",
+      "id": "generated-sand-grain-texture",
+      "label": "Generated sand and packed-earth texture",
+      "assetType": "texture",
+      "origin": "generated",
+      "runtimeUrl": "/assets/generated/textures/sand-grain.jpg",
+      "generatedBy": "tools/generate-runtime-assets.mjs",
+      "evidenceLevel": "inferred",
+      "runtimeAllowed": true,
+      "sourceIds": [],
+      "referenceSourceIds": ["natural-earth", "met-open-access"],
+      "licenseStatus": "Project-generated synthetic texture; no source media copied.",
+      "notes": [
+        "Used as base terrain material.",
+        "Broad visual direction comes from the reference pack, not copied pixels."
+      ]
+    },
+    {
+      "id": "generated-mudbrick-texture",
+      "label": "Generated mudbrick PBR-style texture",
+      "assetType": "texture",
+      "origin": "generated",
+      "runtimeUrl": "/assets/generated/textures/mudbrick-pbr.jpg",
+      "generatedBy": "tools/generate-runtime-assets.mjs",
+      "evidenceLevel": "inferred",
+      "runtimeAllowed": true,
+      "sourceIds": [],
+      "referenceSourceIds": ["met-open-access", "cleveland-open-access", "aera-memphis", "sfar-kom-el-fakhry"],
+      "licenseStatus": "Project-generated synthetic texture; no source media copied.",
+      "notes": [
+        "Used for houses, low walls, kilns, ramps, and storage vessels."
+      ]
+    },
+    {
+      "id": "generated-plaster-texture",
+      "label": "Generated aged plaster texture",
+      "assetType": "texture",
+      "origin": "generated",
+      "runtimeUrl": "/assets/generated/textures/plaster-aged.jpg",
+      "generatedBy": "tools/generate-runtime-assets.mjs",
+      "evidenceLevel": "inferred",
+      "runtimeAllowed": true,
+      "sourceIds": [],
+      "referenceSourceIds": ["met-open-access", "cleveland-open-access"],
+      "licenseStatus": "Project-generated synthetic texture; no source media copied.",
+      "notes": [
+        "Used for White Walls threshold, courtyards, and precinct plaster surfaces."
+      ]
+    },
+    {
+      "id": "generated-limestone-texture",
+      "label": "Generated limestone block texture",
+      "assetType": "texture",
+      "origin": "generated",
+      "runtimeUrl": "/assets/generated/textures/limestone-cut.jpg",
+      "generatedBy": "tools/generate-runtime-assets.mjs",
+      "evidenceLevel": "inferred",
+      "runtimeAllowed": true,
+      "sourceIds": [],
+      "referenceSourceIds": ["met-open-access", "cleveland-open-access", "smithsonian-open-access"],
+      "licenseStatus": "Project-generated synthetic texture; no source media copied.",
+      "notes": [
+        "Used for temple approach, quay, piers, altar, and offering table."
+      ]
+    },
+    {
+      "id": "generated-painted-relief-texture",
+      "label": "Generated painted shrine wall texture",
+      "assetType": "texture",
+      "origin": "generated",
+      "runtimeUrl": "/assets/generated/textures/painted-relief-wall.jpg",
+      "generatedBy": "tools/generate-runtime-assets.mjs",
       "evidenceLevel": "speculative",
       "runtimeAllowed": true,
       "sourceIds": [],
-      "referenceSourceIds": ["met-open-access", "met-old-kingdom-cattle-relief", "cleveland-open-access", "smithsonian-open-access"],
-      "licenseStatus": "Project-authored material colors and simple motifs; no museum media copied.",
+      "referenceSourceIds": ["met-open-access", "met-old-kingdom-cattle-relief", "cleveland-open-access"],
+      "licenseStatus": "Project-generated synthetic texture; no source media copied.",
       "notes": [
-        "Future source-derived textures must use sourceIds and item-level licenses.",
-        "For now, motifs remain decorative and non-textual."
+        "Decorative wall language only; it does not claim exact early Memphis iconography.",
+        "No museum image, scan, paper plate, or video frame was copied."
+      ]
+    },
+    {
+      "id": "generated-reed-linen-wood-copper-textures",
+      "label": "Generated reed, linen, wood, and copper material textures",
+      "assetType": "texture",
+      "origin": "generated",
+      "runtimeUrl": "/assets/generated/textures/",
+      "generatedBy": "tools/generate-runtime-assets.mjs",
+      "evidenceLevel": "inferred",
+      "runtimeAllowed": true,
+      "sourceIds": [],
+      "referenceSourceIds": ["met-open-access", "cleveland-open-access", "smithsonian-open-access"],
+      "licenseStatus": "Project-generated synthetic textures; no source media copied.",
+      "notes": [
+        "Used for reeds, sails, awnings, mats, boats, posts, tools, and vessel accents."
+      ]
+    },
+    {
+      "id": "generated-modular-glb-kit-nile-arrival",
+      "label": "Generated modular GLB kit for Nile arrival assets",
+      "assetType": "geometry",
+      "origin": "generated",
+      "runtimeUrl": "/assets/generated/glb/asset-kit.manifest.json",
+      "generatedBy": "tools/blender/generate_memphis_asset_kit.py",
+      "evidenceLevel": "inferred",
+      "runtimeAllowed": true,
+      "sourceIds": [],
+      "referenceSourceIds": ["met-open-access", "natural-earth", "unesco-memphis-necropolis"],
+      "licenseStatus": "Project-generated procedural Blender GLB assets; no source media copied.",
+      "notes": [
+        "Includes Nile cargo boats, date palms, reeds, mooring details, cargo, and Nile-side crowd placeholders.",
+        "Generated for laptop-browser runtime as low/poly procedural models with simple PBR-compatible materials."
+      ]
+    },
+    {
+      "id": "generated-modular-glb-kit-residential-street",
+      "label": "Generated modular GLB kit for Kom el-Fakhry / Mit Rahina residential street assets",
+      "assetType": "geometry",
+      "origin": "generated",
+      "runtimeUrl": "/assets/generated/glb/asset-kit.manifest.json",
+      "generatedBy": "tools/blender/generate_memphis_asset_kit.py",
+      "evidenceLevel": "inferred",
+      "runtimeAllowed": true,
+      "sourceIds": [],
+      "referenceSourceIds": ["aera-memphis", "sfar-kom-el-fakhry", "petrie-memphis-i", "met-open-access", "cleveland-open-access"],
+      "licenseStatus": "Project-generated procedural Blender GLB assets; no source media copied.",
+      "notes": [
+        "Includes mudbrick house clusters, awnings, jars, baskets, mats, benches, painted wall panels, and low-poly NPC placeholders.",
+        "Restricted Memphis-specific references guide human reconstruction choices only."
+      ]
+    },
+    {
+      "id": "generated-soundscape-nile",
+      "label": "Generated Nile water and boat creak loop",
+      "assetType": "audio",
+      "origin": "generated",
+      "runtimeUrl": "/assets/generated/audio/nile-water-boats.wav",
+      "generatedBy": "tools/generate-runtime-assets.mjs",
+      "evidenceLevel": "speculative",
+      "runtimeAllowed": true,
+      "sourceIds": [],
+      "referenceSourceIds": ["unesco-memphis-necropolis", "natural-earth"],
+      "licenseStatus": "Project-generated synthetic audio; no copied recordings.",
+      "notes": [
+        "Atmospheric sound only."
+      ]
+    },
+    {
+      "id": "generated-soundscape-city",
+      "label": "Generated city, birds, insects, craft, and crowd ambience loops",
+      "assetType": "audio",
+      "origin": "generated",
+      "runtimeUrl": "/assets/generated/audio/",
+      "generatedBy": "tools/generate-runtime-assets.mjs",
+      "evidenceLevel": "speculative",
+      "runtimeAllowed": true,
+      "sourceIds": [],
+      "referenceSourceIds": ["unesco-memphis-necropolis", "met-open-access", "tla-earlier-egyptian-hf"],
+      "licenseStatus": "Project-generated synthetic audio; no copied recordings; crowd layers are non-semantic.",
+      "notes": [
+        "Does not claim authentic ancient Egyptian speech.",
+        "Future intelligible language should use expert-reviewed text and pronunciation notes."
       ]
     }
   ]

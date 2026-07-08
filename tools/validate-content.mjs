@@ -1,4 +1,4 @@
-import { readFile } from "node:fs/promises";
+import { access, readFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -6,6 +6,8 @@ const rootDir = path.resolve(fileURLToPath(new URL("..", import.meta.url)));
 
 const paths = {
   evidence: path.join(rootDir, "content", "scene-data", "memphis-white-walls.evidence.json"),
+  assetKit: path.join(rootDir, "apps", "web-tour", "public", "assets", "generated", "glb", "asset-kit.manifest.json"),
+  referencePack: path.join(rootDir, "content", "reference-datasets", "memphis-beauty-pass-reference-pack.json"),
   runtimeAssets: path.join(rootDir, "content", "processed", "runtime-assets.manifest.json"),
   sourceRegister: path.join(rootDir, "content", "source-references", "memphis-source-register.json"),
   tour: path.join(rootDir, "content", "scene-data", "memphis-white-walls.tour.json")
@@ -261,6 +263,114 @@ function validateRuntimeAssets(runtimeAssets, tour, sourcesById) {
   }
 }
 
+function validateReferencePack(referencePack, sourcesById) {
+  requireString(referencePack.id, "referencePack.id");
+  requireString(referencePack.scope, "referencePack.scope");
+
+  if (!requireArray(referencePack.approvedReferenceSources, "referencePack.approvedReferenceSources")) {
+    return;
+  }
+
+  const seen = new Set();
+
+  for (const reference of referencePack.approvedReferenceSources) {
+    if (!requireString(reference.sourceId, "reference sourceId")) {
+      continue;
+    }
+
+    if (seen.has(reference.sourceId)) {
+      addError(`Duplicate reference-pack source "${reference.sourceId}".`);
+      continue;
+    }
+
+    seen.add(reference.sourceId);
+    requireString(reference.role, `reference-pack source "${reference.sourceId}" role`);
+
+    if (!sourceUseClasses.has(reference.useType)) {
+      addError(`Reference-pack source "${reference.sourceId}" has unknown useType "${reference.useType}".`);
+    }
+
+    const source = sourcesById.get(reference.sourceId);
+    if (!source) {
+      addError(`Reference-pack source "${reference.sourceId}" is missing from source register.`);
+      continue;
+    }
+
+    if (!source.allowedUses.includes(reference.useType)) {
+      addError(
+        `Reference-pack source "${reference.sourceId}" uses "${reference.useType}" but source only allows ${source.allowedUses.join(", ")}.`
+      );
+    }
+  }
+}
+
+async function validateAssetKit(assetKit, runtimeAssets, sourcesById) {
+  requireString(assetKit.id, "assetKit.id");
+  requireString(assetKit.generatedBy, "assetKit.generatedBy");
+  requireString(assetKit.licenseStatus, "assetKit.licenseStatus");
+
+  if (!requireArray(assetKit.assets, "assetKit.assets")) {
+    return;
+  }
+
+  const runtimeAssetIds = new Set(runtimeAssets.assets?.map((asset) => asset.id) ?? []);
+  const seen = new Set();
+
+  for (const asset of assetKit.assets) {
+    if (!requireString(asset.id, "assetKit asset id")) {
+      continue;
+    }
+
+    if (seen.has(asset.id)) {
+      addError(`Duplicate asset-kit id "${asset.id}".`);
+      continue;
+    }
+
+    seen.add(asset.id);
+    requireString(asset.fileName, `asset-kit "${asset.id}" fileName`);
+    requireString(asset.runtimeUrl, `asset-kit "${asset.id}" runtimeUrl`);
+    requireString(asset.licenseStatus, `asset-kit "${asset.id}" licenseStatus`);
+
+    if (!evidenceLevels.has(asset.evidenceLevel)) {
+      addError(`Asset-kit "${asset.id}" has unknown evidenceLevel "${asset.evidenceLevel}".`);
+    }
+
+    if (asset.runtimeAllowed !== true) {
+      addError(`Asset-kit "${asset.id}" must be runtimeAllowed true.`);
+    }
+
+    if (asset.runtimeAssetId && !runtimeAssetIds.has(asset.runtimeAssetId)) {
+      addError(`Asset-kit "${asset.id}" references missing runtime asset "${asset.runtimeAssetId}".`);
+    }
+
+    if (!requireArray(asset.referenceSourceIds, `asset-kit "${asset.id}" referenceSourceIds`)) {
+      continue;
+    }
+
+    for (const sourceId of asset.referenceSourceIds) {
+      if (!sourcesById.has(sourceId)) {
+        addError(`Asset-kit "${asset.id}" references missing source "${sourceId}".`);
+      }
+    }
+
+    await validateLocalRuntimeUrl(asset.runtimeUrl, `asset-kit "${asset.id}" runtimeUrl`);
+  }
+}
+
+async function validateLocalRuntimeUrl(runtimeUrl, label) {
+  if (typeof runtimeUrl !== "string" || !runtimeUrl.startsWith("/assets/")) {
+    return;
+  }
+
+  const localPath = path.join(rootDir, "apps", "web-tour", "public", runtimeUrl.slice(1));
+
+  try {
+    await access(localPath);
+  } catch {
+    addError(`${label} "${runtimeUrl}" does not exist at ${localPath}.`);
+  }
+}
+
 function validateDirectRuntimeSources(asset, sourcesById) {
   for (const sourceId of asset.sourceIds) {
     const source = sourcesById.get(sourceId);
@@ -298,16 +408,20 @@ function validateReferenceSources(asset, sourcesById) {
   }
 }
 
-const [sourceRegister, tour, evidence, runtimeAssets] = await Promise.all([
+const [sourceRegister, tour, evidence, runtimeAssets, referencePack, assetKit] = await Promise.all([
   readJson(paths.sourceRegister),
   readJson(paths.tour),
   readJson(paths.evidence),
-  readJson(paths.runtimeAssets)
+  readJson(paths.runtimeAssets),
+  readJson(paths.referencePack),
+  readJson(paths.assetKit)
 ]);
 
 const sourcesById = buildSourceMap(sourceRegister);
+validateReferencePack(referencePack, sourcesById);
 validateEvidence(tour, evidence, sourcesById);
 validateRuntimeAssets(runtimeAssets, tour, sourcesById);
+await validateAssetKit(assetKit, runtimeAssets, sourcesById);
 
 if (errors.length > 0) {
   console.error("Content validation failed:");
@@ -317,6 +431,6 @@ if (errors.length > 0) {
   process.exitCode = 1;
 } else {
   console.log(
-    `Content validation passed: ${tour.stops.length} tour stops, ${evidence.records.length} evidence records, ${runtimeAssets.assets.length} runtime asset records, ${sourcesById.size} sources.`
+    `Content validation passed: ${tour.stops.length} tour stops, ${evidence.records.length} evidence records, ${runtimeAssets.assets.length} runtime asset records, ${assetKit.assets.length} GLB asset-kit records, ${referencePack.approvedReferenceSources.length} reference-pack sources, ${sourcesById.size} sources.`
   );
 }

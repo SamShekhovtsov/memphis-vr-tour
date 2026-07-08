@@ -1,0 +1,141 @@
+{
+  "$schema": "./asset-kit.schema.json",
+  "id": "memphis-modular-glb-kit-v1",
+  "checkedDate": "2026-07-08",
+  "generatedBy": "tools/blender/generate_memphis_asset_kit.py",
+  "generator": "Blender procedural mesh script",
+  "blenderVersion": "3.6.23",
+  "licenseStatus": "Project-authored procedural meshes; no source media copied or embedded.",
+  "policy": [
+    "Use restricted Memphis-specific sources as human research context only.",
+    "Use open/CC0/public-domain references only for future dataset experiments.",
+    "Runtime GLBs in this kit are generated geometry with procedural materials."
+  ],
+  "assets": [
+    {
+      "id": "nile-boat-large",
+      "fileName": "nile_boat_large.glb",
+      "label": "Detailed Nile arrival cargo boat",
+      "category": "nile-arrival",
+      "evidenceLevel": "inferred",
+      "runtimeAssetId": "generated-modular-glb-kit-nile-arrival",
+      "referenceSourceIds": [
+        "met-open-access",
+        "natural-earth",
+        "unesco-memphis-necropolis"
+      ],
+      "notes": [
+        "Project-authored hull, ribs, mast, sail, rope, oars, jars, and cargo.",
+        "Broadly inspired by Nile craft and riverine material culture; not copied from source media."
+      ],
+      "runtimeUrl": "/assets/generated/glb/nile_boat_large.glb",
+      "origin": "project-authored procedural Blender mesh",
+      "runtimeAllowed": true,
+      "licenseStatus": "Project-authored synthetic/procedural model; no source media copied."
+    },
+    {
+      "id": "date-palm-cluster",
+      "fileName": "date_palm_cluster.glb",
+      "label": "Date palm and bank vegetation cluster",
+      "category": "nile-arrival",
+      "evidenceLevel": "inferred",
+      "runtimeAssetId": "generated-modular-glb-kit-nile-arrival",
+      "referenceSourceIds": [
+        "met-open-access",
+        "natural-earth"
+      ],
+      "notes": [
+        "Project-authored segmented trunks, fronds, fruit clusters, and small undergrowth.",
+        "Designed as repeated bank vegetation for the Nile arrival scene."
+      ],
+      "runtimeUrl": "/assets/generated/glb/date_palm_cluster.glb",
+      "origin": "project-authored procedural Blender mesh",
+      "runtimeAllowed": true,
+      "licenseStatus": "Project-authored synthetic/procedural model; no source media copied."
+    },
+    {
+      "id": "reed-bank-cluster",
+      "fileName": "reed_bank_cluster.glb",
+      "label": "Dense Nile reed bank cluster",
+      "category": "nile-arrival",
+      "evidenceLevel": "inferred",
+      "runtimeAssetId": "generated-modular-glb-kit-nile-arrival",
+      "referenceSourceIds": [
+        "natural-earth",
+        "unesco-memphis-necropolis"
+      ],
+      "notes": [
+        "Project-authored reeds, seed heads, bank grasses, and wet-bank silhouettes.",
+        "Used to soften the water edge and add parallax detail."
+      ],
+      "runtimeUrl": "/assets/generated/glb/reed_bank_cluster.glb",
+      "origin": "project-authored procedural Blender mesh",
+      "runtimeAllowed": true,
+      "licenseStatus": "Project-authored synthetic/procedural model; no source media copied."
+    },
+    {
+      "id": "mudbrick-house-cluster",
+      "fileName": "mudbrick_house_cluster.glb",
+      "label": "Mudbrick residential house cluster",
+      "category": "residential-street",
+      "evidenceLevel": "inferred",
+      "runtimeAssetId": "generated-modular-glb-kit-residential-street",
+      "referenceSourceIds": [
+        "aera-memphis",
+        "sfar-kom-el-fakhry",
+        "petrie-memphis-i",
+        "met-open-access"
+      ],
+      "notes": [
+        "Project-authored compact houses, parapets, stairs, doors, niches, plaster bands, and painted panels.",
+        "Uses Kom el-Fakhry / Mit Rahina only as human-reference context."
+      ],
+      "runtimeUrl": "/assets/generated/glb/mudbrick_house_cluster.glb",
+      "origin": "project-authored procedural Blender mesh",
+      "runtimeAllowed": true,
+      "licenseStatus": "Project-authored synthetic/procedural model; no source media copied."
+    },
+    {
+      "id": "residential-market-details",
+      "fileName": "residential_market_details.glb",
+      "label": "Residential street props and awning details",
+      "category": "residential-street",
+      "evidenceLevel": "inferred",
+      "runtimeAssetId": "generated-modular-glb-kit-residential-street",
+      "referenceSourceIds": [
+        "met-open-access",
+        "cleveland-open-access",
+        "petrie-memphis-i"
+      ],
+      "notes": [
+        "Project-authored jars, baskets, mats, awnings, ropes, benches, crates, and small vessels.",
+        "Decorative density pass for the living-city route."
+      ],
+      "runtimeUrl": "/assets/generated/glb/residential_market_details.glb",
+      "origin": "project-authored procedural Blender mesh",
+      "runtimeAllowed": true,
+      "licenseStatus": "Project-authored synthetic/procedural model; no source media copied."
+    },
+    {
+      "id": "street-npc-placeholders",
+      "fileName": "street_npc_placeholders.glb",
+      "label": "Improved low-poly Memphis inhabitant placeholders",
+      "category": "residential-street",
+      "evidenceLevel": "speculative",
+      "runtimeAssetId": "generated-modular-glb-kit-residential-street",
+      "referenceSourceIds": [
+        "met-old-kingdom-cattle-relief",
+        "met-open-access",
+        "tla-earlier-egyptian-hf"
+      ],
+      "notes": [
+        "Project-authored silhouettes for ambience only.",
+        "Clothing and poses remain placeholders until a dedicated character pass."
+      ],
+      "runtimeUrl": "/assets/generated/glb/street_npc_placeholders.glb",
+      "origin": "project-authored procedural Blender mesh",
+      "runtimeAllowed": true,
+      "licenseStatus": "Project-authored synthetic/procedural model; no source media copied."
+    }
+  ]
+}
