@@ -16,16 +16,16 @@ Primary route spine:
 | --- | --- | --- | --- |
 | Nile landing | `x -47 to -29`, `z -56 to -38` | Boats, quay, cargo, river approach | Dense moored boats, reeds, palms, jars, water haze. |
 | White Walls gate | `x -35 to -18`, `z -34 to -29` | Transition into city | White-plastered mudbrick edge, controlled threshold, no clutter blocking route. |
-| Hero residential street | `x -28 to -16`, `z -28 to 34` | Main cinematic corridor | Two continuous house rows close to the Nile-side approach, doors/facades inward, props along edges, clear walking lane. |
-| Craft/market threshold | `x -20 to 8`, `z 18 to 38` | Background activity | Worktables, pottery, stone/copper work, optional next phase. |
+| Hero residential street | `x -12 to 0`, `z -28 to 34` | Main cinematic corridor | Two continuous house rows near the Nile-side approach but clearly offset from the gate axis, doors/facades inward, props along edges, clear walking lane. |
+| Craft/market threshold | `x -4 to 8`, `z 18 to 38` | Background activity | Worktables, pottery, stone/copper work, optional next phase. |
 | Monument approach | `x -12 to 12`, `z 48 to 92` | Early Ptah / Hwt-ka-Ptah endpoint | Larger, calmer, cleaner temple approach with evidence markers. |
 
 ## Hero Street Rules
 
 The hero street is the visual priority for this milestone.
 
-- Street centerline: approximately `x -22`.
-- Walking lane: keep `x -25.3 to -18.7` mostly clear.
+- Street centerline: approximately `x -6`, offset to the right of the Nile-side White Walls gate opening.
+- Walking lane: keep `x -9.8 to -2.3` mostly clear.
 - Left/west house row: facade faces east/inward toward positive `x`.
 - Right/east house row: facade faces west/inward toward negative `x`.
 - Doors, awnings, benches, jars, baskets, work surfaces, and people face or occupy the street edge.

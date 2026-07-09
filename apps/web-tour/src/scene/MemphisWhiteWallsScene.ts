@@ -32,8 +32,11 @@ type StopListener = (stop: TourStop) => void;
 const textureRoot = "/assets/generated/textures/";
 const audioRoot = "/assets/generated/audio/";
 const glbRoot = "/assets/generated/glb/";
-const heroStreetOffsetX = -11.5;
-const heroStreetCenterX = -22;
+
+// Hero Street v2 placement lock. Keep these paired with the route stops and
+// docs/design/hero-street-v2-layout-lock.md; move the road and GLB street as one unit.
+const heroStreetOffsetX = -16.5;
+const heroStreetCenterX = -6;
 
 interface SceneMaterials {
   sand: PBRMaterial;
@@ -49,6 +52,10 @@ interface SceneMaterials {
   copper: PBRMaterial;
   paint: PBRMaterial;
   shadow: PBRMaterial;
+  contactShadow: PBRMaterial;
+  dust: PBRMaterial;
+  pottery: PBRMaterial;
+  skin: PBRMaterial;
   smoke: PBRMaterial;
   ember: PBRMaterial;
   evidence: Record<EvidenceLevel, PBRMaterial>;
@@ -164,6 +171,7 @@ export async function createMemphisWhiteWallsScene(
   createTemple(scene, materials);
   createRouteLine(scene, manifest, materials);
   await loadModularAssetKit(scene);
+  createHeroStreetV2FilmSet(scene, materials);
 
   const evidenceRoot = createEvidenceMarkers(scene, manifest, materials);
   evidenceRoot.setEnabled(false);
@@ -276,14 +284,15 @@ function createMaterials(scene: Scene): SceneMaterials {
     bump: true,
     bumpLevel: 0.1
   });
-  const heroGround = material(scene, "heroStreetGround", "#b68a55", {
+  const heroGround = material(scene, "heroStreetGround", "#d0a164", {
     textureName: "hero-street-ground.jpg",
     bumpTextureName: "hero-street-normal.jpg",
-    uScale: 1.25,
+    ambientTextureName: "hero-street-ao.jpg",
+    uScale: 1.1,
     vScale: 4.8,
     roughness: 0.96,
     bump: true,
-    bumpLevel: 0.1
+    bumpLevel: 0.065
   });
   const plaster = material(scene, "plaster", "#ece1c7", {
     textureName: "plaster-aged.jpg",
@@ -338,6 +347,31 @@ function createMaterials(scene: Scene): SceneMaterials {
     alpha: 0.82,
     roughness: 1
   });
+  const contactShadow = material(scene, "softContactShadow", "#1c1711", {
+    alpha: 0.28,
+    roughness: 1
+  });
+  contactShadow.backFaceCulling = false;
+  const dust = material(scene, "powderyStreetDust", "#d6b574", {
+    textureName: "hero-street-ground.jpg",
+    bumpTextureName: "hero-street-normal.jpg",
+    uScale: 0.9,
+    vScale: 3.8,
+    roughness: 0.98,
+    bump: true,
+    bumpLevel: 0.03
+  });
+  const pottery = material(scene, "warmPotteryClay", "#b77443", {
+    textureName: "mudbrick-pbr.jpg",
+    uScale: 1.8,
+    vScale: 1.8,
+    roughness: 0.9,
+    bump: true,
+    bumpLevel: 0.035
+  });
+  const skin = material(scene, "warmSkinPlaceholder", "#8b5634", {
+    roughness: 0.74
+  });
 
   const river = material(scene, "river", "#2b7f91", {
     textureName: "nile-water.jpg",
@@ -382,6 +416,10 @@ function createMaterials(scene: Scene): SceneMaterials {
     copper,
     paint,
     shadow,
+    contactShadow,
+    dust,
+    pottery,
+    skin,
     smoke,
     ember,
     evidence: {
@@ -401,6 +439,7 @@ function createMaterials(scene: Scene): SceneMaterials {
 interface MaterialOptions {
   textureName?: string;
   bumpTextureName?: string;
+  ambientTextureName?: string;
   uScale?: number;
   vScale?: number;
   roughness?: number;
@@ -425,6 +464,10 @@ function material(scene: Scene, name: string, color: string, options: MaterialOp
   if (options.bump && (options.bumpTextureName || options.textureName)) {
     mat.bumpTexture = createTiledTexture(scene, options.bumpTextureName ?? options.textureName!, options.uScale ?? 1, options.vScale ?? 1);
     mat.bumpTexture.level = options.bumpLevel ?? 0.05;
+  }
+
+  if (options.ambientTextureName) {
+    mat.ambientTexture = createTiledTexture(scene, options.ambientTextureName, options.uScale ?? 1, options.vScale ?? 1);
   }
 
   if (options.alpha !== undefined) {
@@ -495,9 +538,6 @@ async function loadModularAssetKit(scene: Scene): Promise<void> {
 
       const instance = container.instantiateModelsToScene((sourceName) => `${placement.name}-${sourceName}`, false);
       const root = new TransformNode(placement.name, scene);
-      root.position.copyFrom(placement.position);
-      root.rotation.y = placement.rotationY ?? 0;
-      root.scaling.setAll(placement.scale ?? 1);
       root.metadata = {
         category: entry.category,
         evidenceLevel: entry.evidenceLevel,
@@ -507,6 +547,10 @@ async function loadModularAssetKit(scene: Scene): Promise<void> {
       for (const node of instance.rootNodes) {
         node.parent = root;
       }
+
+      root.position.copyFrom(placement.position);
+      root.rotation.y = placement.rotationY ?? 0;
+      root.scaling.setAll(placement.scale ?? 1);
 
       for (const mesh of root.getChildMeshes(false)) {
         mesh.checkCollisions = placement.collides ?? false;
@@ -518,6 +562,12 @@ async function loadModularAssetKit(scene: Scene): Promise<void> {
       }
 
       if (placement.animated && "animationGroups" in instance) {
+        instance.rootNodes.forEach((node, index) => {
+          if (placement.assetId === "animated-street-actors" && index > 2) {
+            node.setEnabled(false);
+          }
+        });
+
         instance.animationGroups?.forEach((group, index) => {
           group.speedRatio = 0.82 + index * 0.04;
           group.start(true);
@@ -670,9 +720,9 @@ function createResidentialStreet(scene: Scene, materials: SceneMaterials): void 
   heroStreetGround.position = new Vector3(heroStreetCenterX, 0.048, 4);
   heroStreetGround.material = materials.heroGround;
 
-  const drain = MeshBuilder.CreateBox("streetDrainageChannel", { width: 0.46, height: 0.08, depth: 44 }, scene);
-  drain.position = new Vector3(heroStreetCenterX + 1.1, 0.055, -8);
-  drain.material = materials.shadow;
+  const drain = MeshBuilder.CreateBox("streetDrainageChannel", { width: 0.22, height: 0.035, depth: 44 }, scene);
+  drain.position = new Vector3(heroStreetCenterX + 1.1, 0.052, -8);
+  drain.material = materials.mudbrick;
 
   const well = MeshBuilder.CreateCylinder("districtWell", { height: 0.74, diameter: 1.5, tessellation: 24 }, scene);
   well.position = new Vector3(heroStreetCenterX + 3.5, 0.37, 5);
@@ -692,6 +742,260 @@ function createResidentialStreet(scene: Scene, materials: SceneMaterials): void 
     jar.position = new Vector3(heroStreetCenterX + 2.1 + (index % 3) * 0.68, 0.39, 3.6 + Math.floor(index / 3) * 2.65);
     jar.material = materials.mudbrick;
   }
+}
+
+function createHeroStreetV2FilmSet(scene: Scene, materials: SceneMaterials): void {
+  const centerX = heroStreetCenterX;
+
+  [
+    { x: centerX - 4.5, z: -22, width: 1.35, depth: 12, alpha: 0.36 },
+    { x: centerX + 4.25, z: -20, width: 1.2, depth: 10, alpha: 0.3 },
+    { x: centerX - 4.75, z: -2, width: 1.15, depth: 18, alpha: 0.22 },
+    { x: centerX + 4.35, z: 7, width: 1.35, depth: 20, alpha: 0.24 }
+  ].forEach((spec, index) => {
+    createGroundShadow(scene, materials, `heroV2WallContactShadow-${index}`, new Vector3(spec.x, 0.066, spec.z), spec.width, spec.depth, spec.alpha);
+  });
+
+  [
+    { z: -20.5, width: 8.8, depth: 3.8, y: 3.05, tilt: -0.035 },
+    { z: -8.2, width: 8.2, depth: 4.4, y: 3.18, tilt: 0.026 },
+    { z: 6.8, width: 8.6, depth: 4.1, y: 3.0, tilt: -0.02 }
+  ].forEach((cloth, index) => {
+    const canopy = MeshBuilder.CreateBox(`heroV2SunCloth-${index}`, {
+      width: cloth.width,
+      height: 0.045,
+      depth: cloth.depth
+    }, scene);
+    canopy.position = new Vector3(centerX + Math.sin(index) * 0.28, cloth.y, cloth.z);
+    canopy.rotation.z = cloth.tilt;
+    canopy.rotation.x = Math.sin(index * 1.7) * 0.025;
+    canopy.material = materials.linen;
+    canopy.isPickable = false;
+
+    createGroundShadow(scene, materials, `heroV2ClothShadow-${index}`, new Vector3(centerX + 0.2, 0.071, cloth.z + 0.45), cloth.width * 0.86, cloth.depth * 0.72, 0.18);
+
+    [-1, 1].forEach((side) => {
+      const rope = MeshBuilder.CreateBox(`heroV2SunClothRope-${index}-${side}`, {
+        width: cloth.width,
+        height: 0.018,
+        depth: 0.035
+      }, scene);
+      rope.position = new Vector3(centerX, cloth.y + 0.03, cloth.z + side * cloth.depth * 0.42);
+      rope.rotation.z = cloth.tilt * 0.6;
+      rope.material = materials.wood;
+      rope.isPickable = false;
+    });
+  });
+
+  [
+    { x: centerX - 4.85, z: -23.2, side: -1 },
+    { x: centerX + 4.65, z: -18.6, side: 1 },
+    { x: centerX - 4.75, z: -7.2, side: -1 },
+    { x: centerX + 4.55, z: 2.8, side: 1 },
+    { x: centerX - 4.82, z: 13.6, side: -1 }
+  ].forEach((wall, index) => {
+    createWallDetailCluster(scene, materials, `heroV2WallDetail-${index}`, wall.x, wall.z, wall.side);
+  });
+
+  createForegroundMarketCluster(scene, materials, new Vector3(centerX - 3.65, 0, -25.5), -0.18, "left");
+  createForegroundMarketCluster(scene, materials, new Vector3(centerX + 3.65, 0, -22.5), 0.22, "right");
+  createWorkTable(scene, materials, new Vector3(centerX + 3.8, 0.56, -7.2), 0.08, "rightStoneTable");
+  createWorkTable(scene, materials, new Vector3(centerX - 3.6, 0.56, -11.5), -0.12, "leftPotteryTable");
+
+  createCinematicHuman(scene, materials, new Vector3(centerX - 0.2, 0, -17.3), 0.02, "carrier");
+  createCinematicHuman(scene, materials, new Vector3(centerX + 3.2, 0, -8.4), -1.35, "worker");
+  createCinematicHuman(scene, materials, new Vector3(centerX - 3.15, 0, -4.6), 1.45, "seated");
+
+  for (let index = 0; index < 34; index += 1) {
+    const x = centerX - 4.1 + (index % 7) * 1.26 + Math.sin(index * 2.1) * 0.18;
+    const z = -26 + Math.floor(index / 7) * 7.2 + Math.cos(index * 1.6) * 0.55;
+    createGroundPebble(scene, materials, new Vector3(x, 0.085, z), index);
+  }
+}
+
+function createGroundShadow(
+  scene: Scene,
+  materials: SceneMaterials,
+  name: string,
+  position: Vector3,
+  width: number,
+  depth: number,
+  alpha: number
+): void {
+  const shadow = MeshBuilder.CreateGround(name, { width, height: depth, subdivisions: 1 }, scene);
+  shadow.position = position;
+  shadow.material = materials.contactShadow;
+  shadow.visibility = alpha;
+  shadow.isPickable = false;
+}
+
+function createWallDetailCluster(scene: Scene, materials: SceneMaterials, name: string, x: number, z: number, side: number): void {
+  const plasterPatch = MeshBuilder.CreateBox(`${name}-plasterPatch`, { width: 0.05, height: 0.74, depth: 1.28 }, scene);
+  plasterPatch.position = new Vector3(x, 1.28, z);
+  plasterPatch.material = materials.plaster;
+  plasterPatch.isPickable = false;
+
+  for (let index = 0; index < 4; index += 1) {
+    const crack = MeshBuilder.CreateBox(`${name}-hairlineCrack-${index}`, {
+      width: 0.035,
+      height: 0.48 + index * 0.08,
+      depth: 0.025
+    }, scene);
+    crack.position = new Vector3(x + side * 0.035, 1.02 + index * 0.24, z - 0.48 + index * 0.31);
+    crack.rotation.y = side * 0.05;
+    crack.rotation.z = Math.sin(index) * 0.18;
+    crack.material = materials.shadow;
+    crack.isPickable = false;
+  }
+
+  const darkBase = MeshBuilder.CreateBox(`${name}-baseDirt`, { width: 0.06, height: 0.28, depth: 1.7 }, scene);
+  darkBase.position = new Vector3(x + side * 0.025, 0.19, z + 0.1);
+  darkBase.material = materials.contactShadow;
+  darkBase.visibility = 0.72;
+  darkBase.isPickable = false;
+}
+
+function createForegroundMarketCluster(
+  scene: Scene,
+  materials: SceneMaterials,
+  origin: Vector3,
+  rotationY: number,
+  side: string
+): void {
+  for (let index = 0; index < 4; index += 1) {
+    const jar = MeshBuilder.CreateCylinder(`heroV2${side}Jar-${index}`, {
+      height: 0.72 + index * 0.06,
+      diameterTop: 0.38,
+      diameterBottom: 0.52,
+      tessellation: 18
+    }, scene);
+    jar.position = new Vector3(origin.x + (index % 2) * 0.62, 0.38, origin.z + Math.floor(index / 2) * 0.82);
+    jar.rotation.y = rotationY + index * 0.18;
+    jar.material = materials.pottery;
+    jar.isPickable = false;
+
+    createGroundShadow(scene, materials, `heroV2${side}JarShadow-${index}`, new Vector3(jar.position.x, 0.082, jar.position.z), 0.82, 0.62, 0.28);
+  }
+
+  createBasket(scene, materials, new Vector3(origin.x - 0.52, 0.24, origin.z + 0.5));
+  createFloorMat(scene, materials, new Vector3(origin.x + 0.36, 0.082, origin.z + 1.55));
+}
+
+function createWorkTable(scene: Scene, materials: SceneMaterials, position: Vector3, rotationY: number, name: string): void {
+  const table = MeshBuilder.CreateBox(`heroV2${name}`, { width: 1.65, height: 0.18, depth: 0.82 }, scene);
+  table.position = position;
+  table.rotation.y = rotationY;
+  table.material = materials.wood;
+  table.isPickable = false;
+
+  [-0.58, 0.58].forEach((xOffset) => {
+    [-0.26, 0.26].forEach((zOffset) => {
+      const leg = MeshBuilder.CreateBox(`heroV2${name}Leg-${xOffset}-${zOffset}`, { width: 0.12, height: 0.8, depth: 0.12 }, scene);
+      leg.position = new Vector3(position.x + xOffset, 0.28, position.z + zOffset);
+      leg.rotation.y = rotationY;
+      leg.material = materials.wood;
+      leg.isPickable = false;
+    });
+  });
+
+  for (let index = 0; index < 5; index += 1) {
+    const tool = MeshBuilder.CreateBox(`heroV2${name}Tool-${index}`, { width: 0.08, height: 0.06, depth: 0.54 }, scene);
+    tool.position = new Vector3(position.x - 0.55 + index * 0.27, position.y + 0.16, position.z + Math.sin(index) * 0.18);
+    tool.rotation.y = rotationY + Math.sin(index * 1.2) * 0.7;
+    tool.material = index % 2 ? materials.copper : materials.limestone;
+    tool.isPickable = false;
+  }
+
+  createGroundShadow(scene, materials, `heroV2${name}Shadow`, new Vector3(position.x, 0.083, position.z), 1.8, 1.05, 0.2);
+}
+
+function createCinematicHuman(scene: Scene, materials: SceneMaterials, position: Vector3, rotationY: number, pose: "carrier" | "worker" | "seated"): void {
+  const root = new TransformNode(`heroV2Human-${pose}`, scene);
+  root.position = position;
+  root.rotation.y = rotationY;
+
+  const bodyHeight = pose === "seated" ? 0.85 : 1.08;
+  const torso = MeshBuilder.CreateCylinder(`heroV2Human-${pose}-torso`, {
+    height: bodyHeight,
+    diameterTop: 0.32,
+    diameterBottom: 0.42,
+    tessellation: 14
+  }, scene);
+  torso.position.y = pose === "seated" ? 0.82 : 0.96;
+  torso.material = materials.skin;
+  torso.parent = root;
+
+  const kilt = MeshBuilder.CreateCylinder(`heroV2Human-${pose}-linen`, {
+    height: 0.46,
+    diameterTop: 0.46,
+    diameterBottom: 0.54,
+    tessellation: 14
+  }, scene);
+  kilt.position.y = pose === "seated" ? 0.43 : 0.52;
+  kilt.material = materials.linen;
+  kilt.parent = root;
+
+  const head = MeshBuilder.CreateSphere(`heroV2Human-${pose}-head`, { diameter: 0.32, segments: 14 }, scene);
+  head.position.y = pose === "seated" ? 1.42 : 1.65;
+  head.material = materials.skin;
+  head.parent = root;
+
+  const hair = MeshBuilder.CreateSphere(`heroV2Human-${pose}-hair`, { diameterX: 0.34, diameterY: 0.18, diameterZ: 0.34, segments: 10 }, scene);
+  hair.position.y = head.position.y + 0.12;
+  hair.position.z = -0.02;
+  hair.material = materials.shadow;
+  hair.parent = root;
+
+  if (pose === "carrier") {
+    const jar = MeshBuilder.CreateCylinder(`heroV2Human-${pose}-headJar`, {
+      height: 0.46,
+      diameterTop: 0.26,
+      diameterBottom: 0.36,
+      tessellation: 16
+    }, scene);
+    jar.position.y = 2.02;
+    jar.material = materials.pottery;
+    jar.parent = root;
+  }
+
+  const armY = pose === "seated" ? 1.0 : 1.15;
+  [-1, 1].forEach((side) => {
+    const arm = MeshBuilder.CreateCylinder(`heroV2Human-${pose}-arm-${side}`, {
+      height: 0.7,
+      diameter: 0.08,
+      tessellation: 10
+    }, scene);
+    arm.position = new Vector3(side * 0.28, armY, pose === "worker" ? -0.18 : 0);
+    arm.rotation.z = side * (pose === "carrier" ? 0.12 : 0.48);
+    arm.rotation.x = pose === "worker" ? 0.82 : 0.2;
+    arm.material = materials.skin;
+    arm.parent = root;
+
+    const leg = MeshBuilder.CreateCylinder(`heroV2Human-${pose}-leg-${side}`, {
+      height: pose === "seated" ? 0.62 : 0.78,
+      diameter: 0.09,
+      tessellation: 10
+    }, scene);
+    leg.position = new Vector3(side * 0.13, pose === "seated" ? 0.2 : 0.18, pose === "seated" ? 0.28 : 0);
+    leg.rotation.x = pose === "seated" ? 1.2 : 0.04;
+    leg.material = materials.skin;
+    leg.parent = root;
+  });
+
+  createGroundShadow(scene, materials, `heroV2Human-${pose}-shadow`, new Vector3(position.x, 0.084, position.z), 0.72, 0.48, 0.32);
+}
+
+function createGroundPebble(scene: Scene, materials: SceneMaterials, position: Vector3, index: number): void {
+  const pebble = MeshBuilder.CreateSphere(`heroV2GroundPebble-${index}`, {
+    diameterX: 0.08 + (index % 3) * 0.025,
+    diameterY: 0.035,
+    diameterZ: 0.12 + (index % 4) * 0.018,
+    segments: 8
+  }, scene);
+  pebble.position = position;
+  pebble.rotation.y = index * 0.91;
+  pebble.material = index % 3 === 0 ? materials.pottery : materials.limestone;
+  pebble.isPickable = false;
 }
 
 function createMudbrickHouse(scene: Scene, materials: SceneMaterials, position: Vector3, size: Vector3): void {

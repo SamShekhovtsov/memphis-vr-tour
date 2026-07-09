@@ -86,7 +86,7 @@ function createSandTexture(width, height) {
 }
 
 function createHeroStreetGroundTexture(width, height) {
-  const image = createImage(width, height, "#b98755");
+  const image = createImage(width, height, "#cfa36b");
   const random = seededRandom(1203);
 
   forEachPixel(image, (x, y) => {
@@ -96,9 +96,9 @@ function createHeroStreetGroundTexture(width, height) {
       [0.085, 8]
     ]);
     const wornCenter = 1 - Math.abs(x / width - 0.5) * 1.65;
-    const track = Math.max(0, wornCenter) * 14;
-    const ripple = Math.sin(y * 0.024 + n * 0.05) * 5;
-    return mixHex("#7b5232", "#dfbd83", clamp01(0.48 + (n + ripple + track) / 92));
+    const track = Math.max(0, wornCenter) * 10;
+    const ripple = Math.sin(y * 0.024 + n * 0.05) * 4;
+    return mixHex("#a87543", "#efd29a", clamp01(0.5 + (n + ripple + track) / 105));
   });
 
   for (let index = 0; index < 78; index += 1) {
@@ -108,21 +108,21 @@ function createHeroStreetGroundTexture(width, height) {
       random() * height,
       8 + random() * 7,
       18 + random() * 11,
-      "#6f482d",
-      0.22,
+      "#8e6139",
+      0.14,
       random() * Math.PI
     );
   }
 
-  for (let index = 0; index < 46; index += 1) {
+  for (let index = 0; index < 56; index += 1) {
     const x = random() * width;
     const y = random() * height;
-    drawLine(image, x, y, x + (random() - 0.5) * 80, y + (random() - 0.5) * 32, "#d5bd7e");
+    drawLine(image, x, y, x + (random() - 0.5) * 80, y + (random() - 0.5) * 32, "#e2c37d");
   }
 
-  addSpeckles(image, 4600, "#5f3e28", 0.18, 1207);
-  addSpeckles(image, 2600, "#e8cd96", 0.16, 1209);
-  addHairlineCracks(image, 18, "#5b3c26", 0.18, 1211);
+  addSpeckles(image, 3600, "#8b633a", 0.13, 1207);
+  addSpeckles(image, 2900, "#f3dca6", 0.16, 1209);
+  addHairlineCracks(image, 14, "#7b5936", 0.12, 1211);
   return image;
 }
 
