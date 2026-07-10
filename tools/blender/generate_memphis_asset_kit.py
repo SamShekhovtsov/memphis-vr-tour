@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import json
 import math
+import os
 import random
 from datetime import date
 from pathlib import Path
@@ -70,7 +71,8 @@ ASSETS = [
         "referenceSourceIds": ["aera-memphis", "sfar-kom-el-fakhry", "petrie-memphis-i", "met-open-access", "cleveland-open-access"],
         "notes": [
             "Project-authored two-row mudbrick street corridor with inward-facing facades.",
-            "Includes worn doors, small windows, awnings, roof clutter, plaster patches, cracks, pottery, baskets, sacks, straw, stones, and work surfaces.",
+            "Hero Street v2 film-set pass: packed procedural PBR texture sets, baked contact/shadow decal geometry, foreground occluders, sculpted close facade chunks, roof clutter, plaster cracks, pottery, baskets, sacks, straw, stones, ruts, and work surfaces.",
+            "Old Kingdom visual guardrails: compact mudbrick domestic lane, restrained domestic wall marks, linen shade cloth, plain clothing silhouettes, and no copied source media.",
             "Layout follows docs/design/memphis-hero-district-plan.md and avoids overlapping architecture systems."
         ],
     },
@@ -110,7 +112,7 @@ ASSETS = [
         "referenceSourceIds": ["met-old-kingdom-cattle-relief", "met-open-access", "tla-earlier-egyptian-hf"],
         "notes": [
             "Project-authored articulated GLB figures with walking, carrying, idle, and work-loop object animation.",
-            "Clothing is intentionally restrained: plain linen kilts and sheath-like linen garments suitable for an Old Kingdom visual direction.",
+            "Hero Street v2 character pass: fewer, more readable silhouettes with plain linen kilts, simple sheath-like linen garments, bare feet/simple sandals, minimal adornment, and slow street-scale movement.",
             "This is a first browser-safe character pass; future work should replace it with expert-reviewed skeletal character rigs."
         ],
     },
@@ -137,37 +139,178 @@ def reset_scene() -> None:
     bpy.context.scene.unit_settings.system = "METRIC"
 
 
-def make_material(name: str, color: tuple[float, float, float, float], roughness: float = 0.9) -> bpy.types.Material:
+def make_material(
+    name: str,
+    color: tuple[float, float, float, float],
+    roughness: float = 0.9,
+    alpha: float = 1,
+) -> bpy.types.Material:
     material = bpy.data.materials.new(name)
     material.use_nodes = True
     material.use_backface_culling = False
+    if alpha < 1:
+        material.blend_method = "BLEND"
+        material.show_transparent_back = True
     bsdf = material.node_tree.nodes.get("Principled BSDF")
     if bsdf:
         bsdf.inputs["Base Color"].default_value = color
         bsdf.inputs["Roughness"].default_value = roughness
         bsdf.inputs["Metallic"].default_value = 0.0
+        bsdf.inputs["Alpha"].default_value = alpha
+    return material
+
+
+def clamp01(value: float) -> float:
+    return max(0.0, min(1.0, value))
+
+
+def mix(a: float, b: float, t: float) -> float:
+    return a + (b - a) * clamp01(t)
+
+
+def mix_color(
+    a: tuple[float, float, float, float],
+    b: tuple[float, float, float, float],
+    t: float,
+) -> tuple[float, float, float, float]:
+    return (mix(a[0], b[0], t), mix(a[1], b[1], t), mix(a[2], b[2], t), mix(a[3], b[3], t))
+
+
+def tonal_noise(x: int, y: int, seed: int) -> float:
+    value = (
+        math.sin((x + seed * 13) * 0.071)
+        + math.sin((y - seed * 7) * 0.113)
+        + math.sin((x * 0.037 + y * 0.053 + seed) * 1.7)
+        + math.sin((x - y + seed * 5) * 0.019)
+    )
+    return value / 4
+
+
+def packed_image(name: str, size: int, pixel_fn) -> bpy.types.Image:
+    image = bpy.data.images.new(name, width=size, height=size)
+    pixels: list[float] = []
+
+    for y in range(size):
+        for x in range(size):
+            pixels.extend(pixel_fn(x, y))
+
+    image.pixels = pixels
+    image.pack()
+    return image
+
+
+def make_albedo_image(
+    name: str,
+    base: tuple[float, float, float, float],
+    accent: tuple[float, float, float, float],
+    seed: int,
+    size: int = 256,
+) -> bpy.types.Image:
+    def pixel(x: int, y: int) -> tuple[float, float, float, float]:
+        n = tonal_noise(x, y, seed)
+        broad = math.sin((x + y * 0.35 + seed) * 0.021) * 0.23
+        t = 0.48 + n * 0.28 + broad
+        return mix_color(base, accent, t)
+
+    return packed_image(name, size, pixel)
+
+
+def make_normal_image(name: str, seed: int, strength: float = 0.22, size: int = 256) -> bpy.types.Image:
+    def height(x: int, y: int) -> float:
+        return tonal_noise(x, y, seed) + math.sin((x * 0.043 + y * 0.018 + seed) * 1.4) * 0.22
+
+    def pixel(x: int, y: int) -> tuple[float, float, float, float]:
+        dx = height((x + 1) % size, y) - height((x - 1) % size, y)
+        dy = height(x, (y + 1) % size) - height(x, (y - 1) % size)
+        return (clamp01(0.5 - dx * strength), clamp01(0.5 - dy * strength), 0.88, 1)
+
+    image = packed_image(name, size, pixel)
+    image.colorspace_settings.name = "Non-Color"
+    return image
+
+
+def make_roughness_image(name: str, seed: int, base: float = 0.86, size: int = 256) -> bpy.types.Image:
+    def pixel(x: int, y: int) -> tuple[float, float, float, float]:
+        value = clamp01(base + tonal_noise(x, y, seed) * 0.12)
+        return (value, value, value, 1)
+
+    image = packed_image(name, size, pixel)
+    image.colorspace_settings.name = "Non-Color"
+    return image
+
+
+def make_pbr_material(
+    key: str,
+    base: tuple[float, float, float, float],
+    accent: tuple[float, float, float, float],
+    roughness: float,
+    seed: int,
+    normal_strength: float = 0.22,
+) -> bpy.types.Material:
+    material = make_material(key, base, roughness)
+    material["textureSet"] = {
+        "albedo": f"{key} albedo",
+        "normal": f"{key} normal",
+        "roughness": f"{key} roughness",
+        "ao": "authored contact/decal geometry in this GLB",
+        "height": "authored crack/plaster/debris decals in this GLB",
+    }
+
+    nodes = material.node_tree.nodes
+    links = material.node_tree.links
+    bsdf = nodes.get("Principled BSDF")
+
+    if not bsdf:
+        return material
+
+    albedo = nodes.new("ShaderNodeTexImage")
+    albedo.name = f"{key} albedo"
+    albedo.image = make_albedo_image(f"{key}_albedo", base, accent, seed)
+    links.new(albedo.outputs["Color"], bsdf.inputs["Base Color"])
+
+    normal_tex = nodes.new("ShaderNodeTexImage")
+    normal_tex.name = f"{key} normal"
+    normal_tex.image = make_normal_image(f"{key}_normal", seed + 100, normal_strength)
+    normal = nodes.new("ShaderNodeNormalMap")
+    normal.inputs["Strength"].default_value = normal_strength
+    links.new(normal_tex.outputs["Color"], normal.inputs["Color"])
+    links.new(normal.outputs["Normal"], bsdf.inputs["Normal"])
+
+    roughness_tex = nodes.new("ShaderNodeTexImage")
+    roughness_tex.name = f"{key} roughness"
+    roughness_tex.image = make_roughness_image(f"{key}_roughness", seed + 200, roughness)
+    links.new(roughness_tex.outputs["Color"], bsdf.inputs["Roughness"])
+
     return material
 
 
 def create_materials() -> dict[str, bpy.types.Material]:
     return {
-        "mudbrick": make_material("sun baked mudbrick", (0.58, 0.39, 0.22, 1), 0.96),
-        "plaster": make_material("chalky white plaster", (0.88, 0.82, 0.66, 1), 0.94),
-        "limestone": make_material("worn pale limestone", (0.74, 0.66, 0.49, 1), 0.88),
-        "wood": make_material("dark acacia wood", (0.32, 0.18, 0.09, 1), 0.82),
-        "reed": make_material("river reed green", (0.32, 0.46, 0.20, 1), 0.92),
-        "dry_reed": make_material("dry reed straw", (0.72, 0.58, 0.29, 1), 0.94),
-        "linen": make_material("sun bleached linen", (0.92, 0.84, 0.62, 1), 0.9),
+        "mudbrick": make_pbr_material("sun baked mudbrick", (0.47, 0.30, 0.17, 1), (0.76, 0.55, 0.32, 1), 0.96, 13, 0.28),
+        "plaster": make_pbr_material("chalky cracked plaster", (0.70, 0.61, 0.43, 1), (0.96, 0.88, 0.67, 1), 0.94, 29, 0.18),
+        "limestone": make_pbr_material("worn pale limestone", (0.58, 0.52, 0.39, 1), (0.88, 0.80, 0.60, 1), 0.88, 41, 0.16),
+        "wood": make_pbr_material("dark acacia wood", (0.20, 0.11, 0.055, 1), (0.52, 0.32, 0.18, 1), 0.82, 53, 0.2),
+        "reed": make_pbr_material("river reed green", (0.19, 0.30, 0.13, 1), (0.58, 0.66, 0.33, 1), 0.92, 61, 0.16),
+        "dry_reed": make_pbr_material("dry reed straw", (0.50, 0.38, 0.17, 1), (0.86, 0.70, 0.35, 1), 0.94, 67, 0.16),
+        "linen": make_pbr_material("sun bleached woven linen", (0.67, 0.56, 0.34, 1), (0.96, 0.88, 0.67, 1), 0.9, 71, 0.14),
         "dark": make_material("deep doorway shadow", (0.08, 0.055, 0.035, 1), 0.98),
+        "baked_shadow": make_material("baked warm contact shadow", (0.10, 0.067, 0.034, 0.46), 1, 0.46),
+        "dust_dark": make_material("settled dark street dust", (0.22, 0.13, 0.065, 0.58), 0.98, 0.58),
+        "plaster_stain": make_material("thin plaster water stain", (0.34, 0.24, 0.14, 0.42), 1, 0.42),
+        "warm_haze": make_material("warm suspended street haze", (0.86, 0.63, 0.33, 0.18), 1, 0.18),
         "paint_blue": make_material("mineral blue paint", (0.09, 0.31, 0.52, 1), 0.85),
         "paint_red": make_material("red ochre paint", (0.62, 0.19, 0.10, 1), 0.88),
         "paint_gold": make_material("warm ochre paint", (0.86, 0.58, 0.22, 1), 0.88),
-        "skin": make_material("warm figure skin", (0.58, 0.34, 0.18, 1), 0.9),
+        "skin": make_pbr_material("warm figure skin", (0.36, 0.19, 0.10, 1), (0.68, 0.40, 0.22, 1), 0.84, 83, 0.08),
+        "pottery": make_pbr_material("warm Nile clay pottery", (0.48, 0.24, 0.11, 1), (0.82, 0.44, 0.20, 1), 0.9, 97, 0.18),
+        "packed_dust": make_pbr_material("packed sandy street dust", (0.58, 0.34, 0.15, 1), (0.91, 0.66, 0.34, 1), 0.97, 103, 0.2),
         "hair": make_material("dark hair", (0.04, 0.028, 0.02, 1), 0.92),
     }
 
 
 def soften(obj: bpy.types.Object, width: float = 0.025, segments: int = 1) -> bpy.types.Object:
+    ensure_uv(obj)
+
     if hasattr(obj.data, "use_auto_smooth"):
         obj.data.use_auto_smooth = True
 
@@ -178,6 +321,25 @@ def soften(obj: bpy.types.Object, width: float = 0.025, segments: int = 1) -> bp
     normals = obj.modifiers.new("weighted normals", "WEIGHTED_NORMAL")
     normals.keep_sharp = True
     return obj
+
+
+def ensure_uv(obj: bpy.types.Object, scale: float = 0.28) -> None:
+    if obj.type != "MESH" or obj.data.uv_layers:
+        return
+
+    uv_layer = obj.data.uv_layers.new(name="UVMap")
+
+    for polygon in obj.data.polygons:
+        normal = polygon.normal
+        for loop_index in polygon.loop_indices:
+            vertex = obj.data.vertices[obj.data.loops[loop_index].vertex_index].co
+
+            if abs(normal.z) >= abs(normal.x) and abs(normal.z) >= abs(normal.y):
+                uv_layer.data[loop_index].uv = (vertex.x * scale, vertex.y * scale)
+            elif abs(normal.x) >= abs(normal.y):
+                uv_layer.data[loop_index].uv = (vertex.y * scale, vertex.z * scale)
+            else:
+                uv_layer.data[loop_index].uv = (vertex.x * scale, vertex.z * scale)
 
 
 def cube(
@@ -299,6 +461,7 @@ def vertical_panel(
     obj.location = loc
     obj.rotation_euler = rot
     obj.data.materials.append(material)
+    ensure_uv(obj)
     return obj
 
 
@@ -324,7 +487,60 @@ def flat_panel(
     obj.location = loc
     obj.rotation_euler = rot
     obj.data.materials.append(material)
+    ensure_uv(obj)
     return obj
+
+
+def sagging_cloth_panel(
+    name: str,
+    loc: tuple[float, float, float],
+    width: float,
+    depth: float,
+    material: bpy.types.Material,
+    sag: float = 0.18,
+    rot: tuple[float, float, float] = (0, 0, 0),
+) -> bpy.types.Object:
+    mesh = bpy.data.meshes.new(f"{name}Mesh")
+    verts = []
+    faces = []
+    columns = 4
+    rows = 3
+
+    for row in range(rows + 1):
+        for column in range(columns + 1):
+            u = column / columns
+            v = row / rows
+            x = (u - 0.5) * width
+            y = (v - 0.5) * depth
+            center_falloff = math.sin(math.pi * u) * math.sin(math.pi * v)
+            z = -sag * center_falloff + math.sin((u * 3.0 + v * 2.0) * math.pi) * sag * 0.08
+            verts.append((x, y, z))
+
+    for row in range(rows):
+        for column in range(columns):
+            a = row * (columns + 1) + column
+            faces.append((a, a + 1, a + columns + 2, a + columns + 1))
+
+    mesh.from_pydata(verts, [], faces)
+    mesh.update()
+    obj = bpy.data.objects.new(name, mesh)
+    bpy.context.collection.objects.link(obj)
+    obj.location = loc
+    obj.rotation_euler = rot
+    obj.data.materials.append(material)
+    ensure_uv(obj)
+    return soften(obj, 0.002)
+
+
+def ground_decal(
+    name: str,
+    loc: tuple[float, float, float],
+    width: float,
+    depth: float,
+    material: bpy.types.Material,
+    rot_z: float = 0,
+) -> bpy.types.Object:
+    return flat_panel(name, loc, width, depth, material, rot=(0, 0, rot_z))
 
 
 def make_hull(name: str, material: bpy.types.Material) -> bpy.types.Object:
@@ -577,6 +793,119 @@ def build_mudbrick_house_cluster(materials: dict[str, bpy.types.Material]) -> No
         make_jar(f"roofJar-{index}", (-2.9 + index * 0.42, 0.18, 2.48), materials["mudbrick"], 0.55)
 
 
+def add_sculpted_facade_details(
+    name: str,
+    facade_x: float,
+    center_y: float,
+    frontage: float,
+    height: float,
+    side_dir: int,
+    door_y: float,
+    materials: dict[str, bpy.types.Material],
+    rng: random.Random,
+) -> None:
+    for chip_index in range(9):
+        edge_y = center_y - frontage * 0.48 + frontage * chip_index / 8 + rng.uniform(-0.12, 0.12)
+        cube(
+            f"{name}-handRoundedParapetChip-{chip_index}",
+            (facade_x + side_dir * 0.18, edge_y, height + rng.uniform(0.06, 0.24)),
+            (0.16, rng.uniform(0.16, 0.44), rng.uniform(0.09, 0.21)),
+            materials["mudbrick" if chip_index % 3 else "plaster"],
+            rot=(0, 0, rng.uniform(-0.18, 0.18)),
+            bevel=0.035,
+        )
+
+    for lip_index, y in enumerate([center_y - frontage * 0.48, center_y + frontage * 0.48]):
+        for z_index in range(4):
+            cube(
+                f"{name}-erodedCornerLip-{lip_index}-{z_index}",
+                (facade_x + side_dir * 0.17, y + rng.uniform(-0.06, 0.06), 0.52 + z_index * height * 0.22),
+                (0.18, rng.uniform(0.16, 0.32), rng.uniform(0.14, 0.36)),
+                materials["mudbrick"],
+                rot=(0, 0, rng.uniform(-0.14, 0.14)),
+                bevel=0.03,
+            )
+
+    cube(
+        f"{name}-doorRevealLeft",
+        (facade_x + side_dir * 0.18, door_y - 0.54, 0.74),
+        (0.22, 0.12, 1.34),
+        materials["mudbrick"],
+        bevel=0.022,
+    )
+    cube(
+        f"{name}-doorRevealRight",
+        (facade_x + side_dir * 0.18, door_y + 0.54, 0.74),
+        (0.22, 0.12, 1.34),
+        materials["mudbrick"],
+        bevel=0.022,
+    )
+    cube(
+        f"{name}-doorThresholdWornStone",
+        (facade_x + side_dir * 0.34, door_y, 0.08),
+        (0.48, 1.08, 0.12),
+        materials["limestone"],
+        rot=(0, 0, rng.uniform(-0.025, 0.025)),
+        bevel=0.018,
+    )
+    ground_decal(
+        f"{name}-doorwayBakedDarkness",
+        (facade_x + side_dir * 0.58, door_y, 0.073),
+        1.24,
+        1.32,
+        materials["baked_shadow"],
+        rot_z=rng.uniform(-0.05, 0.05),
+    )
+
+    peg_points: list[tuple[float, float]] = []
+    for peg_index in range(4):
+        peg_y = center_y + rng.uniform(-frontage * 0.42, frontage * 0.42)
+        peg_z = rng.uniform(1.22, max(1.32, height * 0.88))
+        peg_points.append((peg_y, peg_z))
+        cylinder_between(
+            f"{name}-wallPeg-{peg_index}",
+            (facade_x + side_dir * 0.12, peg_y, peg_z),
+            (facade_x + side_dir * 0.42, peg_y, peg_z + rng.uniform(-0.02, 0.03)),
+            0.026,
+            materials["wood"],
+            8,
+        )
+        uv_sphere(
+            f"{name}-mudPegSocket-{peg_index}",
+            (facade_x + side_dir * 0.105, peg_y, peg_z),
+            0.058,
+            materials["mudbrick"],
+            scale=(0.45, 1.0, 0.7),
+            segments=8,
+        )
+
+    for cord_index in range(0, len(peg_points) - 1, 2):
+        y1, z1 = peg_points[cord_index]
+        y2, z2 = peg_points[cord_index + 1]
+        cylinder_between(
+            f"{name}-saggingCord-{cord_index}",
+            (facade_x + side_dir * 0.36, y1, z1 - 0.04),
+            (facade_x + side_dir * 0.36, y2, z2 - 0.08),
+            0.012,
+            materials["dry_reed"],
+            6,
+        )
+
+    for stain_index in range(3):
+        cube(
+            f"{name}-baseDirtLip-{stain_index}",
+            (
+                facade_x + side_dir * 0.12,
+                center_y + rng.uniform(-frontage * 0.43, frontage * 0.43),
+                rng.uniform(0.18, 0.34),
+            ),
+            (0.038, rng.uniform(0.8, 1.7), rng.uniform(0.10, 0.22)),
+            materials["dust_dark"],
+            rot=(0, 0, rng.uniform(-0.06, 0.06)),
+            bevel=0,
+        )
+
+
 def make_facade_house(
     name: str,
     center_x: float,
@@ -639,6 +968,8 @@ def make_facade_house(
             rot=(0, 0, rng.uniform(-0.25, 0.25)),
             bevel=0,
         )
+
+    add_sculpted_facade_details(name, facade_x, center_y, frontage, height, side_dir, door_y, materials, rng)
 
     for roof_index in range(2):
         if roof_index % 2 == 0:
@@ -709,7 +1040,7 @@ def make_edge_props(
         make_jar(
             f"{name}-edgeJar-{index}",
             (edge_x + side_dir * rng.uniform(-0.2, 0.42), center_y + rng.uniform(-1.8, 1.8), 0.28),
-            materials["mudbrick"],
+            materials["pottery"],
             rng.uniform(0.62, 0.95),
         )
 
@@ -739,6 +1070,51 @@ def make_edge_props(
 
 def add_hero_ground_details(materials: dict[str, bpy.types.Material]) -> None:
     rng = random.Random("hero-ground-details")
+
+    for index, y in enumerate([-25, -18, -11, -4, 4, 12, 20, 29]):
+        ground_decal(
+            f"streetSweptDustPile-{index}",
+            (-10.45 + rng.uniform(-1.6, 1.6), y + rng.uniform(-0.8, 0.8), 0.074),
+            rng.uniform(1.2, 2.4),
+            rng.uniform(0.42, 0.88),
+            materials["dust_dark"],
+            rot_z=rng.uniform(-0.32, 0.32),
+        )
+
+    for index, x in enumerate([-11.5, -9.35]):
+        ground_decal(
+            f"streetSoftFootRut-{index}",
+            (x, 3.5 + rng.uniform(-1.0, 1.0), 0.071),
+            0.42,
+            57,
+            materials["dust_dark"],
+            rot_z=rng.uniform(-0.018, 0.018),
+        )
+
+    for side_index, x in enumerate([-14.7, -6.2]):
+        for index, y in enumerate([-25, -17, -8, 1, 10, 19, 28]):
+            ground_decal(
+                f"streetWallBaseDirt-{side_index}-{index}",
+                (x + rng.uniform(-0.08, 0.08), y + rng.uniform(-0.7, 0.7), 0.075),
+                rng.uniform(0.78, 1.24),
+                rng.uniform(2.4, 4.2),
+                materials["baked_shadow"],
+                rot_z=rng.uniform(-0.05, 0.05),
+            )
+
+    for pair_index in range(20):
+        y = -25 + pair_index * 2.85 + rng.uniform(-0.35, 0.35)
+        x = -10.45 + math.sin(pair_index * 0.7) * 0.64 + rng.uniform(-0.18, 0.18)
+        yaw = rng.uniform(-0.28, 0.28)
+        for side in [-1, 1]:
+            cube(
+                f"heroWalkingFootprintPair-{pair_index}-{side}",
+                (x + side * 0.18, y + side * 0.38, 0.023),
+                (rng.uniform(0.16, 0.23), rng.uniform(0.34, 0.48), 0.014),
+                materials["dust_dark"],
+                rot=(0, 0, yaw + side * 0.08),
+                bevel=0.02,
+            )
 
     for index in range(28):
         x = rng.uniform(-13.8, -7.2)
@@ -779,19 +1155,278 @@ def add_hero_ground_details(materials: dict[str, bpy.types.Material]) -> None:
             f"brokenPotteryShard-{index}",
             (rng.uniform(-14.2, -6.8), rng.uniform(-26, 33), 0.055),
             (rng.uniform(0.16, 0.35), rng.uniform(0.08, 0.22), 0.035),
-            materials["mudbrick"],
+            materials["pottery"],
             rot=(0, 0, rng.uniform(0, math.tau)),
             bevel=0.01,
         )
+
+    for index in range(14):
+        uv_sphere(
+            f"streetRaisedDustClod-{index}",
+            (rng.uniform(-14.0, -6.8), rng.uniform(-27, 34), 0.052),
+            rng.uniform(0.06, 0.16),
+            materials["packed_dust" if index % 2 else "mudbrick"],
+            scale=(1.6, 0.9, 0.24),
+            segments=8,
+        )
+
+
+def add_baked_street_lighting(materials: dict[str, bpy.types.Material]) -> None:
+    street_center_x = -10.45
+
+    for index, y in enumerate([-24, -16, -7, 4, 16, 28]):
+        ground_decal(
+            f"heroV2-wallFootContactLeft-{index}",
+            (-14.65, y, 0.064),
+            1.05,
+            7.6,
+            materials["baked_shadow"],
+            rot_z=0.02 * math.sin(index),
+        )
+        ground_decal(
+            f"heroV2-wallFootContactRight-{index}",
+            (-6.24, y + 0.5, 0.065),
+            1.15,
+            7.2,
+            materials["baked_shadow"],
+            rot_z=-0.02 * math.cos(index),
+        )
+
+    for index, y in enumerate([-21.5, -13.6, -2.8, 8.2, 20.5]):
+        ground_decal(
+            f"heroV2-clothCastShadow-{index}",
+            (street_center_x + math.sin(index * 0.7) * 0.18, y, 0.068),
+            8.2 - (index % 2) * 0.7,
+            4.8 + (index % 3) * 0.5,
+            materials["dust_dark"],
+            rot_z=math.radians(2.5 + index * 0.8),
+        )
+
+    for index, y in enumerate([-25, -18, -11, -2, 7, 18, 29]):
+        ground_decal(
+            f"heroV2-softSunOcclusion-{index}",
+            (street_center_x + math.sin(index) * 0.45, y, 0.07),
+            5.8 + (index % 2) * 1.2,
+            2.2 + (index % 3) * 0.35,
+            materials["baked_shadow"],
+            rot_z=math.radians(-7 + index * 2),
+        )
+
+    for index, y in enumerate([-24.5, -18.2, -12.1, -5.7, 1.6, 7.8, 15.2, 22.7, 30.4]):
+        for side_name, x in [("left", -14.25), ("right", -6.65)]:
+            ground_decal(
+                f"heroV2-doorwayPool-{side_name}-{index}",
+                (x, y + math.sin(index) * 0.45, 0.076),
+                1.2,
+                1.65,
+                materials["baked_shadow"],
+                rot_z=math.radians((3 if side_name == "left" else -3) + math.sin(index) * 2),
+            )
+
+    for index, (x, y, width, depth) in enumerate([
+        (-13.95, -22.8, 2.6, 1.1),
+        (-6.35, -13.9, 1.6, 1.4),
+        (-13.7, -25.8, 1.8, 1.0),
+        (-6.75, -20.1, 1.7, 1.0),
+    ]):
+        ground_decal(
+            f"heroV2-foregroundPropGrounding-{index}",
+            (x, y, 0.078),
+            width,
+            depth,
+            materials["baked_shadow"],
+            rot_z=math.radians(4 - index * 3),
+        )
+
+
+def add_wall_surface_decals(materials: dict[str, bpy.types.Material]) -> None:
+    rng = random.Random("hero-v2-wall-decals")
+
+    for side_name, facade_x, side_dir in [("left", -14.9, 1), ("right", -5.92, -1)]:
+        for index in range(18):
+            y = rng.uniform(-27.5, 34)
+            z = rng.uniform(0.55, 2.2)
+            cube(
+                f"heroV2-{side_name}-thinStain-{index}",
+                (facade_x + side_dir * 0.13, y, z),
+                (0.018, rng.uniform(0.34, 1.1), rng.uniform(0.18, 0.64)),
+                materials["plaster_stain"],
+                rot=(0, 0, rng.uniform(-0.08, 0.08)),
+                bevel=0,
+            )
+
+        for index in range(20):
+            y = rng.uniform(-27.5, 34)
+            z = rng.uniform(0.45, 2.65)
+            cube(
+                f"heroV2-{side_name}-raisedMudChip-{index}",
+                (facade_x + side_dir * 0.15, y, z),
+                (0.055, rng.uniform(0.12, 0.38), rng.uniform(0.08, 0.22)),
+                materials["mudbrick" if index % 2 else "plaster"],
+                rot=(0, 0, rng.uniform(-0.4, 0.4)),
+                bevel=0.006,
+            )
+
+        for index in range(12):
+            y = rng.uniform(-27.5, 34)
+            z = rng.uniform(0.8, 2.6)
+            cube(
+                f"heroV2-{side_name}-deepHairlineCrack-{index}",
+                (facade_x + side_dir * 0.17, y, z),
+                (0.028, rng.uniform(0.018, 0.035), rng.uniform(0.42, 1.15)),
+                materials["dark"],
+                rot=(0, 0, rng.uniform(-0.22, 0.22)),
+                bevel=0,
+            )
+
+
+def make_tool_bundle(name: str, loc: tuple[float, float, float], materials: dict[str, bpy.types.Material]) -> None:
+    x, y, z = loc
+    for index in range(5):
+        cylinder_between(
+            f"{name}-woodHandle-{index}",
+            (x + index * 0.12, y - 0.42 + index * 0.13, z),
+            (x + index * 0.12 + 0.15, y + 0.36 + index * 0.06, z + 0.08),
+            0.018,
+            materials["wood"],
+            7,
+        )
+        cube(
+            f"{name}-toolHead-{index}",
+            (x + index * 0.12 + 0.18, y + 0.42 + index * 0.06, z + 0.1),
+            (0.16, 0.06, 0.05),
+            materials["limestone" if index % 2 else "paint_gold"],
+            rot=(0, 0, index * 0.28),
+            bevel=0.006,
+        )
+
+
+def add_foreground_film_set(materials: dict[str, bpy.types.Material]) -> None:
+    cube(
+        "heroV2LeftEyeHeightWallOccluder",
+        (-14.72, -28.4, 1.2),
+        (0.55, 4.8, 2.4),
+        materials["mudbrick"],
+        rot=(0, 0, -0.018),
+        bevel=0.065,
+    )
+    cube(
+        "heroV2LeftEyeHeightPlasterLip",
+        (-14.39, -28.1, 1.34),
+        (0.055, 3.7, 1.76),
+        materials["plaster"],
+        rot=(0, 0, -0.02),
+        bevel=0.014,
+    )
+    cube(
+        "heroV2RightEyeHeightWallOccluder",
+        (-6.12, -26.7, 1.05),
+        (0.48, 3.25, 2.1),
+        materials["mudbrick"],
+        rot=(0, 0, 0.02),
+        bevel=0.055,
+    )
+    cube(
+        "heroV2RightEyeHeightDoorDark",
+        (-6.42, -26.2, 0.78),
+        (0.08, 0.95, 1.45),
+        materials["dark"],
+        bevel=0.008,
+    )
+    sagging_cloth_panel(
+        "heroV2LowForegroundCanopy",
+        (-10.45, -23.9, 2.78),
+        8.8,
+        5.6,
+        materials["linen"],
+        sag=0.34,
+        rot=(math.radians(4), 0, math.radians(-0.8)),
+    )
+    cylinder_between("heroV2LowCanopyFrontRope", (-14.68, -26.62, 2.76), (-6.25, -26.25, 2.66), 0.017, materials["dry_reed"], 7)
+    cylinder_between("heroV2LowCanopyBackRope", (-14.32, -21.35, 2.86), (-6.35, -21.25, 2.78), 0.016, materials["dry_reed"], 7)
+    ground_decal(
+        "heroV2LowForegroundCanopyShadow",
+        (-10.4, -23.7, 0.079),
+        8.9,
+        5.65,
+        materials["dust_dark"],
+        rot_z=math.radians(1.2),
+    )
+
+    for index, (x, y, scale) in enumerate([
+        (-14.2, -27.0, 1.28),
+        (-13.35, -25.8, 0.92),
+        (-6.82, -24.8, 1.05),
+        (-5.88, -22.8, 0.86),
+    ]):
+        make_basket(f"heroV2ForegroundBasket-{index}", (x, y, 0.23), materials, scale)
+
+    for index, (x, y, scale) in enumerate([
+        (-13.15, -24.5, 1.05),
+        (-12.55, -23.7, 0.78),
+        (-6.55, -20.6, 1.12),
+        (-7.35, -19.8, 0.82),
+        (-5.85, -12.2, 0.92),
+    ]):
+        make_jar(f"heroV2ForegroundJar-{index}", (x, y, 0.32), materials["pottery"], scale)
+
+    cube("heroV2LeftForegroundBench", (-14.0, -22.8, 0.42), (0.56, 2.2, 0.20), materials["wood"], rot=(0, 0, 0.08), bevel=0.025)
+    cube("heroV2RightWorkStone", (-6.15, -13.8, 0.42), (1.05, 0.92, 0.46), materials["limestone"], rot=(0, 0, -0.06), bevel=0.025)
+    cube("heroV2FoldedLinenPile", (-13.85, -21.6, 0.66), (0.64, 0.82, 0.18), materials["linen"], rot=(0, 0, -0.08), bevel=0.045)
+    make_tool_bundle("heroV2ForegroundTools", (-6.5, -14.55, 0.78), materials)
+
+    for index in range(18):
+        make_jar(
+            f"heroV2EdgeTinyVessel-{index}",
+            (-14.0 + (index % 3) * 0.5 if index < 9 else -6.6 + (index % 3) * 0.42, -18 + (index // 3) * 2.2, 0.22),
+            materials["pottery"],
+            0.32 + (index % 3) * 0.06,
+        )
+
+
+def add_cinematic_depth_layers(materials: dict[str, bpy.types.Material]) -> None:
+    for index, y in enumerate([7.5, 18.5, 31.5]):
+        vertical_panel(
+            f"heroV2WarmHazePlane-{index}",
+            (-10.45, y, 1.55 + index * 0.08),
+            9.4 - index * 0.8,
+            2.8 + index * 0.25,
+            materials["warm_haze"],
+            rot=(0, 0, math.radians(index - 1)),
+        )
+
+    for index, y in enumerate([25, 30, 35]):
+        sagging_cloth_panel(
+            f"heroV2DistantClothLayer-{index}",
+            (-10.45, y, 2.85 + index * 0.08),
+            7.2 - index * 0.55,
+            3.2,
+            materials["linen"],
+            sag=0.16,
+            rot=(math.radians(4), 0, math.radians(index - 1)),
+        )
+        cylinder_between(f"heroV2DistantClothRopeA-{index}", (-13.95, y - 1.45, 2.95), (-6.95, y - 1.25, 2.85), 0.012, materials["dry_reed"], 6)
+        cylinder_between(f"heroV2DistantClothRopeB-{index}", (-13.8, y + 1.45, 2.82), (-7.0, y + 1.3, 2.95), 0.012, materials["dry_reed"], 6)
 
 
 def build_hero_street_corridor(materials: dict[str, bpy.types.Material]) -> None:
     random.seed("hero-street-corridor")
     left_center_x = -17.55
     right_center_x = -3.25
+    street_center_x = -10.45
     depth = 5.2
     cursor = -28.0
     house_specs = [5.4, 6.2, 4.8, 6.8, 5.6, 7.1, 5.2, 6.4]
+
+    for index, y in enumerate([-22, -6, 10, 26]):
+        ground_decal(
+            f"heroV2PackedDustGroundChunk-{index}",
+            (street_center_x + math.sin(index) * 0.08, y, 0.052),
+            8.7,
+            17.5,
+            materials["packed_dust"],
+            rot_z=math.radians(math.sin(index) * 0.5),
+        )
 
     for index, frontage in enumerate(house_specs):
         center_y = cursor + frontage * 0.5
@@ -824,17 +1459,22 @@ def build_hero_street_corridor(materials: dict[str, bpy.types.Material]) -> None
         cursor += frontage + 0.22
 
     for index, y in enumerate([-18, -3.5, 15.5]):
-        cube(
+        sagging_cloth_panel(
             f"crossStreetShadeCloth-{index}",
             (-10.45, y, 3.08 + (index % 2) * 0.16),
-            (8.35, 5.2 + (index % 2) * 1.1, 0.052),
+            8.35,
+            5.2 + (index % 2) * 1.1,
             materials["linen"],
-            rot=(random.uniform(-0.035, 0.035), random.uniform(-0.04, 0.04), 0),
-            bevel=0.012,
+            sag=0.18 + index * 0.03,
+            rot=(random.uniform(-0.035, 0.035), random.uniform(-0.04, 0.04), math.radians(index - 1)),
         )
         cylinder_between(f"crossStreetRopeA-{index}", (-14.45, y - 2.25, 3.18), (-6.35, y - 2.0, 3.05), 0.014, materials["dry_reed"], 6)
         cylinder_between(f"crossStreetRopeB-{index}", (-14.55, y + 2.2, 3.08), (-6.25, y + 2.1, 3.2), 0.014, materials["dry_reed"], 6)
 
+    add_baked_street_lighting(materials)
+    add_wall_surface_decals(materials)
+    add_foreground_film_set(materials)
+    add_cinematic_depth_layers(materials)
     add_hero_ground_details(materials)
 
 
@@ -933,7 +1573,17 @@ def set_linear_animation(objects: list[bpy.types.Object]) -> None:
     for obj in objects:
         if not obj.animation_data or not obj.animation_data.action:
             continue
-        for curve in obj.animation_data.action.fcurves:
+        action = obj.animation_data.action
+        curves = getattr(action, "fcurves", None)
+
+        if curves is None:
+            curves = []
+            for layer in getattr(action, "layers", []):
+                for strip in getattr(layer, "strips", []):
+                    for channelbag in getattr(strip, "channelbags", []):
+                        curves.extend(getattr(channelbag, "fcurves", []))
+
+        for curve in curves:
             for keyframe in curve.keyframe_points:
                 keyframe.interpolation = "LINEAR"
 
@@ -946,6 +1596,8 @@ def make_articulated_actor(
     yaw: float,
     role: str,
     phase: float,
+    walk_distance: float = 0,
+    walk_side_offset: float = 0,
 ) -> None:
     root = empty(name, loc)
     root.rotation_euler = (0, 0, yaw)
@@ -957,30 +1609,61 @@ def make_articulated_actor(
 
     torso = cylinder(f"{name}-torso", (x, y, z + 0.9 * scale), 0.18 * scale, 0.72 * scale, body_mat, 14, bevel=0.004)
     parent_keep_world(torso, root)
+    shoulders = cylinder_between(
+        f"{name}-shoulderLine",
+        (x - 0.26 * scale, y, z + 1.16 * scale),
+        (x + 0.26 * scale, y, z + 1.16 * scale),
+        0.045 * scale,
+        body_mat,
+        10,
+    )
+    parent_keep_world(shoulders, root)
+    neck = cylinder(f"{name}-neck", (x, y, z + 1.23 * scale), 0.065 * scale, 0.16 * scale, body_mat, 10, bevel=0.003)
+    parent_keep_world(neck, root)
 
     if role == "carrier":
+        sheath_top = cylinder(f"{name}-linenSheathUpper", (x, y, z + 0.86 * scale), 0.19 * scale, 0.42 * scale, linen_mat, 16, bevel=0.004)
+        parent_keep_world(sheath_top, root)
         dress = cone(f"{name}-linenDress", (x, y, z + 0.55 * scale), 0.28 * scale, 0.22 * scale, 0.76 * scale, linen_mat, 16)
         parent_keep_world(dress, root)
     else:
         kilt = cone(f"{name}-linenKilt", (x, y, z + 0.44 * scale), 0.28 * scale, 0.19 * scale, 0.42 * scale, linen_mat, 16)
         parent_keep_world(kilt, root)
+        belt = cylinder(f"{name}-plainLinenBelt", (x, y, z + 0.67 * scale), 0.22 * scale, 0.045 * scale, linen_mat, 16, bevel=0.002)
+        parent_keep_world(belt, root)
 
     head = uv_sphere(f"{name}-head", (x, y, z + 1.36 * scale), 0.17 * scale, body_mat, scale=(0.95, 0.9, 1.08), segments=14)
     parent_keep_world(head, root)
 
     hair = cube(f"{name}-hair", (x, y - 0.025 * scale, z + 1.47 * scale), (0.3 * scale, 0.24 * scale, 0.18 * scale), hair_mat, bevel=0.025)
     parent_keep_world(hair, root)
+    nose = uv_sphere(f"{name}-nose", (x, y - 0.16 * scale, z + 1.36 * scale), 0.035 * scale, body_mat, scale=(0.75, 1.25, 0.75), segments=8)
+    parent_keep_world(nose, root)
 
     left_arm = make_articulated_limb(f"{name}-leftArm", root, (x - 0.22 * scale, y, z + 1.08 * scale), 0.58 * scale, 0.043 * scale, body_mat)
     right_arm = make_articulated_limb(f"{name}-rightArm", root, (x + 0.22 * scale, y, z + 1.08 * scale), 0.58 * scale, 0.043 * scale, body_mat)
     left_leg = make_articulated_limb(f"{name}-leftLeg", root, (x - 0.09 * scale, y, z + 0.38 * scale), 0.48 * scale, 0.052 * scale, body_mat)
     right_leg = make_articulated_limb(f"{name}-rightLeg", root, (x + 0.09 * scale, y, z + 0.38 * scale), 0.48 * scale, 0.052 * scale, body_mat)
+    left_hand = uv_sphere(f"{name}-leftHand", (x - 0.22 * scale, y, z + 0.52 * scale), 0.055 * scale, body_mat, scale=(0.85, 0.85, 1.05), segments=8)
+    right_hand = uv_sphere(f"{name}-rightHand", (x + 0.22 * scale, y, z + 0.52 * scale), 0.055 * scale, body_mat, scale=(0.85, 0.85, 1.05), segments=8)
+    parent_keep_world(left_hand, left_arm)
+    parent_keep_world(right_hand, right_arm)
+    left_foot = cube(f"{name}-leftFoot", (x - 0.1 * scale, y - 0.08 * scale, z + 0.035 * scale), (0.13 * scale, 0.28 * scale, 0.07 * scale), body_mat, bevel=0.008)
+    right_foot = cube(f"{name}-rightFoot", (x + 0.1 * scale, y - 0.08 * scale, z + 0.035 * scale), (0.13 * scale, 0.28 * scale, 0.07 * scale), body_mat, bevel=0.008)
+    parent_keep_world(left_foot, root)
+    parent_keep_world(right_foot, root)
+    left_sandal = cube(f"{name}-leftSimpleSandal", (x - 0.1 * scale, y - 0.1 * scale, z + 0.01 * scale), (0.17 * scale, 0.32 * scale, 0.022 * scale), materials["dry_reed"], bevel=0.004)
+    right_sandal = cube(f"{name}-rightSimpleSandal", (x + 0.1 * scale, y - 0.1 * scale, z + 0.01 * scale), (0.17 * scale, 0.32 * scale, 0.022 * scale), materials["dry_reed"], bevel=0.004)
+    parent_keep_world(left_sandal, left_foot)
+    parent_keep_world(right_sandal, right_foot)
 
-    animated_objects = [root, left_arm, right_arm, left_leg, right_leg]
+    animated_objects = [root, left_arm, right_arm, left_leg, right_leg, left_foot, right_foot]
 
     if role == "carrier":
         jar_root = empty(f"{name}-headJarRoot", (x, y, z + 1.68 * scale), root)
-        jar = cone(f"{name}-headJar", (x, y, z + 1.82 * scale), 0.17 * scale, 0.11 * scale, 0.32 * scale, materials["mudbrick"], 16, bevel=0.004)
+        head_pad = cylinder(f"{name}-headPad", (x, y, z + 1.58 * scale), 0.16 * scale, 0.035 * scale, materials["linen"], 14, bevel=0.004)
+        parent_keep_world(head_pad, root)
+        jar = cone(f"{name}-headJar", (x, y, z + 1.82 * scale), 0.17 * scale, 0.11 * scale, 0.32 * scale, materials["pottery"], 16, bevel=0.004)
         parent_keep_world(jar, jar_root)
         animated_objects.append(jar_root)
     else:
@@ -992,14 +1675,38 @@ def make_articulated_actor(
         tool = cylinder(f"{name}-woodTool", (x + 0.32 * scale, y + 0.17 * scale, z + 0.82 * scale), 0.025 * scale, 0.46 * scale, materials["wood"], 8, rot=(math.radians(64), 0, 0))
         parent_keep_world(tool, right_arm)
 
-    loop_frames = [1, 17, 33, 49, 65, 81, 97]
+    if role == "idle":
+        stool = cube(f"{name}-doorwayLowStool", (x + 0.42 * scale, y + 0.22 * scale, z + 0.18 * scale), (0.38 * scale, 0.42 * scale, 0.2 * scale), materials["wood"], bevel=0.018)
+        parent_keep_world(stool, root)
+
+    loop_frames = [1, 33, 65, 97, 129, 161, 193]
     root_base = loc
+    loop_start = loop_frames[0]
+    loop_end = loop_frames[-1]
+
     for frame in loop_frames:
-        t = (frame - 1) / 96 * math.tau + phase
+        progress = (frame - loop_start) / (loop_end - loop_start)
+        t = progress * math.tau + phase
         stride = math.sin(t)
         counter = math.sin(t + math.pi)
         bob = abs(stride) * 0.025 * scale
-        key_location(root, frame, (root_base[0], root_base[1], root_base[2] + bob))
+
+        if walk_distance:
+            if progress <= 0.5:
+                travel = progress / 0.5
+                root_x = root_base[0] + math.sin(travel * math.pi) * walk_side_offset
+                root_y = root_base[1] + walk_distance * travel
+                root_yaw = yaw
+            else:
+                travel = (progress - 0.5) / 0.5
+                root_x = root_base[0] + math.sin((1 - travel) * math.pi) * walk_side_offset
+                root_y = root_base[1] + walk_distance * (1 - travel)
+                root_yaw = yaw + math.pi
+
+            key_location(root, frame, (root_x, root_y, root_base[2] + bob))
+            key_rotation(root, frame, (0, 0, root_yaw))
+        else:
+            key_location(root, frame, (root_base[0], root_base[1], root_base[2] + bob))
 
         if role == "worker":
             key_rotation(left_arm, frame, (math.radians(18), 0, math.radians(-10)))
@@ -1029,15 +1736,12 @@ def make_articulated_actor(
 
 def build_animated_street_actors(materials: dict[str, bpy.types.Material]) -> None:
     bpy.context.scene.frame_start = 1
-    bpy.context.scene.frame_end = 97
+    bpy.context.scene.frame_end = 193
     bpy.context.scene.render.fps = 24
 
-    make_articulated_actor("actorCarrierNorth", (-11.75, -16.5, 0.05), materials, 0.98, 0, "carrier", 0.2)
-    make_articulated_actor("actorCarrierSouth", (-9.65, -20.5, 0.05), materials, 0.94, 0, "carrier", 2.4)
-    make_articulated_actor("actorMarketWalker", (-12.45, 2.4, 0.05), materials, 1.0, math.radians(8), "walker", 1.1)
-    make_articulated_actor("actorDoorwayIdle", (-7.45, 10.2, 0.05), materials, 0.96, math.radians(-82), "idle", 3.0)
-    make_articulated_actor("actorStoneWorker", (-7.65, -1.5, 0.05), materials, 1.02, math.radians(-72), "worker", 0.6)
-    make_articulated_actor("actorStreetWalkerFar", (-11.0, 20.5, 0.05), materials, 0.9, math.radians(-5), "walker", 4.1)
+    make_articulated_actor("actorHeroCarrier", (-10.7, -22.5, 0.05), materials, 1.02, math.radians(1), "carrier", 0.2, 11.8, 0.34)
+    make_articulated_actor("actorHeroStoneWorker", (-7.45, -8.7, 0.05), materials, 1.04, math.radians(-76), "worker", 0.6)
+    make_articulated_actor("actorHeroStreetWalker", (-13.2, -3.4, 0.05), materials, 0.98, math.radians(178), "walker", 3.0, -8.6, -0.28)
 
 
 def build_street_npc_placeholders(materials: dict[str, bpy.types.Material]) -> None:
@@ -1070,15 +1774,30 @@ def export_asset(asset: dict[str, object]) -> None:
     asset_id = str(asset["id"])
     BUILDERS[asset_id](materials)
     bpy.ops.object.select_all(action="SELECT")
+    export_options = {
+        "filepath": str(OUT_DIR / str(asset["fileName"])),
+        "export_format": "GLB",
+        "use_selection": True,
+        "export_apply": True,
+        "export_yup": True,
+        "export_animations": True,
+        "export_frame_range": True,
+        "export_force_sampling": True,
+    }
+
+    if os.environ.get("EGYPTVR_ENABLE_DRACO") == "1":
+        export_options.update(
+            {
+                "export_draco_mesh_compression_enable": True,
+                "export_draco_mesh_compression_level": 6,
+                "export_draco_position_quantization": 14,
+                "export_draco_normal_quantization": 10,
+                "export_draco_texcoord_quantization": 12,
+            }
+        )
+
     bpy.ops.export_scene.gltf(
-        filepath=str(OUT_DIR / str(asset["fileName"])),
-        export_format="GLB",
-        use_selection=True,
-        export_apply=True,
-        export_yup=True,
-        export_animations=True,
-        export_frame_range=True,
-        export_force_sampling=True,
+        **export_options
     )
 
 
@@ -1116,7 +1835,13 @@ def write_manifest() -> None:
         "generatedBy": "tools/blender/generate_memphis_asset_kit.py",
         "generator": "Blender procedural mesh script",
         "blenderVersion": bpy.app.version_string,
+        "meshCompression": "Draco export is supported by setting EGYPTVR_ENABLE_DRACO=1; disabled by default until browser decoder wiring is verified.",
         "licenseStatus": "Project-authored procedural meshes; no source media copied or embedded.",
+        "materialAtlasStatus": {
+            "currentPass": "Procedural albedo/normal/roughness texture sets are packed in the generated GLBs.",
+            "aoAndHeight": "AO, doorway darkness, wall-base dirt, cloth shade, cracks, chips, and height-like surface breakup are authored as visible decal/contact geometry for this pass.",
+            "nextPass": "After the look is approved, split near/mid/far chunks and bake true lightmap/AO/height/KTX2 atlases."
+        },
         "policy": [
             "Use restricted Memphis-specific sources as human research context only.",
             "Use open/CC0/public-domain references only for future dataset experiments.",

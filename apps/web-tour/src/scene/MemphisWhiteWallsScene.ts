@@ -86,6 +86,16 @@ interface BirdRoutine {
   phase: number;
 }
 
+interface CinematicHumanRoutine {
+  root: TransformNode;
+  basePosition: Vector3;
+  pose: "carrier" | "worker" | "seated";
+  phase: number;
+  arms: TransformNode[];
+  legs: TransformNode[];
+  carriedLoad?: TransformNode;
+}
+
 interface Soundscape {
   setEnabled(enabled: boolean): void;
 }
@@ -170,8 +180,8 @@ export async function createMemphisWhiteWallsScene(
   createCraftsmenArea(scene, materials);
   createTemple(scene, materials);
   createRouteLine(scene, manifest, materials);
-  await loadModularAssetKit(scene);
-  createHeroStreetV2FilmSet(scene, materials);
+  const authoredHeroStreetLoaded = await loadModularAssetKit(scene);
+  const cinematicHumans = authoredHeroStreetLoaded ? [] : createHeroStreetV2FilmSet(scene, materials);
 
   const evidenceRoot = createEvidenceMarkers(scene, manifest, materials);
   evidenceRoot.setEnabled(false);
@@ -211,6 +221,7 @@ export async function createMemphisWhiteWallsScene(
     updateWalkers(walkers, time);
     updateSmoke(smokeNodes, time);
     updateBirds(birds, time);
+    updateCinematicHumans(cinematicHumans, time);
     animateMaterials(materials, time);
     const nearestStop = findNearestStop(manifest.stops, camera.position);
 
@@ -501,7 +512,7 @@ function createSkyDome(scene: Scene): void {
   sky.isPickable = false;
 }
 
-async function loadModularAssetKit(scene: Scene): Promise<void> {
+async function loadModularAssetKit(scene: Scene): Promise<boolean> {
   try {
     const response = await fetch(`${glbRoot}asset-kit.manifest.json`);
 
@@ -513,6 +524,7 @@ async function loadModularAssetKit(scene: Scene): Promise<void> {
     const entriesById = new Map(manifest.assets.map((entry) => [entry.id, entry]));
     const placements = createModularAssetPlacements();
     const containers = new Map<string, Awaited<ReturnType<typeof SceneLoader.LoadAssetContainerAsync>>>();
+    let heroStreetLoaded = false;
 
     await Promise.all(
       [...new Set(placements.map((placement) => placement.assetId))].map(async (assetId) => {
@@ -561,6 +573,10 @@ async function loadModularAssetKit(scene: Scene): Promise<void> {
         }
       }
 
+      if (placement.assetId === "hero-street-corridor") {
+        heroStreetLoaded = true;
+      }
+
       if (placement.animated && "animationGroups" in instance) {
         instance.rootNodes.forEach((node, index) => {
           if (placement.assetId === "animated-street-actors" && index > 2) {
@@ -574,8 +590,11 @@ async function loadModularAssetKit(scene: Scene): Promise<void> {
         });
       }
     }
+
+    return heroStreetLoaded;
   } catch (error) {
     console.warn("Memphis modular GLB asset kit could not be loaded.", error);
+    return false;
   }
 }
 
@@ -744,7 +763,7 @@ function createResidentialStreet(scene: Scene, materials: SceneMaterials): void 
   }
 }
 
-function createHeroStreetV2FilmSet(scene: Scene, materials: SceneMaterials): void {
+function createHeroStreetV2FilmSet(scene: Scene, materials: SceneMaterials): CinematicHumanRoutine[] {
   const centerX = heroStreetCenterX;
 
   [
@@ -802,15 +821,19 @@ function createHeroStreetV2FilmSet(scene: Scene, materials: SceneMaterials): voi
   createWorkTable(scene, materials, new Vector3(centerX + 3.8, 0.56, -7.2), 0.08, "rightStoneTable");
   createWorkTable(scene, materials, new Vector3(centerX - 3.6, 0.56, -11.5), -0.12, "leftPotteryTable");
 
-  createCinematicHuman(scene, materials, new Vector3(centerX - 0.2, 0, -17.3), 0.02, "carrier");
-  createCinematicHuman(scene, materials, new Vector3(centerX + 3.2, 0, -8.4), -1.35, "worker");
-  createCinematicHuman(scene, materials, new Vector3(centerX - 3.15, 0, -4.6), 1.45, "seated");
+  const humans = [
+    createCinematicHuman(scene, materials, new Vector3(centerX - 0.2, 0, -17.3), 0.02, "carrier", 0.2),
+    createCinematicHuman(scene, materials, new Vector3(centerX + 3.2, 0, -8.4), -1.35, "worker", 1.4),
+    createCinematicHuman(scene, materials, new Vector3(centerX - 3.15, 0, -4.6), 1.45, "seated", 2.6)
+  ];
 
   for (let index = 0; index < 34; index += 1) {
     const x = centerX - 4.1 + (index % 7) * 1.26 + Math.sin(index * 2.1) * 0.18;
     const z = -26 + Math.floor(index / 7) * 7.2 + Math.cos(index * 1.6) * 0.55;
     createGroundPebble(scene, materials, new Vector3(x, 0.085, z), index);
   }
+
+  return humans;
 }
 
 function createGroundShadow(
@@ -909,10 +932,20 @@ function createWorkTable(scene: Scene, materials: SceneMaterials, position: Vect
   createGroundShadow(scene, materials, `heroV2${name}Shadow`, new Vector3(position.x, 0.083, position.z), 1.8, 1.05, 0.2);
 }
 
-function createCinematicHuman(scene: Scene, materials: SceneMaterials, position: Vector3, rotationY: number, pose: "carrier" | "worker" | "seated"): void {
+function createCinematicHuman(
+  scene: Scene,
+  materials: SceneMaterials,
+  position: Vector3,
+  rotationY: number,
+  pose: "carrier" | "worker" | "seated",
+  phase: number
+): CinematicHumanRoutine {
   const root = new TransformNode(`heroV2Human-${pose}`, scene);
   root.position = position;
   root.rotation.y = rotationY;
+  const arms: TransformNode[] = [];
+  const legs: TransformNode[] = [];
+  let carriedLoad: TransformNode | undefined;
 
   const bodyHeight = pose === "seated" ? 0.85 : 1.08;
   const torso = MeshBuilder.CreateCylinder(`heroV2Human-${pose}-torso`, {
@@ -956,6 +989,7 @@ function createCinematicHuman(scene: Scene, materials: SceneMaterials, position:
     jar.position.y = 2.02;
     jar.material = materials.pottery;
     jar.parent = root;
+    carriedLoad = jar;
   }
 
   const armY = pose === "seated" ? 1.0 : 1.15;
@@ -970,6 +1004,7 @@ function createCinematicHuman(scene: Scene, materials: SceneMaterials, position:
     arm.rotation.x = pose === "worker" ? 0.82 : 0.2;
     arm.material = materials.skin;
     arm.parent = root;
+    arms.push(arm);
 
     const leg = MeshBuilder.CreateCylinder(`heroV2Human-${pose}-leg-${side}`, {
       height: pose === "seated" ? 0.62 : 0.78,
@@ -980,9 +1015,60 @@ function createCinematicHuman(scene: Scene, materials: SceneMaterials, position:
     leg.rotation.x = pose === "seated" ? 1.2 : 0.04;
     leg.material = materials.skin;
     leg.parent = root;
+    legs.push(leg);
   });
 
   createGroundShadow(scene, materials, `heroV2Human-${pose}-shadow`, new Vector3(position.x, 0.084, position.z), 0.72, 0.48, 0.32);
+
+  return {
+    root,
+    basePosition: position.clone(),
+    pose,
+    phase,
+    arms,
+    legs,
+    carriedLoad
+  };
+}
+
+function updateCinematicHumans(humans: CinematicHumanRoutine[], time: number): void {
+  humans.forEach((human) => {
+    const slow = Math.sin(time * 1.15 + human.phase);
+    const fast = Math.sin(time * 3.4 + human.phase);
+
+    if (human.pose === "carrier") {
+      human.root.position.z = human.basePosition.z + Math.sin(time * 0.5 + human.phase) * 0.22;
+      human.root.position.y = Math.abs(fast) * 0.018;
+      human.arms.forEach((arm, index) => {
+        arm.rotation.x = -0.18 + slow * 0.07;
+        arm.rotation.z = (index === 0 ? -1 : 1) * (0.15 + slow * 0.04);
+      });
+      human.legs.forEach((leg, index) => {
+        leg.rotation.x = (index === 0 ? 1 : -1) * fast * 0.18;
+      });
+      if (human.carriedLoad) {
+        human.carriedLoad.rotation.z = slow * 0.035;
+      }
+      return;
+    }
+
+    if (human.pose === "worker") {
+      human.root.position.y = Math.max(0, slow) * 0.012;
+      human.arms.forEach((arm, index) => {
+        arm.rotation.x = 0.75 + (index === 0 ? slow : -slow) * 0.24;
+        arm.rotation.z = (index === 0 ? -1 : 1) * (0.42 + Math.abs(slow) * 0.08);
+      });
+      human.legs.forEach((leg, index) => {
+        leg.rotation.x = (index === 0 ? 0.08 : -0.08) + slow * 0.035;
+      });
+      return;
+    }
+
+    human.root.rotation.z = slow * 0.018;
+    human.arms.forEach((arm, index) => {
+      arm.rotation.x = 0.15 + (index === 0 ? slow : -slow) * 0.055;
+    });
+  });
 }
 
 function createGroundPebble(scene: Scene, materials: SceneMaterials, position: Vector3, index: number): void {

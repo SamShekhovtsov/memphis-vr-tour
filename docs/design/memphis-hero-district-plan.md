@@ -24,6 +24,7 @@ Primary route spine:
 
 The hero street is the visual priority for this milestone.
 
+- Current locked placement lives in `docs/design/hero-street-v2-layout-lock.md`. Treat that file as the placement lock before changing any route, road, or house coordinates.
 - Street centerline: approximately `x -6`, offset to the right of the Nile-side White Walls gate opening.
 - Walking lane: keep `x -9.8 to -2.3` mostly clear.
 - Left/west house row: facade faces east/inward toward positive `x`.

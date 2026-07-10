@@ -10,7 +10,7 @@ const manifestPath = path.join(rootDir, "apps", "web-tour", "public", "assets", 
 
 const textureSize = 1024;
 const sampleRate = 22050;
-const checkedDate = "2026-07-08";
+const checkedDate = "2026-07-10";
 
 await Promise.all([mkdir(textureDir, { recursive: true }), mkdir(audioDir, { recursive: true })]);
 

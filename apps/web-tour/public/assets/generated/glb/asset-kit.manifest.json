@@ -1,11 +1,17 @@
 {
   "$schema": "./asset-kit.schema.json",
   "id": "memphis-modular-glb-kit-v1",
-  "checkedDate": "2026-07-09",
+  "checkedDate": "2026-07-10",
   "generatedBy": "tools/blender/generate_memphis_asset_kit.py",
   "generator": "Blender procedural mesh script",
-  "blenderVersion": "3.6.23",
+  "blenderVersion": "5.1.2",
+  "meshCompression": "Draco export is supported by setting EGYPTVR_ENABLE_DRACO=1; disabled by default until browser decoder wiring is verified.",
   "licenseStatus": "Project-authored procedural meshes; no source media copied or embedded.",
+  "materialAtlasStatus": {
+    "currentPass": "Procedural albedo/normal/roughness texture sets are packed in the generated GLBs.",
+    "aoAndHeight": "AO, doorway darkness, wall-base dirt, cloth shade, cracks, chips, and height-like surface breakup are authored as visible decal/contact geometry for this pass.",
+    "nextPass": "After the look is approved, split near/mid/far chunks and bake true lightmap/AO/height/KTX2 atlases."
+  },
   "policy": [
     "Use restricted Memphis-specific sources as human research context only.",
     "Use open/CC0/public-domain references only for future dataset experiments.",
@@ -89,7 +95,8 @@
       ],
       "notes": [
         "Project-authored two-row mudbrick street corridor with inward-facing facades.",
-        "Includes worn doors, small windows, awnings, roof clutter, plaster patches, cracks, pottery, baskets, sacks, straw, stones, and work surfaces.",
+        "Hero Street v2 film-set pass: packed procedural PBR texture sets, baked contact/shadow decal geometry, foreground occluders, sculpted close facade chunks, roof clutter, plaster cracks, pottery, baskets, sacks, straw, stones, ruts, and work surfaces.",
+        "Old Kingdom visual guardrails: compact mudbrick domestic lane, restrained domestic wall marks, linen shade cloth, plain clothing silhouettes, and no copied source media.",
         "Layout follows docs/design/memphis-hero-district-plan.md and avoids overlapping architecture systems."
       ],
       "runtimeUrl": "/assets/generated/glb/hero_street_corridor.glb",
@@ -154,7 +161,7 @@
       ],
       "notes": [
         "Project-authored articulated GLB figures with walking, carrying, idle, and work-loop object animation.",
-        "Clothing is intentionally restrained: plain linen kilts and sheath-like linen garments suitable for an Old Kingdom visual direction.",
+        "Hero Street v2 character pass: fewer, more readable silhouettes with plain linen kilts, simple sheath-like linen garments, bare feet/simple sandals, minimal adornment, and slow street-scale movement.",
         "This is a first browser-safe character pass; future work should replace it with expert-reviewed skeletal character rigs."
       ],
       "runtimeUrl": "/assets/generated/glb/animated_street_actors.glb",
