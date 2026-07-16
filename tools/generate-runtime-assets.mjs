@@ -86,43 +86,70 @@ function createSandTexture(width, height) {
 }
 
 function createHeroStreetGroundTexture(width, height) {
-  const image = createImage(width, height, "#cfa36b");
+  const image = createImage(width, height, "#a66f3f");
   const random = seededRandom(1203);
 
   forEachPixel(image, (x, y) => {
     const n = layeredNoise(x, y, 1203, [
-      [0.006, 30],
-      [0.026, 18],
-      [0.085, 8]
+      [0.0035, 34],
+      [0.014, 20],
+      [0.052, 9],
+      [0.14, 4]
     ]);
-    const wornCenter = 1 - Math.abs(x / width - 0.5) * 1.65;
-    const track = Math.max(0, wornCenter) * 10;
-    const ripple = Math.sin(y * 0.024 + n * 0.05) * 4;
-    return mixHex("#a87543", "#efd29a", clamp01(0.5 + (n + ripple + track) / 105));
+    const normalizedX = x / width;
+    const normalizedY = y / height;
+    const wornCenter = Math.max(0, 1 - Math.abs(normalizedX - 0.5) * 1.9);
+    const wallGrime = Math.max(0, 0.22 - normalizedX) * 46 + Math.max(0, normalizedX - 0.78) * 42;
+    const slowRidge = Math.sin(normalizedY * Math.PI * 4.6 + n * 0.038) * 6;
+    const centerLight = wornCenter * 11;
+    const value = clamp01(0.42 + (n + slowRidge + centerLight - wallGrime) / 116);
+    return mixHex("#744523", "#d29a5a", value);
   });
 
-  for (let index = 0; index < 78; index += 1) {
+  for (let index = 0; index < 52; index += 1) {
     drawSoftEllipse(
       image,
       random() * width,
       random() * height,
-      8 + random() * 7,
-      18 + random() * 11,
-      "#8e6139",
-      0.14,
+      14 + random() * 18,
+      34 + random() * 38,
+      "#6f4124",
+      0.18,
       random() * Math.PI
     );
   }
 
-  for (let index = 0; index < 56; index += 1) {
-    const x = random() * width;
-    const y = random() * height;
-    drawLine(image, x, y, x + (random() - 0.5) * 80, y + (random() - 0.5) * 32, "#e2c37d");
+  for (let index = 0; index < 28; index += 1) {
+    const side = index % 2 === 0 ? 0.15 : 0.85;
+    drawSoftEllipse(
+      image,
+      width * side + (random() - 0.5) * width * 0.16,
+      random() * height,
+      18 + random() * 24,
+      78 + random() * 92,
+      "#5d3520",
+      0.2,
+      random() * 0.18
+    );
   }
 
-  addSpeckles(image, 3600, "#8b633a", 0.13, 1207);
-  addSpeckles(image, 2900, "#f3dca6", 0.16, 1209);
-  addHairlineCracks(image, 14, "#7b5936", 0.12, 1211);
+  for (let pairIndex = 0; pairIndex < 34; pairIndex += 1) {
+    const y = (pairIndex / 34) * height + (random() - 0.5) * 24;
+    const x = width * (0.45 + Math.sin(pairIndex * 0.73) * 0.08 + (random() - 0.5) * 0.04);
+    const rotation = (random() - 0.5) * 0.5;
+    drawSoftEllipse(image, x - 11, y, 7 + random() * 3, 18 + random() * 5, "#5a351f", 0.2, rotation);
+    drawSoftEllipse(image, x + 15, y + 26, 7 + random() * 3, 18 + random() * 5, "#5a351f", 0.18, rotation);
+  }
+
+  for (let index = 0; index < 48; index += 1) {
+    const x = random() * width;
+    const y = random() * height;
+    drawLine(image, x, y, x + (random() - 0.5) * 76, y + (random() - 0.5) * 28, "#c79b55");
+  }
+
+  addSpeckles(image, 4400, "#5c3721", 0.15, 1207);
+  addSpeckles(image, 1800, "#d5ad69", 0.08, 1209);
+  addHairlineCracks(image, 24, "#51311f", 0.18, 1211);
   return image;
 }
 
@@ -150,9 +177,9 @@ function createHeroStreetNormalTexture(width, height) {
     ]);
 
     return {
-      r: Math.round(clamp01(0.5 + dx / 110) * 255),
-      g: Math.round(clamp01(0.5 + dy / 110) * 255),
-      b: 240,
+      r: Math.round(clamp01(0.5 + dx / 78) * 255),
+      g: Math.round(clamp01(0.5 + dy / 78) * 255),
+      b: 232,
       a: 255
     };
   });
@@ -177,15 +204,17 @@ function createHeroStreetRoughnessTexture(width, height) {
 }
 
 function createHeroStreetAoTexture(width, height) {
-  const image = createImage(width, height, "#e6e6e6");
+  const image = createImage(width, height, "#d0d0d0");
 
   forEachPixel(image, (x, y) => {
-    const edgeShade = Math.abs(x / width - 0.5) * 0.46;
+    const normalizedX = x / width;
+    const edgeShade = Math.abs(normalizedX - 0.5) * 0.58;
+    const rutShade = Math.max(0, 0.08 - Math.abs(normalizedX - 0.43)) * 1.5;
     const n = layeredNoise(x, y, 1501, [
       [0.009, 18],
       [0.04, 8]
     ]);
-    const value = Math.round(clamp01(0.88 - edgeShade + n / 130) * 255);
+    const value = Math.round(clamp01(0.78 - edgeShade - rutShade + n / 150) * 255);
     return { r: value, g: value, b: value, a: 255 };
   });
 
@@ -193,10 +222,10 @@ function createHeroStreetAoTexture(width, height) {
 }
 
 function createMudbrickTexture(width, height) {
-  const image = createImage(width, height, "#8a6040");
+  const image = createImage(width, height, "#74482d");
   const brickW = 156;
   const brickH = 72;
-  const mortar = 6;
+  const mortar = 7;
 
   forEachPixel(image, (x, y) => {
     const row = Math.floor(y / brickH);
@@ -205,39 +234,70 @@ function createMudbrickTexture(width, height) {
     const localY = positiveModulo(y, brickH);
     const inMortar = localX < mortar || localY < mortar;
     const n = layeredNoise(x, y, 43, [
-      [0.018, 18],
-      [0.07, 9],
-      [0.19, 5]
+      [0.011, 20],
+      [0.052, 12],
+      [0.17, 5]
     ]);
 
     if (inMortar) {
-      return mixHex("#6e513b", "#aa815a", clamp01(0.45 + n / 80));
+      return mixHex("#55402f", "#8c6849", clamp01(0.42 + n / 92));
     }
 
     const sun = Math.sin((x + row * 13) * 0.013) * 7;
-    return mixHex("#714930", "#b98255", clamp01(0.42 + (n + sun) / 82));
+    return mixHex("#5f381f", "#a06a3f", clamp01(0.43 + (n + sun) / 88));
   });
 
-  addHairlineCracks(image, 34, "#4e3526", 0.36, 84);
-  addSpeckles(image, 3200, "#cfa176", 0.18, 91);
+  for (let index = 0; index < 34; index += 1) {
+    const random = seededRandom(820 + index);
+    drawSoftEllipse(
+      image,
+      random() * width,
+      random() * height,
+      12 + random() * 18,
+      22 + random() * 38,
+      "#3f2719",
+      0.12,
+      random() * Math.PI
+    );
+  }
+
+  addHairlineCracks(image, 44, "#3f281c", 0.44, 84);
+  addSpeckles(image, 4200, "#c08957", 0.12, 91);
+  addSpeckles(image, 2800, "#3d2719", 0.12, 92);
   return image;
 }
 
 function createPlasterTexture(width, height) {
-  const image = createImage(width, height, "#e7dcc4");
+  const image = createImage(width, height, "#c9bb99");
 
   forEachPixel(image, (x, y) => {
     const n = layeredNoise(x, y, 61, [
-      [0.012, 18],
-      [0.058, 10],
+      [0.007, 20],
+      [0.034, 12],
       [0.21, 4]
     ]);
-    const stain = Math.sin((x + y * 0.7) * 0.006) * 9;
-    return mixHex("#bfae8f", "#f3ead7", clamp01(0.63 + (n + stain) / 88));
+    const stain = Math.sin((x + y * 0.7) * 0.006) * 12;
+    const drip = Math.max(0, Math.sin(x * 0.017 + n * 0.05)) * 6;
+    return mixHex("#8d7a5a", "#d6c8a7", clamp01(0.58 + (n + stain - drip) / 96));
   });
 
-  addHairlineCracks(image, 22, "#8b7b62", 0.34, 118);
-  addSpeckles(image, 1800, "#fff8df", 0.12, 127);
+  for (let index = 0; index < 42; index += 1) {
+    const random = seededRandom(910 + index);
+    drawSoftEllipse(
+      image,
+      random() * width,
+      random() * height,
+      18 + random() * 24,
+      36 + random() * 80,
+      "#6f5f48",
+      0.1,
+      random() * Math.PI
+    );
+  }
+
+  addHairlineCracks(image, 36, "#6f6049", 0.42, 118);
+  addSpeckles(image, 2400, "#eadab8", 0.08, 127);
+  addSpeckles(image, 2600, "#755f43", 0.09, 128);
   return image;
 }
 

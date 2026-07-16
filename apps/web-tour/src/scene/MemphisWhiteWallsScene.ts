@@ -38,6 +38,26 @@ const glbRoot = "/assets/generated/glb/";
 const heroStreetOffsetX = -16.5;
 const heroStreetCenterX = -6;
 
+interface CameraShotBookmark {
+  position: [number, number, number];
+  lookAt: [number, number, number];
+}
+
+const cameraShotBookmarks: Record<string, CameraShotBookmark> = {
+  "street-entry": {
+    position: [-7, 1.7, -28],
+    lookAt: [-6.3, 1.55, -12]
+  },
+  "hero-street-main": {
+    position: [-6.6, 1.65, -18],
+    lookAt: [-6, 1.48, 8]
+  },
+  "hero-street-material": {
+    position: [-8.9, 1.35, -17.6],
+    lookAt: [-5.5, 1.1, -9.5]
+  }
+};
+
 interface SceneMaterials {
   sand: PBRMaterial;
   heroGround: PBRMaterial;
@@ -136,15 +156,18 @@ export async function createMemphisWhiteWallsScene(
   manifest: TourManifest
 ): Promise<MemphisSceneController> {
   const scene = new Scene(engine);
-  scene.clearColor = new Color4(0.73, 0.82, 0.88, 1);
-  scene.ambientColor = new Color3(0.78, 0.68, 0.54);
-  scene.fogColor = Color3.FromHexString("#dec69a");
+  scene.clearColor = new Color4(0.63, 0.67, 0.65, 1);
+  scene.ambientColor = new Color3(0.56, 0.48, 0.38);
+  scene.fogColor = Color3.FromHexString("#b78f62");
   scene.fogMode = Scene.FOGMODE_EXP2;
-  scene.fogDensity = 0.0048;
+  scene.fogDensity = 0.0032;
   scene.collisionsEnabled = true;
-  scene.imageProcessingConfiguration.exposure = 1.16;
-  scene.imageProcessingConfiguration.contrast = 1.24;
+  scene.imageProcessingConfiguration.exposure = 0.86;
+  scene.imageProcessingConfiguration.contrast = 1.36;
   scene.imageProcessingConfiguration.toneMappingEnabled = true;
+  scene.imageProcessingConfiguration.vignetteEnabled = true;
+  scene.imageProcessingConfiguration.vignetteWeight = 1.18;
+  scene.imageProcessingConfiguration.vignetteColor = new Color4(0.31, 0.22, 0.14, 1);
 
   const materials = createMaterials(scene);
   createSkyDome(scene);
@@ -157,17 +180,18 @@ export async function createMemphisWhiteWallsScene(
   camera.minZ = 0.04;
   camera.ellipsoid = new Vector3(0.45, 0.8, 0.45);
   camera.checkCollisions = true;
+  applyCameraShotBookmark(camera);
 
   const skyLight = new HemisphericLight("skyLight", new Vector3(0, 1, 0), scene);
-  skyLight.diffuse = Color3.FromHexString("#f4e1b5");
-  skyLight.groundColor = Color3.FromHexString("#6a4c35");
-  skyLight.intensity = 0.68;
+  skyLight.diffuse = Color3.FromHexString("#d6bc8f");
+  skyLight.groundColor = Color3.FromHexString("#3f3026");
+  skyLight.intensity = 0.48;
 
   const sun = new DirectionalLight("lowGoldSun", new Vector3(-0.46, -0.86, 0.24), scene);
   sun.position = new Vector3(52, 74, -82);
-  sun.diffuse = Color3.FromHexString("#ffd28f");
-  sun.specular = Color3.FromHexString("#fff1c7");
-  sun.intensity = 2.2;
+  sun.diffuse = Color3.FromHexString("#ffc073");
+  sun.specular = Color3.FromHexString("#d8b77f");
+  sun.intensity = 2.48;
 
   const shrineGlow = new PointLight("shrineOilLampGlow", new Vector3(0, 2.2, 90), scene);
   shrineGlow.diffuse = Color3.FromHexString("#f2a451");
@@ -179,8 +203,11 @@ export async function createMemphisWhiteWallsScene(
   createResidentialStreet(scene, materials);
   createCraftsmenArea(scene, materials);
   createTemple(scene, materials);
-  createRouteLine(scene, manifest, materials);
+  createRouteLine(scene, manifest);
   const authoredHeroStreetLoaded = await loadModularAssetKit(scene);
+  if (authoredHeroStreetLoaded) {
+    hideLegacyHeroStreetScaffold(scene);
+  }
   const cinematicHumans = authoredHeroStreetLoaded ? [] : createHeroStreetV2FilmSet(scene, materials);
 
   const evidenceRoot = createEvidenceMarkers(scene, manifest, materials);
@@ -279,7 +306,7 @@ export async function createMemphisWhiteWallsScene(
 }
 
 function createMaterials(scene: Scene): SceneMaterials {
-  const sand = material(scene, "sand", "#caa86f", {
+  const sand = material(scene, "sand", "#b88652", {
     textureName: "sand-grain.jpg",
     uScale: 8,
     vScale: 12,
@@ -287,31 +314,31 @@ function createMaterials(scene: Scene): SceneMaterials {
     bump: true,
     bumpLevel: 0.08
   });
-  const mudbrick = material(scene, "mudbrick", "#8f6541", {
+  const mudbrick = material(scene, "mudbrick", "#72492d", {
     textureName: "mudbrick-pbr.jpg",
-    uScale: 2.8,
-    vScale: 2.8,
-    roughness: 0.92,
+    uScale: 2.25,
+    vScale: 2.25,
+    roughness: 0.96,
     bump: true,
-    bumpLevel: 0.1
+    bumpLevel: 0.14
   });
-  const heroGround = material(scene, "heroStreetGround", "#d0a164", {
+  const heroGround = material(scene, "heroStreetGround", "#a86d3c", {
     textureName: "hero-street-ground.jpg",
     bumpTextureName: "hero-street-normal.jpg",
     ambientTextureName: "hero-street-ao.jpg",
-    uScale: 1.1,
-    vScale: 4.8,
-    roughness: 0.96,
+    uScale: 0.72,
+    vScale: 1.28,
+    roughness: 0.98,
     bump: true,
-    bumpLevel: 0.065
+    bumpLevel: 0.105
   });
-  const plaster = material(scene, "plaster", "#ece1c7", {
+  const plaster = material(scene, "plaster", "#c8b890", {
     textureName: "plaster-aged.jpg",
-    uScale: 2.2,
-    vScale: 2.2,
-    roughness: 0.88,
+    uScale: 1.55,
+    vScale: 1.55,
+    roughness: 0.95,
     bump: true,
-    bumpLevel: 0.05
+    bumpLevel: 0.075
   });
   const reed = material(scene, "reed", "#5c7d4b", {
     textureName: "reed-bundle.jpg",
@@ -327,21 +354,21 @@ function createMaterials(scene: Scene): SceneMaterials {
     bump: true,
     bumpLevel: 0.06
   });
-  const linen = material(scene, "linen", "#eee5cf", {
+  const linen = material(scene, "linen", "#d8c89f", {
     textureName: "woven-linen.jpg",
     uScale: 2.6,
     vScale: 2.6,
-    roughness: 0.94,
+    roughness: 0.97,
     bump: true,
     bumpLevel: 0.045
   });
-  const stone = material(scene, "whiteStone", "#d8d0bc", {
+  const stone = material(scene, "whiteStone", "#c8bea7", {
     textureName: "limestone-cut.jpg",
     uScale: 1.4,
     vScale: 1.4,
     roughness: 0.82
   });
-  const limestone = material(scene, "limestone", "#cfc5ab", {
+  const limestone = material(scene, "limestone", "#beb296", {
     textureName: "limestone-cut.jpg",
     uScale: 1.7,
     vScale: 1.7,
@@ -354,25 +381,25 @@ function createMaterials(scene: Scene): SceneMaterials {
     roughness: 0.48,
     metallic: 0.62
   });
-  const shadow = material(scene, "deepShade", "#2a2620", {
-    alpha: 0.82,
+  const shadow = material(scene, "deepShade", "#17120d", {
+    alpha: 0.88,
     roughness: 1
   });
   const contactShadow = material(scene, "softContactShadow", "#1c1711", {
-    alpha: 0.28,
+    alpha: 0.44,
     roughness: 1
   });
   contactShadow.backFaceCulling = false;
-  const dust = material(scene, "powderyStreetDust", "#d6b574", {
+  const dust = material(scene, "powderyStreetDust", "#a66f3e", {
     textureName: "hero-street-ground.jpg",
     bumpTextureName: "hero-street-normal.jpg",
-    uScale: 0.9,
-    vScale: 3.8,
+    uScale: 0.7,
+    vScale: 1.24,
     roughness: 0.98,
     bump: true,
-    bumpLevel: 0.03
+    bumpLevel: 0.055
   });
-  const pottery = material(scene, "warmPotteryClay", "#b77443", {
+  const pottery = material(scene, "warmPotteryClay", "#a45a31", {
     textureName: "mudbrick-pbr.jpg",
     uScale: 1.8,
     vScale: 1.8,
@@ -392,10 +419,10 @@ function createMaterials(scene: Scene): SceneMaterials {
     roughness: 0.18
   });
 
-  const smoke = material(scene, "smoke", "#e4ded2", {
-    alpha: 0.18,
+  const smoke = material(scene, "smoke", "#c9aa82", {
+    alpha: 0.115,
     roughness: 1,
-    emissive: Color3.FromHexString("#7b7165")
+    emissive: Color3.FromHexString("#51483d")
   });
   smoke.backFaceCulling = false;
 
@@ -505,11 +532,17 @@ function createSkyDome(scene: Scene): void {
   const sky = MeshBuilder.CreateSphere("goldenDesertSky", { diameter: 220, segments: 24, sideOrientation: Mesh.BACKSIDE }, scene);
   const mat = new PBRMaterial("goldenDesertSkyMaterial", scene);
   mat.unlit = true;
-  mat.albedoColor = Color3.FromHexString("#bfd9df");
-  mat.emissiveColor = Color3.FromHexString("#dcbf8a");
+  mat.albedoColor = Color3.FromHexString("#aeb9b8");
+  mat.emissiveColor = Color3.FromHexString("#8f7552");
   mat.backFaceCulling = false;
   sky.material = mat;
   sky.isPickable = false;
+}
+
+function hideLegacyHeroStreetScaffold(scene: Scene): void {
+  ["heroStreetGroundDetail", "streetDrainageChannel"].forEach((meshName) => {
+    scene.getMeshByName(meshName)?.setEnabled(false);
+  });
 }
 
 async function loadModularAssetKit(scene: Scene): Promise<boolean> {
@@ -1472,16 +1505,16 @@ function createBrazier(scene: Scene, materials: SceneMaterials, position: Vector
   ember.material = materials.ember;
 }
 
-function createRouteLine(scene: Scene, manifest: TourManifest, materials: SceneMaterials): void {
+function createRouteLine(scene: Scene, manifest: TourManifest): void {
   const points = manifest.stops.map((stop) => {
     const point = vectorFromTuple(stop.position);
     point.y = 0.08;
     return point;
   });
   const line = MeshBuilder.CreateLines("guidedRouteLine", { points }, scene);
-  line.color = Color3.FromHexString("#2e6f7d");
-  line.visibility = 0.42;
-  line.material = materials.river;
+  line.color = Color3.FromHexString("#7f6b45");
+  line.visibility = new URLSearchParams(window.location.search).get("chrome") === "0" ? 0 : 0.16;
+  line.isPickable = false;
 }
 
 function createEvidenceMarkers(scene: Scene, manifest: TourManifest, materials: SceneMaterials): TransformNode {
@@ -1807,6 +1840,22 @@ function ensureAudio(loop: AmbientLoop): HTMLAudioElement | undefined {
   audio.load();
   loop.element = audio;
   return audio;
+}
+
+function applyCameraShotBookmark(camera: UniversalCamera): void {
+  if (typeof window === "undefined") {
+    return;
+  }
+
+  const shot = new URLSearchParams(window.location.search).get("shot");
+  const bookmark = shot ? cameraShotBookmarks[shot] : undefined;
+
+  if (!bookmark) {
+    return;
+  }
+
+  camera.position.copyFrom(vectorFromTuple(bookmark.position));
+  camera.setTarget(vectorFromTuple(bookmark.lookAt));
 }
 
 function sampleRoute(points: Vector3[], progress: number): Vector3 {

@@ -44,6 +44,11 @@ button {
   pointer-events: none;
 }
 
+body.qa-clean-shot .hud,
+body.qa-clean-shot .error-panel {
+  display: none;
+}
+
 .status-panel,
 .legend,
 .evidence-detail,

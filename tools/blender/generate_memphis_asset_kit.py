@@ -286,24 +286,24 @@ def make_pbr_material(
 
 def create_materials() -> dict[str, bpy.types.Material]:
     return {
-        "mudbrick": make_pbr_material("sun baked mudbrick", (0.47, 0.30, 0.17, 1), (0.76, 0.55, 0.32, 1), 0.96, 13, 0.28),
-        "plaster": make_pbr_material("chalky cracked plaster", (0.70, 0.61, 0.43, 1), (0.96, 0.88, 0.67, 1), 0.94, 29, 0.18),
-        "limestone": make_pbr_material("worn pale limestone", (0.58, 0.52, 0.39, 1), (0.88, 0.80, 0.60, 1), 0.88, 41, 0.16),
+        "mudbrick": make_pbr_material("sun baked mudbrick", (0.36, 0.22, 0.12, 1), (0.62, 0.42, 0.24, 1), 0.97, 13, 0.32),
+        "plaster": make_pbr_material("chalky cracked plaster", (0.56, 0.48, 0.32, 1), (0.82, 0.74, 0.52, 1), 0.96, 29, 0.22),
+        "limestone": make_pbr_material("worn pale limestone", (0.50, 0.45, 0.34, 1), (0.76, 0.68, 0.50, 1), 0.9, 41, 0.18),
         "wood": make_pbr_material("dark acacia wood", (0.20, 0.11, 0.055, 1), (0.52, 0.32, 0.18, 1), 0.82, 53, 0.2),
         "reed": make_pbr_material("river reed green", (0.19, 0.30, 0.13, 1), (0.58, 0.66, 0.33, 1), 0.92, 61, 0.16),
         "dry_reed": make_pbr_material("dry reed straw", (0.50, 0.38, 0.17, 1), (0.86, 0.70, 0.35, 1), 0.94, 67, 0.16),
-        "linen": make_pbr_material("sun bleached woven linen", (0.67, 0.56, 0.34, 1), (0.96, 0.88, 0.67, 1), 0.9, 71, 0.14),
+        "linen": make_pbr_material("sun bleached woven linen", (0.58, 0.49, 0.32, 1), (0.84, 0.74, 0.53, 1), 0.94, 71, 0.16),
         "dark": make_material("deep doorway shadow", (0.08, 0.055, 0.035, 1), 0.98),
-        "baked_shadow": make_material("baked warm contact shadow", (0.10, 0.067, 0.034, 0.46), 1, 0.46),
-        "dust_dark": make_material("settled dark street dust", (0.22, 0.13, 0.065, 0.58), 0.98, 0.58),
-        "plaster_stain": make_material("thin plaster water stain", (0.34, 0.24, 0.14, 0.42), 1, 0.42),
-        "warm_haze": make_material("warm suspended street haze", (0.86, 0.63, 0.33, 0.18), 1, 0.18),
+        "baked_shadow": make_material("baked warm contact shadow", (0.06, 0.04, 0.024, 0.42), 1, 0.42),
+        "dust_dark": make_material("settled dark street dust", (0.14, 0.085, 0.045, 0.3), 0.98, 0.3),
+        "plaster_stain": make_material("thin plaster water stain", (0.24, 0.17, 0.10, 0.5), 1, 0.5),
+        "warm_haze": make_material("warm suspended street haze", (0.68, 0.45, 0.23, 0.11), 1, 0.11),
         "paint_blue": make_material("mineral blue paint", (0.09, 0.31, 0.52, 1), 0.85),
         "paint_red": make_material("red ochre paint", (0.62, 0.19, 0.10, 1), 0.88),
         "paint_gold": make_material("warm ochre paint", (0.86, 0.58, 0.22, 1), 0.88),
         "skin": make_pbr_material("warm figure skin", (0.36, 0.19, 0.10, 1), (0.68, 0.40, 0.22, 1), 0.84, 83, 0.08),
-        "pottery": make_pbr_material("warm Nile clay pottery", (0.48, 0.24, 0.11, 1), (0.82, 0.44, 0.20, 1), 0.9, 97, 0.18),
-        "packed_dust": make_pbr_material("packed sandy street dust", (0.58, 0.34, 0.15, 1), (0.91, 0.66, 0.34, 1), 0.97, 103, 0.2),
+        "pottery": make_pbr_material("warm Nile clay pottery", (0.38, 0.15, 0.07, 1), (0.69, 0.32, 0.14, 1), 0.92, 97, 0.2),
+        "packed_dust": make_pbr_material("packed sandy street dust", (0.43, 0.25, 0.12, 1), (0.72, 0.49, 0.25, 1), 0.98, 103, 0.26),
         "hair": make_material("dark hair", (0.04, 0.028, 0.02, 1), 0.92),
     }
 
@@ -1178,38 +1178,18 @@ def add_baked_street_lighting(materials: dict[str, bpy.types.Material]) -> None:
         ground_decal(
             f"heroV2-wallFootContactLeft-{index}",
             (-14.65, y, 0.064),
-            1.05,
-            7.6,
+            0.72,
+            7.2,
             materials["baked_shadow"],
             rot_z=0.02 * math.sin(index),
         )
         ground_decal(
             f"heroV2-wallFootContactRight-{index}",
             (-6.24, y + 0.5, 0.065),
-            1.15,
-            7.2,
+            0.78,
+            7.0,
             materials["baked_shadow"],
             rot_z=-0.02 * math.cos(index),
-        )
-
-    for index, y in enumerate([-21.5, -13.6, -2.8, 8.2, 20.5]):
-        ground_decal(
-            f"heroV2-clothCastShadow-{index}",
-            (street_center_x + math.sin(index * 0.7) * 0.18, y, 0.068),
-            8.2 - (index % 2) * 0.7,
-            4.8 + (index % 3) * 0.5,
-            materials["dust_dark"],
-            rot_z=math.radians(2.5 + index * 0.8),
-        )
-
-    for index, y in enumerate([-25, -18, -11, -2, 7, 18, 29]):
-        ground_decal(
-            f"heroV2-softSunOcclusion-{index}",
-            (street_center_x + math.sin(index) * 0.45, y, 0.07),
-            5.8 + (index % 2) * 1.2,
-            2.2 + (index % 3) * 0.35,
-            materials["baked_shadow"],
-            rot_z=math.radians(-7 + index * 2),
         )
 
     for index, y in enumerate([-24.5, -18.2, -12.1, -5.7, 1.6, 7.8, 15.2, 22.7, 30.4]):
@@ -1217,8 +1197,8 @@ def add_baked_street_lighting(materials: dict[str, bpy.types.Material]) -> None:
             ground_decal(
                 f"heroV2-doorwayPool-{side_name}-{index}",
                 (x, y + math.sin(index) * 0.45, 0.076),
-                1.2,
-                1.65,
+                1.05,
+                1.45,
                 materials["baked_shadow"],
                 rot_z=math.radians((3 if side_name == "left" else -3) + math.sin(index) * 2),
             )
@@ -1418,15 +1398,14 @@ def build_hero_street_corridor(materials: dict[str, bpy.types.Material]) -> None
     cursor = -28.0
     house_specs = [5.4, 6.2, 4.8, 6.8, 5.6, 7.1, 5.2, 6.4]
 
-    for index, y in enumerate([-22, -6, 10, 26]):
-        ground_decal(
-            f"heroV2PackedDustGroundChunk-{index}",
-            (street_center_x + math.sin(index) * 0.08, y, 0.052),
-            8.7,
-            17.5,
-            materials["packed_dust"],
-            rot_z=math.radians(math.sin(index) * 0.5),
-        )
+    ground_decal(
+        "heroV2ContinuousPackedDustGround",
+        (street_center_x + 0.08, 3.9, 0.052),
+        9.15,
+        67.8,
+        materials["packed_dust"],
+        rot_z=0,
+    )
 
     for index, frontage in enumerate(house_specs):
         center_y = cursor + frontage * 0.5

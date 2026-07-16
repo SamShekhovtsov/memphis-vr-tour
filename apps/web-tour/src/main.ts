@@ -43,6 +43,10 @@ const evidenceClaims = getElement<HTMLUListElement>("#evidenceClaims");
 const reconstructionNotes = getElement<HTMLUListElement>("#reconstructionNotes");
 const evidenceSources = getElement<HTMLUListElement>("#evidenceSources");
 
+if (new URLSearchParams(window.location.search).get("chrome") === "0") {
+  document.body.classList.add("qa-clean-shot");
+}
+
 let currentStop = manifest.stops[0];
 let evidenceModeVisible = false;
 

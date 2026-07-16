@@ -1,10 +1,10 @@
 {
   "$schema": "./asset-kit.schema.json",
   "id": "memphis-modular-glb-kit-v1",
-  "checkedDate": "2026-07-10",
+  "checkedDate": "2026-07-15",
   "generatedBy": "tools/blender/generate_memphis_asset_kit.py",
   "generator": "Blender procedural mesh script",
-  "blenderVersion": "5.1.2",
+  "blenderVersion": "3.6.23",
   "meshCompression": "Draco export is supported by setting EGYPTVR_ENABLE_DRACO=1; disabled by default until browser decoder wiring is verified.",
   "licenseStatus": "Project-authored procedural meshes; no source media copied or embedded.",
   "materialAtlasStatus": {
