@@ -4,15 +4,30 @@ Goal: make one fixed eye-height street view approach the cinematic reference qua
 
 ## QA Camera
 
+The source of truth for camera values is `content/scene-data/hero-street.camera-lock.json`.
+See `docs/design/hero-street-camera-lock.md` before changing the shot.
+
 Use this fixed browser URL for the main beauty benchmark:
 
 `http://127.0.0.1:5573/?shot=hero-street-main&chrome=0`
+
+Alias:
+
+`http://127.0.0.1:5573/?shot=canonical&chrome=0`
 
 Camera bookmark:
 
 - Position: `[-6.6, 1.65, -18]`
 - Look at: `[-6, 1.48, 8]`
+- Viewport: `1280x720`
+- Canonical output: `docs/design/screenshots/hero-street-main-current.jpg`
 - Purpose: eye-height visitor view down the dense residential lane.
+
+Quick camera contract command:
+
+```bash
+npm run qa:hero-camera
+```
 
 Secondary diagnostic URLs:
 

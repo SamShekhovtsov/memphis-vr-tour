@@ -12,6 +12,7 @@
     "build": "npm run generate:assets && npm run validate:content && npm run build --workspaces",
     "generate:assets": "node tools/generate-runtime-assets.mjs",
     "generate:glb": "node tools/run-blender-asset-kit.mjs",
+    "qa:hero-camera": "node tools/print-hero-camera-lock.mjs",
     "validate:content": "node tools/validate-content.mjs",
     "typecheck": "npm run typecheck --workspaces"
   },

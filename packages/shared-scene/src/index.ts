@@ -38,6 +38,20 @@ export interface TourStop {
   referenceNotes: readonly string[];
 }
 
+export interface GuidedRouteWaypoint {
+  id: string;
+  position: readonly [number, number, number];
+  lookAt?: readonly [number, number, number];
+  stopId?: string;
+}
+
+export interface GuidedRoute {
+  id: string;
+  label: string;
+  notes: readonly string[];
+  waypoints: readonly GuidedRouteWaypoint[];
+}
+
 export interface TourManifest {
   id: string;
   title: string;
@@ -45,6 +59,7 @@ export interface TourManifest {
   location: string;
   durationSeconds: number;
   summary: string;
+  guidedRoute?: GuidedRoute;
   stops: readonly TourStop[];
 }
 

@@ -6,6 +6,92 @@
   "location": "Memphis, Egypt",
   "durationSeconds": 210,
   "summary": "A compact living-history walk from the Nile edge through an inhabited Memphis district toward an early Ptah precinct reconstruction.",
+  "guidedRoute": {
+    "id": "nile-arrival-to-ptah-precinct-route-v2",
+    "label": "Play Route: Nile Arrival to Early Ptah Precinct",
+    "notes": [
+      "Dedicated autoplay route for the locked district placement. Story stops remain evidence/UI anchors; these waypoints keep the observer centered on walkable axes.",
+      "The route uses orthogonal turns through the Nile landing, White Walls gate opening, Kom el-Fakhry-inspired residential street centerline, and Ptah precinct gate."
+    ],
+    "waypoints": [
+      {
+        "id": "boat-side-start",
+        "position": [-36, 1.7, -52],
+        "lookAt": [-23.2, 1.6, -52],
+        "stopId": "nile-arrival"
+      },
+      {
+        "id": "landing-straight-ahead",
+        "position": [-23.2, 1.7, -52],
+        "lookAt": [-23.2, 1.6, -42]
+      },
+      {
+        "id": "turn-left-toward-white-walls",
+        "position": [-23.2, 1.7, -38],
+        "lookAt": [-23.2, 1.6, -32]
+      },
+      {
+        "id": "white-walls-gate-center",
+        "position": [-23.2, 1.7, -31.4],
+        "lookAt": [-23.2, 1.6, -26],
+        "stopId": "white-walls-threshold"
+      },
+      {
+        "id": "inside-white-walls",
+        "position": [-23.2, 1.7, -26],
+        "lookAt": [-6, 1.6, -26]
+      },
+      {
+        "id": "turn-right-after-gate",
+        "position": [-6, 1.7, -26],
+        "lookAt": [-6, 1.6, -18]
+      },
+      {
+        "id": "hero-street-entry-center",
+        "position": [-6, 1.7, -18],
+        "lookAt": [-6, 1.6, -6],
+        "stopId": "kom-el-fakhry-street"
+      },
+      {
+        "id": "hero-street-mid-center",
+        "position": [-6, 1.7, -4],
+        "lookAt": [-6, 1.6, 12]
+      },
+      {
+        "id": "hero-street-market-center",
+        "position": [-6, 1.7, 16],
+        "lookAt": [-6, 1.6, 30],
+        "stopId": "craft-area"
+      },
+      {
+        "id": "hero-street-exit-center",
+        "position": [-6, 1.7, 34],
+        "lookAt": [0, 1.6, 34]
+      },
+      {
+        "id": "turn-toward-ptah-gate",
+        "position": [0, 1.7, 34],
+        "lookAt": [0, 1.6, 48]
+      },
+      {
+        "id": "ptah-main-gate-center",
+        "position": [0, 1.7, 49],
+        "lookAt": [0, 1.6, 63],
+        "stopId": "temple-exterior"
+      },
+      {
+        "id": "ptah-outer-court-axis",
+        "position": [0, 1.7, 68],
+        "lookAt": [0, 1.6, 84]
+      },
+      {
+        "id": "painted-shrine-axis",
+        "position": [0, 1.7, 84],
+        "lookAt": [0, 1.6, 96],
+        "stopId": "painted-interior"
+      }
+    ]
+  },
   "stops": [
     {
       "id": "nile-arrival",

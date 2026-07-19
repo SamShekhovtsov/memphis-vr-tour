@@ -63,8 +63,27 @@ The current district layout should remain stable:
 - The street sits closer to the Nile/beach than before, but slightly shifted right from the beach edge so it feels naturally embedded in the district.
 - The two rows of houses face inward toward the street.
 - The yellow/sandy packed street surface belongs inside the street between the two rows of houses.
+- The `Play Route` path is a dedicated `guidedRoute` in `content/scene-data/memphis-white-walls.tour.json`; do not collapse it back to straight lines between story stops.
 
 Only adjust these positions when the user explicitly asks for layout changes. Otherwise, preserve this district plan and work on visual quality.
+
+## 4a. Locked Hero Camera
+
+The current visual-quality benchmark is locked in:
+
+- `content/scene-data/hero-street.camera-lock.json`
+- `docs/design/hero-street-camera-lock.md`
+
+Canonical benchmark:
+
+- Shot id: `hero-street-main`
+- URL: `http://127.0.0.1:5573/?shot=hero-street-main&chrome=0`
+- Alias URL: `http://127.0.0.1:5573/?shot=canonical&chrome=0`
+- Viewport: `1280x720`
+- Position: `[-6.6, 1.65, -18]`
+- Look at: `[-6, 1.48, 8]`
+
+Use this camera for every texture, material, lighting, haze, and color-grading quality comparison. Do not change the canonical camera unless the user explicitly approves a new benchmark shot.
 
 ## 5. Current Goal
 
@@ -120,6 +139,8 @@ Important files and systems:
 - Generated GLBs: `apps/web-tour/public/assets/generated/glb/`
 - QA/design screenshots: `docs/design/screenshots/`
 - Art direction notes: `docs/design/hero-street-art-direction-v1.md`
+- Camera lock: `content/scene-data/hero-street.camera-lock.json`
+- Camera lock docs: `docs/design/hero-street-camera-lock.md`
 
 Recent quality-pass direction:
 

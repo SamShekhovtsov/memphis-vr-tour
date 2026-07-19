@@ -86,49 +86,52 @@ function createSandTexture(width, height) {
 }
 
 function createHeroStreetGroundTexture(width, height) {
-  const image = createImage(width, height, "#a66f3f");
+  const image = createImage(width, height, "#9a6338");
   const random = seededRandom(1203);
 
   forEachPixel(image, (x, y) => {
     const n = layeredNoise(x, y, 1203, [
-      [0.0035, 34],
-      [0.014, 20],
-      [0.052, 9],
-      [0.14, 4]
+      [0.0025, 42],
+      [0.011, 24],
+      [0.047, 11],
+      [0.18, 4]
     ]);
     const normalizedX = x / width;
     const normalizedY = y / height;
-    const wornCenter = Math.max(0, 1 - Math.abs(normalizedX - 0.5) * 1.9);
-    const wallGrime = Math.max(0, 0.22 - normalizedX) * 46 + Math.max(0, normalizedX - 0.78) * 42;
-    const slowRidge = Math.sin(normalizedY * Math.PI * 4.6 + n * 0.038) * 6;
-    const centerLight = wornCenter * 11;
-    const value = clamp01(0.42 + (n + slowRidge + centerLight - wallGrime) / 116);
-    return mixHex("#744523", "#d29a5a", value);
+    const wornCenter = Math.exp(-1 * (((normalizedX - 0.5) / 0.34) ** 2));
+    const wallGrime = Math.exp(-1 * (((normalizedX - 0.08) / 0.1) ** 2)) * 28
+      + Math.exp(-1 * (((normalizedX - 0.92) / 0.1) ** 2)) * 28;
+    const leftRut = Math.exp(-1 * (((normalizedX - (0.42 + Math.sin(normalizedY * 18) * 0.025)) / 0.035) ** 2)) * 18;
+    const rightRut = Math.exp(-1 * (((normalizedX - (0.58 + Math.cos(normalizedY * 17) * 0.025)) / 0.035) ** 2)) * 16;
+    const slowRidge = Math.sin(normalizedY * Math.PI * 7.6 + normalizedX * 4 + n * 0.035) * 6;
+    const centerLight = wornCenter * 16;
+    const value = clamp01(0.44 + (n + slowRidge + centerLight - wallGrime - leftRut - rightRut) / 126);
+    return mixHex("#62371d", "#d2a05d", value);
   });
 
-  for (let index = 0; index < 52; index += 1) {
+  for (let index = 0; index < 72; index += 1) {
     drawSoftEllipse(
       image,
       random() * width,
       random() * height,
-      14 + random() * 18,
-      34 + random() * 38,
-      "#6f4124",
-      0.18,
+      18 + random() * 34,
+      36 + random() * 72,
+      index % 3 === 0 ? "#5f351e" : "#7b4725",
+      0.14,
       random() * Math.PI
     );
   }
 
-  for (let index = 0; index < 28; index += 1) {
+  for (let index = 0; index < 34; index += 1) {
     const side = index % 2 === 0 ? 0.15 : 0.85;
     drawSoftEllipse(
       image,
       width * side + (random() - 0.5) * width * 0.16,
       random() * height,
-      18 + random() * 24,
-      78 + random() * 92,
-      "#5d3520",
-      0.2,
+      22 + random() * 32,
+      88 + random() * 122,
+      "#4c2b19",
+      0.24,
       random() * 0.18
     );
   }
@@ -137,19 +140,19 @@ function createHeroStreetGroundTexture(width, height) {
     const y = (pairIndex / 34) * height + (random() - 0.5) * 24;
     const x = width * (0.45 + Math.sin(pairIndex * 0.73) * 0.08 + (random() - 0.5) * 0.04);
     const rotation = (random() - 0.5) * 0.5;
-    drawSoftEllipse(image, x - 11, y, 7 + random() * 3, 18 + random() * 5, "#5a351f", 0.2, rotation);
-    drawSoftEllipse(image, x + 15, y + 26, 7 + random() * 3, 18 + random() * 5, "#5a351f", 0.18, rotation);
+    drawSoftEllipse(image, x - 11, y, 7 + random() * 3, 18 + random() * 5, "#4d2c1b", 0.24, rotation);
+    drawSoftEllipse(image, x + 15, y + 26, 7 + random() * 3, 18 + random() * 5, "#4d2c1b", 0.22, rotation);
   }
 
-  for (let index = 0; index < 48; index += 1) {
+  for (let index = 0; index < 70; index += 1) {
     const x = random() * width;
     const y = random() * height;
-    drawLine(image, x, y, x + (random() - 0.5) * 76, y + (random() - 0.5) * 28, "#c79b55");
+    drawLine(image, x, y, x + (random() - 0.5) * 76, y + (random() - 0.5) * 28, index % 4 === 0 ? "#d2a866" : "#b8894c");
   }
 
-  addSpeckles(image, 4400, "#5c3721", 0.15, 1207);
-  addSpeckles(image, 1800, "#d5ad69", 0.08, 1209);
-  addHairlineCracks(image, 24, "#51311f", 0.18, 1211);
+  addSpeckles(image, 5400, "#4d2e1b", 0.17, 1207);
+  addSpeckles(image, 2300, "#d2ad6e", 0.08, 1209);
+  addHairlineCracks(image, 28, "#3f2618", 0.2, 1211);
   return image;
 }
 

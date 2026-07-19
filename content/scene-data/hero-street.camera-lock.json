@@ -1,0 +1,63 @@
+{
+  "id": "hero-street-camera-lock",
+  "tourId": "memphis-white-walls-early-kingdom",
+  "version": 1,
+  "activeShotId": "hero-street-main",
+  "localDevPort": 5573,
+  "viewport": {
+    "width": 1280,
+    "height": 720,
+    "deviceScaleFactor": 1
+  },
+  "canonicalUrl": "http://127.0.0.1:5573/?shot=hero-street-main&chrome=0",
+  "canonicalOutput": "docs/design/screenshots/hero-street-main-current.jpg",
+  "historicalScope": "Ancient Memphis, Early Dynastic / Old Kingdom, Kom el-Fakhry / Mit Rahina settlement evidence with early Ptah / Hwt-ka-Ptah endpoint.",
+  "qualityTarget": "Cinematic eye-height hero street benchmark for material, ground, plaster, mudbrick, contact-shadow, haze, and color-grading passes.",
+  "shots": [
+    {
+      "id": "hero-street-main",
+      "label": "Hero Street Main",
+      "role": "canonical-beauty-benchmark",
+      "position": [-6.6, 1.65, -18],
+      "lookAt": [-6, 1.48, 8],
+      "locked": true,
+      "notes": [
+        "Primary eye-height first-person composition down the dense residential lane.",
+        "Use this shot for before/after decisions during texture, material, baked-light, haze, and color passes.",
+        "Do not move this camera unless the user explicitly approves a new canonical benchmark."
+      ]
+    },
+    {
+      "id": "street-entry",
+      "label": "Street Entry",
+      "role": "diagnostic-route-entry",
+      "position": [-7, 1.7, -28],
+      "lookAt": [-6.3, 1.55, -12],
+      "locked": true,
+      "notes": [
+        "Diagnostic view from the Nile/threshold approach into the offset residential street.",
+        "Use to verify the district plan still feels indirect and not perfectly aligned to the gate."
+      ]
+    },
+    {
+      "id": "hero-street-material",
+      "label": "Hero Street Material Close-Up",
+      "role": "diagnostic-material-read",
+      "position": [-8.9, 1.35, -17.6],
+      "lookAt": [-5.5, 1.1, -9.5],
+      "locked": true,
+      "notes": [
+        "Diagnostic close material read for packed dust, plaster, mudbrick, pottery, linen, and contact shadows.",
+        "Use after atlas or baked-light changes to catch tiling, banding, or over-bright haze."
+      ]
+    }
+  ],
+  "acceptanceChecks": [
+    "The canonical shot is captured at 1280x720 with chrome=0.",
+    "The camera position and lookAt values match this lock file.",
+    "The district layout is not moved while judging material quality.",
+    "The street no longer reads as tiled or banded from the canonical shot.",
+    "Doorways and wall bases show credible baked-looking darkness.",
+    "The palette stays historically restrained: warm sun, cooler shadow, darker dirt, pale linen, clay pottery, dusty plaster, mudbrick."
+  ]
+}

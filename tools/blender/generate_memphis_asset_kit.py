@@ -239,6 +239,60 @@ def make_roughness_image(name: str, seed: int, base: float = 0.86, size: int = 2
     return image
 
 
+def make_packed_dust_albedo_image(name: str, size: int = 512) -> bpy.types.Image:
+    def pixel(x: int, y: int) -> tuple[float, float, float, float]:
+        nx = x / max(1, size - 1)
+        ny = y / max(1, size - 1)
+        n = (
+            tonal_noise(x, y, 103) * 0.28
+            + tonal_noise(x * 2, y // 2, 211) * 0.18
+            + math.sin((ny * 8.4 + nx * 1.2) * math.pi) * 0.055
+        )
+        walking_lane = math.exp(-((nx - 0.5) / 0.34) ** 2) * 0.18
+        wall_dirt = (math.exp(-((nx - 0.08) / 0.09) ** 2) + math.exp(-((nx - 0.92) / 0.09) ** 2)) * 0.32
+        foot_rut_a = math.exp(-((nx - (0.42 + math.sin(ny * 18) * 0.025)) / 0.028) ** 2) * 0.18
+        foot_rut_b = math.exp(-((nx - (0.58 + math.cos(ny * 17) * 0.024)) / 0.03) ** 2) * 0.16
+        swept_patch = math.sin((nx * 5.1 + ny * 2.8) * math.pi + tonal_noise(x, y, 307)) * 0.06
+        t = clamp01(0.5 + n + walking_lane + swept_patch - wall_dirt - foot_rut_a - foot_rut_b)
+        return mix_color((0.34, 0.18, 0.08, 1), (0.78, 0.55, 0.29, 1), t)
+
+    return packed_image(name, size, pixel)
+
+
+def make_packed_dust_normal_image(name: str, size: int = 512) -> bpy.types.Image:
+    def height(x: int, y: int) -> float:
+        nx = x / max(1, size - 1)
+        ny = y / max(1, size - 1)
+        lane = math.exp(-((nx - 0.5) / 0.32) ** 2) * 0.16
+        ruts = (
+            math.exp(-((nx - (0.42 + math.sin(ny * 18) * 0.025)) / 0.032) ** 2)
+            + math.exp(-((nx - (0.58 + math.cos(ny * 17) * 0.024)) / 0.032) ** 2)
+        ) * -0.24
+        pebble_noise = tonal_noise(x, y, 409) * 0.26 + tonal_noise(x * 3, y * 2, 503) * 0.08
+        return lane + ruts + pebble_noise
+
+    def pixel(x: int, y: int) -> tuple[float, float, float, float]:
+        dx = height((x + 1) % size, y) - height((x - 1) % size, y)
+        dy = height(x, (y + 1) % size) - height(x, (y - 1) % size)
+        return (clamp01(0.5 - dx * 0.34), clamp01(0.5 - dy * 0.34), 0.9, 1)
+
+    image = packed_image(name, size, pixel)
+    image.colorspace_settings.name = "Non-Color"
+    return image
+
+
+def make_packed_dust_roughness_image(name: str, size: int = 512) -> bpy.types.Image:
+    def pixel(x: int, y: int) -> tuple[float, float, float, float]:
+        nx = x / max(1, size - 1)
+        lane_polish = math.exp(-((nx - 0.5) / 0.28) ** 2) * 0.08
+        value = clamp01(0.96 - lane_polish + tonal_noise(x, y, 601) * 0.045)
+        return (value, value, value, 1)
+
+    image = packed_image(name, size, pixel)
+    image.colorspace_settings.name = "Non-Color"
+    return image
+
+
 def make_pbr_material(
     key: str,
     base: tuple[float, float, float, float],
@@ -284,26 +338,64 @@ def make_pbr_material(
     return material
 
 
+def make_packed_dust_material() -> bpy.types.Material:
+    material = make_material("packed sandy street dust", (0.45, 0.27, 0.13, 1), 0.98)
+    material["textureSet"] = {
+        "albedo": "packed sandy street dust albedo",
+        "normal": "packed sandy street dust normal",
+        "roughness": "packed sandy street dust roughness",
+        "ao": "authored wall-base/contact decals in this GLB",
+        "height": "single-span dust atlas plus footprint/rut/debris geometry",
+    }
+
+    nodes = material.node_tree.nodes
+    links = material.node_tree.links
+    bsdf = nodes.get("Principled BSDF")
+
+    if not bsdf:
+        return material
+
+    albedo = nodes.new("ShaderNodeTexImage")
+    albedo.name = "packed sandy street dust albedo"
+    albedo.image = make_packed_dust_albedo_image("packed_sandy_street_dust_albedo")
+    links.new(albedo.outputs["Color"], bsdf.inputs["Base Color"])
+
+    normal_tex = nodes.new("ShaderNodeTexImage")
+    normal_tex.name = "packed sandy street dust normal"
+    normal_tex.image = make_packed_dust_normal_image("packed_sandy_street_dust_normal")
+    normal = nodes.new("ShaderNodeNormalMap")
+    normal.inputs["Strength"].default_value = 0.26
+    links.new(normal_tex.outputs["Color"], normal.inputs["Color"])
+    links.new(normal.outputs["Normal"], bsdf.inputs["Normal"])
+
+    roughness_tex = nodes.new("ShaderNodeTexImage")
+    roughness_tex.name = "packed sandy street dust roughness"
+    roughness_tex.image = make_packed_dust_roughness_image("packed_sandy_street_dust_roughness")
+    links.new(roughness_tex.outputs["Color"], bsdf.inputs["Roughness"])
+
+    return material
+
+
 def create_materials() -> dict[str, bpy.types.Material]:
     return {
-        "mudbrick": make_pbr_material("sun baked mudbrick", (0.36, 0.22, 0.12, 1), (0.62, 0.42, 0.24, 1), 0.97, 13, 0.32),
-        "plaster": make_pbr_material("chalky cracked plaster", (0.56, 0.48, 0.32, 1), (0.82, 0.74, 0.52, 1), 0.96, 29, 0.22),
-        "limestone": make_pbr_material("worn pale limestone", (0.50, 0.45, 0.34, 1), (0.76, 0.68, 0.50, 1), 0.9, 41, 0.18),
+        "mudbrick": make_pbr_material("sun baked mudbrick", (0.30, 0.18, 0.10, 1), (0.55, 0.36, 0.20, 1), 0.98, 13, 0.38),
+        "plaster": make_pbr_material("chalky cracked plaster", (0.49, 0.42, 0.29, 1), (0.76, 0.68, 0.48, 1), 0.97, 29, 0.26),
+        "limestone": make_pbr_material("worn pale limestone", (0.46, 0.41, 0.31, 1), (0.72, 0.64, 0.47, 1), 0.92, 41, 0.18),
         "wood": make_pbr_material("dark acacia wood", (0.20, 0.11, 0.055, 1), (0.52, 0.32, 0.18, 1), 0.82, 53, 0.2),
         "reed": make_pbr_material("river reed green", (0.19, 0.30, 0.13, 1), (0.58, 0.66, 0.33, 1), 0.92, 61, 0.16),
         "dry_reed": make_pbr_material("dry reed straw", (0.50, 0.38, 0.17, 1), (0.86, 0.70, 0.35, 1), 0.94, 67, 0.16),
         "linen": make_pbr_material("sun bleached woven linen", (0.58, 0.49, 0.32, 1), (0.84, 0.74, 0.53, 1), 0.94, 71, 0.16),
         "dark": make_material("deep doorway shadow", (0.08, 0.055, 0.035, 1), 0.98),
-        "baked_shadow": make_material("baked warm contact shadow", (0.06, 0.04, 0.024, 0.42), 1, 0.42),
-        "dust_dark": make_material("settled dark street dust", (0.14, 0.085, 0.045, 0.3), 0.98, 0.3),
-        "plaster_stain": make_material("thin plaster water stain", (0.24, 0.17, 0.10, 0.5), 1, 0.5),
-        "warm_haze": make_material("warm suspended street haze", (0.68, 0.45, 0.23, 0.11), 1, 0.11),
+        "baked_shadow": make_material("baked warm contact shadow", (0.045, 0.032, 0.02, 0.5), 1, 0.5),
+        "dust_dark": make_material("settled dark street dust", (0.11, 0.067, 0.036, 0.38), 0.99, 0.38),
+        "plaster_stain": make_material("thin plaster water stain", (0.18, 0.12, 0.065, 0.56), 1, 0.56),
+        "warm_haze": make_material("warm suspended street haze", (0.58, 0.38, 0.2, 0.075), 1, 0.075),
         "paint_blue": make_material("mineral blue paint", (0.09, 0.31, 0.52, 1), 0.85),
         "paint_red": make_material("red ochre paint", (0.62, 0.19, 0.10, 1), 0.88),
         "paint_gold": make_material("warm ochre paint", (0.86, 0.58, 0.22, 1), 0.88),
         "skin": make_pbr_material("warm figure skin", (0.36, 0.19, 0.10, 1), (0.68, 0.40, 0.22, 1), 0.84, 83, 0.08),
-        "pottery": make_pbr_material("warm Nile clay pottery", (0.38, 0.15, 0.07, 1), (0.69, 0.32, 0.14, 1), 0.92, 97, 0.2),
-        "packed_dust": make_pbr_material("packed sandy street dust", (0.43, 0.25, 0.12, 1), (0.72, 0.49, 0.25, 1), 0.98, 103, 0.26),
+        "pottery": make_pbr_material("warm Nile clay pottery", (0.32, 0.12, 0.055, 1), (0.62, 0.28, 0.12, 1), 0.93, 97, 0.22),
+        "packed_dust": make_packed_dust_material(),
         "hair": make_material("dark hair", (0.04, 0.028, 0.02, 1), 0.92),
     }
 
@@ -340,6 +432,20 @@ def ensure_uv(obj: bpy.types.Object, scale: float = 0.28) -> None:
                 uv_layer.data[loop_index].uv = (vertex.y * scale, vertex.z * scale)
             else:
                 uv_layer.data[loop_index].uv = (vertex.x * scale, vertex.z * scale)
+
+
+def set_unit_quad_uv(obj: bpy.types.Object) -> None:
+    if obj.type != "MESH":
+        return
+
+    while obj.data.uv_layers:
+        obj.data.uv_layers.remove(obj.data.uv_layers[0])
+    uv_layer = obj.data.uv_layers.new(name="UVMap")
+    uvs = [(0, 0), (1, 0), (1, 1), (0, 1)]
+
+    for polygon in obj.data.polygons:
+        for index, loop_index in enumerate(polygon.loop_indices):
+            uv_layer.data[loop_index].uv = uvs[index % len(uvs)]
 
 
 def cube(
@@ -472,6 +578,7 @@ def flat_panel(
     depth: float,
     material: bpy.types.Material,
     rot: tuple[float, float, float] = (0, 0, 0),
+    unit_uv: bool = False,
 ) -> bpy.types.Object:
     mesh = bpy.data.meshes.new(f"{name}Mesh")
     half_w = width * 0.5
@@ -487,7 +594,10 @@ def flat_panel(
     obj.location = loc
     obj.rotation_euler = rot
     obj.data.materials.append(material)
-    ensure_uv(obj)
+    if unit_uv:
+        set_unit_quad_uv(obj)
+    else:
+        ensure_uv(obj)
     return obj
 
 
@@ -539,8 +649,9 @@ def ground_decal(
     depth: float,
     material: bpy.types.Material,
     rot_z: float = 0,
+    unit_uv: bool = False,
 ) -> bpy.types.Object:
-    return flat_panel(name, loc, width, depth, material, rot=(0, 0, rot_z))
+    return flat_panel(name, loc, width, depth, material, rot=(0, 0, rot_z), unit_uv=unit_uv)
 
 
 def make_hull(name: str, material: bpy.types.Material) -> bpy.types.Object:
@@ -1405,6 +1516,7 @@ def build_hero_street_corridor(materials: dict[str, bpy.types.Material]) -> None
         67.8,
         materials["packed_dust"],
         rot_z=0,
+        unit_uv=True,
     )
 
     for index, frontage in enumerate(house_specs):

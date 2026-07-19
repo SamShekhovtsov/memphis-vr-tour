@@ -17,6 +17,7 @@ import {
 } from "@babylonjs/core";
 import type { EvidenceLevel, TourManifest, TourStop } from "@egyptvr/shared-scene";
 import { evidenceColors } from "@egyptvr/shared-scene";
+import cameraLockData from "../../../../content/scene-data/hero-street.camera-lock.json";
 
 export interface MemphisSceneController {
   scene: Scene;
@@ -33,30 +34,53 @@ const textureRoot = "/assets/generated/textures/";
 const audioRoot = "/assets/generated/audio/";
 const glbRoot = "/assets/generated/glb/";
 
+interface GuidedRoutePoint {
+  id: string;
+  position: Vector3;
+  lookAt?: Vector3;
+  stopId?: string;
+}
+
+interface GuidedRouteSegment {
+  start: GuidedRoutePoint;
+  end: GuidedRoutePoint;
+  startDistance: number;
+  length: number;
+  direction: Vector3;
+}
+
+interface GuidedRouteTrack {
+  points: GuidedRoutePoint[];
+  segments: GuidedRouteSegment[];
+  totalLength: number;
+}
+
 // Hero Street v2 placement lock. Keep these paired with the route stops and
 // docs/design/hero-street-v2-layout-lock.md; move the road and GLB street as one unit.
 const heroStreetOffsetX = -16.5;
 const heroStreetCenterX = -6;
 
 interface CameraShotBookmark {
+  id: string;
+  label: string;
+  role: string;
   position: [number, number, number];
   lookAt: [number, number, number];
+  locked: boolean;
+  notes: string[];
 }
 
-const cameraShotBookmarks: Record<string, CameraShotBookmark> = {
-  "street-entry": {
-    position: [-7, 1.7, -28],
-    lookAt: [-6.3, 1.55, -12]
-  },
-  "hero-street-main": {
-    position: [-6.6, 1.65, -18],
-    lookAt: [-6, 1.48, 8]
-  },
-  "hero-street-material": {
-    position: [-8.9, 1.35, -17.6],
-    lookAt: [-5.5, 1.1, -9.5]
-  }
-};
+interface CameraLock {
+  activeShotId: string;
+  shots: CameraShotBookmark[];
+}
+
+const cameraLock = cameraLockData as unknown as CameraLock;
+const cameraShotBookmarks: Record<string, CameraShotBookmark> = Object.fromEntries(
+  cameraLock.shots.map((shot) => [shot.id, shot])
+);
+
+const canonicalCameraShotId = cameraLock.activeShotId;
 
 interface SceneMaterials {
   sand: PBRMaterial;
@@ -116,6 +140,16 @@ interface CinematicHumanRoutine {
   carriedLoad?: TransformNode;
 }
 
+interface GlbActorMotionRoutine {
+  root: TransformNode;
+  start: Vector3;
+  end: Vector3;
+  speed: number;
+  phase: number;
+  yawForward: number;
+  yawBackward: number;
+}
+
 interface Soundscape {
   setEnabled(enabled: boolean): void;
 }
@@ -150,20 +184,25 @@ interface ModularAssetPlacement {
   animated?: boolean;
 }
 
+interface ModularAssetLoadResult {
+  heroStreetLoaded: boolean;
+  actorMotions: GlbActorMotionRoutine[];
+}
+
 export async function createMemphisWhiteWallsScene(
   engine: Engine,
   canvas: HTMLCanvasElement,
   manifest: TourManifest
 ): Promise<MemphisSceneController> {
   const scene = new Scene(engine);
-  scene.clearColor = new Color4(0.63, 0.67, 0.65, 1);
-  scene.ambientColor = new Color3(0.56, 0.48, 0.38);
-  scene.fogColor = Color3.FromHexString("#b78f62");
+  scene.clearColor = new Color4(0.55, 0.57, 0.53, 1);
+  scene.ambientColor = new Color3(0.46, 0.39, 0.31);
+  scene.fogColor = Color3.FromHexString("#a98054");
   scene.fogMode = Scene.FOGMODE_EXP2;
-  scene.fogDensity = 0.0032;
+  scene.fogDensity = 0.0024;
   scene.collisionsEnabled = true;
-  scene.imageProcessingConfiguration.exposure = 0.86;
-  scene.imageProcessingConfiguration.contrast = 1.36;
+  scene.imageProcessingConfiguration.exposure = 0.78;
+  scene.imageProcessingConfiguration.contrast = 1.42;
   scene.imageProcessingConfiguration.toneMappingEnabled = true;
   scene.imageProcessingConfiguration.vignetteEnabled = true;
   scene.imageProcessingConfiguration.vignetteWeight = 1.18;
@@ -183,32 +222,35 @@ export async function createMemphisWhiteWallsScene(
   applyCameraShotBookmark(camera);
 
   const skyLight = new HemisphericLight("skyLight", new Vector3(0, 1, 0), scene);
-  skyLight.diffuse = Color3.FromHexString("#d6bc8f");
+  skyLight.diffuse = Color3.FromHexString("#caa878");
   skyLight.groundColor = Color3.FromHexString("#3f3026");
-  skyLight.intensity = 0.48;
+  skyLight.intensity = 0.42;
 
   const sun = new DirectionalLight("lowGoldSun", new Vector3(-0.46, -0.86, 0.24), scene);
   sun.position = new Vector3(52, 74, -82);
   sun.diffuse = Color3.FromHexString("#ffc073");
   sun.specular = Color3.FromHexString("#d8b77f");
-  sun.intensity = 2.48;
+  sun.intensity = 2.12;
 
   const shrineGlow = new PointLight("shrineOilLampGlow", new Vector3(0, 2.2, 90), scene);
   shrineGlow.diffuse = Color3.FromHexString("#f2a451");
   shrineGlow.intensity = 0.56;
   shrineGlow.range = 17;
 
+  const routeTrack = createGuidedRouteTrack(manifest);
   const ground = createBaseDistrict(scene, materials);
   createNileEdge(scene, materials);
   createResidentialStreet(scene, materials);
   createCraftsmenArea(scene, materials);
   createTemple(scene, materials);
-  createRouteLine(scene, manifest);
-  const authoredHeroStreetLoaded = await loadModularAssetKit(scene);
-  if (authoredHeroStreetLoaded) {
+  createRouteLine(scene, routeTrack.points);
+  const modularAssets = await loadModularAssetKit(scene);
+  if (modularAssets.heroStreetLoaded) {
     hideLegacyHeroStreetScaffold(scene);
+    createHeroStreetCollisionGuides(scene);
   }
-  const cinematicHumans = authoredHeroStreetLoaded ? [] : createHeroStreetV2FilmSet(scene, materials);
+  const cinematicHumans = modularAssets.heroStreetLoaded ? [] : createHeroStreetV2FilmSet(scene, materials);
+  const glbActorMotions = modularAssets.actorMotions;
 
   const evidenceRoot = createEvidenceMarkers(scene, manifest, materials);
   evidenceRoot.setEnabled(false);
@@ -224,7 +266,6 @@ export async function createMemphisWhiteWallsScene(
   let elapsedSeconds = 0;
   let currentStop = firstStop;
   const stopListeners = new Set<StopListener>();
-  const routePoints = manifest.stops.map((stop) => vectorFromTuple(stop.position));
   const routeDuration = Math.max(60, manifest.durationSeconds);
 
   scene.onBeforeRenderObservable.add(() => {
@@ -233,11 +274,10 @@ export async function createMemphisWhiteWallsScene(
     if (autoplay) {
       elapsedSeconds = Math.min(routeDuration, elapsedSeconds + deltaSeconds);
       const progress = elapsedSeconds / routeDuration;
-      const position = sampleRoute(routePoints, progress);
-      const lookAt = sampleRoute(routePoints, Math.min(1, progress + 0.02));
-      camera.position.copyFrom(position);
+      const routeSample = sampleGuidedRoute(routeTrack, progress);
+      camera.position.copyFrom(routeSample.position);
       camera.position.y = 1.7;
-      camera.setTarget(new Vector3(lookAt.x, 1.65, lookAt.z));
+      camera.setTarget(new Vector3(routeSample.lookAt.x, routeSample.lookAt.y, routeSample.lookAt.z));
 
       if (elapsedSeconds >= routeDuration) {
         autoplay = false;
@@ -249,6 +289,7 @@ export async function createMemphisWhiteWallsScene(
     updateSmoke(smokeNodes, time);
     updateBirds(birds, time);
     updateCinematicHumans(cinematicHumans, time);
+    updateGlbActorMotions(glbActorMotions, time);
     animateMaterials(materials, time);
     const nearestStop = findNearestStop(manifest.stops, camera.position);
 
@@ -290,8 +331,14 @@ export async function createMemphisWhiteWallsScene(
     resetTour() {
       autoplay = false;
       elapsedSeconds = 0;
-      const start = vectorFromTuple(firstStop.position);
-      const lookAt = vectorFromTuple(firstStop.lookAt ?? firstStop.position);
+      const startPoint = routeTrack.points[0] ?? {
+        id: firstStop.id,
+        position: vectorFromTuple(firstStop.position),
+        lookAt: vectorFromTuple(firstStop.lookAt ?? firstStop.position),
+        stopId: firstStop.id
+      };
+      const start = startPoint.position;
+      const lookAt = startPoint.lookAt ?? vectorFromTuple(firstStop.lookAt ?? firstStop.position);
       camera.position.copyFrom(start);
       camera.setTarget(lookAt);
       currentStop = firstStop;
@@ -306,7 +353,7 @@ export async function createMemphisWhiteWallsScene(
 }
 
 function createMaterials(scene: Scene): SceneMaterials {
-  const sand = material(scene, "sand", "#b88652", {
+  const sand = material(scene, "sand", "#a97945", {
     textureName: "sand-grain.jpg",
     uScale: 8,
     vScale: 12,
@@ -314,7 +361,7 @@ function createMaterials(scene: Scene): SceneMaterials {
     bump: true,
     bumpLevel: 0.08
   });
-  const mudbrick = material(scene, "mudbrick", "#72492d", {
+  const mudbrick = material(scene, "mudbrick", "#65412a", {
     textureName: "mudbrick-pbr.jpg",
     uScale: 2.25,
     vScale: 2.25,
@@ -322,17 +369,17 @@ function createMaterials(scene: Scene): SceneMaterials {
     bump: true,
     bumpLevel: 0.14
   });
-  const heroGround = material(scene, "heroStreetGround", "#a86d3c", {
+  const heroGround = material(scene, "heroStreetGround", "#956036", {
     textureName: "hero-street-ground.jpg",
     bumpTextureName: "hero-street-normal.jpg",
     ambientTextureName: "hero-street-ao.jpg",
-    uScale: 0.72,
-    vScale: 1.28,
+    uScale: 0.36,
+    vScale: 0.82,
     roughness: 0.98,
     bump: true,
     bumpLevel: 0.105
   });
-  const plaster = material(scene, "plaster", "#c8b890", {
+  const plaster = material(scene, "plaster", "#bba883", {
     textureName: "plaster-aged.jpg",
     uScale: 1.55,
     vScale: 1.55,
@@ -354,7 +401,7 @@ function createMaterials(scene: Scene): SceneMaterials {
     bump: true,
     bumpLevel: 0.06
   });
-  const linen = material(scene, "linen", "#d8c89f", {
+  const linen = material(scene, "linen", "#d3c49f", {
     textureName: "woven-linen.jpg",
     uScale: 2.6,
     vScale: 2.6,
@@ -385,21 +432,21 @@ function createMaterials(scene: Scene): SceneMaterials {
     alpha: 0.88,
     roughness: 1
   });
-  const contactShadow = material(scene, "softContactShadow", "#1c1711", {
-    alpha: 0.44,
+  const contactShadow = material(scene, "softContactShadow", "#17110c", {
+    alpha: 0.52,
     roughness: 1
   });
   contactShadow.backFaceCulling = false;
-  const dust = material(scene, "powderyStreetDust", "#a66f3e", {
+  const dust = material(scene, "powderyStreetDust", "#8f5d36", {
     textureName: "hero-street-ground.jpg",
     bumpTextureName: "hero-street-normal.jpg",
-    uScale: 0.7,
-    vScale: 1.24,
+    uScale: 0.34,
+    vScale: 0.78,
     roughness: 0.98,
     bump: true,
     bumpLevel: 0.055
   });
-  const pottery = material(scene, "warmPotteryClay", "#a45a31", {
+  const pottery = material(scene, "warmPotteryClay", "#914624", {
     textureName: "mudbrick-pbr.jpg",
     uScale: 1.8,
     vScale: 1.8,
@@ -532,8 +579,8 @@ function createSkyDome(scene: Scene): void {
   const sky = MeshBuilder.CreateSphere("goldenDesertSky", { diameter: 220, segments: 24, sideOrientation: Mesh.BACKSIDE }, scene);
   const mat = new PBRMaterial("goldenDesertSkyMaterial", scene);
   mat.unlit = true;
-  mat.albedoColor = Color3.FromHexString("#aeb9b8");
-  mat.emissiveColor = Color3.FromHexString("#8f7552");
+  mat.albedoColor = Color3.FromHexString("#9fa8a2");
+  mat.emissiveColor = Color3.FromHexString("#7c6649");
   mat.backFaceCulling = false;
   sky.material = mat;
   sky.isPickable = false;
@@ -545,7 +592,64 @@ function hideLegacyHeroStreetScaffold(scene: Scene): void {
   });
 }
 
-async function loadModularAssetKit(scene: Scene): Promise<boolean> {
+function createHeroStreetCollisionGuides(scene: Scene): void {
+  const guideSpecs = [
+    {
+      name: "heroStreetLeftCollisionRail",
+      position: new Vector3(heroStreetCenterX - 4.95, 1.28, 4),
+      size: new Vector3(0.72, 2.56, 70)
+    },
+    {
+      name: "heroStreetRightCollisionRail",
+      position: new Vector3(heroStreetCenterX + 4.95, 1.28, 4),
+      size: new Vector3(0.72, 2.56, 70)
+    }
+  ];
+
+  guideSpecs.forEach(({ name, position, size }) => {
+    const guide = MeshBuilder.CreateBox(name, { width: size.x, height: size.y, depth: size.z }, scene);
+    guide.position = position;
+    guide.checkCollisions = true;
+    guide.isPickable = false;
+    guide.isVisible = false;
+  });
+}
+
+function createGlbActorMotionRoutines(root: TransformNode): GlbActorMotionRoutine[] {
+  return [
+    createGlbActorMotion(root, "actorHeroCarrier", new Vector3(0, 0, 5.8), 0.24, 0.2),
+    createGlbActorMotion(root, "actorHeroStreetWalker", new Vector3(0, 0, -7.4), 0.3, 1.4)
+  ].filter((routine): routine is GlbActorMotionRoutine => Boolean(routine));
+}
+
+function createGlbActorMotion(
+  root: TransformNode,
+  actorName: string,
+  travel: Vector3,
+  speed: number,
+  phase: number
+): GlbActorMotionRoutine | undefined {
+  const actorRoot = root.getChildTransformNodes(false).find((node) => node.name.endsWith(actorName));
+
+  if (!actorRoot) {
+    return undefined;
+  }
+
+  const baseRotation = actorRoot.rotationQuaternion?.toEulerAngles() ?? actorRoot.rotation;
+  actorRoot.rotationQuaternion = null;
+
+  return {
+    root: actorRoot,
+    start: actorRoot.position.clone(),
+    end: actorRoot.position.add(travel),
+    speed,
+    phase,
+    yawForward: baseRotation.y,
+    yawBackward: baseRotation.y + Math.PI
+  };
+}
+
+async function loadModularAssetKit(scene: Scene): Promise<ModularAssetLoadResult> {
   try {
     const response = await fetch(`${glbRoot}asset-kit.manifest.json`);
 
@@ -558,6 +662,7 @@ async function loadModularAssetKit(scene: Scene): Promise<boolean> {
     const placements = createModularAssetPlacements();
     const containers = new Map<string, Awaited<ReturnType<typeof SceneLoader.LoadAssetContainerAsync>>>();
     let heroStreetLoaded = false;
+    const actorMotions: GlbActorMotionRoutine[] = [];
 
     await Promise.all(
       [...new Set(placements.map((placement) => placement.assetId))].map(async (assetId) => {
@@ -598,10 +703,10 @@ async function loadModularAssetKit(scene: Scene): Promise<boolean> {
       root.scaling.setAll(placement.scale ?? 1);
 
       for (const mesh of root.getChildMeshes(false)) {
-        mesh.checkCollisions = placement.collides ?? false;
+        mesh.checkCollisions = false;
         mesh.isPickable = false;
 
-        if (!placement.collides && !placement.animated) {
+        if (!placement.animated) {
           mesh.freezeWorldMatrix();
         }
       }
@@ -621,13 +726,17 @@ async function loadModularAssetKit(scene: Scene): Promise<boolean> {
           group.speedRatio = 0.82 + index * 0.04;
           group.start(true);
         });
+
+        if (placement.assetId === "animated-street-actors") {
+          actorMotions.push(...createGlbActorMotionRoutines(root));
+        }
       }
     }
 
-    return heroStreetLoaded;
+    return { heroStreetLoaded, actorMotions };
   } catch (error) {
     console.warn("Memphis modular GLB asset kit could not be loaded.", error);
-    return false;
+    return { heroStreetLoaded: false, actorMotions: [] };
   }
 }
 
@@ -1505,9 +1614,9 @@ function createBrazier(scene: Scene, materials: SceneMaterials, position: Vector
   ember.material = materials.ember;
 }
 
-function createRouteLine(scene: Scene, manifest: TourManifest): void {
-  const points = manifest.stops.map((stop) => {
-    const point = vectorFromTuple(stop.position);
+function createRouteLine(scene: Scene, routePoints: readonly GuidedRoutePoint[]): void {
+  const points = routePoints.map((routePoint) => {
+    const point = routePoint.position.clone();
     point.y = 0.08;
     return point;
   });
@@ -1705,6 +1814,17 @@ function updateWalkers(walkers: WalkerRoutine[], time: number): void {
   });
 }
 
+function updateGlbActorMotions(actors: GlbActorMotionRoutine[], time: number): void {
+  actors.forEach((actor) => {
+    const cycle = time * actor.speed + actor.phase;
+    const mix = (Math.sin(cycle) + 1) / 2;
+    const position = Vector3.Lerp(actor.start, actor.end, mix);
+
+    actor.root.position.copyFrom(position);
+    actor.root.rotation.y = Math.cos(cycle) >= 0 ? actor.yawForward : actor.yawBackward;
+  });
+}
+
 function createSmoke(scene: Scene, materials: SceneMaterials): TransformNode[] {
   return Array.from({ length: 10 }, (_, index) => {
     const smoke = MeshBuilder.CreateSphere(`incenseSmoke-${index}`, { diameter: 0.72 + index * 0.06, segments: 12 }, scene);
@@ -1847,7 +1967,8 @@ function applyCameraShotBookmark(camera: UniversalCamera): void {
     return;
   }
 
-  const shot = new URLSearchParams(window.location.search).get("shot");
+  const requestedShot = new URLSearchParams(window.location.search).get("shot");
+  const shot = requestedShot === "canonical" ? canonicalCameraShotId : requestedShot;
   const bookmark = shot ? cameraShotBookmarks[shot] : undefined;
 
   if (!bookmark) {
@@ -1858,20 +1979,80 @@ function applyCameraShotBookmark(camera: UniversalCamera): void {
   camera.setTarget(vectorFromTuple(bookmark.lookAt));
 }
 
-function sampleRoute(points: Vector3[], progress: number): Vector3 {
-  if (points.length === 1) {
-    return points[0].clone();
+function createGuidedRouteTrack(manifest: TourManifest): GuidedRouteTrack {
+  const sourcePoints = manifest.guidedRoute?.waypoints?.length
+    ? manifest.guidedRoute.waypoints
+    : manifest.stops.map((stop) => ({
+      id: stop.id,
+      position: stop.position,
+      lookAt: stop.lookAt,
+      stopId: stop.id
+    }));
+
+  const points = sourcePoints.map((point) => ({
+    id: point.id,
+    position: vectorFromTuple(point.position),
+    lookAt: point.lookAt ? vectorFromTuple(point.lookAt) : undefined,
+    stopId: point.stopId
+  }));
+
+  const segments: GuidedRouteSegment[] = [];
+  let totalLength = 0;
+
+  for (let index = 0; index < points.length - 1; index += 1) {
+    const start = points[index];
+    const end = points[index + 1];
+    const delta = end.position.subtract(start.position);
+    delta.y = 0;
+    const length = delta.length();
+
+    if (length < 0.01) {
+      continue;
+    }
+
+    const direction = delta.scale(1 / length);
+    segments.push({
+      start,
+      end,
+      startDistance: totalLength,
+      length,
+      direction
+    });
+    totalLength += length;
+  }
+
+  return { points, segments, totalLength };
+}
+
+function sampleGuidedRoute(track: GuidedRouteTrack, progress: number): { position: Vector3; lookAt: Vector3 } {
+  if (track.segments.length === 0) {
+    const point = track.points[0];
+    const position = point?.position.clone() ?? Vector3.Zero();
+    const lookAt = point?.lookAt?.clone() ?? position.add(new Vector3(0, 0, 4));
+    return { position, lookAt };
   }
 
   const clamped = Math.min(1, Math.max(0, progress));
-  const scaled = clamped * (points.length - 1);
-  const index = Math.min(points.length - 2, Math.floor(scaled));
-  const local = smoothStep(scaled - index);
-  return Vector3.Lerp(points[index], points[index + 1], local);
-}
+  const routeDistance = clamped * track.totalLength;
+  const fallbackSegment = track.segments[track.segments.length - 1];
+  const segment = track.segments.find((candidate) => (
+    routeDistance <= candidate.startDistance + candidate.length
+  )) ?? fallbackSegment;
+  const local = Math.min(1, Math.max(0, (routeDistance - segment.startDistance) / segment.length));
+  const position = Vector3.Lerp(segment.start.position, segment.end.position, local);
 
-function smoothStep(value: number): number {
-  return value * value * (3 - 2 * value);
+  if (clamped >= 0.998 && segment.end.lookAt) {
+    return { position, lookAt: segment.end.lookAt.clone() };
+  }
+
+  return {
+    position,
+    lookAt: new Vector3(
+      position.x + segment.direction.x * 5.5,
+      1.65,
+      position.z + segment.direction.z * 5.5
+    )
+  };
 }
 
 function findNearestStop(stops: readonly TourStop[], position: Vector3): TourStop {

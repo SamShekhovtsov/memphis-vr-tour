@@ -5,6 +5,7 @@ import { fileURLToPath } from "node:url";
 const rootDir = path.resolve(fileURLToPath(new URL("..", import.meta.url)));
 
 const paths = {
+  cameraLock: path.join(rootDir, "content", "scene-data", "hero-street.camera-lock.json"),
   evidence: path.join(rootDir, "content", "scene-data", "memphis-white-walls.evidence.json"),
   assetKit: path.join(rootDir, "apps", "web-tour", "public", "assets", "generated", "glb", "asset-kit.manifest.json"),
   referencePack: path.join(rootDir, "content", "reference-datasets", "memphis-beauty-pass-reference-pack.json"),
@@ -54,6 +55,29 @@ function requireArray(value, label) {
   return true;
 }
 
+function requireNumber(value, label) {
+  if (typeof value !== "number" || !Number.isFinite(value)) {
+    addError(`${label} must be a finite number.`);
+    return false;
+  }
+
+  return true;
+}
+
+function requireVector3(value, label) {
+  if (!requireArray(value, label)) {
+    return false;
+  }
+
+  if (value.length !== 3) {
+    addError(`${label} must have exactly 3 numbers.`);
+    return false;
+  }
+
+  value.forEach((component, index) => requireNumber(component, `${label}[${index}]`));
+  return true;
+}
+
 function buildSourceMap(sourceRegister) {
   const sourcesById = new Map();
 
@@ -87,6 +111,123 @@ function buildSourceMap(sourceRegister) {
   }
 
   return sourcesById;
+}
+
+function validateCameraLock(cameraLock, tour) {
+  requireString(cameraLock.id, "cameraLock.id");
+
+  if (cameraLock.tourId !== tour.id) {
+    addError(`Camera lock tourId "${cameraLock.tourId}" does not match tour id "${tour.id}".`);
+  }
+
+  requireString(cameraLock.activeShotId, "cameraLock.activeShotId");
+  requireString(cameraLock.canonicalUrl, "cameraLock.canonicalUrl");
+  requireString(cameraLock.canonicalOutput, "cameraLock.canonicalOutput");
+
+  if (cameraLock.localDevPort !== 5573) {
+    addError(`Camera lock localDevPort must remain 5573 unless the project port changes intentionally.`);
+  }
+
+  if (typeof cameraLock.viewport !== "object" || cameraLock.viewport === null) {
+    addError("cameraLock.viewport must be an object.");
+  } else {
+    requireNumber(cameraLock.viewport.width, "cameraLock.viewport.width");
+    requireNumber(cameraLock.viewport.height, "cameraLock.viewport.height");
+    requireNumber(cameraLock.viewport.deviceScaleFactor, "cameraLock.viewport.deviceScaleFactor");
+  }
+
+  if (!requireArray(cameraLock.shots, "cameraLock.shots")) {
+    return;
+  }
+
+  const shotsById = new Map();
+
+  for (const shot of cameraLock.shots) {
+    if (!requireString(shot.id, "cameraLock shot id")) {
+      continue;
+    }
+
+    if (shotsById.has(shot.id)) {
+      addError(`Duplicate camera lock shot id "${shot.id}".`);
+      continue;
+    }
+
+    shotsById.set(shot.id, shot);
+    requireString(shot.label, `cameraLock shot "${shot.id}" label`);
+    requireString(shot.role, `cameraLock shot "${shot.id}" role`);
+    requireVector3(shot.position, `cameraLock shot "${shot.id}" position`);
+    requireVector3(shot.lookAt, `cameraLock shot "${shot.id}" lookAt`);
+
+    if (typeof shot.locked !== "boolean") {
+      addError(`cameraLock shot "${shot.id}" locked must be a boolean.`);
+    }
+
+    requireArray(shot.notes, `cameraLock shot "${shot.id}" notes`);
+  }
+
+  const activeShot = shotsById.get(cameraLock.activeShotId);
+
+  if (!activeShot) {
+    addError(`Camera lock activeShotId "${cameraLock.activeShotId}" does not exist in cameraLock.shots.`);
+  } else if (activeShot.locked !== true) {
+    addError(`Camera lock active shot "${cameraLock.activeShotId}" must be locked.`);
+  }
+
+  if (!shotsById.has("hero-street-main")) {
+    addError('Camera lock must include the canonical "hero-street-main" shot.');
+  }
+}
+
+function validateGuidedRoute(tour) {
+  if (tour.guidedRoute === undefined) {
+    return;
+  }
+
+  const route = tour.guidedRoute;
+  requireString(route.id, "tour.guidedRoute.id");
+  requireString(route.label, "tour.guidedRoute.label");
+  requireArray(route.notes, "tour.guidedRoute.notes");
+
+  if (!requireArray(route.waypoints, "tour.guidedRoute.waypoints")) {
+    return;
+  }
+
+  if (route.waypoints.length < 2) {
+    addError("tour.guidedRoute.waypoints must include at least two waypoints.");
+  }
+
+  const routeIds = new Set();
+  const stopIds = new Set(
+    Array.isArray(tour.stops)
+      ? tour.stops.filter((stop) => typeof stop.id === "string").map((stop) => stop.id)
+      : []
+  );
+
+  for (const waypoint of route.waypoints) {
+    if (!requireString(waypoint.id, "tour.guidedRoute waypoint id")) {
+      continue;
+    }
+
+    if (routeIds.has(waypoint.id)) {
+      addError(`Duplicate guided route waypoint id "${waypoint.id}".`);
+      continue;
+    }
+
+    routeIds.add(waypoint.id);
+    requireVector3(waypoint.position, `guided route waypoint "${waypoint.id}" position`);
+
+    if (waypoint.lookAt !== undefined) {
+      requireVector3(waypoint.lookAt, `guided route waypoint "${waypoint.id}" lookAt`);
+    }
+
+    if (waypoint.stopId !== undefined) {
+      requireString(waypoint.stopId, `guided route waypoint "${waypoint.id}" stopId`);
+
+      if (!stopIds.has(waypoint.stopId)) {
+        addError(`Guided route waypoint "${waypoint.id}" references missing stop "${waypoint.stopId}".`);
+      }
+    }
+  }
 }
 
 function validateEvidence(tour, evidence, sourcesById) {
@@ -408,16 +549,19 @@ function validateReferenceSources(asset, sourcesById) {
   }
 }
 
-const [sourceRegister, tour, evidence, runtimeAssets, referencePack, assetKit] = await Promise.all([
+const [sourceRegister, tour, evidence, runtimeAssets, referencePack, assetKit, cameraLock] = await Promise.all([
   readJson(paths.sourceRegister),
   readJson(paths.tour),
   readJson(paths.evidence),
   readJson(paths.runtimeAssets),
   readJson(paths.referencePack),
-  readJson(paths.assetKit)
+  readJson(paths.assetKit),
+  readJson(paths.cameraLock)
 ]);
 
 const sourcesById = buildSourceMap(sourceRegister);
+validateCameraLock(cameraLock, tour);
+validateGuidedRoute(tour);
 validateReferencePack(referencePack, sourcesById);
 validateEvidence(tour, evidence, sourcesById);
 validateRuntimeAssets(runtimeAssets, tour, sourcesById);
@@ -431,6 +575,6 @@ if (errors.length > 0) {
   process.exitCode = 1;
 } else {
   console.log(
-    `Content validation passed: ${tour.stops.length} tour stops, ${evidence.records.length} evidence records, ${runtimeAssets.assets.length} runtime asset records, ${assetKit.assets.length} GLB asset-kit records, ${referencePack.approvedReferenceSources.length} reference-pack sources, ${sourcesById.size} sources.`
+    `Content validation passed: ${tour.stops.length} tour stops, ${evidence.records.length} evidence records, ${runtimeAssets.assets.length} runtime asset records, ${assetKit.assets.length} GLB asset-kit records, ${cameraLock.shots.length} locked camera shots, ${referencePack.approvedReferenceSources.length} reference-pack sources, ${sourcesById.size} sources.`
   );
 }

@@ -32,6 +32,56 @@
     "summary": {
       "type": "string"
     },
+    "guidedRoute": {
+      "type": "object",
+      "required": [
+        "id",
+        "label",
+        "notes",
+        "waypoints"
+      ],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "label": {
+          "type": "string"
+        },
+        "notes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "waypoints": {
+          "type": "array",
+          "minItems": 2,
+          "items": {
+            "type": "object",
+            "required": [
+              "id",
+              "position"
+            ],
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "position": {
+                "$ref": "#/$defs/vector3"
+              },
+              "lookAt": {
+                "$ref": "#/$defs/vector3"
+              },
+              "stopId": {
+                "type": "string"
+              }
+            },
+            "additionalProperties": false
+          }
+        }
+      },
+      "additionalProperties": false
+    },
     "stops": {
       "type": "array",
       "minItems": 2,
