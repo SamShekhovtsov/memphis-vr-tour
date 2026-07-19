@@ -384,10 +384,14 @@ def create_materials() -> dict[str, bpy.types.Material]:
         "wood": make_pbr_material("dark acacia wood", (0.20, 0.11, 0.055, 1), (0.52, 0.32, 0.18, 1), 0.82, 53, 0.2),
         "reed": make_pbr_material("river reed green", (0.19, 0.30, 0.13, 1), (0.58, 0.66, 0.33, 1), 0.92, 61, 0.16),
         "dry_reed": make_pbr_material("dry reed straw", (0.50, 0.38, 0.17, 1), (0.86, 0.70, 0.35, 1), 0.94, 67, 0.16),
-        "linen": make_pbr_material("sun bleached woven linen", (0.58, 0.49, 0.32, 1), (0.84, 0.74, 0.53, 1), 0.94, 71, 0.16),
+        "linen": make_pbr_material("sun bleached woven linen", (0.68, 0.58, 0.39, 1), (0.9, 0.79, 0.57, 1), 0.94, 71, 0.16),
         "dark": make_material("deep doorway shadow", (0.08, 0.055, 0.035, 1), 0.98),
-        "baked_shadow": make_material("baked warm contact shadow", (0.045, 0.032, 0.02, 0.5), 1, 0.5),
-        "dust_dark": make_material("settled dark street dust", (0.11, 0.067, 0.036, 0.38), 0.99, 0.38),
+        "baked_shadow": make_material("baked warm contact shadow", (0.045, 0.032, 0.02, 0.34), 1, 0.34),
+        "baked_shadow_deep": make_material("baked deep doorway contact shadow", (0.026, 0.018, 0.012, 0.5), 1, 0.5),
+        "baked_shadow_soft": make_material("baked soft awning shadow", (0.07, 0.045, 0.026, 0.16), 1, 0.16),
+        "baked_shadow_cool": make_material("baked cool bounced street shadow", (0.052, 0.047, 0.044, 0.13), 1, 0.13),
+        "baked_sun_strip": make_material("baked warm sunlit dust strip", (0.82, 0.55, 0.26, 0.11), 1, 0.11),
+        "dust_dark": make_material("settled dark street dust", (0.11, 0.067, 0.036, 0.23), 0.99, 0.23),
         "plaster_stain": make_material("thin plaster water stain", (0.18, 0.12, 0.065, 0.56), 1, 0.56),
         "warm_haze": make_material("warm suspended street haze", (0.58, 0.38, 0.2, 0.075), 1, 0.075),
         "paint_blue": make_material("mineral blue paint", (0.09, 0.31, 0.52, 1), 0.85),
@@ -1285,33 +1289,92 @@ def add_hero_ground_details(materials: dict[str, bpy.types.Material]) -> None:
 def add_baked_street_lighting(materials: dict[str, bpy.types.Material]) -> None:
     street_center_x = -10.45
 
+    # Film-set light bake approximation: wide shapes first, then tight contact.
+    # This keeps the browser scene cinematic without relying on real-time shadows.
+    for index, (y, width, depth, offset_x) in enumerate([
+        (-24.2, 7.4, 2.5, -0.18),
+        (-18.0, 7.9, 3.6, 0.08),
+        (-8.4, 6.9, 2.4, -0.28),
+        (-3.4, 8.0, 3.8, 0.18),
+        (8.6, 7.0, 2.5, -0.12),
+        (15.8, 7.8, 3.7, 0.12),
+        (27.0, 6.8, 2.4, -0.24),
+    ]):
+        ground_decal(
+            f"heroV2-bakedAwningShadeBand-{index}",
+            (street_center_x + offset_x, y, 0.081 + index * 0.0004),
+            width,
+            depth,
+            materials["baked_shadow_soft" if index % 2 else "baked_shadow_cool"],
+            rot_z=math.radians(-4.5 + math.sin(index) * 2.0),
+        )
+
+    for index, (y, width, depth, offset_x) in enumerate([
+        (-21.0, 3.4, 0.58, 0.45),
+        (-7.5, 2.9, 0.52, 0.82),
+        (6.5, 3.1, 0.55, -0.62),
+        (22.0, 2.8, 0.5, 0.36),
+    ]):
+        ground_decal(
+            f"heroV2-bakedSunDustStrip-{index}",
+            (street_center_x + offset_x, y, 0.086 + index * 0.0004),
+            width,
+            depth,
+            materials["baked_sun_strip"],
+            rot_z=math.radians(-4.0 + index),
+        )
+
+    for index, (x, width) in enumerate([(-14.55, 0.58), (-6.36, 0.64)]):
+        ground_decal(
+            f"heroV2-continuousWallBaseAo-{index}",
+            (x, 4.0, 0.083 + index * 0.0005),
+            width,
+            67.0,
+            materials["baked_shadow_soft"],
+            rot_z=math.radians(0.35 if index == 0 else -0.28),
+        )
+
     for index, y in enumerate([-24, -16, -7, 4, 16, 28]):
         ground_decal(
             f"heroV2-wallFootContactLeft-{index}",
-            (-14.65, y, 0.064),
-            0.72,
-            7.2,
+            (-14.65, y, 0.087 + index * 0.0004),
+            0.78,
+            7.4,
             materials["baked_shadow"],
             rot_z=0.02 * math.sin(index),
         )
         ground_decal(
             f"heroV2-wallFootContactRight-{index}",
-            (-6.24, y + 0.5, 0.065),
-            0.78,
-            7.0,
+            (-6.24, y + 0.5, 0.088 + index * 0.0004),
+            0.84,
+            7.2,
             materials["baked_shadow"],
             rot_z=-0.02 * math.cos(index),
         )
 
     for index, y in enumerate([-24.5, -18.2, -12.1, -5.7, 1.6, 7.8, 15.2, 22.7, 30.4]):
-        for side_name, x in [("left", -14.25), ("right", -6.65)]:
+        for side_name, x, facade_x, side_dir in [("left", -14.25, -14.9, 1), ("right", -6.65, -5.92, -1)]:
             ground_decal(
                 f"heroV2-doorwayPool-{side_name}-{index}",
-                (x, y + math.sin(index) * 0.45, 0.076),
-                1.05,
-                1.45,
-                materials["baked_shadow"],
+                (x, y + math.sin(index) * 0.45, 0.093 + index * 0.0004),
+                0.96,
+                1.24,
+                materials["baked_shadow_deep"],
                 rot_z=math.radians((3 if side_name == "left" else -3) + math.sin(index) * 2),
+            )
+            cube(
+                f"heroV2-doorwayVerticalBake-{side_name}-{index}",
+                (facade_x + side_dir * 0.145, y + math.sin(index) * 0.45, 0.76),
+                (0.024, 1.02, 1.38),
+                materials["baked_shadow_deep"],
+                bevel=0,
+            )
+            cube(
+                f"heroV2-doorJambBounceShadow-{side_name}-{index}",
+                (facade_x + side_dir * 0.165, y + math.sin(index) * 0.45, 1.47),
+                (0.018, 1.28, 0.18),
+                materials["baked_shadow_soft"],
+                bevel=0,
             )
 
     for index, (x, y, width, depth) in enumerate([
@@ -1319,15 +1382,30 @@ def add_baked_street_lighting(materials: dict[str, bpy.types.Material]) -> None:
         (-6.35, -13.9, 1.6, 1.4),
         (-13.7, -25.8, 1.8, 1.0),
         (-6.75, -20.1, 1.7, 1.0),
+        (-13.7, -4.2, 1.35, 0.9),
+        (-6.85, 4.8, 1.25, 1.0),
+        (-13.6, 13.4, 1.55, 0.9),
+        (-6.95, 24.5, 1.45, 0.95),
     ]):
         ground_decal(
             f"heroV2-foregroundPropGrounding-{index}",
-            (x, y, 0.078),
+            (x, y, 0.096 + index * 0.0004),
             width,
             depth,
-            materials["baked_shadow"],
+            materials["baked_shadow_deep" if index < 4 else "baked_shadow"],
             rot_z=math.radians(4 - index * 3),
         )
+
+    for index, y in enumerate([-24.2, -18.0, -3.4, 15.8, 27.0]):
+        for x in [-14.45, -6.45]:
+            ground_decal(
+                f"heroV2-awningPostContact-{index}-{x}",
+                (x, y + math.sin(index) * 0.35, 0.1 + index * 0.0003),
+                0.56,
+                0.72,
+                materials["baked_shadow_deep"],
+                rot_z=math.radians(index * 9),
+            )
 
 
 def add_wall_surface_decals(materials: dict[str, bpy.types.Material]) -> None:
@@ -1426,20 +1504,20 @@ def add_foreground_film_set(materials: dict[str, bpy.types.Material]) -> None:
     )
     sagging_cloth_panel(
         "heroV2LowForegroundCanopy",
-        (-10.45, -23.9, 2.78),
-        8.8,
-        5.6,
+        (-10.45, -24.0, 3.05),
+        8.05,
+        4.55,
         materials["linen"],
-        sag=0.34,
+        sag=0.22,
         rot=(math.radians(4), 0, math.radians(-0.8)),
     )
     cylinder_between("heroV2LowCanopyFrontRope", (-14.68, -26.62, 2.76), (-6.25, -26.25, 2.66), 0.017, materials["dry_reed"], 7)
     cylinder_between("heroV2LowCanopyBackRope", (-14.32, -21.35, 2.86), (-6.35, -21.25, 2.78), 0.016, materials["dry_reed"], 7)
     ground_decal(
         "heroV2LowForegroundCanopyShadow",
-        (-10.4, -23.7, 0.079),
-        8.9,
-        5.65,
+        (-10.42, -23.65, 0.079),
+        7.6,
+        4.45,
         materials["dust_dark"],
         rot_z=math.radians(1.2),
     )
@@ -1931,7 +2009,8 @@ def write_manifest() -> None:
         "materialAtlasStatus": {
             "currentPass": "Procedural albedo/normal/roughness texture sets are packed in the generated GLBs.",
             "aoAndHeight": "AO, doorway darkness, wall-base dirt, cloth shade, cracks, chips, and height-like surface breakup are authored as visible decal/contact geometry for this pass.",
-            "nextPass": "After the look is approved, split near/mid/far chunks and bake true lightmap/AO/height/KTX2 atlases."
+            "bakedLightAndContact": "Hero Street v2 now includes layered baked-looking shadow geometry: broad awning bands, continuous wall-base AO, doorway pools, vertical door darkness, post contacts, prop grounding, and warm sun-dust strips.",
+            "nextPass": "After the look is approved, split near/mid/far chunks and bake true UV lightmap/AO/height/KTX2 atlases."
         },
         "policy": [
             "Use restricted Memphis-specific sources as human research context only.",

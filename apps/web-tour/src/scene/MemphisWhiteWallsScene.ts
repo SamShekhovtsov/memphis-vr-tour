@@ -373,8 +373,14 @@ function createMaterials(scene: Scene): SceneMaterials {
     textureName: "hero-street-ground.jpg",
     bumpTextureName: "hero-street-normal.jpg",
     ambientTextureName: "hero-street-ao.jpg",
+    lightmapTextureName: "hero-street-lightmap.jpg",
     uScale: 0.36,
     vScale: 0.82,
+    lightmapUScale: 1,
+    lightmapVScale: 1,
+    ambientTextureStrength: 0.92,
+    lightmapLevel: 0.86,
+    useLightmapAsShadowmap: true,
     roughness: 0.98,
     bump: true,
     bumpLevel: 0.105
@@ -525,14 +531,20 @@ interface MaterialOptions {
   textureName?: string;
   bumpTextureName?: string;
   ambientTextureName?: string;
+  lightmapTextureName?: string;
   uScale?: number;
   vScale?: number;
+  lightmapUScale?: number;
+  lightmapVScale?: number;
+  lightmapLevel?: number;
   roughness?: number;
   metallic?: number;
   alpha?: number;
   bump?: boolean;
   bumpLevel?: number;
   emissive?: Color3;
+  ambientTextureStrength?: number;
+  useLightmapAsShadowmap?: boolean;
 }
 
 function material(scene: Scene, name: string, color: string, options: MaterialOptions = {}): PBRMaterial {
@@ -553,6 +565,18 @@ function material(scene: Scene, name: string, color: string, options: MaterialOp
 
   if (options.ambientTextureName) {
     mat.ambientTexture = createTiledTexture(scene, options.ambientTextureName, options.uScale ?? 1, options.vScale ?? 1);
+    mat.ambientTextureStrength = options.ambientTextureStrength ?? 1;
+  }
+
+  if (options.lightmapTextureName) {
+    mat.lightmapTexture = createTiledTexture(
+      scene,
+      options.lightmapTextureName,
+      options.lightmapUScale ?? 1,
+      options.lightmapVScale ?? 1
+    );
+    mat.lightmapTexture.level = options.lightmapLevel ?? 1;
+    mat.useLightmapAsShadowmap = options.useLightmapAsShadowmap ?? true;
   }
 
   if (options.alpha !== undefined) {
@@ -705,6 +729,11 @@ async function loadModularAssetKit(scene: Scene): Promise<ModularAssetLoadResult
       for (const mesh of root.getChildMeshes(false)) {
         mesh.checkCollisions = false;
         mesh.isPickable = false;
+
+        if (placement.assetId === "hero-street-corridor" && /heroV2Low(ForegroundCanopy|Canopy)/.test(mesh.name)) {
+          mesh.setEnabled(false);
+          continue;
+        }
 
         if (!placement.animated) {
           mesh.freezeWorldMatrix();
@@ -881,9 +910,9 @@ function createResidentialStreet(scene: Scene, materials: SceneMaterials): void 
   heroStreetGround.position = new Vector3(heroStreetCenterX, 0.048, 4);
   heroStreetGround.material = materials.heroGround;
 
-  const drain = MeshBuilder.CreateBox("streetDrainageChannel", { width: 0.22, height: 0.035, depth: 44 }, scene);
-  drain.position = new Vector3(heroStreetCenterX + 1.1, 0.052, -8);
-  drain.material = materials.mudbrick;
+  const drain = MeshBuilder.CreateGround("streetDrainageChannel", { width: 0.16, height: 44, subdivisions: 1 }, scene);
+  drain.position = new Vector3(heroStreetCenterX + 1.1, 0.056, -8);
+  drain.material = materials.dust;
 
   const well = MeshBuilder.CreateCylinder("districtWell", { height: 0.74, diameter: 1.5, tessellation: 24 }, scene);
   well.position = new Vector3(heroStreetCenterX + 3.5, 0.37, 5);
@@ -909,18 +938,18 @@ function createHeroStreetV2FilmSet(scene: Scene, materials: SceneMaterials): Cin
   const centerX = heroStreetCenterX;
 
   [
-    { x: centerX - 4.5, z: -22, width: 1.35, depth: 12, alpha: 0.36 },
-    { x: centerX + 4.25, z: -20, width: 1.2, depth: 10, alpha: 0.3 },
-    { x: centerX - 4.75, z: -2, width: 1.15, depth: 18, alpha: 0.22 },
-    { x: centerX + 4.35, z: 7, width: 1.35, depth: 20, alpha: 0.24 }
+    { x: centerX - 4.5, z: -22, width: 1.15, depth: 10, alpha: 0.22 },
+    { x: centerX + 4.25, z: -20, width: 1.05, depth: 9, alpha: 0.2 },
+    { x: centerX - 4.75, z: -2, width: 1.05, depth: 17, alpha: 0.18 },
+    { x: centerX + 4.35, z: 7, width: 1.18, depth: 19, alpha: 0.18 }
   ].forEach((spec, index) => {
     createGroundShadow(scene, materials, `heroV2WallContactShadow-${index}`, new Vector3(spec.x, 0.066, spec.z), spec.width, spec.depth, spec.alpha);
   });
 
   [
-    { z: -20.5, width: 8.8, depth: 3.8, y: 3.05, tilt: -0.035 },
-    { z: -8.2, width: 8.2, depth: 4.4, y: 3.18, tilt: 0.026 },
-    { z: 6.8, width: 8.6, depth: 4.1, y: 3.0, tilt: -0.02 }
+    { z: -18.1, width: 8.2, depth: 2.65, y: 3.42, tilt: -0.026 },
+    { z: -7.8, width: 8.0, depth: 3.7, y: 3.28, tilt: 0.022 },
+    { z: 7.2, width: 8.2, depth: 3.55, y: 3.18, tilt: -0.018 }
   ].forEach((cloth, index) => {
     const canopy = MeshBuilder.CreateBox(`heroV2SunCloth-${index}`, {
       width: cloth.width,
@@ -930,10 +959,17 @@ function createHeroStreetV2FilmSet(scene: Scene, materials: SceneMaterials): Cin
     canopy.position = new Vector3(centerX + Math.sin(index) * 0.28, cloth.y, cloth.z);
     canopy.rotation.z = cloth.tilt;
     canopy.rotation.x = Math.sin(index * 1.7) * 0.025;
-    canopy.material = materials.linen;
+    const canopyMaterial = materials.linen.clone(`heroV2SunClothMaterial-${index}`) as PBRMaterial | null;
+    if (canopyMaterial) {
+      canopyMaterial.unlit = true;
+      canopyMaterial.alpha = 0.92;
+      canopy.material = canopyMaterial;
+    } else {
+      canopy.material = materials.linen;
+    }
     canopy.isPickable = false;
 
-    createGroundShadow(scene, materials, `heroV2ClothShadow-${index}`, new Vector3(centerX + 0.2, 0.071, cloth.z + 0.45), cloth.width * 0.86, cloth.depth * 0.72, 0.18);
+    createGroundShadow(scene, materials, `heroV2ClothShadow-${index}`, new Vector3(centerX + 0.2, 0.071, cloth.z + 0.45), cloth.width * 0.72, cloth.depth * 0.54, 0.1);
 
     [-1, 1].forEach((side) => {
       const rope = MeshBuilder.CreateBox(`heroV2SunClothRope-${index}-${side}`, {

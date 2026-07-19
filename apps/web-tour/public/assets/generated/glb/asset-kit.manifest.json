@@ -10,7 +10,8 @@
   "materialAtlasStatus": {
     "currentPass": "Procedural albedo/normal/roughness texture sets are packed in the generated GLBs.",
     "aoAndHeight": "AO, doorway darkness, wall-base dirt, cloth shade, cracks, chips, and height-like surface breakup are authored as visible decal/contact geometry for this pass.",
-    "nextPass": "After the look is approved, split near/mid/far chunks and bake true lightmap/AO/height/KTX2 atlases."
+    "bakedLightAndContact": "Hero Street v2 now includes layered baked-looking shadow geometry: broad awning bands, continuous wall-base AO, doorway pools, vertical door darkness, post contacts, prop grounding, and warm sun-dust strips.",
+    "nextPass": "After the look is approved, split near/mid/far chunks and bake true UV lightmap/AO/height/KTX2 atlases."
   },
   "policy": [
     "Use restricted Memphis-specific sources as human research context only.",

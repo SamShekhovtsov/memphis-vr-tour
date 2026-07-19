@@ -28,7 +28,8 @@ const textureAssets = [
   writeJpeg("hero-street-ground.jpg", createHeroStreetGroundTexture(textureSize, textureSize), 88),
   writeJpeg("hero-street-normal.jpg", createHeroStreetNormalTexture(textureSize, textureSize), 90),
   writeJpeg("hero-street-roughness.jpg", createHeroStreetRoughnessTexture(textureSize, textureSize), 88),
-  writeJpeg("hero-street-ao.jpg", createHeroStreetAoTexture(textureSize, textureSize), 88)
+  writeJpeg("hero-street-ao.jpg", createHeroStreetAoTexture(textureSize, textureSize), 88),
+  writeJpeg("hero-street-lightmap.jpg", createHeroStreetLightmapTexture(textureSize, textureSize), 88)
 ];
 
 const audioAssets = [
@@ -220,6 +221,77 @@ function createHeroStreetAoTexture(width, height) {
     const value = Math.round(clamp01(0.78 - edgeShade - rutShade + n / 150) * 255);
     return { r: value, g: value, b: value, a: 255 };
   });
+
+  return image;
+}
+
+function createHeroStreetLightmapTexture(width, height) {
+  const image = createImage(width, height, "#dfcba9");
+  const random = seededRandom(1601);
+  const streetYMin = -30;
+  const streetYMax = 38;
+  const worldYToImageY = (worldY) => clamp01((worldY - streetYMin) / (streetYMax - streetYMin)) * height;
+
+  forEachPixel(image, (x, y) => {
+    const normalizedX = x / width;
+    const normalizedY = y / height;
+    const edgeOcclusion = Math.exp(-1 * ((normalizedX - 0.08) / 0.12) ** 2) * 0.19
+      + Math.exp(-1 * ((normalizedX - 0.92) / 0.12) ** 2) * 0.19;
+    const walkingAxisLight = Math.exp(-1 * ((normalizedX - 0.53) / 0.3) ** 2) * 0.1;
+    const warmSunPulse = Math.max(0, Math.sin(normalizedY * Math.PI * 6.7 - normalizedX * 2.1)) * 0.035;
+    const diagonalDust = Math.sin((normalizedX * 3.2 + normalizedY * 2.4) * Math.PI) * 0.018;
+    const grit = layeredNoise(x, y, 1601, [
+      [0.006, 10],
+      [0.028, 6],
+      [0.09, 3]
+    ]) / 180;
+    const value = clamp01(0.8 + walkingAxisLight + warmSunPulse + diagonalDust + grit - edgeOcclusion);
+    return mixHex("#8b6846", "#efd3a0", value);
+  });
+
+  for (const [worldY, radiusY, opacity] of [
+    [-24, 54, 0.12],
+    [-18, 72, 0.17],
+    [-10, 56, 0.1],
+    [-3.5, 76, 0.15],
+    [8, 58, 0.11],
+    [15.5, 84, 0.14],
+    [27, 52, 0.1]
+  ]) {
+    drawSoftEllipse(
+      image,
+      width * (0.49 + (random() - 0.5) * 0.16),
+      worldYToImageY(worldY),
+      width * (0.44 + random() * 0.18),
+      radiusY,
+      "#6a472c",
+      opacity,
+      -0.08 + random() * 0.05
+    );
+  }
+
+  for (const worldY of [-24.5, -18.2, -12.1, -5.7, 1.6, 7.8, 15.2, 22.7, 30.4]) {
+    drawSoftEllipse(image, width * 0.08, worldYToImageY(worldY), 58, 28, "#3b281b", 0.2, 0.04);
+    drawSoftEllipse(image, width * 0.92, worldYToImageY(worldY + 0.5), 62, 30, "#3b281b", 0.19, -0.04);
+  }
+
+  for (const [worldY, normalizedX, widthRadius, opacity] of [
+    [-21, 0.48, 120, 0.12],
+    [-7.5, 0.6, 105, 0.1],
+    [6.5, 0.43, 110, 0.11],
+    [22, 0.55, 100, 0.1]
+  ]) {
+    drawSoftEllipse(
+      image,
+      width * normalizedX,
+      worldYToImageY(worldY),
+      widthRadius,
+      26,
+      "#f4dfa9",
+      opacity,
+      -0.06
+    );
+  }
 
   return image;
 }
@@ -569,7 +641,8 @@ function createProvenanceManifest() {
     "hero-street-ground.jpg",
     "hero-street-normal.jpg",
     "hero-street-roughness.jpg",
-    "hero-street-ao.jpg"
+    "hero-street-ao.jpg",
+    "hero-street-lightmap.jpg"
   ];
   const audioNames = [
     "nile-water-boats.wav",

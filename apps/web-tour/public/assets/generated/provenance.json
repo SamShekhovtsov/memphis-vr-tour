@@ -171,6 +171,18 @@
         "smithsonian-open-access"
       ],
       "licenseStatus": "Project-generated synthetic texture; safe for runtime use by this project."
+    },
+    {
+      "file": "/assets/generated/textures/hero-street-lightmap.jpg",
+      "origin": "generated",
+      "sourceIds": [],
+      "referenceSourceIds": [
+        "met-open-access",
+        "met-old-kingdom-cattle-relief",
+        "cleveland-open-access",
+        "smithsonian-open-access"
+      ],
+      "licenseStatus": "Project-generated synthetic texture; safe for runtime use by this project."
     }
   ],
   "audio": [

@@ -159,7 +159,7 @@
       "referenceSourceIds": ["met-open-access", "met-old-kingdom-cattle-relief", "cleveland-open-access", "petrie-memphis-i"],
       "licenseStatus": "Project-generated synthetic PBR-style texture set; no source media copied.",
       "notes": [
-        "Includes hero-street-ground.jpg, hero-street-normal.jpg, hero-street-roughness.jpg, and hero-street-ao.jpg.",
+        "Includes hero-street-ground.jpg, hero-street-normal.jpg, hero-street-roughness.jpg, hero-street-ao.jpg, and hero-street-lightmap.jpg.",
         "Used to give the residential corridor packed dust, footprints, stones, straw, and worn walking lanes."
       ]
     },
@@ -193,7 +193,7 @@
       "referenceSourceIds": ["aera-memphis", "sfar-kom-el-fakhry", "petrie-memphis-i", "met-open-access", "cleveland-open-access"],
       "licenseStatus": "Project-generated procedural Blender GLB assets; no source media copied.",
       "notes": [
-        "Includes mudbrick house clusters, awnings, jars, baskets, mats, benches, painted wall panels, and low-poly NPC placeholders.",
+        "Includes mudbrick house clusters, awnings, jars, baskets, mats, benches, painted wall panels, baked-looking contact/shadow geometry, and low-poly NPC placeholders.",
         "Restricted Memphis-specific references guide human reconstruction choices only."
       ]
     },
