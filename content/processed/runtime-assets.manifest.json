@@ -164,6 +164,24 @@
       ]
     },
     {
+      "id": "generated-hero-street-real-material-atlases",
+      "label": "Generated PBR material atlas sets for Hero Street v2 surfaces",
+      "assetType": "texture",
+      "origin": "generated",
+      "runtimeUrl": "/assets/generated/textures/material-atlases.manifest.json",
+      "generatedBy": "tools/generate-runtime-assets.mjs",
+      "evidenceLevel": "inferred",
+      "runtimeAllowed": true,
+      "sourceIds": [],
+      "referenceSourceIds": ["aera-memphis", "sfar-kom-el-fakhry", "petrie-memphis-i", "met-open-access", "cleveland-open-access", "smithsonian-open-access"],
+      "licenseStatus": "Project-generated synthetic PBR atlas sets; no source media copied.",
+      "notes": [
+        "Includes mudbrick, plaster, dust, wood, linen, pottery, and skin atlas families.",
+        "Each family includes albedo, normal, roughness, AO, height, and packed MRAO maps for Babylon PBR use.",
+        "Materials are restrained for early Memphis / Old Kingdom street reconstruction: mudbrick, whitewash, plain linen, clay pottery, and dark wood."
+      ]
+    },
+    {
       "id": "generated-modular-glb-kit-nile-arrival",
       "label": "Generated modular GLB kit for Nile arrival assets",
       "assetType": "geometry",

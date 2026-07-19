@@ -1,4 +1,5 @@
 import {
+  AbstractMesh,
   Color3,
   Color4,
   DirectionalLight,
@@ -244,7 +245,7 @@ export async function createMemphisWhiteWallsScene(
   createCraftsmenArea(scene, materials);
   createTemple(scene, materials);
   createRouteLine(scene, routeTrack.points);
-  const modularAssets = await loadModularAssetKit(scene);
+  const modularAssets = await loadModularAssetKit(scene, materials);
   if (modularAssets.heroStreetLoaded) {
     hideLegacyHeroStreetScaffold(scene);
     createHeroStreetCollisionGuides(scene);
@@ -362,36 +363,48 @@ function createMaterials(scene: Scene): SceneMaterials {
     bumpLevel: 0.08
   });
   const mudbrick = material(scene, "mudbrick", "#65412a", {
-    textureName: "mudbrick-pbr.jpg",
+    textureName: "atlas-mudbrick-albedo.jpg",
+    bumpTextureName: "atlas-mudbrick-normal.jpg",
+    metallicTextureName: "atlas-mudbrick-mrao.jpg",
     uScale: 2.25,
     vScale: 2.25,
+    metallicTextureUScale: 2.25,
+    metallicTextureVScale: 2.25,
     roughness: 0.96,
     bump: true,
-    bumpLevel: 0.14
+    bumpLevel: 0.18
   });
   const heroGround = material(scene, "heroStreetGround", "#956036", {
     textureName: "hero-street-ground.jpg",
     bumpTextureName: "hero-street-normal.jpg",
     ambientTextureName: "hero-street-ao.jpg",
     lightmapTextureName: "hero-street-lightmap.jpg",
+    metallicTextureName: "atlas-dust-mrao.jpg",
     uScale: 0.36,
     vScale: 0.82,
+    metallicTextureUScale: 0.36,
+    metallicTextureVScale: 0.82,
     lightmapUScale: 1,
     lightmapVScale: 1,
     ambientTextureStrength: 0.92,
     lightmapLevel: 0.86,
     useLightmapAsShadowmap: true,
+    useAmbientOcclusionFromMetallicTextureRed: false,
     roughness: 0.98,
     bump: true,
     bumpLevel: 0.105
   });
   const plaster = material(scene, "plaster", "#bba883", {
-    textureName: "plaster-aged.jpg",
+    textureName: "atlas-plaster-albedo.jpg",
+    bumpTextureName: "atlas-plaster-normal.jpg",
+    metallicTextureName: "atlas-plaster-mrao.jpg",
     uScale: 1.55,
     vScale: 1.55,
+    metallicTextureUScale: 1.55,
+    metallicTextureVScale: 1.55,
     roughness: 0.95,
     bump: true,
-    bumpLevel: 0.075
+    bumpLevel: 0.11
   });
   const reed = material(scene, "reed", "#5c7d4b", {
     textureName: "reed-bundle.jpg",
@@ -400,20 +413,28 @@ function createMaterials(scene: Scene): SceneMaterials {
     roughness: 0.86
   });
   const wood = material(scene, "wood", "#5b3828", {
-    textureName: "acacia-wood.jpg",
+    textureName: "atlas-wood-albedo.jpg",
+    bumpTextureName: "atlas-wood-normal.jpg",
+    metallicTextureName: "atlas-wood-mrao.jpg",
     uScale: 1.5,
     vScale: 3,
+    metallicTextureUScale: 1.5,
+    metallicTextureVScale: 3,
     roughness: 0.72,
     bump: true,
-    bumpLevel: 0.06
+    bumpLevel: 0.09
   });
   const linen = material(scene, "linen", "#d3c49f", {
-    textureName: "woven-linen.jpg",
+    textureName: "atlas-linen-albedo.jpg",
+    bumpTextureName: "atlas-linen-normal.jpg",
+    metallicTextureName: "atlas-linen-mrao.jpg",
     uScale: 2.6,
     vScale: 2.6,
+    metallicTextureUScale: 2.6,
+    metallicTextureVScale: 2.6,
     roughness: 0.97,
     bump: true,
-    bumpLevel: 0.045
+    bumpLevel: 0.055
   });
   const stone = material(scene, "whiteStone", "#c8bea7", {
     textureName: "limestone-cut.jpg",
@@ -444,24 +465,38 @@ function createMaterials(scene: Scene): SceneMaterials {
   });
   contactShadow.backFaceCulling = false;
   const dust = material(scene, "powderyStreetDust", "#8f5d36", {
-    textureName: "hero-street-ground.jpg",
-    bumpTextureName: "hero-street-normal.jpg",
-    uScale: 0.34,
-    vScale: 0.78,
+    textureName: "atlas-dust-albedo.jpg",
+    bumpTextureName: "atlas-dust-normal.jpg",
+    metallicTextureName: "atlas-dust-mrao.jpg",
+    uScale: 0.72,
+    vScale: 1.12,
+    metallicTextureUScale: 0.72,
+    metallicTextureVScale: 1.12,
     roughness: 0.98,
     bump: true,
-    bumpLevel: 0.055
+    bumpLevel: 0.08
   });
   const pottery = material(scene, "warmPotteryClay", "#914624", {
-    textureName: "mudbrick-pbr.jpg",
+    textureName: "atlas-pottery-albedo.jpg",
+    bumpTextureName: "atlas-pottery-normal.jpg",
+    metallicTextureName: "atlas-pottery-mrao.jpg",
     uScale: 1.8,
     vScale: 1.8,
+    metallicTextureUScale: 1.8,
+    metallicTextureVScale: 1.8,
     roughness: 0.9,
     bump: true,
-    bumpLevel: 0.035
+    bumpLevel: 0.06
   });
   const skin = material(scene, "warmSkinPlaceholder", "#8b5634", {
-    roughness: 0.74
+    textureName: "atlas-skin-albedo.jpg",
+    bumpTextureName: "atlas-skin-normal.jpg",
+    metallicTextureName: "atlas-skin-mrao.jpg",
+    uScale: 1,
+    vScale: 1,
+    roughness: 0.72,
+    bump: true,
+    bumpLevel: 0.025
   });
 
   const river = material(scene, "river", "#2b7f91", {
@@ -532,8 +567,11 @@ interface MaterialOptions {
   bumpTextureName?: string;
   ambientTextureName?: string;
   lightmapTextureName?: string;
+  metallicTextureName?: string;
   uScale?: number;
   vScale?: number;
+  metallicTextureUScale?: number;
+  metallicTextureVScale?: number;
   lightmapUScale?: number;
   lightmapVScale?: number;
   lightmapLevel?: number;
@@ -545,6 +583,10 @@ interface MaterialOptions {
   emissive?: Color3;
   ambientTextureStrength?: number;
   useLightmapAsShadowmap?: boolean;
+  useRoughnessFromMetallicTextureGreen?: boolean;
+  useAmbientOcclusionFromMetallicTextureRed?: boolean;
+  useMetallnessFromMetallicTextureBlue?: boolean;
+  useAmbientInGrayScale?: boolean;
 }
 
 function material(scene: Scene, name: string, color: string, options: MaterialOptions = {}): PBRMaterial {
@@ -566,6 +608,7 @@ function material(scene: Scene, name: string, color: string, options: MaterialOp
   if (options.ambientTextureName) {
     mat.ambientTexture = createTiledTexture(scene, options.ambientTextureName, options.uScale ?? 1, options.vScale ?? 1);
     mat.ambientTextureStrength = options.ambientTextureStrength ?? 1;
+    mat.useAmbientInGrayScale = options.useAmbientInGrayScale ?? true;
   }
 
   if (options.lightmapTextureName) {
@@ -577,6 +620,18 @@ function material(scene: Scene, name: string, color: string, options: MaterialOp
     );
     mat.lightmapTexture.level = options.lightmapLevel ?? 1;
     mat.useLightmapAsShadowmap = options.useLightmapAsShadowmap ?? true;
+  }
+
+  if (options.metallicTextureName) {
+    mat.metallicTexture = createTiledTexture(
+      scene,
+      options.metallicTextureName,
+      options.metallicTextureUScale ?? options.uScale ?? 1,
+      options.metallicTextureVScale ?? options.vScale ?? 1
+    );
+    mat.useRoughnessFromMetallicTextureGreen = options.useRoughnessFromMetallicTextureGreen ?? true;
+    mat.useAmbientOcclusionFromMetallicTextureRed = options.useAmbientOcclusionFromMetallicTextureRed ?? true;
+    mat.useMetallnessFromMetallicTextureBlue = options.useMetallnessFromMetallicTextureBlue ?? false;
   }
 
   if (options.alpha !== undefined) {
@@ -597,6 +652,42 @@ function createTiledTexture(scene: Scene, fileName: string, uScale: number, vSca
   texture.wrapU = Texture.WRAP_ADDRESSMODE;
   texture.wrapV = Texture.WRAP_ADDRESSMODE;
   return texture;
+}
+
+function retargetImportedMaterialAtlas(mesh: AbstractMesh, materials: SceneMaterials): void {
+  const materialName = mesh.material?.name.toLowerCase() ?? "";
+
+  if (!materialName) {
+    return;
+  }
+
+  if (/doorway|contact shadow|cool bounced|soft awning shadow|sunlit dust strip|haze/.test(materialName)) {
+    return;
+  }
+
+  if (/packed sandy street dust/.test(materialName)) {
+    mesh.material = materials.heroGround;
+  } else if (/settled dark street dust/.test(materialName)) {
+    mesh.material = materials.dust;
+  } else if (/mudbrick/.test(materialName)) {
+    mesh.material = materials.mudbrick;
+  } else if (/plaster/.test(materialName)) {
+    mesh.material = materials.plaster;
+  } else if (/acacia|wood/.test(materialName)) {
+    mesh.material = materials.wood;
+  } else if (/linen|woven/.test(materialName)) {
+    mesh.material = materials.linen;
+  } else if (/pottery|clay/.test(materialName)) {
+    mesh.material = materials.pottery;
+  } else if (/limestone|stone/.test(materialName)) {
+    mesh.material = materials.limestone;
+  } else if (/reed|straw/.test(materialName)) {
+    mesh.material = materials.reed;
+  } else if (/skin/.test(materialName)) {
+    mesh.material = materials.skin;
+  } else if (/paint/.test(materialName)) {
+    mesh.material = materials.paint;
+  }
 }
 
 function createSkyDome(scene: Scene): void {
@@ -673,7 +764,7 @@ function createGlbActorMotion(
   };
 }
 
-async function loadModularAssetKit(scene: Scene): Promise<ModularAssetLoadResult> {
+async function loadModularAssetKit(scene: Scene, materials: SceneMaterials): Promise<ModularAssetLoadResult> {
   try {
     const response = await fetch(`${glbRoot}asset-kit.manifest.json`);
 
@@ -727,6 +818,7 @@ async function loadModularAssetKit(scene: Scene): Promise<ModularAssetLoadResult
       root.scaling.setAll(placement.scale ?? 1);
 
       for (const mesh of root.getChildMeshes(false)) {
+        retargetImportedMaterialAtlas(mesh, materials);
         mesh.checkCollisions = false;
         mesh.isPickable = false;
 

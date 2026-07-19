@@ -7,10 +7,112 @@ const rootDir = path.resolve(fileURLToPath(new URL("..", import.meta.url)));
 const textureDir = path.join(rootDir, "apps", "web-tour", "public", "assets", "generated", "textures");
 const audioDir = path.join(rootDir, "apps", "web-tour", "public", "assets", "generated", "audio");
 const manifestPath = path.join(rootDir, "apps", "web-tour", "public", "assets", "generated", "provenance.json");
+const materialAtlasManifestPath = path.join(textureDir, "material-atlases.manifest.json");
 
 const textureSize = 1024;
 const sampleRate = 22050;
 const checkedDate = "2026-07-10";
+
+const materialAtlasSpecs = [
+  {
+    key: "mudbrick",
+    label: "Nile alluvial mudbrick with straw temper, worn brick courses, and softened plaster scars",
+    kind: "mudbrick",
+    evidenceLevel: "inferred",
+    dark: "#4f301f",
+    mid: "#795033",
+    light: "#bb875a",
+    accent: "#d0aa72",
+    roughness: 0.96,
+    normalStrength: 2.4,
+    referenceSourceIds: ["aera-memphis", "sfar-kom-el-fakhry", "petrie-memphis-i", "met-open-access"]
+  },
+  {
+    key: "plaster",
+    label: "Aged whitewashed plaster with chipped lips, stains, and hairline cracking",
+    kind: "plaster",
+    evidenceLevel: "inferred",
+    dark: "#776448",
+    mid: "#b8a785",
+    light: "#eadbb8",
+    accent: "#6a4328",
+    roughness: 0.94,
+    normalStrength: 1.65,
+    referenceSourceIds: ["met-open-access", "cleveland-open-access", "petrie-memphis-i"]
+  },
+  {
+    key: "dust",
+    label: "Packed street dust with ruts, footprints, straw, pebbles, and swept wall-base dirt",
+    kind: "dust",
+    evidenceLevel: "inferred",
+    dark: "#55321d",
+    mid: "#94623a",
+    light: "#d5a45e",
+    accent: "#d9ba74",
+    roughness: 0.99,
+    normalStrength: 2.1,
+    referenceSourceIds: ["natural-earth", "met-open-access", "petrie-memphis-i"]
+  },
+  {
+    key: "wood",
+    label: "Dark acacia-like wood grain for pegs, lintels, awning poles, benches, and tools",
+    kind: "wood",
+    evidenceLevel: "inferred",
+    dark: "#2d1a12",
+    mid: "#5b3928",
+    light: "#987050",
+    accent: "#160c08",
+    roughness: 0.74,
+    normalStrength: 1.75,
+    referenceSourceIds: ["met-open-access", "cleveland-open-access", "smithsonian-open-access"]
+  },
+  {
+    key: "linen",
+    label: "Plain woven linen for Old Kingdom kilts, sheath-like garments, awnings, mats, and sacks",
+    kind: "linen",
+    evidenceLevel: "inferred",
+    dark: "#b9aa84",
+    mid: "#dccda8",
+    light: "#fff2cf",
+    accent: "#8b7452",
+    roughness: 0.97,
+    normalStrength: 1.15,
+    referenceSourceIds: ["met-open-access", "cleveland-open-access"]
+  },
+  {
+    key: "pottery",
+    label: "Unslipped Nile clay pottery with wheel bands, mineral flecks, soot, and worn rims",
+    kind: "pottery",
+    evidenceLevel: "inferred",
+    dark: "#5b2a17",
+    mid: "#934820",
+    light: "#cf7c45",
+    accent: "#2f1a13",
+    roughness: 0.88,
+    normalStrength: 1.45,
+    referenceSourceIds: ["met-open-access", "met-old-kingdom-cattle-relief", "cleveland-open-access"]
+  },
+  {
+    key: "skin",
+    label: "Restrained warm skin material for stylized Old Kingdom human figures",
+    kind: "skin",
+    evidenceLevel: "inferred",
+    dark: "#5f321e",
+    mid: "#8c5536",
+    light: "#b97851",
+    accent: "#2f1c16",
+    roughness: 0.68,
+    normalStrength: 0.48,
+    referenceSourceIds: ["met-open-access", "met-old-kingdom-cattle-relief", "cleveland-open-access"]
+  }
+].map((spec, index) => ({
+  ...spec,
+  seed: 2100 + index * 137,
+  darkColor: parseHex(spec.dark),
+  midColor: parseHex(spec.mid),
+  lightColor: parseHex(spec.light),
+  accentColor: parseHex(spec.accent)
+}));
 
 await Promise.all([mkdir(textureDir, { recursive: true }), mkdir(audioDir, { recursive: true })]);
 
@@ -29,7 +131,8 @@ const textureAssets = [
   writeJpeg("hero-street-normal.jpg", createHeroStreetNormalTexture(textureSize, textureSize), 90),
   writeJpeg("hero-street-roughness.jpg", createHeroStreetRoughnessTexture(textureSize, textureSize), 88),
   writeJpeg("hero-street-ao.jpg", createHeroStreetAoTexture(textureSize, textureSize), 88),
-  writeJpeg("hero-street-lightmap.jpg", createHeroStreetLightmapTexture(textureSize, textureSize), 88)
+  writeJpeg("hero-street-lightmap.jpg", createHeroStreetLightmapTexture(textureSize, textureSize), 88),
+  ...materialAtlasSpecs.map((spec) => writeMaterialAtlasSet(spec))
 ];
 
 const audioAssets = [
@@ -42,6 +145,7 @@ const audioAssets = [
 
 await Promise.all([...textureAssets, ...audioAssets]);
 await writeFile(manifestPath, `${JSON.stringify(createProvenanceManifest(), null, 2)}\n`, "utf8");
+await writeFile(materialAtlasManifestPath, `${JSON.stringify(createMaterialAtlasManifest(), null, 2)}\n`, "utf8");
 
 console.log("Generated Step 4 runtime texture and soundscape assets.");
 
@@ -52,6 +156,269 @@ async function writeJpeg(fileName, image, quality) {
 
 async function writeWav(fileName, samples) {
   await writeFile(path.join(audioDir, fileName), encodeWav(samples, sampleRate));
+}
+
+async function writeMaterialAtlasSet(spec) {
+  const channels = createMaterialAtlasChannels(spec, textureSize, textureSize);
+
+  await Promise.all([
+    writeJpeg(`atlas-${spec.key}-albedo.jpg`, channels.albedo, 90),
+    writeJpeg(`atlas-${spec.key}-normal.jpg`, channels.normal, 90),
+    writeJpeg(`atlas-${spec.key}-roughness.jpg`, channels.roughness, 88),
+    writeJpeg(`atlas-${spec.key}-ao.jpg`, channels.ao, 88),
+    writeJpeg(`atlas-${spec.key}-height.jpg`, channels.height, 88),
+    writeJpeg(`atlas-${spec.key}-mrao.jpg`, channels.mrao, 88)
+  ]);
+}
+
+function createMaterialAtlasManifest() {
+  return {
+    checkedDate,
+    generator: "tools/generate-runtime-assets.mjs",
+    policy: "Project-generated synthetic PBR material atlas sets. No protected source images, scans, video frames, or recordings are copied.",
+    usage: "Each atlas set contains albedo, normal, roughness, ambient-occlusion, height, and packed MRAO maps. MRAO uses red=AO, green=roughness, blue=metallic.",
+    atlases: materialAtlasSpecs.map((spec) => ({
+      key: spec.key,
+      label: spec.label,
+      evidenceLevel: spec.evidenceLevel,
+      files: materialAtlasFileNames(spec.key).map((fileName) => `/assets/generated/textures/${fileName}`),
+      referenceSourceIds: spec.referenceSourceIds,
+      runtimeAllowed: true,
+      licenseStatus: "Project-generated synthetic material atlas; safe for runtime use by this project."
+    }))
+  };
+}
+
+function materialAtlasFileNames(key) {
+  return [
+    `atlas-${key}-albedo.jpg`,
+    `atlas-${key}-normal.jpg`,
+    `atlas-${key}-roughness.jpg`,
+    `atlas-${key}-ao.jpg`,
+    `atlas-${key}-height.jpg`,
+    `atlas-${key}-mrao.jpg`
+  ];
+}
+
+function createMaterialAtlasChannels(spec, width, height) {
+  const albedo = createImage(width, height, spec.mid);
+  const heightMap = new Float32Array(width * height);
+  const roughnessMap = new Float32Array(width * height);
+  const aoMap = new Float32Array(width * height);
+
+  for (let y = 0; y < height; y += 1) {
+    for (let x = 0; x < width; x += 1) {
+      const index = y * width + x;
+      const sample = sampleMaterialSurface(spec, x, y, width, height);
+      const dataIndex = index * 4;
+      albedo.data[dataIndex] = sample.color.r;
+      albedo.data[dataIndex + 1] = sample.color.g;
+      albedo.data[dataIndex + 2] = sample.color.b;
+      albedo.data[dataIndex + 3] = 255;
+      heightMap[index] = sample.height;
+      roughnessMap[index] = sample.roughness;
+      aoMap[index] = sample.ao;
+    }
+  }
+
+  return {
+    albedo,
+    normal: createNormalImageFromHeight(heightMap, width, height, spec.normalStrength),
+    roughness: createScalarImageFromMap(roughnessMap, width, height),
+    ao: createScalarImageFromMap(aoMap, width, height),
+    height: createScalarImageFromMap(heightMap, width, height),
+    mrao: createMraoImage(aoMap, roughnessMap, width, height)
+  };
+}
+
+function sampleMaterialSurface(spec, x, y, width, height) {
+  const u = x / width;
+  const v = y / height;
+  const broad = layeredNoise(x, y, spec.seed, [
+    [0.0045, 0.95],
+    [0.019, 0.48],
+    [0.071, 0.22]
+  ]);
+  const fine = layeredNoise(x, y, spec.seed + 19, [
+    [0.065, 0.55],
+    [0.21, 0.22]
+  ]);
+
+  let tone = clamp01(0.5 + broad * 0.16 + fine * 0.06);
+  let surfaceHeight = clamp01(0.5 + broad * 0.1 + fine * 0.08);
+  let roughness = clamp01(spec.roughness + fine * 0.035);
+  let ao = clamp01(0.91 - Math.max(0, 0.52 - surfaceHeight) * 0.32);
+  let color = mixColor(spec.darkColor, spec.lightColor, tone);
+
+  if (spec.kind === "mudbrick") {
+    const brickW = 178;
+    const brickH = 78;
+    const mortar = 8;
+    const row = Math.floor(y / brickH);
+    const offsetX = row % 2 === 0 ? 0 : brickW / 2;
+    const localX = positiveModulo(x + offsetX, brickW);
+    const localY = positiveModulo(y, brickH);
+    const edgeDistance = Math.min(localX, localY, brickW - localX, brickH - localY);
+    const mortarLine = edgeDistance < mortar ? clamp01((mortar - edgeDistance) / mortar) : 0;
+    const wornEdge = clamp01((22 - edgeDistance) / 22);
+    const plasterScab = clamp01((layeredNoise(x, y, spec.seed + 61, [[0.013, 1], [0.047, 0.45]]) - 0.42) * 1.3);
+    const crack = crackMask(x, y, spec.seed + 5, 0.018);
+    const straw = strawMask(x, y, spec.seed + 7) * (1 - mortarLine);
+
+    tone = clamp01(tone + 0.07 - mortarLine * 0.24 - crack * 0.18);
+    surfaceHeight = clamp01(surfaceHeight + 0.16 - mortarLine * 0.3 - wornEdge * 0.1 - crack * 0.16 + straw * 0.055);
+    roughness = clamp01(0.94 + mortarLine * 0.05 + straw * 0.03);
+    ao = clamp01(0.92 - mortarLine * 0.28 - crack * 0.2 - wornEdge * 0.06);
+    color = mixColor(spec.darkColor, spec.lightColor, tone);
+    color = mixColor(color, spec.accentColor, plasterScab * 0.18 + straw * 0.32);
+  } else if (spec.kind === "plaster") {
+    const chip = clamp01((layeredNoise(x, y, spec.seed + 41, [[0.011, 1], [0.039, 0.5]]) - 0.5) * 1.7);
+    const stain = clamp01(Math.max(0, Math.sin(u * Math.PI * 7 + broad * 1.8)) * 0.18 + Math.max(0, v - 0.62) * 0.16);
+    const crack = crackMask(x, y, spec.seed + 12, 0.022);
+
+    tone = clamp01(tone + 0.18 - stain * 0.28 - chip * 0.2 - crack * 0.24);
+    surfaceHeight = clamp01(surfaceHeight + 0.1 - chip * 0.2 - crack * 0.22);
+    roughness = clamp01(0.91 + fine * 0.04 + chip * 0.06);
+    ao = clamp01(0.9 - chip * 0.2 - crack * 0.24 - stain * 0.08);
+    color = mixColor(spec.darkColor, spec.lightColor, tone);
+    color = mixColor(color, spec.accentColor, chip * 0.45);
+  } else if (spec.kind === "dust") {
+    const leftRut = Math.exp(-1 * (((u - (0.39 + Math.sin(v * 16) * 0.025)) / 0.04) ** 2));
+    const rightRut = Math.exp(-1 * (((u - (0.61 + Math.cos(v * 15) * 0.024)) / 0.04) ** 2));
+    const footprint = footprintMask(u, v);
+    const straw = strawMask(x, y, spec.seed + 29);
+    const pebble = clamp01((layeredNoise(x, y, spec.seed + 33, [[0.14, 1], [0.31, 0.32]]) - 0.62) * 4.2);
+    const wallDirt = Math.exp(-1 * ((u - 0.08) / 0.12) ** 2) + Math.exp(-1 * ((u - 0.92) / 0.12) ** 2);
+
+    tone = clamp01(tone + 0.08 - wallDirt * 0.12 - (leftRut + rightRut) * 0.06 - footprint * 0.12 + straw * 0.2 + pebble * 0.1);
+    surfaceHeight = clamp01(surfaceHeight - (leftRut + rightRut) * 0.12 - footprint * 0.16 + straw * 0.06 + pebble * 0.16);
+    roughness = clamp01(0.96 + straw * 0.03 + pebble * 0.01);
+    ao = clamp01(0.91 - wallDirt * 0.13 - (leftRut + rightRut) * 0.08 - footprint * 0.13 - pebble * 0.05);
+    color = mixColor(spec.darkColor, spec.lightColor, tone);
+    color = mixColor(color, spec.accentColor, straw * 0.46);
+  } else if (spec.kind === "wood") {
+    const grain = Math.sin(y * 0.052 + Math.sin(x * 0.013) * 2.5 + broad * 1.9);
+    const darkLine = clamp01((Math.abs(grain) - 0.78) * 3.7);
+    const knot = Math.exp(-1 * (((positiveModulo(x + y * 0.22, 310) - 155) / 42) ** 2 + ((positiveModulo(y, 270) - 135) / 34) ** 2));
+
+    tone = clamp01(0.42 + grain * 0.16 + broad * 0.11 + knot * 0.16 - darkLine * 0.18);
+    surfaceHeight = clamp01(0.5 + grain * 0.08 + knot * 0.08 - darkLine * 0.11);
+    roughness = clamp01(0.68 + fine * 0.04 + darkLine * 0.08);
+    ao = clamp01(0.9 - darkLine * 0.18 - knot * 0.04);
+    color = mixColor(spec.darkColor, spec.lightColor, tone);
+    color = mixColor(color, spec.accentColor, darkLine * 0.34);
+  } else if (spec.kind === "linen") {
+    const warp = Math.sin(x * 0.95 + fine * 1.4);
+    const weft = Math.sin(y * 0.88 + broad * 1.2);
+    const weave = (warp + weft) * 0.5;
+    const foldDirt = Math.max(0, Math.sin((u * 2.1 + v * 4.8) * Math.PI + broad * 1.7)) * 0.12;
+
+    tone = clamp01(0.66 + weave * 0.1 + broad * 0.09 - foldDirt * 0.35);
+    surfaceHeight = clamp01(0.54 + weave * 0.08 + fine * 0.04);
+    roughness = clamp01(0.96 + Math.abs(weave) * 0.025);
+    ao = clamp01(0.94 - foldDirt * 0.16);
+    color = mixColor(spec.darkColor, spec.lightColor, tone);
+    color = mixColor(color, spec.accentColor, foldDirt * 0.38);
+  } else if (spec.kind === "pottery") {
+    const band = Math.sin(y * 0.057 + broad * 2.2) * 0.12;
+    const soot = clamp01((layeredNoise(x, y, spec.seed + 53, [[0.018, 1], [0.09, 0.35]]) - 0.48) * 1.55);
+    const fleck = clamp01((layeredNoise(x, y, spec.seed + 55, [[0.18, 1], [0.34, 0.45]]) - 0.58) * 4);
+
+    tone = clamp01(0.5 + broad * 0.12 + band - soot * 0.28 + fleck * 0.18);
+    surfaceHeight = clamp01(0.48 + band * 0.4 + fine * 0.06 + fleck * 0.12);
+    roughness = clamp01(0.84 + fine * 0.035 + soot * 0.05);
+    ao = clamp01(0.91 - soot * 0.2 - fleck * 0.05);
+    color = mixColor(spec.darkColor, spec.lightColor, tone);
+    color = mixColor(color, spec.accentColor, soot * 0.42);
+  } else if (spec.kind === "skin") {
+    const pore = layeredNoise(x, y, spec.seed + 71, [[0.18, 0.42], [0.42, 0.16]]);
+    const warmShift = Math.sin((u * 1.8 + v * 0.9) * Math.PI) * 0.07;
+
+    tone = clamp01(0.48 + broad * 0.12 + fine * 0.06 + warmShift);
+    surfaceHeight = clamp01(0.52 + pore * 0.05);
+    roughness = clamp01(0.66 + Math.abs(pore) * 0.08);
+    ao = clamp01(0.94 - Math.max(0, -pore) * 0.06);
+    color = mixColor(spec.darkColor, spec.lightColor, tone);
+  }
+
+  return {
+    color,
+    height: clamp01(surfaceHeight),
+    roughness: clamp01(roughness),
+    ao: clamp01(ao)
+  };
+}
+
+function crackMask(x, y, seed, scale) {
+  const ridge = Math.abs(valueNoise(x * scale + Math.sin(y * 0.003) * 1.7, y * scale, seed));
+  return clamp01((0.045 - ridge) / 0.045);
+}
+
+function strawMask(x, y, seed) {
+  const angle = Math.sin((x * 0.13 + y * 0.026 + seed) * 0.7);
+  const fiber = Math.abs(Math.sin(x * 0.16 + y * 0.047 + angle * 2.6));
+  const gate = layeredNoise(x, y, seed, [[0.025, 1], [0.11, 0.4]]);
+  return gate > 0.36 ? clamp01((0.055 - Math.abs(fiber - 0.5)) / 0.055) : 0;
+}
+
+function footprintMask(u, v) {
+  const stride = positiveModulo(v * 13.5, 1);
+  const left = Math.exp(-1 * (((u - 0.45) / 0.035) ** 2 + ((stride - 0.22) / 0.12) ** 2));
+  const right = Math.exp(-1 * (((u - 0.57) / 0.035) ** 2 + ((stride - 0.67) / 0.12) ** 2));
+  return Math.max(left, right);
+}
+
+function createNormalImageFromHeight(heightMap, width, height, strength) {
+  const image = createImage(width, height, "#8080ff");
+
+  for (let y = 0; y < height; y += 1) {
+    for (let x = 0; x < width; x += 1) {
+      const left = heightMap[y * width + Math.max(0, x - 1)];
+      const right = heightMap[y * width + Math.min(width - 1, x + 1)];
+      const up = heightMap[Math.max(0, y - 1) * width + x];
+      const down = heightMap[Math.min(height - 1, y + 1) * width + x];
+      const nx = (left - right) * strength;
+      const ny = (up - down) * strength;
+      const nz = 1;
+      const length = Math.hypot(nx, ny, nz) || 1;
+      const index = (y * width + x) * 4;
+      image.data[index] = Math.round((nx / length * 0.5 + 0.5) * 255);
+      image.data[index + 1] = Math.round((ny / length * 0.5 + 0.5) * 255);
+      image.data[index + 2] = Math.round((nz / length * 0.5 + 0.5) * 255);
+      image.data[index + 3] = 255;
+    }
+  }
+
+  return image;
+}
+
+function createScalarImageFromMap(map, width, height) {
+  const image = createImage(width, height, "#000000");
+
+  for (let index = 0; index < map.length; index += 1) {
+    const value = Math.round(clamp01(map[index]) * 255);
+    const dataIndex = index * 4;
+    image.data[dataIndex] = value;
+    image.data[dataIndex + 1] = value;
+    image.data[dataIndex + 2] = value;
+    image.data[dataIndex + 3] = 255;
+  }
+
+  return image;
+}
+
+function createMraoImage(aoMap, roughnessMap, width, height) {
+  const image = createImage(width, height, "#000000");
+
+  for (let index = 0; index < aoMap.length; index += 1) {
+    const dataIndex = index * 4;
+    image.data[dataIndex] = Math.round(clamp01(aoMap[index]) * 255);
+    image.data[dataIndex + 1] = Math.round(clamp01(roughnessMap[index]) * 255);
+    image.data[dataIndex + 2] = 0;
+    image.data[dataIndex + 3] = 255;
+  }
+
+  return image;
 }
 
 function createImage(width, height, baseColor) {
@@ -642,7 +1009,8 @@ function createProvenanceManifest() {
     "hero-street-normal.jpg",
     "hero-street-roughness.jpg",
     "hero-street-ao.jpg",
-    "hero-street-lightmap.jpg"
+    "hero-street-lightmap.jpg",
+    ...materialAtlasSpecs.flatMap((spec) => materialAtlasFileNames(spec.key))
   ];
   const audioNames = [
     "nile-water-boats.wav",
@@ -657,6 +1025,14 @@ function createProvenanceManifest() {
     generator: "tools/generate-runtime-assets.mjs",
     policy: "Synthetic procedural assets generated by this project. No external media pixels, video frames, scans, or recordings are copied into these files.",
     referencePack: "content/reference-datasets/memphis-beauty-pass-reference-pack.json",
+    materialAtlases: materialAtlasSpecs.map((spec) => ({
+      key: spec.key,
+      label: spec.label,
+      evidenceLevel: spec.evidenceLevel,
+      files: materialAtlasFileNames(spec.key).map((fileName) => `/assets/generated/textures/${fileName}`),
+      referenceSourceIds: spec.referenceSourceIds,
+      licenseStatus: "Project-generated synthetic PBR material atlas; no source media copied."
+    })),
     textures: textureNames.map((fileName) => ({
       file: `/assets/generated/textures/${fileName}`,
       origin: "generated",
