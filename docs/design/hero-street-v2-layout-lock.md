@@ -6,6 +6,7 @@ This file locks the current hero street placement. Do not move one part of the s
 
 - Hero street GLB group offset: `heroStreetOffsetX = -16.5`
 - Hero street sandy road center: `heroStreetCenterX = -6`
+- Street-mouth clearance: keep the gate-to-street transition open from roughly `z -31.5` to `z -12.5`; the Main Wall-side house bay is omitted on both rows, and no foreground occluder walls, facade decals, prop piles, haze planes, or collision rails should occupy this turning space.
 - White Walls threshold stop: position `[-7, 1.7, -31]`, lookAt `[-6, 1.6, -18]`
 - Kom el-Fakhry street stop: position `[-6, 1.7, -12]`, lookAt `[-6, 1.6, 10]`
 - Craft threshold stop: position `[-2, 1.7, 22]`, lookAt `[2, 1.6, 42]`
@@ -29,6 +30,7 @@ Locked route axes:
 - White Walls gate axis: `x = -23.2`, crossing the gate at `z = -31.4`
 - Post-gate offset turn: from `[-23.2, 1.7, -26]` to `[-6, 1.7, -26]`
 - Hero street centerline: `x = -6`, from `z = -18` through `z = 34`
+- Hero street collision rails begin only after the turn-in mouth, around `z = -10.6`, so the player can cross from the gate axis into the street centerline.
 - Temple gate axis: `x = 0`, crossing the Ptah gate at `z = 49`
 
 Do not derive the playable route from tour stops only; that creates diagonal shortcuts through wall geometry.

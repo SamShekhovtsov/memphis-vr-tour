@@ -20,6 +20,35 @@ from mathutils import Vector
 
 ROOT_DIR = Path(__file__).resolve().parents[2]
 OUT_DIR = ROOT_DIR / "apps" / "web-tour" / "public" / "assets" / "generated" / "glb"
+HERO_STREET_LOCAL_CENTER_X = -10.45
+HERO_STREET_HOUSE_START_Y = -18.2
+HERO_STREET_DETAIL_START_Y = -10.6
+HERO_STREET_DETAIL_END_Y = 22.8
+EMBED_PROCEDURAL_TEXTURES = os.environ.get("EGYPTVR_EMBED_PROCEDURAL_TEXTURES") == "1"
+
+HERO_STREET_CHUNK_RANGES = {
+    "hero-street-corridor-near": (-31.5, -4.0),
+    "hero-street-corridor-mid": (-4.0, 17.0),
+    "hero-street-corridor-far": (17.0, 40.5),
+}
+
+HERO_STREET_SHARED_REFERENCES = [
+    "aera-memphis",
+    "sfar-kom-el-fakhry",
+    "petrie-memphis-i",
+    "met-open-access",
+    "cleveland-open-access",
+]
+
+HERO_STREET_SHARED_NOTES = [
+    "Project-authored two-row mudbrick street corridor with inward-facing facades.",
+    "Hero Street v2 film-set pass: runtime material-atlas names, baked contact/shadow decal geometry, foreground occluders, sculpted close facade chunks, roof clutter, plaster cracks, pottery, baskets, sacks, straw, stones, ruts, and work surfaces.",
+    "Step 5 wall-quality pass: existing facades are improved in place with irregular plaster scumble, wall-base grime, exposed mud daub, corner AO, door-hand dirt, and fine settlement cracks; no new houses or wall rows are added.",
+    "Step 6 historical-compliance pass: domestic wall construction remains mudbrick, but visible street surfaces read as continuous mud-plastered/whitewashed earthen walls with irregular wear instead of regular exposed block-grid masonry.",
+    "Street-mouth cleanup: the Main Wall-side house bay is intentionally omitted on both rows so the transition from the White Walls gate to the offset residential street remains open and walkable.",
+    "Old Kingdom visual guardrails: compact mudbrick domestic lane, restrained domestic wall marks, linen shade cloth, plain clothing silhouettes, and no copied source media.",
+    "Layout follows docs/design/memphis-hero-district-plan.md and avoids overlapping architecture systems.",
+]
 
 ASSETS = [
     {
@@ -68,12 +97,45 @@ ASSETS = [
         "category": "residential-street",
         "evidenceLevel": "inferred",
         "runtimeAssetId": "generated-modular-glb-kit-residential-street",
-        "referenceSourceIds": ["aera-memphis", "sfar-kom-el-fakhry", "petrie-memphis-i", "met-open-access", "cleveland-open-access"],
-        "notes": [
-            "Project-authored two-row mudbrick street corridor with inward-facing facades.",
-            "Hero Street v2 film-set pass: packed procedural PBR texture sets, baked contact/shadow decal geometry, foreground occluders, sculpted close facade chunks, roof clutter, plaster cracks, pottery, baskets, sacks, straw, stones, ruts, and work surfaces.",
-            "Old Kingdom visual guardrails: compact mudbrick domestic lane, restrained domestic wall marks, linen shade cloth, plain clothing silhouettes, and no copied source media.",
-            "Layout follows docs/design/memphis-hero-district-plan.md and avoids overlapping architecture systems."
+        "referenceSourceIds": HERO_STREET_SHARED_REFERENCES,
+        "notes": HERO_STREET_SHARED_NOTES + [
+            "Step 7 optimization pass keeps this full corridor as a fallback/reference export; the browser runtime now prefers the near/mid/far chunked exports."
+        ],
+    },
+    {
+        "id": "hero-street-corridor-near",
+        "fileName": "hero_street_corridor_near.glb",
+        "label": "Hero street near entry chunk",
+        "category": "residential-street",
+        "evidenceLevel": "inferred",
+        "runtimeAssetId": "generated-modular-glb-kit-residential-street",
+        "referenceSourceIds": HERO_STREET_SHARED_REFERENCES,
+        "notes": HERO_STREET_SHARED_NOTES + [
+            "Step 7 optimized chunk: near/entry film-set geometry for first-person arrival and close foreground composition."
+        ],
+    },
+    {
+        "id": "hero-street-corridor-mid",
+        "fileName": "hero_street_corridor_mid.glb",
+        "label": "Hero street mid-lane chunk",
+        "category": "residential-street",
+        "evidenceLevel": "inferred",
+        "runtimeAssetId": "generated-modular-glb-kit-residential-street",
+        "referenceSourceIds": HERO_STREET_SHARED_REFERENCES,
+        "notes": HERO_STREET_SHARED_NOTES + [
+            "Step 7 optimized chunk: middle street geometry, long sandy lane surface, and central market/street detail."
+        ],
+    },
+    {
+        "id": "hero-street-corridor-far",
+        "fileName": "hero_street_corridor_far.glb",
+        "label": "Hero street far temple-side chunk",
+        "category": "residential-street",
+        "evidenceLevel": "inferred",
+        "runtimeAssetId": "generated-modular-glb-kit-residential-street",
+        "referenceSourceIds": HERO_STREET_SHARED_REFERENCES,
+        "notes": HERO_STREET_SHARED_NOTES + [
+            "Step 7 optimized chunk: far/temple-side depth layer for route continuity and distant composition."
         ],
     },
     {
@@ -310,6 +372,10 @@ def make_pbr_material(
         "height": "authored crack/plaster/debris decals in this GLB",
     }
 
+    if not EMBED_PROCEDURAL_TEXTURES:
+        material["runtimeAtlasMode"] = "external Babylon material atlas; set EGYPTVR_EMBED_PROCEDURAL_TEXTURES=1 for standalone embedded texture export"
+        return material
+
     nodes = material.node_tree.nodes
     links = material.node_tree.links
     bsdf = nodes.get("Principled BSDF")
@@ -348,6 +414,10 @@ def make_packed_dust_material() -> bpy.types.Material:
         "height": "single-span dust atlas plus footprint/rut/debris geometry",
     }
 
+    if not EMBED_PROCEDURAL_TEXTURES:
+        material["runtimeAtlasMode"] = "external Babylon hero-street ground atlas; set EGYPTVR_EMBED_PROCEDURAL_TEXTURES=1 for standalone embedded texture export"
+        return material
+
     nodes = material.node_tree.nodes
     links = material.node_tree.links
     bsdf = nodes.get("Principled BSDF")
@@ -379,6 +449,7 @@ def make_packed_dust_material() -> bpy.types.Material:
 def create_materials() -> dict[str, bpy.types.Material]:
     return {
         "mudbrick": make_pbr_material("sun baked mudbrick", (0.30, 0.18, 0.10, 1), (0.55, 0.36, 0.20, 1), 0.98, 13, 0.38),
+        "mud_plaster": make_pbr_material("weathered Nile mud plaster wall", (0.43, 0.31, 0.18, 1), (0.72, 0.58, 0.39, 1), 0.98, 19, 0.2),
         "plaster": make_pbr_material("chalky cracked plaster", (0.49, 0.42, 0.29, 1), (0.76, 0.68, 0.48, 1), 0.97, 29, 0.26),
         "limestone": make_pbr_material("worn pale limestone", (0.46, 0.41, 0.31, 1), (0.72, 0.64, 0.47, 1), 0.92, 41, 0.18),
         "wood": make_pbr_material("dark acacia wood", (0.20, 0.11, 0.055, 1), (0.52, 0.32, 0.18, 1), 0.82, 53, 0.2),
@@ -393,6 +464,11 @@ def create_materials() -> dict[str, bpy.types.Material]:
         "baked_sun_strip": make_material("baked warm sunlit dust strip", (0.82, 0.55, 0.26, 0.11), 1, 0.11),
         "dust_dark": make_material("settled dark street dust", (0.11, 0.067, 0.036, 0.23), 0.99, 0.23),
         "plaster_stain": make_material("thin plaster water stain", (0.18, 0.12, 0.065, 0.56), 1, 0.56),
+        "wall_base_grime": make_material("transparent wall base grime", (0.12, 0.075, 0.038, 0.42), 1, 0.42),
+        "plaster_veil": make_material("chalky plaster scumble veil", (0.73, 0.64, 0.43, 0.28), 0.98, 0.28),
+        "plaster_edge_shadow": make_material("eroded plaster edge shade", (0.14, 0.095, 0.052, 0.38), 1, 0.38),
+        "exposed_wall_core": make_material("exposed subsurface mud daub", (0.38, 0.22, 0.115, 0.82), 0.99, 0.82),
+        "dusty_corner_ao": make_material("dusty wall corner ambient occlusion", (0.055, 0.038, 0.024, 0.28), 1, 0.28),
         "warm_haze": make_material("warm suspended street haze", (0.58, 0.38, 0.2, 0.075), 1, 0.075),
         "paint_blue": make_material("mineral blue paint", (0.09, 0.31, 0.52, 1), 0.85),
         "paint_red": make_material("red ochre paint", (0.62, 0.19, 0.10, 1), 0.88),
@@ -656,6 +732,74 @@ def ground_decal(
     unit_uv: bool = False,
 ) -> bpy.types.Object:
     return flat_panel(name, loc, width, depth, material, rot=(0, 0, rot_z), unit_uv=unit_uv)
+
+
+def wall_surface_patch(
+    name: str,
+    facade_x: float,
+    side_dir: int,
+    center_y: float,
+    center_z: float,
+    width: float,
+    height: float,
+    material: bpy.types.Material,
+    rng: random.Random,
+    x_offset: float = 0.17,
+    edge_jitter: float = 0.08,
+) -> bpy.types.Object:
+    """Add an irregular decal patch directly on an existing wall facade."""
+    x = facade_x + side_dir * x_offset
+    half_w = width * 0.5
+    half_h = height * 0.5
+    steps = 2
+    verts: list[tuple[float, float, float]] = []
+
+    for step in range(steps + 1):
+        ratio = step / steps
+        y = center_y - half_w + rng.uniform(-edge_jitter, edge_jitter) * (0.4 + math.sin(ratio * math.pi) * 0.6)
+        z = center_z - half_h + height * ratio + rng.uniform(-edge_jitter, edge_jitter) * 0.45
+        verts.append((x, y, z))
+
+    for step in range(steps, -1, -1):
+        ratio = step / steps
+        y = center_y + half_w + rng.uniform(-edge_jitter, edge_jitter) * (0.4 + math.sin(ratio * math.pi) * 0.6)
+        z = center_z - half_h + height * ratio + rng.uniform(-edge_jitter, edge_jitter) * 0.45
+        verts.append((x, y, z))
+
+    mesh = bpy.data.meshes.new(f"{name}Mesh")
+    mesh.from_pydata(verts, [], [tuple(range(len(verts)))])
+    mesh.update()
+    obj = bpy.data.objects.new(name, mesh)
+    bpy.context.collection.objects.link(obj)
+    obj.data.materials.append(material)
+    ensure_uv(obj)
+    return obj
+
+
+def wall_surface_sliver(
+    name: str,
+    facade_x: float,
+    side_dir: int,
+    center_y: float,
+    center_z: float,
+    length: float,
+    material: bpy.types.Material,
+    rng: random.Random,
+    x_offset: float = 0.185,
+) -> bpy.types.Object:
+    return wall_surface_patch(
+        name,
+        facade_x,
+        side_dir,
+        center_y,
+        center_z,
+        rng.uniform(0.035, 0.07),
+        length,
+        material,
+        rng,
+        x_offset=x_offset,
+        edge_jitter=0.018,
+    )
 
 
 def make_hull(name: str, material: bpy.types.Material) -> bpy.types.Object:
@@ -925,7 +1069,7 @@ def add_sculpted_facade_details(
             f"{name}-handRoundedParapetChip-{chip_index}",
             (facade_x + side_dir * 0.18, edge_y, height + rng.uniform(0.06, 0.24)),
             (0.16, rng.uniform(0.16, 0.44), rng.uniform(0.09, 0.21)),
-            materials["mudbrick" if chip_index % 3 else "plaster"],
+            materials["exposed_wall_core" if chip_index % 5 == 0 else "mud_plaster"],
             rot=(0, 0, rng.uniform(-0.18, 0.18)),
             bevel=0.035,
         )
@@ -936,7 +1080,7 @@ def add_sculpted_facade_details(
                 f"{name}-erodedCornerLip-{lip_index}-{z_index}",
                 (facade_x + side_dir * 0.17, y + rng.uniform(-0.06, 0.06), 0.52 + z_index * height * 0.22),
                 (0.18, rng.uniform(0.16, 0.32), rng.uniform(0.14, 0.36)),
-                materials["mudbrick"],
+                materials["exposed_wall_core" if z_index == 1 else "mud_plaster"],
                 rot=(0, 0, rng.uniform(-0.14, 0.14)),
                 bevel=0.03,
             )
@@ -945,14 +1089,14 @@ def add_sculpted_facade_details(
         f"{name}-doorRevealLeft",
         (facade_x + side_dir * 0.18, door_y - 0.54, 0.74),
         (0.22, 0.12, 1.34),
-        materials["mudbrick"],
+        materials["mud_plaster"],
         bevel=0.022,
     )
     cube(
         f"{name}-doorRevealRight",
         (facade_x + side_dir * 0.18, door_y + 0.54, 0.74),
         (0.22, 0.12, 1.34),
-        materials["mudbrick"],
+        materials["mud_plaster"],
         bevel=0.022,
     )
     cube(
@@ -989,7 +1133,7 @@ def add_sculpted_facade_details(
             f"{name}-mudPegSocket-{peg_index}",
             (facade_x + side_dir * 0.105, peg_y, peg_z),
             0.058,
-            materials["mudbrick"],
+            materials["exposed_wall_core"],
             scale=(0.45, 1.0, 0.7),
             segments=8,
         )
@@ -1021,6 +1165,107 @@ def add_sculpted_facade_details(
         )
 
 
+def add_existing_wall_quality_pass(
+    name: str,
+    facade_x: float,
+    center_y: float,
+    frontage: float,
+    height: float,
+    side_dir: int,
+    door_y: float,
+    materials: dict[str, bpy.types.Material],
+    rng: random.Random,
+) -> None:
+    wall_surface_patch(
+        f"{name}-continuousWallBaseGrime",
+        facade_x,
+        side_dir,
+        center_y,
+        0.31,
+        frontage * 0.88,
+        rng.uniform(0.32, 0.52),
+        materials["wall_base_grime"],
+        rng,
+        x_offset=0.142,
+        edge_jitter=0.055,
+    )
+    wall_surface_patch(
+        f"{name}-roofLipDustShadow",
+        facade_x,
+        side_dir,
+        center_y + rng.uniform(-frontage * 0.04, frontage * 0.04),
+        height * 0.88,
+        frontage * 0.74,
+        rng.uniform(0.14, 0.24),
+        materials["plaster_edge_shadow"],
+        rng,
+        x_offset=0.148,
+        edge_jitter=0.04,
+    )
+
+    for corner_index, corner_y in enumerate([center_y - frontage * 0.47, center_y + frontage * 0.47]):
+        wall_surface_patch(
+            f"{name}-dustyCornerAo-{corner_index}",
+            facade_x,
+            side_dir,
+            corner_y,
+            height * 0.44,
+            rng.uniform(0.18, 0.34),
+            height * rng.uniform(0.58, 0.82),
+            materials["dusty_corner_ao"],
+            rng,
+            x_offset=0.154,
+            edge_jitter=0.035,
+        )
+
+    for patch_index in range(2):
+        py = center_y + rng.uniform(-frontage * 0.38, frontage * 0.38)
+        if abs(py - door_y) < 0.58:
+            py += 0.78 if py < door_y else -0.78
+        pz = rng.uniform(0.58, height * 0.84)
+        wall_surface_patch(
+            f"{name}-erodedPlasterScumble-{patch_index}",
+            facade_x,
+            side_dir,
+            py,
+            pz,
+            rng.uniform(0.42, 1.18),
+            rng.uniform(0.22, 0.72),
+            materials["plaster_veil" if patch_index % 2 else "exposed_wall_core"],
+            rng,
+            x_offset=0.162,
+            edge_jitter=0.075,
+        )
+
+    for stain_index, offset in enumerate([-0.46]):
+        wall_surface_patch(
+            f"{name}-doorSideSmokeAndHandDirt-{stain_index}",
+            facade_x,
+            side_dir,
+            door_y + offset,
+            0.86,
+            rng.uniform(0.16, 0.28),
+            rng.uniform(0.86, 1.35),
+            materials["plaster_stain"],
+            rng,
+            x_offset=0.176,
+            edge_jitter=0.04,
+        )
+
+    for crack_index in range(1):
+        wall_surface_sliver(
+            f"{name}-fineSettlementCrack-{crack_index}",
+            facade_x,
+            side_dir,
+            center_y + rng.uniform(-frontage * 0.35, frontage * 0.35),
+            rng.uniform(0.86, height * 0.92),
+            rng.uniform(0.46, 1.05),
+            materials["dark"],
+            rng,
+            x_offset=0.188,
+        )
+
+
 def make_facade_house(
     name: str,
     center_x: float,
@@ -1035,18 +1280,18 @@ def make_facade_house(
     rng = random.Random(name)
     facade_x = center_x + side_dir * depth * 0.5
 
-    cube(f"{name}-mudbrickMass", (center_x, center_y, height * 0.5), (depth, frontage, height), materials["mudbrick"], bevel=0.055)
+    cube(f"{name}-mudPlasteredWallMass", (center_x, center_y, height * 0.5), (depth, frontage, height), materials["mud_plaster"], bevel=0.075)
     cube(
         f"{name}-facadePlaster",
         (facade_x + side_dir * 0.026, center_y, height * 0.54),
-        (0.052, frontage * 0.9, height * 0.7),
+        (0.052, frontage * 0.96, height * 0.82),
         materials["plaster"],
         bevel=0.012,
     )
-    cube(f"{name}-roofLipFront", (facade_x + side_dir * 0.08, center_y, height + 0.14), (0.28, frontage, 0.28), materials["mudbrick"], bevel=0.02)
-    cube(f"{name}-roofLipBack", (center_x - side_dir * depth * 0.47, center_y, height + 0.14), (0.22, frontage, 0.28), materials["mudbrick"], bevel=0.02)
-    cube(f"{name}-roofLipA", (center_x, center_y - frontage * 0.5, height + 0.14), (depth, 0.18, 0.28), materials["mudbrick"], bevel=0.02)
-    cube(f"{name}-roofLipB", (center_x, center_y + frontage * 0.5, height + 0.14), (depth, 0.18, 0.28), materials["mudbrick"], bevel=0.02)
+    cube(f"{name}-roofLipFront", (facade_x + side_dir * 0.08, center_y, height + 0.14), (0.28, frontage, 0.28), materials["mud_plaster"], bevel=0.035)
+    cube(f"{name}-roofLipBack", (center_x - side_dir * depth * 0.47, center_y, height + 0.14), (0.22, frontage, 0.28), materials["mud_plaster"], bevel=0.035)
+    cube(f"{name}-roofLipA", (center_x, center_y - frontage * 0.5, height + 0.14), (depth, 0.18, 0.28), materials["mud_plaster"], bevel=0.035)
+    cube(f"{name}-roofLipB", (center_x, center_y + frontage * 0.5, height + 0.14), (depth, 0.18, 0.28), materials["mud_plaster"], bevel=0.035)
 
     door_y = center_y + rng.uniform(-frontage * 0.22, frontage * 0.22)
     cube(f"{name}-doorShadow", (facade_x + side_dir * 0.065, door_y, 0.72), (0.08, 0.78, 1.42), materials["dark"], bevel=0.008)
@@ -1068,7 +1313,7 @@ def make_facade_house(
             f"{name}-plasterPatch-{patch_index}",
             (facade_x + side_dir * 0.082, py, pz),
             (0.035, rng.uniform(0.28, 0.78), rng.uniform(0.12, 0.38)),
-            materials["plaster" if patch_index % 2 else "limestone"],
+            materials["exposed_wall_core" if patch_index == 0 else "plaster_veil"],
             bevel=0,
         )
 
@@ -1085,6 +1330,7 @@ def make_facade_house(
         )
 
     add_sculpted_facade_details(name, facade_x, center_y, frontage, height, side_dir, door_y, materials, rng)
+    add_existing_wall_quality_pass(name, facade_x, center_y, frontage, height, side_dir, door_y, materials, rng)
 
     for roof_index in range(2):
         if roof_index % 2 == 0:
@@ -1186,10 +1432,10 @@ def make_edge_props(
 def add_hero_ground_details(materials: dict[str, bpy.types.Material]) -> None:
     rng = random.Random("hero-ground-details")
 
-    for index, y in enumerate([-25, -18, -11, -4, 4, 12, 20, 29]):
+    for index, y in enumerate([-9, -3, 4, 12, 20, 29]):
         ground_decal(
             f"streetSweptDustPile-{index}",
-            (-10.45 + rng.uniform(-1.6, 1.6), y + rng.uniform(-0.8, 0.8), 0.074),
+            (HERO_STREET_LOCAL_CENTER_X + rng.uniform(-1.6, 1.6), y + rng.uniform(-0.8, 0.8), 0.074),
             rng.uniform(1.2, 2.4),
             rng.uniform(0.42, 0.88),
             materials["dust_dark"],
@@ -1207,7 +1453,7 @@ def add_hero_ground_details(materials: dict[str, bpy.types.Material]) -> None:
         )
 
     for side_index, x in enumerate([-14.7, -6.2]):
-        for index, y in enumerate([-25, -17, -8, 1, 10, 19, 28]):
+        for index, y in enumerate([-6, 2, 10, 19, 28]):
             ground_decal(
                 f"streetWallBaseDirt-{side_index}-{index}",
                 (x + rng.uniform(-0.08, 0.08), y + rng.uniform(-0.7, 0.7), 0.075),
@@ -1218,8 +1464,8 @@ def add_hero_ground_details(materials: dict[str, bpy.types.Material]) -> None:
             )
 
     for pair_index in range(20):
-        y = -25 + pair_index * 2.85 + rng.uniform(-0.35, 0.35)
-        x = -10.45 + math.sin(pair_index * 0.7) * 0.64 + rng.uniform(-0.18, 0.18)
+        y = HERO_STREET_DETAIL_START_Y + pair_index * 2.65 + rng.uniform(-0.35, 0.35)
+        x = HERO_STREET_LOCAL_CENTER_X + math.sin(pair_index * 0.7) * 0.64 + rng.uniform(-0.18, 0.18)
         yaw = rng.uniform(-0.28, 0.28)
         for side in [-1, 1]:
             cube(
@@ -1233,7 +1479,7 @@ def add_hero_ground_details(materials: dict[str, bpy.types.Material]) -> None:
 
     for index in range(28):
         x = rng.uniform(-13.8, -7.2)
-        y = rng.uniform(-28, 35)
+        y = rng.uniform(HERO_STREET_DETAIL_START_Y, 35)
         cube(
             f"streetFootprint-{index}",
             (x, y, 0.022),
@@ -1246,7 +1492,7 @@ def add_hero_ground_details(materials: dict[str, bpy.types.Material]) -> None:
     for index in range(36):
         uv_sphere(
             f"streetPebble-{index}",
-            (rng.uniform(-14.6, -6.4), rng.uniform(-29, 36), 0.04),
+            (rng.uniform(-14.6, -6.4), rng.uniform(HERO_STREET_DETAIL_START_Y, HERO_STREET_DETAIL_END_Y), 0.04),
             rng.uniform(0.035, 0.11),
             materials["limestone" if index % 3 else "mudbrick"],
             scale=(1.2, 0.8, 0.32),
@@ -1255,7 +1501,7 @@ def add_hero_ground_details(materials: dict[str, bpy.types.Material]) -> None:
 
     for index in range(24):
         x = rng.uniform(-14.4, -6.6)
-        y = rng.uniform(-29, 36)
+        y = rng.uniform(HERO_STREET_DETAIL_START_Y, HERO_STREET_DETAIL_END_Y)
         cylinder_between(
             f"streetStraw-{index}",
             (x, y, 0.045),
@@ -1268,7 +1514,7 @@ def add_hero_ground_details(materials: dict[str, bpy.types.Material]) -> None:
     for index in range(8):
         cube(
             f"brokenPotteryShard-{index}",
-            (rng.uniform(-14.2, -6.8), rng.uniform(-26, 33), 0.055),
+            (rng.uniform(-14.2, -6.8), rng.uniform(HERO_STREET_DETAIL_START_Y, HERO_STREET_DETAIL_END_Y), 0.055),
             (rng.uniform(0.16, 0.35), rng.uniform(0.08, 0.22), 0.035),
             materials["pottery"],
             rot=(0, 0, rng.uniform(0, math.tau)),
@@ -1278,7 +1524,7 @@ def add_hero_ground_details(materials: dict[str, bpy.types.Material]) -> None:
     for index in range(14):
         uv_sphere(
             f"streetRaisedDustClod-{index}",
-            (rng.uniform(-14.0, -6.8), rng.uniform(-27, 34), 0.052),
+            (rng.uniform(-14.0, -6.8), rng.uniform(HERO_STREET_DETAIL_START_Y, HERO_STREET_DETAIL_END_Y), 0.052),
             rng.uniform(0.06, 0.16),
             materials["packed_dust" if index % 2 else "mudbrick"],
             scale=(1.6, 0.9, 0.24),
@@ -1287,18 +1533,16 @@ def add_hero_ground_details(materials: dict[str, bpy.types.Material]) -> None:
 
 
 def add_baked_street_lighting(materials: dict[str, bpy.types.Material]) -> None:
-    street_center_x = -10.45
+    street_center_x = HERO_STREET_LOCAL_CENTER_X
 
     # Film-set light bake approximation: wide shapes first, then tight contact.
     # This keeps the browser scene cinematic without relying on real-time shadows.
     for index, (y, width, depth, offset_x) in enumerate([
-        (-24.2, 7.4, 2.5, -0.18),
-        (-18.0, 7.9, 3.6, 0.08),
         (-8.4, 6.9, 2.4, -0.28),
         (-3.4, 8.0, 3.8, 0.18),
         (8.6, 7.0, 2.5, -0.12),
         (15.8, 7.8, 3.7, 0.12),
-        (27.0, 6.8, 2.4, -0.24),
+        (20.6, 6.8, 2.4, -0.24),
     ]):
         ground_decal(
             f"heroV2-bakedAwningShadeBand-{index}",
@@ -1310,10 +1554,9 @@ def add_baked_street_lighting(materials: dict[str, bpy.types.Material]) -> None:
         )
 
     for index, (y, width, depth, offset_x) in enumerate([
-        (-21.0, 3.4, 0.58, 0.45),
         (-7.5, 2.9, 0.52, 0.82),
         (6.5, 3.1, 0.55, -0.62),
-        (22.0, 2.8, 0.5, 0.36),
+        (19.8, 2.8, 0.5, 0.36),
     ]):
         ground_decal(
             f"heroV2-bakedSunDustStrip-{index}",
@@ -1327,14 +1570,14 @@ def add_baked_street_lighting(materials: dict[str, bpy.types.Material]) -> None:
     for index, (x, width) in enumerate([(-14.55, 0.58), (-6.36, 0.64)]):
         ground_decal(
             f"heroV2-continuousWallBaseAo-{index}",
-            (x, 4.0, 0.083 + index * 0.0005),
+            (x, 14.0, 0.083 + index * 0.0005),
             width,
-            67.0,
+            47.5,
             materials["baked_shadow_soft"],
             rot_z=math.radians(0.35 if index == 0 else -0.28),
         )
 
-    for index, y in enumerate([-24, -16, -7, 4, 16, 28]):
+    for index, y in enumerate([-5, 4, 16, 21.2]):
         ground_decal(
             f"heroV2-wallFootContactLeft-{index}",
             (-14.65, y, 0.087 + index * 0.0004),
@@ -1352,7 +1595,7 @@ def add_baked_street_lighting(materials: dict[str, bpy.types.Material]) -> None:
             rot_z=-0.02 * math.cos(index),
         )
 
-    for index, y in enumerate([-24.5, -18.2, -12.1, -5.7, 1.6, 7.8, 15.2, 22.7, 30.4]):
+    for index, y in enumerate([-5.7, 1.6, 7.8, 15.2, 21.4]):
         for side_name, x, facade_x, side_dir in [("left", -14.25, -14.9, 1), ("right", -6.65, -5.92, -1)]:
             ground_decal(
                 f"heroV2-doorwayPool-{side_name}-{index}",
@@ -1378,14 +1621,12 @@ def add_baked_street_lighting(materials: dict[str, bpy.types.Material]) -> None:
             )
 
     for index, (x, y, width, depth) in enumerate([
-        (-13.95, -22.8, 2.6, 1.1),
-        (-6.35, -13.9, 1.6, 1.4),
-        (-13.7, -25.8, 1.8, 1.0),
-        (-6.75, -20.1, 1.7, 1.0),
+        (-13.95, -8.8, 2.6, 1.1),
+        (-6.35, -8.2, 1.6, 1.4),
         (-13.7, -4.2, 1.35, 0.9),
         (-6.85, 4.8, 1.25, 1.0),
         (-13.6, 13.4, 1.55, 0.9),
-        (-6.95, 24.5, 1.45, 0.95),
+        (-6.95, 20.8, 1.45, 0.95),
     ]):
         ground_decal(
             f"heroV2-foregroundPropGrounding-{index}",
@@ -1396,7 +1637,7 @@ def add_baked_street_lighting(materials: dict[str, bpy.types.Material]) -> None:
             rot_z=math.radians(4 - index * 3),
         )
 
-    for index, y in enumerate([-24.2, -18.0, -3.4, 15.8, 27.0]):
+    for index, y in enumerate([-3.4, 15.8, 21.0]):
         for x in [-14.45, -6.45]:
             ground_decal(
                 f"heroV2-awningPostContact-{index}-{x}",
@@ -1412,40 +1653,53 @@ def add_wall_surface_decals(materials: dict[str, bpy.types.Material]) -> None:
     rng = random.Random("hero-v2-wall-decals")
 
     for side_name, facade_x, side_dir in [("left", -14.9, 1), ("right", -5.92, -1)]:
-        for index in range(18):
-            y = rng.uniform(-27.5, 34)
+        for index in range(7):
+            y = rng.uniform(HERO_STREET_DETAIL_START_Y, HERO_STREET_DETAIL_END_Y)
             z = rng.uniform(0.55, 2.2)
-            cube(
+            wall_surface_patch(
                 f"heroV2-{side_name}-thinStain-{index}",
-                (facade_x + side_dir * 0.13, y, z),
-                (0.018, rng.uniform(0.34, 1.1), rng.uniform(0.18, 0.64)),
+                facade_x,
+                side_dir,
+                y,
+                z,
+                rng.uniform(0.34, 1.1),
+                rng.uniform(0.18, 0.64),
                 materials["plaster_stain"],
-                rot=(0, 0, rng.uniform(-0.08, 0.08)),
-                bevel=0,
+                rng,
+                x_offset=0.17,
+                edge_jitter=0.055,
             )
 
-        for index in range(20):
-            y = rng.uniform(-27.5, 34)
+        for index in range(9):
+            y = rng.uniform(HERO_STREET_DETAIL_START_Y, HERO_STREET_DETAIL_END_Y)
             z = rng.uniform(0.45, 2.65)
-            cube(
+            wall_surface_patch(
                 f"heroV2-{side_name}-raisedMudChip-{index}",
-                (facade_x + side_dir * 0.15, y, z),
-                (0.055, rng.uniform(0.12, 0.38), rng.uniform(0.08, 0.22)),
-                materials["mudbrick" if index % 2 else "plaster"],
-                rot=(0, 0, rng.uniform(-0.4, 0.4)),
-                bevel=0.006,
+                facade_x,
+                side_dir,
+                y,
+                z,
+                rng.uniform(0.14, 0.46),
+                rng.uniform(0.09, 0.28),
+                materials["exposed_wall_core" if index % 2 else "plaster_veil"],
+                rng,
+                x_offset=0.19,
+                edge_jitter=0.045,
             )
 
-        for index in range(12):
-            y = rng.uniform(-27.5, 34)
+        for index in range(6):
+            y = rng.uniform(HERO_STREET_DETAIL_START_Y, HERO_STREET_DETAIL_END_Y)
             z = rng.uniform(0.8, 2.6)
-            cube(
+            wall_surface_sliver(
                 f"heroV2-{side_name}-deepHairlineCrack-{index}",
-                (facade_x + side_dir * 0.17, y, z),
-                (0.028, rng.uniform(0.018, 0.035), rng.uniform(0.42, 1.15)),
+                facade_x,
+                side_dir,
+                y,
+                z,
+                rng.uniform(0.42, 1.15),
                 materials["dark"],
-                rot=(0, 0, rng.uniform(-0.22, 0.22)),
-                bevel=0,
+                rng,
+                x_offset=0.2,
             )
 
 
@@ -1471,9 +1725,10 @@ def make_tool_bundle(name: str, loc: tuple[float, float, float], materials: dict
 
 
 def add_foreground_film_set(materials: dict[str, bpy.types.Material]) -> None:
+    rng = random.Random("hero-v2-foreground-wall-quality")
     cube(
         "heroV2LeftEyeHeightWallOccluder",
-        (-14.72, -28.4, 1.2),
+        (-14.72, -7.6, 1.2),
         (0.55, 4.8, 2.4),
         materials["mudbrick"],
         rot=(0, 0, -0.018),
@@ -1481,7 +1736,7 @@ def add_foreground_film_set(materials: dict[str, bpy.types.Material]) -> None:
     )
     cube(
         "heroV2LeftEyeHeightPlasterLip",
-        (-14.39, -28.1, 1.34),
+        (-14.39, -7.4, 1.34),
         (0.055, 3.7, 1.76),
         materials["plaster"],
         rot=(0, 0, -0.02),
@@ -1489,7 +1744,7 @@ def add_foreground_film_set(materials: dict[str, bpy.types.Material]) -> None:
     )
     cube(
         "heroV2RightEyeHeightWallOccluder",
-        (-6.12, -26.7, 1.05),
+        (-6.12, -6.2, 1.05),
         (0.48, 3.25, 2.1),
         materials["mudbrick"],
         rot=(0, 0, 0.02),
@@ -1497,25 +1752,81 @@ def add_foreground_film_set(materials: dict[str, bpy.types.Material]) -> None:
     )
     cube(
         "heroV2RightEyeHeightDoorDark",
-        (-6.42, -26.2, 0.78),
+        (-6.42, -5.8, 0.78),
         (0.08, 0.95, 1.45),
         materials["dark"],
         bevel=0.008,
     )
+
+    for side_name, facade_x, side_dir, center_y, height in [
+        ("left", -14.39, 1, -7.4, 2.15),
+        ("right", -6.42, -1, -5.8, 1.9),
+    ]:
+        wall_surface_patch(
+            f"heroV2ForegroundWallBaseGrime-{side_name}",
+            facade_x,
+            side_dir,
+            center_y,
+            0.32,
+            2.4 if side_name == "left" else 1.5,
+            0.42,
+            materials["wall_base_grime"],
+            rng,
+            x_offset=0.11,
+            edge_jitter=0.065,
+        )
+        wall_surface_patch(
+            f"heroV2ForegroundWallErodedScumble-{side_name}",
+            facade_x,
+            side_dir,
+            center_y + (0.58 if side_name == "left" else -0.32),
+            1.18,
+            1.2 if side_name == "left" else 0.78,
+            0.72,
+            materials["plaster_veil"],
+            rng,
+            x_offset=0.13,
+            edge_jitter=0.09,
+        )
+        wall_surface_patch(
+            f"heroV2ForegroundWallExposedDaub-{side_name}",
+            facade_x,
+            side_dir,
+            center_y - (0.46 if side_name == "left" else -0.38),
+            1.46,
+            0.62,
+            0.34,
+            materials["exposed_wall_core"],
+            rng,
+            x_offset=0.15,
+            edge_jitter=0.07,
+        )
+        wall_surface_sliver(
+            f"heroV2ForegroundWallFineCrack-{side_name}",
+            facade_x,
+            side_dir,
+            center_y + (0.16 if side_name == "left" else 0.22),
+            height * 0.62,
+            0.92,
+            materials["dark"],
+            rng,
+            x_offset=0.16,
+        )
+
     sagging_cloth_panel(
         "heroV2LowForegroundCanopy",
-        (-10.45, -24.0, 3.05),
+        (HERO_STREET_LOCAL_CENTER_X, -3.8, 3.05),
         8.05,
         4.55,
         materials["linen"],
         sag=0.22,
         rot=(math.radians(4), 0, math.radians(-0.8)),
     )
-    cylinder_between("heroV2LowCanopyFrontRope", (-14.68, -26.62, 2.76), (-6.25, -26.25, 2.66), 0.017, materials["dry_reed"], 7)
-    cylinder_between("heroV2LowCanopyBackRope", (-14.32, -21.35, 2.86), (-6.35, -21.25, 2.78), 0.016, materials["dry_reed"], 7)
+    cylinder_between("heroV2LowCanopyFrontRope", (-14.68, -6.4, 2.76), (-6.25, -6.05, 2.66), 0.017, materials["dry_reed"], 7)
+    cylinder_between("heroV2LowCanopyBackRope", (-14.32, -1.15, 2.86), (-6.35, -1.05, 2.78), 0.016, materials["dry_reed"], 7)
     ground_decal(
         "heroV2LowForegroundCanopyShadow",
-        (-10.42, -23.65, 0.079),
+        (-10.42, -3.45, 0.079),
         7.6,
         4.45,
         materials["dust_dark"],
@@ -1523,38 +1834,38 @@ def add_foreground_film_set(materials: dict[str, bpy.types.Material]) -> None:
     )
 
     for index, (x, y, scale) in enumerate([
-        (-14.2, -27.0, 1.28),
-        (-13.35, -25.8, 0.92),
-        (-6.82, -24.8, 1.05),
-        (-5.88, -22.8, 0.86),
+        (-14.2, -8.2, 1.28),
+        (-13.35, -7.0, 0.92),
+        (-6.82, -5.8, 1.05),
+        (-5.88, -3.7, 0.86),
     ]):
         make_basket(f"heroV2ForegroundBasket-{index}", (x, y, 0.23), materials, scale)
 
     for index, (x, y, scale) in enumerate([
-        (-13.15, -24.5, 1.05),
-        (-12.55, -23.7, 0.78),
-        (-6.55, -20.6, 1.12),
-        (-7.35, -19.8, 0.82),
-        (-5.85, -12.2, 0.92),
+        (-13.15, -6.4, 1.05),
+        (-12.55, -5.6, 0.78),
+        (-6.55, -3.6, 1.12),
+        (-7.35, -2.8, 0.82),
+        (-5.85, -0.8, 0.92),
     ]):
         make_jar(f"heroV2ForegroundJar-{index}", (x, y, 0.32), materials["pottery"], scale)
 
-    cube("heroV2LeftForegroundBench", (-14.0, -22.8, 0.42), (0.56, 2.2, 0.20), materials["wood"], rot=(0, 0, 0.08), bevel=0.025)
-    cube("heroV2RightWorkStone", (-6.15, -13.8, 0.42), (1.05, 0.92, 0.46), materials["limestone"], rot=(0, 0, -0.06), bevel=0.025)
-    cube("heroV2FoldedLinenPile", (-13.85, -21.6, 0.66), (0.64, 0.82, 0.18), materials["linen"], rot=(0, 0, -0.08), bevel=0.045)
-    make_tool_bundle("heroV2ForegroundTools", (-6.5, -14.55, 0.78), materials)
+    cube("heroV2LeftForegroundBench", (-14.0, -2.0, 0.42), (0.56, 2.2, 0.20), materials["wood"], rot=(0, 0, 0.08), bevel=0.025)
+    cube("heroV2RightWorkStone", (-6.15, -4.8, 0.42), (1.05, 0.92, 0.46), materials["limestone"], rot=(0, 0, -0.06), bevel=0.025)
+    cube("heroV2FoldedLinenPile", (-13.85, -1.2, 0.66), (0.64, 0.82, 0.18), materials["linen"], rot=(0, 0, -0.08), bevel=0.045)
+    make_tool_bundle("heroV2ForegroundTools", (-6.5, -5.55, 0.78), materials)
 
     for index in range(18):
         make_jar(
             f"heroV2EdgeTinyVessel-{index}",
-            (-14.0 + (index % 3) * 0.5 if index < 9 else -6.6 + (index % 3) * 0.42, -18 + (index // 3) * 2.2, 0.22),
+            (-14.0 + (index % 3) * 0.5 if index < 9 else -6.6 + (index % 3) * 0.42, HERO_STREET_DETAIL_START_Y + (index // 3) * 2.2, 0.22),
             materials["pottery"],
             0.32 + (index % 3) * 0.06,
         )
 
 
 def add_cinematic_depth_layers(materials: dict[str, bpy.types.Material]) -> None:
-    for index, y in enumerate([7.5, 18.5, 31.5]):
+    for index, y in enumerate([7.5, 18.5]):
         vertical_panel(
             f"heroV2WarmHazePlane-{index}",
             (-10.45, y, 1.55 + index * 0.08),
@@ -1564,7 +1875,7 @@ def add_cinematic_depth_layers(materials: dict[str, bpy.types.Material]) -> None
             rot=(0, 0, math.radians(index - 1)),
         )
 
-    for index, y in enumerate([25, 30, 35]):
+    for index, y in enumerate([9.5, 17.5]):
         sagging_cloth_panel(
             f"heroV2DistantClothLayer-{index}",
             (-10.45, y, 2.85 + index * 0.08),
@@ -1582,10 +1893,11 @@ def build_hero_street_corridor(materials: dict[str, bpy.types.Material]) -> None
     random.seed("hero-street-corridor")
     left_center_x = -17.55
     right_center_x = -3.25
-    street_center_x = -10.45
+    street_center_x = HERO_STREET_LOCAL_CENTER_X
     depth = 5.2
-    cursor = -28.0
+    cursor = HERO_STREET_HOUSE_START_Y
     house_specs = [5.4, 6.2, 4.8, 6.8, 5.6, 7.1, 5.2, 6.4]
+    main_wall_omit_index = len(house_specs) - 1
 
     ground_decal(
         "heroV2ContinuousPackedDustGround",
@@ -1601,33 +1913,36 @@ def build_hero_street_corridor(materials: dict[str, bpy.types.Material]) -> None
         center_y = cursor + frontage * 0.5
         left_height = 2.2 + (index % 4) * 0.28
         right_height = 2.0 + ((index + 2) % 5) * 0.24
-        make_facade_house(
-            f"heroLeftHouse-{index}",
-            left_center_x + math.sin(index * 0.8) * 0.18,
-            center_y,
-            depth + (index % 3) * 0.28,
-            frontage,
-            left_height,
-            1,
-            materials,
-            index % 2 == 0,
-        )
-        make_facade_house(
-            f"heroRightHouse-{index}",
-            right_center_x + math.cos(index * 0.7) * 0.16,
-            center_y + (0.45 if index % 2 else -0.25),
-            depth + ((index + 1) % 3) * 0.22,
-            frontage * (0.92 + (index % 3) * 0.04),
-            right_height,
-            -1,
-            materials,
-            index % 3 != 1,
-        )
-        make_edge_props(f"heroLeftProps-{index}", left_center_x + depth * 0.5, center_y, 1, materials, index * 17 + 3)
-        make_edge_props(f"heroRightProps-{index}", right_center_x - depth * 0.5, center_y, -1, materials, index * 19 + 7)
+        # With Blender's Y-up export into Babylon, the highest local-Y house bay
+        # appears at the Main Wall entrance side. Omit that pair, not the temple-side pair.
+        if index != main_wall_omit_index:
+            make_facade_house(
+                f"heroLeftHouse-{index}",
+                left_center_x + math.sin(index * 0.8) * 0.18,
+                center_y,
+                depth + (index % 3) * 0.28,
+                frontage,
+                left_height,
+                1,
+                materials,
+                index % 2 == 0,
+            )
+            make_facade_house(
+                f"heroRightHouse-{index}",
+                right_center_x + math.cos(index * 0.7) * 0.16,
+                center_y + (0.45 if index % 2 else -0.25),
+                depth + ((index + 1) % 3) * 0.22,
+                frontage * (0.92 + (index % 3) * 0.04),
+                right_height,
+                -1,
+                materials,
+                index % 3 != 1,
+            )
+            make_edge_props(f"heroLeftProps-{index}", left_center_x + depth * 0.5, center_y, 1, materials, index * 17 + 3)
+            make_edge_props(f"heroRightProps-{index}", right_center_x - depth * 0.5, center_y, -1, materials, index * 19 + 7)
         cursor += frontage + 0.22
 
-    for index, y in enumerate([-18, -3.5, 15.5]):
+    for index, y in enumerate([-3.5, 15.5]):
         sagging_cloth_panel(
             f"crossStreetShadeCloth-{index}",
             (-10.45, y, 3.08 + (index % 2) * 0.16),
@@ -1930,6 +2245,9 @@ BUILDERS = {
     "date-palm-cluster": build_date_palm_cluster,
     "reed-bank-cluster": build_reed_bank_cluster,
     "hero-street-corridor": build_hero_street_corridor,
+    "hero-street-corridor-near": build_hero_street_corridor,
+    "hero-street-corridor-mid": build_hero_street_corridor,
+    "hero-street-corridor-far": build_hero_street_corridor,
     "mudbrick-house-cluster": build_mudbrick_house_cluster,
     "residential-market-details": build_residential_market_details,
     "animated-street-actors": build_animated_street_actors,
@@ -1942,6 +2260,13 @@ def export_asset(asset: dict[str, object]) -> None:
     materials = create_materials()
     asset_id = str(asset["id"])
     BUILDERS[asset_id](materials)
+
+    if asset_id in HERO_STREET_CHUNK_RANGES:
+        prune_hero_street_chunk(asset_id)
+
+    if asset_id != "animated-street-actors":
+        optimize_scene_for_export(asset_id)
+
     bpy.ops.object.select_all(action="SELECT")
     export_options = {
         "filepath": str(OUT_DIR / str(asset["fileName"])),
@@ -1996,6 +2321,36 @@ def optimize_scene_for_export(asset_id: str) -> None:
     bpy.context.object.name = f"{asset_id}-merged"
 
 
+def object_world_y_center(obj: bpy.types.Object) -> float:
+    if obj.type != "MESH" or not getattr(obj, "bound_box", None):
+        return obj.location.y
+
+    corners = [obj.matrix_world @ Vector(corner) for corner in obj.bound_box]
+    return sum(corner.y for corner in corners) / max(1, len(corners))
+
+
+def prune_hero_street_chunk(asset_id: str) -> None:
+    min_y, max_y = HERO_STREET_CHUNK_RANGES[asset_id]
+    keep: list[bpy.types.Object] = []
+    remove: list[bpy.types.Object] = []
+
+    for obj in bpy.context.scene.objects:
+        if obj.type != "MESH":
+            continue
+
+        center_y = object_world_y_center(obj)
+        if min_y <= center_y < max_y:
+            keep.append(obj)
+        else:
+            remove.append(obj)
+
+    for obj in remove:
+        bpy.data.objects.remove(obj, do_unlink=True)
+
+    if not keep:
+        print(f"WARNING: hero street chunk {asset_id} kept no meshes for range {min_y}..{max_y}")
+
+
 def write_manifest() -> None:
     manifest = {
         "$schema": "./asset-kit.schema.json",
@@ -2007,10 +2362,13 @@ def write_manifest() -> None:
         "meshCompression": "Draco export is supported by setting EGYPTVR_ENABLE_DRACO=1; disabled by default until browser decoder wiring is verified.",
         "licenseStatus": "Project-authored procedural meshes; no source media copied or embedded.",
         "materialAtlasStatus": {
-            "currentPass": "Procedural albedo/normal/roughness texture sets are packed in the generated GLBs.",
-            "aoAndHeight": "AO, doorway darkness, wall-base dirt, cloth shade, cracks, chips, and height-like surface breakup are authored as visible decal/contact geometry for this pass.",
+            "currentPass": "Runtime GLBs now prefer external Babylon material atlases. Procedural texture embedding is disabled by default and can be re-enabled only for standalone inspection with EGYPTVR_EMBED_PROCEDURAL_TEXTURES=1.",
+            "aoAndHeight": "AO, doorway darkness, wall-base dirt, cloth shade, cracks, eroded plaster scumble, exposed mud daub, corner grime, and height-like surface breakup are authored as visible decal/contact geometry for this pass.",
             "bakedLightAndContact": "Hero Street v2 now includes layered baked-looking shadow geometry: broad awning bands, continuous wall-base AO, doorway pools, vertical door darkness, post contacts, prop grounding, and warm sun-dust strips.",
-            "nextPass": "After the look is approved, split near/mid/far chunks and bake true UV lightmap/AO/height/KTX2 atlases."
+            "wallQuality": "Step 5 improves existing wall planes only: no new architecture placement, no district expansion, and no new wall rows.",
+            "historicalCompliance": "Step 6 keeps mudbrick as the domestic construction system, but makes visible house exteriors mostly continuous mud plaster/whitewash with irregular daub exposure; regular exposed block-grid masonry is avoided for Old Kingdom residential facades.",
+            "optimization": "Step 7 splits the hero street into near/mid/far runtime chunks and leaves the full corridor as a fallback/reference export.",
+            "nextPass": "After the chunked runtime is approved, add verified decoder-backed Draco/Meshopt and KTX2 pipelines."
         },
         "policy": [
             "Use restricted Memphis-specific sources as human research context only.",
@@ -2033,10 +2391,20 @@ def write_manifest() -> None:
 
 def main() -> None:
     OUT_DIR.mkdir(parents=True, exist_ok=True)
-    for asset in ASSETS:
+    requested_asset_ids = {
+        asset_id.strip()
+        for asset_id in os.environ.get("EGYPTVR_ASSET_IDS", "").split(",")
+        if asset_id.strip()
+    }
+    assets_to_export = [
+        asset for asset in ASSETS
+        if not requested_asset_ids or str(asset["id"]) in requested_asset_ids
+    ]
+
+    for asset in assets_to_export:
         export_asset(asset)
     write_manifest()
-    print(f"Generated {len(ASSETS)} Memphis GLB assets in {OUT_DIR}")
+    print(f"Generated {len(assets_to_export)} Memphis GLB assets in {OUT_DIR}")
 
 
 if __name__ == "__main__":

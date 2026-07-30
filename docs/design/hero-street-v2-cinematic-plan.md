@@ -18,6 +18,7 @@ Goal: make one dense 20-30 meter street slice beautiful at player eye height bef
 ## Historical Guardrails
 
 - Architecture should stay domestic and mudbrick-heavy: uneven walls, whitewashed/plastered patches, compact rooms, roof activity, narrow lanes, storage jars, baskets, work tables, and small door/window openings.
+- Visible residential walls should read as continuous mud-plastered or whitewashed earthen surfaces over a mudbrick core. Regular exposed block-grid masonry should be avoided on street-facing Old Kingdom domestic facades; exposed brick/daub should appear only as irregular damage, worn corners, or small patches.
 - Clothing should remain restrained: plain linen kilts, simple sheath-like linen garments, bare feet or simple sandals, minimal jewelry, simple hair silhouettes, and no late-period fashion excess unless explicitly marked speculative.
 - Art and wall markings should be limited and contextual: domestic plaster marks, simple painted bands, workshop marks, and small shrine/amulet motifs are safer than heavy temple-style wall painting in the street.
 - Temple or Ptah-precinct elements should stay in the distance/endpoint until the shrine phase; the hero street is a living-city slice, not a monumental processional avenue.
@@ -36,9 +37,9 @@ Goal: make one dense 20-30 meter street slice beautiful at player eye height bef
 ## Runtime Strategy
 
 - Babylon assembles the scene and displays the current authored GLB kit.
-- The active v2 pass uses the authored `hero_street_corridor.glb` as the source of truth. Babylon's procedural film-set overlay remains a fallback only if the GLB kit cannot load.
+- The active v2 pass uses authored near/mid/far hero-street GLB chunks as the runtime source of truth. The full `hero_street_corridor.glb` remains a fallback/reference export.
 - The Blender pass bakes close-up film-set detail into the GLB: contact shadows, wall stains, cloth shadows, foreground props, tools, pebbles, roof clutter, and three stronger human silhouettes.
-- The next optimization pass should split the hero street into near/mid/far chunks with optional decoder-backed compression.
+- The next compression pass should add verified decoder-backed Draco/Meshopt and KTX2 only after the chunked runtime remains visually stable.
 
 ## Current Implementation Pass
 
@@ -63,6 +64,7 @@ Goal: make one dense 20-30 meter street slice beautiful at player eye height bef
 ## Performance Target
 
 - Keep the hero street as chunks, not one giant monolith.
+- Runtime GLBs should reuse external Babylon material atlases instead of embedding duplicate procedural texture images.
 - Draco export is wired as an opt-in generator mode with `EGYPTVR_ENABLE_DRACO=1`, but runtime builds keep it off until Babylon decoder loading is verified.
-- Use LOD, Meshopt/Draco, and KTX2 after the visual target is reached.
+- Use Meshopt/Draco and KTX2 after the chunked runtime is visually verified on the target laptop browser.
 - Preserve laptop-browser usability before adding more district scale.

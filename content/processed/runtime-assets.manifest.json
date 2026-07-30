@@ -212,6 +212,8 @@
       "licenseStatus": "Project-generated procedural Blender GLB assets; no source media copied.",
       "notes": [
         "Includes mudbrick house clusters, awnings, jars, baskets, mats, benches, painted wall panels, baked-looking contact/shadow geometry, and low-poly NPC placeholders.",
+        "Step 5 improves existing wall planes in place with irregular plaster scumble, wall-base grime, exposed mud daub, corner AO, doorway dirt, and fine cracks; no new wall rows or house placements are added.",
+        "The street-mouth transition from the White Walls gate into the offset residential lane omits the Main Wall-side house bay on both rows and is kept clear of facade spillover, foreground occluders, haze planes, prop piles, and collision rails.",
         "Restricted Memphis-specific references guide human reconstruction choices only."
       ]
     },

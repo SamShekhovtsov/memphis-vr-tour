@@ -183,6 +183,7 @@ interface ModularAssetPlacement {
   scale?: number;
   collides?: boolean;
   animated?: boolean;
+  lodDistance?: number;
 }
 
 interface ModularAssetLoadResult {
@@ -196,18 +197,18 @@ export async function createMemphisWhiteWallsScene(
   manifest: TourManifest
 ): Promise<MemphisSceneController> {
   const scene = new Scene(engine);
-  scene.clearColor = new Color4(0.55, 0.57, 0.53, 1);
-  scene.ambientColor = new Color3(0.46, 0.39, 0.31);
-  scene.fogColor = Color3.FromHexString("#a98054");
+  scene.clearColor = new Color4(0.76, 0.71, 0.6, 1);
+  scene.ambientColor = new Color3(0.56, 0.47, 0.35);
+  scene.fogColor = Color3.FromHexString("#c08f5d");
   scene.fogMode = Scene.FOGMODE_EXP2;
-  scene.fogDensity = 0.0024;
+  scene.fogDensity = 0.00095;
   scene.collisionsEnabled = true;
-  scene.imageProcessingConfiguration.exposure = 0.78;
-  scene.imageProcessingConfiguration.contrast = 1.42;
+  scene.imageProcessingConfiguration.exposure = 0.98;
+  scene.imageProcessingConfiguration.contrast = 1.38;
   scene.imageProcessingConfiguration.toneMappingEnabled = true;
   scene.imageProcessingConfiguration.vignetteEnabled = true;
-  scene.imageProcessingConfiguration.vignetteWeight = 1.18;
-  scene.imageProcessingConfiguration.vignetteColor = new Color4(0.31, 0.22, 0.14, 1);
+  scene.imageProcessingConfiguration.vignetteWeight = 0.72;
+  scene.imageProcessingConfiguration.vignetteColor = new Color4(0.28, 0.18, 0.11, 1);
 
   const materials = createMaterials(scene);
   createSkyDome(scene);
@@ -223,15 +224,20 @@ export async function createMemphisWhiteWallsScene(
   applyCameraShotBookmark(camera);
 
   const skyLight = new HemisphericLight("skyLight", new Vector3(0, 1, 0), scene);
-  skyLight.diffuse = Color3.FromHexString("#caa878");
-  skyLight.groundColor = Color3.FromHexString("#3f3026");
-  skyLight.intensity = 0.42;
+  skyLight.diffuse = Color3.FromHexString("#e0c896");
+  skyLight.groundColor = Color3.FromHexString("#3f2f27");
+  skyLight.intensity = 0.64;
 
-  const sun = new DirectionalLight("lowGoldSun", new Vector3(-0.46, -0.86, 0.24), scene);
-  sun.position = new Vector3(52, 74, -82);
-  sun.diffuse = Color3.FromHexString("#ffc073");
-  sun.specular = Color3.FromHexString("#d8b77f");
-  sun.intensity = 2.12;
+  const sun = new DirectionalLight("lowGoldSun", new Vector3(-0.62, -0.74, 0.27), scene);
+  sun.position = new Vector3(64, 88, -76);
+  sun.diffuse = Color3.FromHexString("#ffd79a");
+  sun.specular = Color3.FromHexString("#ffe8bd");
+  sun.intensity = 4.25;
+
+  const sunBounce = new DirectionalLight("warmDustBounce", new Vector3(0.42, -0.32, -0.24), scene);
+  sunBounce.diffuse = Color3.FromHexString("#b66f38");
+  sunBounce.specular = Color3.Black();
+  sunBounce.intensity = 0.34;
 
   const shrineGlow = new PointLight("shrineOilLampGlow", new Vector3(0, 2.2, 90), scene);
   shrineGlow.diffuse = Color3.FromHexString("#f2a451");
@@ -362,7 +368,7 @@ function createMaterials(scene: Scene): SceneMaterials {
     bump: true,
     bumpLevel: 0.08
   });
-  const mudbrick = material(scene, "mudbrick", "#65412a", {
+  const mudbrick = material(scene, "mudbrick", "#765033", {
     textureName: "atlas-mudbrick-albedo.jpg",
     bumpTextureName: "atlas-mudbrick-normal.jpg",
     metallicTextureName: "atlas-mudbrick-mrao.jpg",
@@ -370,11 +376,13 @@ function createMaterials(scene: Scene): SceneMaterials {
     vScale: 2.25,
     metallicTextureUScale: 2.25,
     metallicTextureVScale: 2.25,
-    roughness: 0.96,
+    roughness: 0.97,
     bump: true,
-    bumpLevel: 0.18
+    bumpLevel: 0.145,
+    directIntensity: 1.28,
+    environmentIntensity: 0.52
   });
-  const heroGround = material(scene, "heroStreetGround", "#956036", {
+  const heroGround = material(scene, "heroStreetGround", "#a9855d", {
     textureName: "hero-street-ground.jpg",
     bumpTextureName: "hero-street-normal.jpg",
     ambientTextureName: "hero-street-ao.jpg",
@@ -386,15 +394,17 @@ function createMaterials(scene: Scene): SceneMaterials {
     metallicTextureVScale: 0.82,
     lightmapUScale: 1,
     lightmapVScale: 1,
-    ambientTextureStrength: 0.92,
-    lightmapLevel: 0.86,
+    ambientTextureStrength: 0.46,
+    lightmapLevel: 0.52,
     useLightmapAsShadowmap: true,
     useAmbientOcclusionFromMetallicTextureRed: false,
     roughness: 0.98,
     bump: true,
-    bumpLevel: 0.105
+    bumpLevel: 0.082,
+    directIntensity: 1.42,
+    environmentIntensity: 0.58
   });
-  const plaster = material(scene, "plaster", "#bba883", {
+  const plaster = material(scene, "plaster", "#c8b58e", {
     textureName: "atlas-plaster-albedo.jpg",
     bumpTextureName: "atlas-plaster-normal.jpg",
     metallicTextureName: "atlas-plaster-mrao.jpg",
@@ -402,9 +412,11 @@ function createMaterials(scene: Scene): SceneMaterials {
     vScale: 1.55,
     metallicTextureUScale: 1.55,
     metallicTextureVScale: 1.55,
-    roughness: 0.95,
+    roughness: 0.97,
     bump: true,
-    bumpLevel: 0.11
+    bumpLevel: 0.085,
+    directIntensity: 1.5,
+    environmentIntensity: 0.62
   });
   const reed = material(scene, "reed", "#5c7d4b", {
     textureName: "reed-bundle.jpg",
@@ -424,7 +436,7 @@ function createMaterials(scene: Scene): SceneMaterials {
     bump: true,
     bumpLevel: 0.09
   });
-  const linen = material(scene, "linen", "#d3c49f", {
+  const linen = material(scene, "linen", "#e0d0a8", {
     textureName: "atlas-linen-albedo.jpg",
     bumpTextureName: "atlas-linen-normal.jpg",
     metallicTextureName: "atlas-linen-mrao.jpg",
@@ -434,7 +446,9 @@ function createMaterials(scene: Scene): SceneMaterials {
     metallicTextureVScale: 2.6,
     roughness: 0.97,
     bump: true,
-    bumpLevel: 0.055
+    bumpLevel: 0.046,
+    directIntensity: 1.46,
+    environmentIntensity: 0.66
   });
   const stone = material(scene, "whiteStone", "#c8bea7", {
     textureName: "limestone-cut.jpg",
@@ -456,15 +470,15 @@ function createMaterials(scene: Scene): SceneMaterials {
     metallic: 0.62
   });
   const shadow = material(scene, "deepShade", "#17120d", {
-    alpha: 0.88,
+    alpha: 0.78,
     roughness: 1
   });
   const contactShadow = material(scene, "softContactShadow", "#17110c", {
-    alpha: 0.52,
+    alpha: 0.42,
     roughness: 1
   });
   contactShadow.backFaceCulling = false;
-  const dust = material(scene, "powderyStreetDust", "#8f5d36", {
+  const dust = material(scene, "powderyStreetDust", "#9b6840", {
     textureName: "atlas-dust-albedo.jpg",
     bumpTextureName: "atlas-dust-normal.jpg",
     metallicTextureName: "atlas-dust-mrao.jpg",
@@ -474,9 +488,11 @@ function createMaterials(scene: Scene): SceneMaterials {
     metallicTextureVScale: 1.12,
     roughness: 0.98,
     bump: true,
-    bumpLevel: 0.08
+    bumpLevel: 0.062,
+    directIntensity: 1.34,
+    environmentIntensity: 0.54
   });
-  const pottery = material(scene, "warmPotteryClay", "#914624", {
+  const pottery = material(scene, "warmPotteryClay", "#a24f28", {
     textureName: "atlas-pottery-albedo.jpg",
     bumpTextureName: "atlas-pottery-normal.jpg",
     metallicTextureName: "atlas-pottery-mrao.jpg",
@@ -486,7 +502,9 @@ function createMaterials(scene: Scene): SceneMaterials {
     metallicTextureVScale: 1.8,
     roughness: 0.9,
     bump: true,
-    bumpLevel: 0.06
+    bumpLevel: 0.052,
+    directIntensity: 1.3,
+    environmentIntensity: 0.5
   });
   const skin = material(scene, "warmSkinPlaceholder", "#8b5634", {
     textureName: "atlas-skin-albedo.jpg",
@@ -581,6 +599,8 @@ interface MaterialOptions {
   bump?: boolean;
   bumpLevel?: number;
   emissive?: Color3;
+  directIntensity?: number;
+  environmentIntensity?: number;
   ambientTextureStrength?: number;
   useLightmapAsShadowmap?: boolean;
   useRoughnessFromMetallicTextureGreen?: boolean;
@@ -594,7 +614,8 @@ function material(scene: Scene, name: string, color: string, options: MaterialOp
   mat.albedoColor = Color3.FromHexString(color);
   mat.metallic = options.metallic ?? 0;
   mat.roughness = options.roughness ?? 0.82;
-  mat.environmentIntensity = 0.48;
+  mat.directIntensity = options.directIntensity ?? 1.18;
+  mat.environmentIntensity = options.environmentIntensity ?? 0.58;
 
   if (options.textureName) {
     mat.albedoTexture = createTiledTexture(scene, options.textureName, options.uScale ?? 1, options.vScale ?? 1);
@@ -661,7 +682,10 @@ function retargetImportedMaterialAtlas(mesh: AbstractMesh, materials: SceneMater
     return;
   }
 
-  if (/doorway|contact shadow|cool bounced|soft awning shadow|sunlit dust strip|haze/.test(materialName)) {
+  if (
+    /doorway|contact shadow|cool bounced|soft awning shadow|sunlit dust strip|haze/.test(materialName) ||
+    /stain|grime|scumble|veil|edge shade|subsurface|daub|ambient occlusion|settled dark street dust/.test(materialName)
+  ) {
     return;
   }
 
@@ -690,12 +714,50 @@ function retargetImportedMaterialAtlas(mesh: AbstractMesh, materials: SceneMater
   }
 }
 
+function calibrateImportedFilmBakeMaterial(mesh: AbstractMesh): void {
+  if (!(mesh.material instanceof PBRMaterial)) {
+    return;
+  }
+
+  const materialName = mesh.material.name.toLowerCase();
+  mesh.material.directIntensity = 1.24;
+  mesh.material.environmentIntensity = 0.5;
+
+  if (/warm suspended street haze|haze/.test(materialName)) {
+    mesh.material.alpha = Math.min(mesh.material.alpha, 0.036);
+    mesh.material.emissiveColor = Color3.FromHexString("#2d1c0e");
+    return;
+  }
+
+  if (/baked sunlit dust strip|sunlit/.test(materialName)) {
+    mesh.material.alpha = Math.min(0.1, mesh.material.alpha * 1.12);
+    mesh.material.emissiveColor = Color3.FromHexString("#24160a");
+    return;
+  }
+
+  if (/deep doorway|doorway/.test(materialName)) {
+    mesh.material.alpha = Math.max(0.34, mesh.material.alpha * 0.82);
+    return;
+  }
+
+  if (
+    /contact shadow|soft awning shadow|cool bounced|settled dark street dust|ambient occlusion/.test(materialName) ||
+    /wall base grime|plaster water stain|edge shade|dusty wall corner|stain|grime|scumble|veil/.test(materialName)
+  ) {
+    mesh.material.alpha *= 0.62;
+  }
+}
+
+function isHeroStreetCorridorAsset(assetId: string): boolean {
+  return assetId === "hero-street-corridor" || assetId.startsWith("hero-street-corridor-");
+}
+
 function createSkyDome(scene: Scene): void {
   const sky = MeshBuilder.CreateSphere("goldenDesertSky", { diameter: 220, segments: 24, sideOrientation: Mesh.BACKSIDE }, scene);
   const mat = new PBRMaterial("goldenDesertSkyMaterial", scene);
   mat.unlit = true;
-  mat.albedoColor = Color3.FromHexString("#9fa8a2");
-  mat.emissiveColor = Color3.FromHexString("#7c6649");
+  mat.albedoColor = Color3.FromHexString("#c8bf9d");
+  mat.emissiveColor = Color3.FromHexString("#9f7a4b");
   mat.backFaceCulling = false;
   sky.material = mat;
   sky.isPickable = false;
@@ -708,16 +770,20 @@ function hideLegacyHeroStreetScaffold(scene: Scene): void {
 }
 
 function createHeroStreetCollisionGuides(scene: Scene): void {
+  const guideStartZ = -10.6;
+  const guideEndZ = 38.8;
+  const guideDepth = guideEndZ - guideStartZ;
+  const guideCenterZ = guideStartZ + guideDepth / 2;
   const guideSpecs = [
     {
       name: "heroStreetLeftCollisionRail",
-      position: new Vector3(heroStreetCenterX - 4.95, 1.28, 4),
-      size: new Vector3(0.72, 2.56, 70)
+      position: new Vector3(heroStreetCenterX - 4.95, 1.28, guideCenterZ),
+      size: new Vector3(0.72, 2.56, guideDepth)
     },
     {
       name: "heroStreetRightCollisionRail",
-      position: new Vector3(heroStreetCenterX + 4.95, 1.28, 4),
-      size: new Vector3(0.72, 2.56, 70)
+      position: new Vector3(heroStreetCenterX + 4.95, 1.28, guideCenterZ),
+      size: new Vector3(0.72, 2.56, guideDepth)
     }
   ];
 
@@ -819,12 +885,17 @@ async function loadModularAssetKit(scene: Scene, materials: SceneMaterials): Pro
 
       for (const mesh of root.getChildMeshes(false)) {
         retargetImportedMaterialAtlas(mesh, materials);
+        calibrateImportedFilmBakeMaterial(mesh);
         mesh.checkCollisions = false;
         mesh.isPickable = false;
 
-        if (placement.assetId === "hero-street-corridor" && /heroV2Low(ForegroundCanopy|Canopy)/.test(mesh.name)) {
+        if (isHeroStreetCorridorAsset(placement.assetId) && /heroV2Low(ForegroundCanopy|Canopy)/.test(mesh.name)) {
           mesh.setEnabled(false);
           continue;
+        }
+
+        if (placement.lodDistance && !placement.animated && mesh instanceof Mesh) {
+          mesh.addLODLevel(placement.lodDistance, null);
         }
 
         if (!placement.animated) {
@@ -832,7 +903,7 @@ async function loadModularAssetKit(scene: Scene, materials: SceneMaterials): Pro
         }
       }
 
-      if (placement.assetId === "hero-street-corridor") {
+      if (isHeroStreetCorridorAsset(placement.assetId)) {
         heroStreetLoaded = true;
       }
 
@@ -891,14 +962,19 @@ function createModularAssetPlacements(): ModularAssetPlacement[] {
       rotationY: index * 0.38,
       scale: 0.82 + (index % 3) * 0.08
     })),
-    {
-      assetId: "hero-street-corridor",
-      name: "glbHeroStreetCorridor",
+    ...[
+      { assetId: "hero-street-corridor-near", name: "glbHeroStreetCorridorNear", lodDistance: 92 },
+      { assetId: "hero-street-corridor-mid", name: "glbHeroStreetCorridorMid", lodDistance: 118 },
+      { assetId: "hero-street-corridor-far", name: "glbHeroStreetCorridorFar", lodDistance: 144 }
+    ].map(({ assetId, name, lodDistance }) => ({
+      assetId,
+      name,
       position: new Vector3(heroStreetOffsetX, 0, 0),
       rotationY: 0,
       scale: 1,
-      collides: true
-    },
+      collides: true,
+      lodDistance
+    })),
     {
       assetId: "animated-street-actors",
       name: "glbAnimatedStreetActors",

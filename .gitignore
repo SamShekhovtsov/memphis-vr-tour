@@ -5,6 +5,8 @@
 **/.env
 **/.env.*
 **/*.log
+**/__pycache__/
+**/*.pyc
 
 # Large or generated media should use source control intentionally.
 **/*.mp4

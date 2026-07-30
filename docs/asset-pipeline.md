@@ -38,7 +38,15 @@ The first GLB kit is therefore procedural/project-authored: it uses the referenc
 
 ## Compression Notes
 
-The current checked-in GLBs are small enough for the browser MVP and are not Draco-compressed yet, because Draco requires adding and testing the browser decoder path. KTX2 texture compression is also deferred until the generated texture set is stable. When enabled, compression should be added as an optional pipeline step and verified in Babylon before being required by deployment.
+Step 7 changes the hero street from a single runtime GLB into near/mid/far GLB chunks:
+
+- `hero_street_corridor_near.glb`
+- `hero_street_corridor_mid.glb`
+- `hero_street_corridor_far.glb`
+
+The full `hero_street_corridor.glb` remains as a fallback/reference export, but Babylon loads the chunked set for the live street pass. Runtime GLBs also prefer external Babylon material atlases now; embedded procedural texture images are disabled by default and can be restored for standalone GLB inspection with `EGYPTVR_EMBED_PROCEDURAL_TEXTURES=1`.
+
+Draco export is still opt-in with `EGYPTVR_ENABLE_DRACO=1`, because Draco requires adding and testing the browser decoder path before it becomes a production requirement. KTX2 texture compression is also deferred until the texture set and decoder wiring are verified in Babylon. When enabled, compression should remain an optional pipeline step until it is tested on the target laptop browser.
 
 ## AI Boundaries
 

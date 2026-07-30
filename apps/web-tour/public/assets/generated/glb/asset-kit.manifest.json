@@ -1,17 +1,20 @@
 {
   "$schema": "./asset-kit.schema.json",
   "id": "memphis-modular-glb-kit-v1",
-  "checkedDate": "2026-07-19",
+  "checkedDate": "2026-07-30",
   "generatedBy": "tools/blender/generate_memphis_asset_kit.py",
   "generator": "Blender procedural mesh script",
   "blenderVersion": "3.6.23",
   "meshCompression": "Draco export is supported by setting EGYPTVR_ENABLE_DRACO=1; disabled by default until browser decoder wiring is verified.",
   "licenseStatus": "Project-authored procedural meshes; no source media copied or embedded.",
   "materialAtlasStatus": {
-    "currentPass": "Procedural albedo/normal/roughness texture sets are packed in the generated GLBs.",
-    "aoAndHeight": "AO, doorway darkness, wall-base dirt, cloth shade, cracks, chips, and height-like surface breakup are authored as visible decal/contact geometry for this pass.",
+    "currentPass": "Runtime GLBs now prefer external Babylon material atlases. Procedural texture embedding is disabled by default and can be re-enabled only for standalone inspection with EGYPTVR_EMBED_PROCEDURAL_TEXTURES=1.",
+    "aoAndHeight": "AO, doorway darkness, wall-base dirt, cloth shade, cracks, eroded plaster scumble, exposed mud daub, corner grime, and height-like surface breakup are authored as visible decal/contact geometry for this pass.",
     "bakedLightAndContact": "Hero Street v2 now includes layered baked-looking shadow geometry: broad awning bands, continuous wall-base AO, doorway pools, vertical door darkness, post contacts, prop grounding, and warm sun-dust strips.",
-    "nextPass": "After the look is approved, split near/mid/far chunks and bake true UV lightmap/AO/height/KTX2 atlases."
+    "wallQuality": "Step 5 improves existing wall planes only: no new architecture placement, no district expansion, and no new wall rows.",
+    "historicalCompliance": "Step 6 keeps mudbrick as the domestic construction system, but makes visible house exteriors mostly continuous mud plaster/whitewash with irregular daub exposure; regular exposed block-grid masonry is avoided for Old Kingdom residential facades.",
+    "optimization": "Step 7 splits the hero street into near/mid/far runtime chunks and leaves the full corridor as a fallback/reference export.",
+    "nextPass": "After the chunked runtime is approved, add verified decoder-backed Draco/Meshopt and KTX2 pipelines."
   },
   "policy": [
     "Use restricted Memphis-specific sources as human research context only.",
@@ -96,11 +99,102 @@
       ],
       "notes": [
         "Project-authored two-row mudbrick street corridor with inward-facing facades.",
-        "Hero Street v2 film-set pass: packed procedural PBR texture sets, baked contact/shadow decal geometry, foreground occluders, sculpted close facade chunks, roof clutter, plaster cracks, pottery, baskets, sacks, straw, stones, ruts, and work surfaces.",
+        "Hero Street v2 film-set pass: runtime material-atlas names, baked contact/shadow decal geometry, foreground occluders, sculpted close facade chunks, roof clutter, plaster cracks, pottery, baskets, sacks, straw, stones, ruts, and work surfaces.",
+        "Step 5 wall-quality pass: existing facades are improved in place with irregular plaster scumble, wall-base grime, exposed mud daub, corner AO, door-hand dirt, and fine settlement cracks; no new houses or wall rows are added.",
+        "Step 6 historical-compliance pass: domestic wall construction remains mudbrick, but visible street surfaces read as continuous mud-plastered/whitewashed earthen walls with irregular wear instead of regular exposed block-grid masonry.",
+        "Street-mouth cleanup: the Main Wall-side house bay is intentionally omitted on both rows so the transition from the White Walls gate to the offset residential street remains open and walkable.",
         "Old Kingdom visual guardrails: compact mudbrick domestic lane, restrained domestic wall marks, linen shade cloth, plain clothing silhouettes, and no copied source media.",
-        "Layout follows docs/design/memphis-hero-district-plan.md and avoids overlapping architecture systems."
+        "Layout follows docs/design/memphis-hero-district-plan.md and avoids overlapping architecture systems.",
+        "Step 7 optimization pass keeps this full corridor as a fallback/reference export; the browser runtime now prefers the near/mid/far chunked exports."
       ],
       "runtimeUrl": "/assets/generated/glb/hero_street_corridor.glb",
+      "origin": "project-authored procedural Blender mesh",
+      "runtimeAllowed": true,
+      "licenseStatus": "Project-authored synthetic/procedural model; no source media copied."
+    },
+    {
+      "id": "hero-street-corridor-near",
+      "fileName": "hero_street_corridor_near.glb",
+      "label": "Hero street near entry chunk",
+      "category": "residential-street",
+      "evidenceLevel": "inferred",
+      "runtimeAssetId": "generated-modular-glb-kit-residential-street",
+      "referenceSourceIds": [
+        "aera-memphis",
+        "sfar-kom-el-fakhry",
+        "petrie-memphis-i",
+        "met-open-access",
+        "cleveland-open-access"
+      ],
+      "notes": [
+        "Project-authored two-row mudbrick street corridor with inward-facing facades.",
+        "Hero Street v2 film-set pass: runtime material-atlas names, baked contact/shadow decal geometry, foreground occluders, sculpted close facade chunks, roof clutter, plaster cracks, pottery, baskets, sacks, straw, stones, ruts, and work surfaces.",
+        "Step 5 wall-quality pass: existing facades are improved in place with irregular plaster scumble, wall-base grime, exposed mud daub, corner AO, door-hand dirt, and fine settlement cracks; no new houses or wall rows are added.",
+        "Step 6 historical-compliance pass: domestic wall construction remains mudbrick, but visible street surfaces read as continuous mud-plastered/whitewashed earthen walls with irregular wear instead of regular exposed block-grid masonry.",
+        "Street-mouth cleanup: the Main Wall-side house bay is intentionally omitted on both rows so the transition from the White Walls gate to the offset residential street remains open and walkable.",
+        "Old Kingdom visual guardrails: compact mudbrick domestic lane, restrained domestic wall marks, linen shade cloth, plain clothing silhouettes, and no copied source media.",
+        "Layout follows docs/design/memphis-hero-district-plan.md and avoids overlapping architecture systems.",
+        "Step 7 optimized chunk: near/entry film-set geometry for first-person arrival and close foreground composition."
+      ],
+      "runtimeUrl": "/assets/generated/glb/hero_street_corridor_near.glb",
+      "origin": "project-authored procedural Blender mesh",
+      "runtimeAllowed": true,
+      "licenseStatus": "Project-authored synthetic/procedural model; no source media copied."
+    },
+    {
+      "id": "hero-street-corridor-mid",
+      "fileName": "hero_street_corridor_mid.glb",
+      "label": "Hero street mid-lane chunk",
+      "category": "residential-street",
+      "evidenceLevel": "inferred",
+      "runtimeAssetId": "generated-modular-glb-kit-residential-street",
+      "referenceSourceIds": [
+        "aera-memphis",
+        "sfar-kom-el-fakhry",
+        "petrie-memphis-i",
+        "met-open-access",
+        "cleveland-open-access"
+      ],
+      "notes": [
+        "Project-authored two-row mudbrick street corridor with inward-facing facades.",
+        "Hero Street v2 film-set pass: runtime material-atlas names, baked contact/shadow decal geometry, foreground occluders, sculpted close facade chunks, roof clutter, plaster cracks, pottery, baskets, sacks, straw, stones, ruts, and work surfaces.",
+        "Step 5 wall-quality pass: existing facades are improved in place with irregular plaster scumble, wall-base grime, exposed mud daub, corner AO, door-hand dirt, and fine settlement cracks; no new houses or wall rows are added.",
+        "Step 6 historical-compliance pass: domestic wall construction remains mudbrick, but visible street surfaces read as continuous mud-plastered/whitewashed earthen walls with irregular wear instead of regular exposed block-grid masonry.",
+        "Street-mouth cleanup: the Main Wall-side house bay is intentionally omitted on both rows so the transition from the White Walls gate to the offset residential street remains open and walkable.",
+        "Old Kingdom visual guardrails: compact mudbrick domestic lane, restrained domestic wall marks, linen shade cloth, plain clothing silhouettes, and no copied source media.",
+        "Layout follows docs/design/memphis-hero-district-plan.md and avoids overlapping architecture systems.",
+        "Step 7 optimized chunk: middle street geometry, long sandy lane surface, and central market/street detail."
+      ],
+      "runtimeUrl": "/assets/generated/glb/hero_street_corridor_mid.glb",
+      "origin": "project-authored procedural Blender mesh",
+      "runtimeAllowed": true,
+      "licenseStatus": "Project-authored synthetic/procedural model; no source media copied."
+    },
+    {
+      "id": "hero-street-corridor-far",
+      "fileName": "hero_street_corridor_far.glb",
+      "label": "Hero street far temple-side chunk",
+      "category": "residential-street",
+      "evidenceLevel": "inferred",
+      "runtimeAssetId": "generated-modular-glb-kit-residential-street",
+      "referenceSourceIds": [
+        "aera-memphis",
+        "sfar-kom-el-fakhry",
+        "petrie-memphis-i",
+        "met-open-access",
+        "cleveland-open-access"
+      ],
+      "notes": [
+        "Project-authored two-row mudbrick street corridor with inward-facing facades.",
+        "Hero Street v2 film-set pass: runtime material-atlas names, baked contact/shadow decal geometry, foreground occluders, sculpted close facade chunks, roof clutter, plaster cracks, pottery, baskets, sacks, straw, stones, ruts, and work surfaces.",
+        "Step 5 wall-quality pass: existing facades are improved in place with irregular plaster scumble, wall-base grime, exposed mud daub, corner AO, door-hand dirt, and fine settlement cracks; no new houses or wall rows are added.",
+        "Step 6 historical-compliance pass: domestic wall construction remains mudbrick, but visible street surfaces read as continuous mud-plastered/whitewashed earthen walls with irregular wear instead of regular exposed block-grid masonry.",
+        "Street-mouth cleanup: the Main Wall-side house bay is intentionally omitted on both rows so the transition from the White Walls gate to the offset residential street remains open and walkable.",
+        "Old Kingdom visual guardrails: compact mudbrick domestic lane, restrained domestic wall marks, linen shade cloth, plain clothing silhouettes, and no copied source media.",
+        "Layout follows docs/design/memphis-hero-district-plan.md and avoids overlapping architecture systems.",
+        "Step 7 optimized chunk: far/temple-side depth layer for route continuity and distant composition."
+      ],
+      "runtimeUrl": "/assets/generated/glb/hero_street_corridor_far.glb",
       "origin": "project-authored procedural Blender mesh",
       "runtimeAllowed": true,
       "licenseStatus": "Project-authored synthetic/procedural model; no source media copied."
