@@ -31,3 +31,11 @@ The hero street should use mudbrick as the domestic construction system, but the
 - `sun baked mudbrick` should be used for exposed cores, damage, jars, rough mud elements, or secondary structures, not as a repeated block-grid skin across the hero street facades.
 - If a future material atlas creates a visible grid, reduce it or move it to damage masks only.
 - The Step 7 chunked runtime must preserve these same surface rules in every near/mid/far hero-street export.
+
+## Operational Gate
+
+- Machine-readable rules live in `content/compliance/historical-compliance.rules.json`.
+- Run `npm run validate:history` after visual, material, Blender, asset-manifest, evidence, or route changes.
+- The root `npm run build` script runs `validate:history` after content validation, so historical drift should fail before the browser build completes.
+- A pass means the current metadata, evidence labels, runtime asset notes, material-atlas notes, and hero-street GLB manifest still declare the Early Dynastic / Old Kingdom Memphis scope.
+- A pass does not mean expert review is complete. It means the project has not obviously drifted into later-period, fantasy, copied-media, or generic Egyptian visual language.

@@ -6,7 +6,7 @@
   "materialAtlases": [
     {
       "key": "mudbrick",
-      "label": "Nile alluvial mudbrick with straw temper, worn brick courses, and softened plaster scars",
+      "label": "Nile alluvial mudbrick with straw temper, softened courses, and plaster scars",
       "evidenceLevel": "inferred",
       "files": [
         "/assets/generated/textures/atlas-mudbrick-albedo.jpg",

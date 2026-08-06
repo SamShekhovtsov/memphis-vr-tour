@@ -1,0 +1,66 @@
+{
+  "$schema": "./browser-runtime-budget.schema.json",
+  "id": "memphis-browser-runtime-optimization-v1",
+  "tourId": "memphis-white-walls-early-kingdom",
+  "checkedDate": "2026-08-06",
+  "scope": "After Quality Works, Optimize: preserve Hero Street v2 art while keeping laptop-browser runtime practical.",
+  "qualityProfiles": {
+    "balanced": {
+      "default": true,
+      "query": "?quality=balanced",
+      "hardwareScalingLevel": 1,
+      "textureSampling": "trilinear",
+      "notes": "Default profile. Keeps the approved look and chunked hero-street runtime."
+    },
+    "performance": {
+      "default": false,
+      "query": "?quality=performance",
+      "hardwareScalingLevel": 1.35,
+      "textureSampling": "bilinear",
+      "notes": "Opt-in laptop-safety profile. Keeps hero-street chunks but trims optional boats, reeds, birds, smoke, anisotropy, and LOD distance."
+    },
+    "cinematic": {
+      "default": false,
+      "query": "?quality=cinematic",
+      "hardwareScalingLevel": 1,
+      "textureSampling": "trilinear",
+      "notes": "Opt-in inspection profile with higher anisotropic filtering and later LOD drop-out."
+    }
+  },
+  "runtimePolicy": {
+    "sourceOfTruth": "The active residential street runtime must load the near/mid/far GLB chunks, not the full fallback corridor.",
+    "fallbackAsset": "hero-street-corridor",
+    "criticalAssetIds": [
+      "hero-street-corridor-near",
+      "hero-street-corridor-mid",
+      "hero-street-corridor-far",
+      "animated-street-actors"
+    ],
+    "deferredAssetIds": [
+      "nile-boat-large",
+      "reed-bank-cluster"
+    ],
+    "forbiddenInitialRuntimeAssetIds": [
+      "hero-street-corridor"
+    ]
+  },
+  "budgets": {
+    "activeGlbBytes": 8500000,
+    "textureBytes": 5500000,
+    "fallbackGlbBytes": 6500000,
+    "perAssetGlbBytes": {
+      "nile-boat-large": 450000,
+      "reed-bank-cluster": 750000,
+      "hero-street-corridor": 6500000,
+      "hero-street-corridor-near": 2300000,
+      "hero-street-corridor-mid": 3400000,
+      "hero-street-corridor-far": 1400000,
+      "animated-street-actors": 850000
+    }
+  },
+  "futureCompressionGate": {
+    "draco": "Remain opt-in until Babylon decoder loading is verified on local and deployed browser builds.",
+    "meshopt": "Do not require Meshopt until decoder path and visual regression screenshots are added.",
+    "ktx2": "Do not require KTX2 until Basis/KTX2 transcoder loading is verified and screenshots match the uncompressed atlas pass."
+  }
+}

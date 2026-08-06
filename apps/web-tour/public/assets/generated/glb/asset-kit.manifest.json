@@ -102,8 +102,9 @@
         "Hero Street v2 film-set pass: runtime material-atlas names, baked contact/shadow decal geometry, foreground occluders, sculpted close facade chunks, roof clutter, plaster cracks, pottery, baskets, sacks, straw, stones, ruts, and work surfaces.",
         "Step 5 wall-quality pass: existing facades are improved in place with irregular plaster scumble, wall-base grime, exposed mud daub, corner AO, door-hand dirt, and fine settlement cracks; no new houses or wall rows are added.",
         "Step 6 historical-compliance pass: domestic wall construction remains mudbrick, but visible street surfaces read as continuous mud-plastered/whitewashed earthen walls with irregular wear instead of regular exposed block-grid masonry.",
+        "Roadmap v3 Step 4 wall-face pass: existing house fronts use continuous uneven plaster skins, softened massing, darker door depth, and subdued daub exposure to avoid a repeated block-panel read.",
         "Street-mouth cleanup: the Main Wall-side house bay is intentionally omitted on both rows so the transition from the White Walls gate to the offset residential street remains open and walkable.",
-        "Old Kingdom visual guardrails: compact mudbrick domestic lane, restrained domestic wall marks, linen shade cloth, plain clothing silhouettes, and no copied source media.",
+        "Old Kingdom / Kom el-Fakhry / Mit Rahina visual guardrails: compact house masses, flat roofs, small openings, compact mudbrick domestic lane, restrained domestic wall marks, linen shade cloth, plain clothing silhouettes, and no copied source media.",
         "Layout follows docs/design/memphis-hero-district-plan.md and avoids overlapping architecture systems.",
         "Step 7 optimization pass keeps this full corridor as a fallback/reference export; the browser runtime now prefers the near/mid/far chunked exports."
       ],
@@ -131,8 +132,9 @@
         "Hero Street v2 film-set pass: runtime material-atlas names, baked contact/shadow decal geometry, foreground occluders, sculpted close facade chunks, roof clutter, plaster cracks, pottery, baskets, sacks, straw, stones, ruts, and work surfaces.",
         "Step 5 wall-quality pass: existing facades are improved in place with irregular plaster scumble, wall-base grime, exposed mud daub, corner AO, door-hand dirt, and fine settlement cracks; no new houses or wall rows are added.",
         "Step 6 historical-compliance pass: domestic wall construction remains mudbrick, but visible street surfaces read as continuous mud-plastered/whitewashed earthen walls with irregular wear instead of regular exposed block-grid masonry.",
+        "Roadmap v3 Step 4 wall-face pass: existing house fronts use continuous uneven plaster skins, softened massing, darker door depth, and subdued daub exposure to avoid a repeated block-panel read.",
         "Street-mouth cleanup: the Main Wall-side house bay is intentionally omitted on both rows so the transition from the White Walls gate to the offset residential street remains open and walkable.",
-        "Old Kingdom visual guardrails: compact mudbrick domestic lane, restrained domestic wall marks, linen shade cloth, plain clothing silhouettes, and no copied source media.",
+        "Old Kingdom / Kom el-Fakhry / Mit Rahina visual guardrails: compact house masses, flat roofs, small openings, compact mudbrick domestic lane, restrained domestic wall marks, linen shade cloth, plain clothing silhouettes, and no copied source media.",
         "Layout follows docs/design/memphis-hero-district-plan.md and avoids overlapping architecture systems.",
         "Step 7 optimized chunk: near/entry film-set geometry for first-person arrival and close foreground composition."
       ],
@@ -160,8 +162,9 @@
         "Hero Street v2 film-set pass: runtime material-atlas names, baked contact/shadow decal geometry, foreground occluders, sculpted close facade chunks, roof clutter, plaster cracks, pottery, baskets, sacks, straw, stones, ruts, and work surfaces.",
         "Step 5 wall-quality pass: existing facades are improved in place with irregular plaster scumble, wall-base grime, exposed mud daub, corner AO, door-hand dirt, and fine settlement cracks; no new houses or wall rows are added.",
         "Step 6 historical-compliance pass: domestic wall construction remains mudbrick, but visible street surfaces read as continuous mud-plastered/whitewashed earthen walls with irregular wear instead of regular exposed block-grid masonry.",
+        "Roadmap v3 Step 4 wall-face pass: existing house fronts use continuous uneven plaster skins, softened massing, darker door depth, and subdued daub exposure to avoid a repeated block-panel read.",
         "Street-mouth cleanup: the Main Wall-side house bay is intentionally omitted on both rows so the transition from the White Walls gate to the offset residential street remains open and walkable.",
-        "Old Kingdom visual guardrails: compact mudbrick domestic lane, restrained domestic wall marks, linen shade cloth, plain clothing silhouettes, and no copied source media.",
+        "Old Kingdom / Kom el-Fakhry / Mit Rahina visual guardrails: compact house masses, flat roofs, small openings, compact mudbrick domestic lane, restrained domestic wall marks, linen shade cloth, plain clothing silhouettes, and no copied source media.",
         "Layout follows docs/design/memphis-hero-district-plan.md and avoids overlapping architecture systems.",
         "Step 7 optimized chunk: middle street geometry, long sandy lane surface, and central market/street detail."
       ],
@@ -189,8 +192,9 @@
         "Hero Street v2 film-set pass: runtime material-atlas names, baked contact/shadow decal geometry, foreground occluders, sculpted close facade chunks, roof clutter, plaster cracks, pottery, baskets, sacks, straw, stones, ruts, and work surfaces.",
         "Step 5 wall-quality pass: existing facades are improved in place with irregular plaster scumble, wall-base grime, exposed mud daub, corner AO, door-hand dirt, and fine settlement cracks; no new houses or wall rows are added.",
         "Step 6 historical-compliance pass: domestic wall construction remains mudbrick, but visible street surfaces read as continuous mud-plastered/whitewashed earthen walls with irregular wear instead of regular exposed block-grid masonry.",
+        "Roadmap v3 Step 4 wall-face pass: existing house fronts use continuous uneven plaster skins, softened massing, darker door depth, and subdued daub exposure to avoid a repeated block-panel read.",
         "Street-mouth cleanup: the Main Wall-side house bay is intentionally omitted on both rows so the transition from the White Walls gate to the offset residential street remains open and walkable.",
-        "Old Kingdom visual guardrails: compact mudbrick domestic lane, restrained domestic wall marks, linen shade cloth, plain clothing silhouettes, and no copied source media.",
+        "Old Kingdom / Kom el-Fakhry / Mit Rahina visual guardrails: compact house masses, flat roofs, small openings, compact mudbrick domestic lane, restrained domestic wall marks, linen shade cloth, plain clothing silhouettes, and no copied source media.",
         "Layout follows docs/design/memphis-hero-district-plan.md and avoids overlapping architecture systems.",
         "Step 7 optimized chunk: far/temple-side depth layer for route continuity and distant composition."
       ],
@@ -278,7 +282,7 @@
       ],
       "notes": [
         "Project-authored silhouettes for ambience only.",
-        "Clothing and poses remain placeholders until a dedicated character pass."
+        "Clothing and poses remain placeholders, but the silhouettes stay restrained around plain linen garments until a dedicated character pass."
       ],
       "runtimeUrl": "/assets/generated/glb/street_npc_placeholders.glb",
       "origin": "project-authored procedural Blender mesh",

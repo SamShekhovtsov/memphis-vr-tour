@@ -45,8 +45,9 @@ HERO_STREET_SHARED_NOTES = [
     "Hero Street v2 film-set pass: runtime material-atlas names, baked contact/shadow decal geometry, foreground occluders, sculpted close facade chunks, roof clutter, plaster cracks, pottery, baskets, sacks, straw, stones, ruts, and work surfaces.",
     "Step 5 wall-quality pass: existing facades are improved in place with irregular plaster scumble, wall-base grime, exposed mud daub, corner AO, door-hand dirt, and fine settlement cracks; no new houses or wall rows are added.",
     "Step 6 historical-compliance pass: domestic wall construction remains mudbrick, but visible street surfaces read as continuous mud-plastered/whitewashed earthen walls with irregular wear instead of regular exposed block-grid masonry.",
+    "Roadmap v3 Step 4 wall-face pass: existing house fronts use continuous uneven plaster skins, softened massing, darker door depth, and subdued daub exposure to avoid a repeated block-panel read.",
     "Street-mouth cleanup: the Main Wall-side house bay is intentionally omitted on both rows so the transition from the White Walls gate to the offset residential street remains open and walkable.",
-    "Old Kingdom visual guardrails: compact mudbrick domestic lane, restrained domestic wall marks, linen shade cloth, plain clothing silhouettes, and no copied source media.",
+    "Old Kingdom / Kom el-Fakhry / Mit Rahina visual guardrails: compact house masses, flat roofs, small openings, compact mudbrick domestic lane, restrained domestic wall marks, linen shade cloth, plain clothing silhouettes, and no copied source media.",
     "Layout follows docs/design/memphis-hero-district-plan.md and avoids overlapping architecture systems.",
 ]
 
@@ -188,7 +189,7 @@ ASSETS = [
         "referenceSourceIds": ["met-old-kingdom-cattle-relief", "met-open-access", "tla-earlier-egyptian-hf"],
         "notes": [
             "Project-authored silhouettes for ambience only.",
-            "Clothing and poses remain placeholders until a dedicated character pass."
+            "Clothing and poses remain placeholders, but the silhouettes stay restrained around plain linen garments until a dedicated character pass."
         ],
     },
 ]
@@ -802,6 +803,77 @@ def wall_surface_sliver(
     )
 
 
+def irregular_facade_skin(
+    name: str,
+    facade_x: float,
+    side_dir: int,
+    center_y: float,
+    frontage: float,
+    height: float,
+    material: bpy.types.Material,
+    rng: random.Random,
+    x_offset: float = 0.052,
+) -> bpy.types.Object:
+    """Author a continuous, slightly uneven plaster face over the mudbrick core."""
+    columns = 7
+    rows = 5
+    bottom_z = 0.12
+    top_z = height * 0.91
+    verts: list[tuple[float, float, float]] = []
+
+    for row in range(rows + 1):
+        z_ratio = row / rows
+        for column in range(columns + 1):
+            y_ratio = column / columns
+            edge_weight = max(abs(y_ratio - 0.5) * 2, abs(z_ratio - 0.5) * 1.35)
+            center_bulge = math.sin(math.pi * y_ratio) * math.sin(math.pi * z_ratio)
+            y = center_y - frontage * 0.48 + frontage * 0.96 * y_ratio
+            z = bottom_z + (top_z - bottom_z) * z_ratio
+
+            if column in [0, columns]:
+                y += rng.uniform(-0.055, 0.055)
+            if row in [0, rows]:
+                z += rng.uniform(-0.035, 0.035)
+
+            ripple = (
+                math.sin((y_ratio * 3.8 + z_ratio * 1.7) * math.pi + rng.random() * 0.2) * 0.012
+                + rng.uniform(-0.01, 0.01)
+            )
+            x = facade_x + side_dir * (x_offset + center_bulge * 0.018 + edge_weight * 0.006 + ripple)
+            verts.append((x, y, z))
+
+    faces: list[tuple[int, int, int, int]] = []
+    for row in range(rows):
+        for column in range(columns):
+            a = row * (columns + 1) + column
+            b = a + 1
+            c = (row + 1) * (columns + 1) + column
+            d = c + 1
+            if side_dir > 0:
+                faces.append((a, b, d, c))
+            else:
+                faces.append((a, c, d, b))
+
+    mesh = bpy.data.meshes.new(f"{name}Mesh")
+    mesh.from_pydata(verts, [], faces)
+    mesh.update()
+    obj = bpy.data.objects.new(name, mesh)
+    bpy.context.collection.objects.link(obj)
+    obj.data.materials.append(material)
+
+    uv_layer = obj.data.uv_layers.new(name="UVMap")
+    for polygon in obj.data.polygons:
+        for loop_index in polygon.loop_indices:
+            vertex_index = obj.data.loops[loop_index].vertex_index
+            row = vertex_index // (columns + 1)
+            column = vertex_index % (columns + 1)
+            uv_layer.data[loop_index].uv = (column / columns, row / rows)
+
+    normals = obj.modifiers.new("continuous plaster weighted normals", "WEIGHTED_NORMAL")
+    normals.keep_sharp = True
+    return obj
+
+
 def make_hull(name: str, material: bpy.types.Material) -> bpy.types.Object:
     stations = [
         (-4.2, 0.30, 0.08),
@@ -1280,24 +1352,35 @@ def make_facade_house(
     rng = random.Random(name)
     facade_x = center_x + side_dir * depth * 0.5
 
-    cube(f"{name}-mudPlasteredWallMass", (center_x, center_y, height * 0.5), (depth, frontage, height), materials["mud_plaster"], bevel=0.075)
+    cube(f"{name}-mudPlasteredWallMass", (center_x, center_y, height * 0.5), (depth, frontage, height), materials["mud_plaster"], bevel=0.095)
     cube(
-        f"{name}-facadePlaster",
-        (facade_x + side_dir * 0.026, center_y, height * 0.54),
-        (0.052, frontage * 0.96, height * 0.82),
-        materials["plaster"],
-        bevel=0.012,
+        f"{name}-subtleFacadeBacking",
+        (facade_x + side_dir * 0.018, center_y, height * 0.52),
+        (0.036, frontage * 0.94, height * 0.76),
+        materials["mud_plaster"],
+        bevel=0.018,
     )
-    cube(f"{name}-roofLipFront", (facade_x + side_dir * 0.08, center_y, height + 0.14), (0.28, frontage, 0.28), materials["mud_plaster"], bevel=0.035)
+    irregular_facade_skin(
+        f"{name}-continuousUnevenPlasterSkin",
+        facade_x,
+        side_dir,
+        center_y,
+        frontage,
+        height,
+        materials["plaster"],
+        rng,
+    )
+    cube(f"{name}-roofLipFront", (facade_x + side_dir * 0.08, center_y, height + 0.14), (0.26, frontage, 0.28), materials["mud_plaster"], bevel=0.05)
     cube(f"{name}-roofLipBack", (center_x - side_dir * depth * 0.47, center_y, height + 0.14), (0.22, frontage, 0.28), materials["mud_plaster"], bevel=0.035)
-    cube(f"{name}-roofLipA", (center_x, center_y - frontage * 0.5, height + 0.14), (depth, 0.18, 0.28), materials["mud_plaster"], bevel=0.035)
-    cube(f"{name}-roofLipB", (center_x, center_y + frontage * 0.5, height + 0.14), (depth, 0.18, 0.28), materials["mud_plaster"], bevel=0.035)
+    cube(f"{name}-roofLipA", (center_x, center_y - frontage * 0.5, height + 0.14), (depth, 0.16, 0.28), materials["mud_plaster"], bevel=0.045)
+    cube(f"{name}-roofLipB", (center_x, center_y + frontage * 0.5, height + 0.14), (depth, 0.16, 0.28), materials["mud_plaster"], bevel=0.045)
 
     door_y = center_y + rng.uniform(-frontage * 0.22, frontage * 0.22)
-    cube(f"{name}-doorShadow", (facade_x + side_dir * 0.065, door_y, 0.72), (0.08, 0.78, 1.42), materials["dark"], bevel=0.008)
-    cube(f"{name}-doorLintel", (facade_x + side_dir * 0.11, door_y, 1.46), (0.16, 1.02, 0.18), materials["wood"], bevel=0.006)
-    cube(f"{name}-leftDoorJamb", (facade_x + side_dir * 0.11, door_y - 0.48, 0.72), (0.14, 0.12, 1.35), materials["wood"], bevel=0.006)
-    cube(f"{name}-rightDoorJamb", (facade_x + side_dir * 0.11, door_y + 0.48, 0.72), (0.14, 0.12, 1.35), materials["wood"], bevel=0.006)
+    cube(f"{name}-deepDoorCavity", (facade_x + side_dir * 0.045, door_y, 0.74), (0.13, 0.86, 1.48), materials["dark"], bevel=0.018)
+    cube(f"{name}-doorShadowCore", (facade_x + side_dir * 0.095, door_y, 0.67), (0.055, 0.68, 1.26), materials["dark"], bevel=0.006)
+    cube(f"{name}-doorLintel", (facade_x + side_dir * 0.125, door_y, 1.48), (0.13, 1.04, 0.17), materials["wood"], bevel=0.008)
+    cube(f"{name}-leftDoorJamb", (facade_x + side_dir * 0.118, door_y - 0.48, 0.72), (0.11, 0.11, 1.32), materials["wood"], bevel=0.007)
+    cube(f"{name}-rightDoorJamb", (facade_x + side_dir * 0.118, door_y + 0.48, 0.72), (0.11, 0.11, 1.32), materials["wood"], bevel=0.007)
 
     for window_index in range(2):
         wy = center_y + (-0.33 + window_index * 0.66) * frontage
@@ -1306,27 +1389,38 @@ def make_facade_house(
         cube(f"{name}-smallWindow-{window_index}", (facade_x + side_dir * 0.062, wy, height * 0.62), (0.07, 0.44, 0.42), materials["dark"], bevel=0.005)
         cube(f"{name}-windowFrame-{window_index}", (facade_x + side_dir * 0.105, wy, height * 0.62), (0.08, 0.58, 0.56), materials["wood"], bevel=0.004)
 
-    for patch_index in range(4):
+    for patch_index in range(3):
         py = center_y + rng.uniform(-frontage * 0.42, frontage * 0.42)
+        if abs(py - door_y) < 0.62:
+            py += 0.74 if py < door_y else -0.74
         pz = rng.uniform(0.45, height * 0.88)
-        cube(
-            f"{name}-plasterPatch-{patch_index}",
-            (facade_x + side_dir * 0.082, py, pz),
-            (0.035, rng.uniform(0.28, 0.78), rng.uniform(0.12, 0.38)),
+        wall_surface_patch(
+            f"{name}-irregularPlasterScab-{patch_index}",
+            facade_x,
+            side_dir,
+            py,
+            pz,
+            rng.uniform(0.38, 0.92),
+            rng.uniform(0.14, 0.42),
             materials["exposed_wall_core" if patch_index == 0 else "plaster_veil"],
-            bevel=0,
+            rng,
+            x_offset=0.118,
+            edge_jitter=0.085,
         )
 
-    for crack_index in range(3):
+    for crack_index in range(2):
         py = center_y + rng.uniform(-frontage * 0.43, frontage * 0.43)
         pz = rng.uniform(0.55, height * 0.9)
-        cube(
+        wall_surface_sliver(
             f"{name}-hairlineCrack-{crack_index}",
-            (facade_x + side_dir * 0.105, py, pz),
-            (0.022, rng.uniform(0.02, 0.045), rng.uniform(0.36, 0.82)),
+            facade_x,
+            side_dir,
+            py,
+            pz,
+            rng.uniform(0.34, 0.76),
             materials["dark"],
-            rot=(0, 0, rng.uniform(-0.25, 0.25)),
-            bevel=0,
+            rng,
+            x_offset=0.126,
         )
 
     add_sculpted_facade_details(name, facade_x, center_y, frontage, height, side_dir, door_y, materials, rng)
@@ -1730,7 +1824,7 @@ def add_foreground_film_set(materials: dict[str, bpy.types.Material]) -> None:
         "heroV2LeftEyeHeightWallOccluder",
         (-14.72, -7.6, 1.2),
         (0.55, 4.8, 2.4),
-        materials["mudbrick"],
+        materials["mud_plaster"],
         rot=(0, 0, -0.018),
         bevel=0.065,
     )
@@ -1746,7 +1840,7 @@ def add_foreground_film_set(materials: dict[str, bpy.types.Material]) -> None:
         "heroV2RightEyeHeightWallOccluder",
         (-6.12, -6.2, 1.05),
         (0.48, 3.25, 2.1),
-        materials["mudbrick"],
+        materials["mud_plaster"],
         rot=(0, 0, 0.02),
         bevel=0.055,
     )
@@ -1762,6 +1856,17 @@ def add_foreground_film_set(materials: dict[str, bpy.types.Material]) -> None:
         ("left", -14.39, 1, -7.4, 2.15),
         ("right", -6.42, -1, -5.8, 1.9),
     ]:
+        irregular_facade_skin(
+            f"heroV2ForegroundContinuousPlasterSkin-{side_name}",
+            facade_x,
+            side_dir,
+            center_y,
+            3.65 if side_name == "left" else 2.35,
+            height,
+            materials["plaster"],
+            rng,
+            x_offset=0.075,
+        )
         wall_surface_patch(
             f"heroV2ForegroundWallBaseGrime-{side_name}",
             facade_x,

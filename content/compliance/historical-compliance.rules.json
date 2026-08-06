@@ -1,0 +1,206 @@
+{
+  "$schema": "./historical-compliance.schema.json",
+  "id": "ancient-memphis-old-kingdom-guardrail-v1",
+  "tourId": "memphis-white-walls-early-kingdom",
+  "scope": {
+    "projectName": "Ancient Memphis: A Walk Through the White Walls",
+    "place": "Ancient Memphis / Ineb-Hedj / White Walls around Mit Rahina",
+    "period": "Early Dynastic / Old Kingdom",
+    "livingCityAnchor": "Kom el-Fakhry / Mit Rahina settlement evidence",
+    "templeEndpoint": "early Ptah / Hwt-ka-Ptah precinct",
+    "reconstructionMode": "historically plausible cinematic reconstruction"
+  },
+  "evidenceLevels": [
+    "confirmed",
+    "inferred",
+    "speculative"
+  ],
+  "sourceUsePolicy": {
+    "runtimeRule": "Runtime assets must be project-authored, generated, procedural, owned, or explicitly licensed for runtime use.",
+    "restrictedSourceRule": "Restricted site-specific sources may guide human art direction and evidence notes, but must not be copied into runtime media.",
+    "languageRule": "Ancient Egyptian language, inscriptions, and speech remain corpus/reference-led. Unverified decorative marks must stay speculative and non-claiming.",
+    "displayRule": "Evidence view must preserve the distinction between confirmed, inferred, and speculative reconstruction."
+  },
+  "architecture": {
+    "requiredSignals": [
+      "mudbrick domestic construction",
+      "mud plaster or whitewash over street-facing walls",
+      "compact house masses",
+      "flat roofs",
+      "simple parapets",
+      "small openings",
+      "wood lintels or frames",
+      "reed or linen shade",
+      "packed-earth street floor"
+    ],
+    "allowedDomesticFeatures": [
+      "rounded mudbrick edges",
+      "irregular plaster scumble",
+      "wall-base grime",
+      "chipped plaster lips",
+      "small exposed daub patches",
+      "simple roof storage",
+      "baskets",
+      "jars",
+      "mats",
+      "ropes",
+      "plain work benches"
+    ],
+    "avoidSignals": [
+      "regular exposed block-grid facade",
+      "stone block wallpaper on ordinary houses",
+      "New Kingdom residential styling",
+      "Ptolemaic residential styling",
+      "fantasy obelisk boulevard",
+      "royal palace street",
+      "monumental pylon boulevard",
+      "saturated gold palace materials",
+      "purple fantasy textiles",
+      "glossy stone house walls",
+      "modern concrete"
+    ]
+  },
+  "materials": {
+    "requiredFamilies": [
+      "mudbrick",
+      "plaster",
+      "dust",
+      "wood",
+      "linen",
+      "pottery",
+      "skin"
+    ],
+    "requiredTextureChannels": [
+      "albedo",
+      "normal",
+      "roughness",
+      "ao",
+      "height"
+    ],
+    "visualRules": [
+      "street-facing walls should read as continuous plastered earthen surfaces",
+      "exposed mudbrick should appear as damage, daub, repair, or secondary material",
+      "dust should be compacted tan Nile street dust with darker wall-base and traffic-worn areas",
+      "linen should be pale and restrained",
+      "pottery should stay clay/earth colored",
+      "shadow and contact-darkening should ground props without becoming opaque blocking planes"
+    ]
+  },
+  "peopleAndObjects": {
+    "requiredSignals": [
+      "plain linen kilts",
+      "simple wrap skirts",
+      "simple sheath-like linen garments",
+      "bare feet or simple sandals",
+      "minimal jewelry",
+      "simple hair or wig silhouettes",
+      "pottery",
+      "wood",
+      "reed",
+      "linen",
+      "basketry",
+      "ropes"
+    ],
+    "avoidSignals": [
+      "royal crowns",
+      "New Kingdom broad collars",
+      "armor",
+      "fantasy robes",
+      "bright synthetic dyes",
+      "metallic ceremonial excess",
+      "anachronistic tools"
+    ]
+  },
+  "sceneZones": [
+    {
+      "id": "nile-arrival",
+      "evidenceLevel": "inferred",
+      "requiredSignals": [
+        "Nile",
+        "boat",
+        "reed",
+        "bank",
+        "arrival"
+      ],
+      "notes": "Exact landing placement is inferred; broad Nile-side arrival is historically plausible for the experience."
+    },
+    {
+      "id": "residential-street",
+      "evidenceLevel": "inferred",
+      "periodOrPlaceSignals": [
+        "Old Kingdom",
+        "early Memphis",
+        "Memphis",
+        "Kom el-Fakhry",
+        "Mit Rahina"
+      ],
+      "domesticMaterialSignals": [
+        "mudbrick",
+        "plaster",
+        "dust",
+        "linen",
+        "pottery",
+        "jars",
+        "wood",
+        "reed",
+        "basket",
+        "rope"
+      ],
+      "requiredSignals": [
+        "Old Kingdom",
+        "Kom el-Fakhry",
+        "mudbrick",
+        "plaster",
+        "dust",
+        "linen"
+      ],
+      "notes": "The hero street is the active quality target and must stay domestic, compact, plain, and non-overlapping."
+    },
+    {
+      "id": "ptah-precinct",
+      "evidenceLevel": "inferred",
+      "requiredSignals": [
+        "Ptah",
+        "Hwt-ka-Ptah",
+        "precinct",
+        "gate"
+      ],
+      "notes": "Early exterior form is inferred from later context and broad Egyptian precinct logic, not claimed as exact."
+    }
+  ],
+  "runtimeForbiddenTerms": [
+    "fantasy obelisk boulevard",
+    "royal palace street",
+    "monumental pylon boulevard",
+    "new kingdom broad collar",
+    "ptolemaic house facade",
+    "glossy stone house",
+    "modern concrete",
+    "sci-fi",
+    "magic spell",
+    "purple palace",
+    "golden palace district"
+  ],
+  "requiredDocs": [
+    {
+      "path": "docs/design/historical-compliance-guardrail.md",
+      "mustContain": [
+        "Early Dynastic / Old Kingdom",
+        "Kom el-Fakhry / Mit Rahina",
+        "mud-plastered or whitewashed",
+        "regular exposed stone/block-grid wall patterns"
+      ]
+    },
+    {
+      "path": "docs/research/hero-street-visual-compliance/README.md",
+      "mustContain": [
+        "Ancient Memphis",
+        "Early Dynastic / Old Kingdom",
+        "Kom el-Fakhry",
+        "confirmed",
+        "inferred",
+        "speculative"
+      ]
+    }
+  ]
+}

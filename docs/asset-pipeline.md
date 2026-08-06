@@ -46,6 +46,16 @@ Step 7 changes the hero street from a single runtime GLB into near/mid/far GLB c
 
 The full `hero_street_corridor.glb` remains as a fallback/reference export, but Babylon loads the chunked set for the live street pass. Runtime GLBs also prefer external Babylon material atlases now; embedded procedural texture images are disabled by default and can be restored for standalone GLB inspection with `EGYPTVR_EMBED_PROCEDURAL_TEXTURES=1`.
 
+The browser runtime now has explicit quality profiles:
+
+- Default balanced profile: `http://127.0.0.1:5573/?quality=balanced`
+- Laptop safety profile: `http://127.0.0.1:5573/?quality=performance`
+- Cinematic inspection profile: `http://127.0.0.1:5573/?quality=cinematic`
+
+The active hero-street chunks and animated actors load first. Nile boats and reed-bank clusters are deferred so the approved street composition can become interactive sooner. The performance profile keeps the hero-street chunks but trims optional boats, reeds, water glints, smoke, birds, texture anisotropy, and LOD distance.
+
+Optimization budgets live in `content/optimization/browser-runtime-budget.json`. Run `npm run validate:optimization` to check that the runtime still uses near/mid/far hero-street chunks, does not accidentally load the full fallback corridor as the active street, and stays within current GLB/texture size budgets.
+
 Draco export is still opt-in with `EGYPTVR_ENABLE_DRACO=1`, because Draco requires adding and testing the browser decoder path before it becomes a production requirement. KTX2 texture compression is also deferred until the texture set and decoder wiring are verified in Babylon. When enabled, compression should remain an optional pipeline step until it is tested on the target laptop browser.
 
 ## AI Boundaries

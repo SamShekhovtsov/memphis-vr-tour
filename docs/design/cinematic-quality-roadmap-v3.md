@@ -96,3 +96,38 @@ Before accepting each pass, check:
 - The generated hero-street ground, AO, and lightmap textures were shifted away from dark red/orange toward compacted tan Nile dust with darker wall-base grime and worn traffic marks.
 - Latest Step 3 screenshot saved to `docs/design/screenshots/hero-street-roadmap-v3-step3-materials-v4.png`.
 - Historical guardrail: no new props, buildings, costumes, wall painting, or later-period decorative motifs were added during this pass.
+
+### 2026-07-30: Step 4 Wall-Face Realism Pass
+
+- Existing hero-street houses stayed in their locked positions; no route, street-mouth, road, or district-layout changes were made.
+- The Blender GLB generator now gives each existing house front a continuous uneven plaster skin over the mudbrick core, replacing the harder rectangular facade-patch read with handmade mud-plaster/whitewash surfaces.
+- Door openings were deepened with darker cavities and subtler jamb/lintel geometry so interiors read as shaded volumes rather than flat dark rectangles.
+- Foreground eye-height walls now use mud-plastered massing plus continuous plaster skins instead of exposed mudbrick material, reducing the visible block-grid effect closest to the camera.
+- The mudbrick atlas was softened so exposed mudbrick remains available as daub/core material, but no longer reads like a strict repeated brick wallpaper on every surface.
+- The plaster atlas was rebalanced toward lower wall grime, hairline cracking, and chipped plaster without adding later-period decoration.
+- Regenerated runtime textures and hero-street GLB exports: full, near, mid, and far chunks.
+- Historical guardrail: this pass keeps ordinary Old Kingdom domestic architecture restrained: compact mudbrick construction, plaster/whitewash exterior read, small openings, simple wood/reed/linen material culture, and no New Kingdom/Ptolemaic/fantasy motifs.
+
+### 2026-08-04: Existing Walls, Not New Ones Pass
+
+- Existing White Walls threshold, gate storehouse, and early Ptah precinct wall boxes were kept in place; no new wall rows, buildings, gates, route blockers, or district-layout changes were added.
+- Added reusable non-colliding Babylon surface patches for plaster scumble, lower wall grime, roof-edge shade, small exposed daub wear, and hairline settlement cracks.
+- Converted the older hero-street runtime wall-detail clusters from harder rectangular wall boxes into visual surface patches, so they read as wear on existing walls rather than extra architecture.
+- Applied in-place wall wear to both Nile/city faces of the White Walls threshold and to visible faces of the Ptah precinct walls.
+- Historical guardrail: the pass keeps early Memphis / Old Kingdom domestic and threshold architecture plain, mudbrick-based, plastered/whitewashed, and restrained; no later temple decoration or fantasy wall motifs were introduced.
+
+### 2026-08-05: Historical Compliance Guardrail
+
+- Added machine-readable historical compliance rules for the Ancient Memphis / Early Dynastic / Old Kingdom scope.
+- Added `npm run validate:history` to check tour scope, evidence labels, required guardrail docs, runtime asset provenance, hero-street material notes, and GLB asset-kit notes.
+- Wired the historical validator into the root build so future visual passes fail fast if they lose the Kom el-Fakhry / Mit Rahina settlement anchor, the early Ptah / Hwt-ka-Ptah endpoint, the mudbrick/plaster domestic read, or the no copied-media policy.
+- Historical guardrail: this pass made no scene-layout or art additions. It formalizes the rules that future cinematic-quality work must satisfy.
+
+### 2026-08-06: After Quality Works, Optimize
+
+- Kept the approved Hero Street v2 placement and visual direction intact; no houses, roads, walls, props, or route coordinates were moved.
+- Added runtime quality profiles: balanced default, `?quality=performance` laptop-safety mode, and `?quality=cinematic` inspection mode.
+- Changed modular GLB loading so critical hero-street chunks and animated actors load before optional Nile/reed detail, letting the street become interactive earlier while preserving the full composition as deferred detail.
+- Added `content/optimization/browser-runtime-budget.json` plus `npm run validate:optimization` to enforce active GLB, fallback GLB, and texture budgets.
+- Wired optimization validation into the root build after content and historical validation.
+- Historical guardrail: optimization changes preserve the Kom el-Fakhry / Mit Rahina anchored Old Kingdom domestic street, the early Ptah endpoint, the near/mid/far chunk source of truth, and the no copied-media policy.

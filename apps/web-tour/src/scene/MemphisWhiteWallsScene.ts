@@ -184,6 +184,7 @@ interface ModularAssetPlacement {
   collides?: boolean;
   animated?: boolean;
   lodDistance?: number;
+  defer?: boolean;
 }
 
 interface ModularAssetLoadResult {
@@ -191,12 +192,73 @@ interface ModularAssetLoadResult {
   actorMotions: GlbActorMotionRoutine[];
 }
 
+type RuntimeQualityMode = "performance" | "balanced" | "cinematic";
+
+interface RuntimeQualityProfile {
+  mode: RuntimeQualityMode;
+  hardwareScalingLevel: number;
+  textureSamplingMode: number;
+  anisotropicFilteringLevel: number;
+  lodDistanceMultiplier: number;
+  nileBoatCount: number;
+  reedBankCount: number;
+  waterHighlightCount: number;
+  smokeCount: number;
+  birdCount: number;
+}
+
+const runtimeQualityProfiles: Record<RuntimeQualityMode, RuntimeQualityProfile> = {
+  performance: {
+    mode: "performance",
+    hardwareScalingLevel: 1.35,
+    textureSamplingMode: Texture.BILINEAR_SAMPLINGMODE,
+    anisotropicFilteringLevel: 1,
+    lodDistanceMultiplier: 0.72,
+    nileBoatCount: 1,
+    reedBankCount: 4,
+    waterHighlightCount: 4,
+    smokeCount: 5,
+    birdCount: 4
+  },
+  balanced: {
+    mode: "balanced",
+    hardwareScalingLevel: 1,
+    textureSamplingMode: Texture.TRILINEAR_SAMPLINGMODE,
+    anisotropicFilteringLevel: 2,
+    lodDistanceMultiplier: 1,
+    nileBoatCount: 3,
+    reedBankCount: 7,
+    waterHighlightCount: 9,
+    smokeCount: 10,
+    birdCount: 7
+  },
+  cinematic: {
+    mode: "cinematic",
+    hardwareScalingLevel: 1,
+    textureSamplingMode: Texture.TRILINEAR_SAMPLINGMODE,
+    anisotropicFilteringLevel: 4,
+    lodDistanceMultiplier: 1.35,
+    nileBoatCount: 3,
+    reedBankCount: 7,
+    waterHighlightCount: 9,
+    smokeCount: 10,
+    birdCount: 7
+  }
+};
+
 export async function createMemphisWhiteWallsScene(
   engine: Engine,
   canvas: HTMLCanvasElement,
   manifest: TourManifest
 ): Promise<MemphisSceneController> {
+  const qualityProfile = selectRuntimeQualityProfile();
+  applyRuntimeQualityProfile(engine, qualityProfile);
+
   const scene = new Scene(engine);
+  scene.metadata = {
+    ...(scene.metadata as Record<string, unknown> | null),
+    runtimeQualityProfile: qualityProfile.mode
+  };
   scene.clearColor = new Color4(0.76, 0.71, 0.6, 1);
   scene.ambientColor = new Color3(0.56, 0.47, 0.35);
   scene.fogColor = Color3.FromHexString("#c08f5d");
@@ -246,12 +308,12 @@ export async function createMemphisWhiteWallsScene(
 
   const routeTrack = createGuidedRouteTrack(manifest);
   const ground = createBaseDistrict(scene, materials);
-  createNileEdge(scene, materials);
+  createNileEdge(scene, materials, qualityProfile);
   createResidentialStreet(scene, materials);
   createCraftsmenArea(scene, materials);
   createTemple(scene, materials);
   createRouteLine(scene, routeTrack.points);
-  const modularAssets = await loadModularAssetKit(scene, materials);
+  const modularAssets = await loadModularAssetKit(scene, materials, qualityProfile);
   if (modularAssets.heroStreetLoaded) {
     hideLegacyHeroStreetScaffold(scene);
     createHeroStreetCollisionGuides(scene);
@@ -263,9 +325,10 @@ export async function createMemphisWhiteWallsScene(
   evidenceRoot.setEnabled(false);
 
   const walkers: WalkerRoutine[] = [];
-  const smokeNodes = createSmoke(scene, materials);
-  const birds = createBirds(scene, materials);
+  const smokeNodes = createSmoke(scene, materials, qualityProfile);
+  const birds = createBirds(scene, materials, qualityProfile);
   const soundscape = createSoundscape(scene);
+  applyTextureQuality(scene, qualityProfile);
 
   let autoplay = false;
   let evidenceVisible = false;
@@ -675,6 +738,27 @@ function createTiledTexture(scene: Scene, fileName: string, uScale: number, vSca
   return texture;
 }
 
+function selectRuntimeQualityProfile(): RuntimeQualityProfile {
+  const requested = new URLSearchParams(window.location.search).get("quality");
+
+  if (requested === "performance" || requested === "cinematic" || requested === "balanced") {
+    return runtimeQualityProfiles[requested];
+  }
+
+  return runtimeQualityProfiles.balanced;
+}
+
+function applyRuntimeQualityProfile(engine: Engine, profile: RuntimeQualityProfile): void {
+  engine.setHardwareScalingLevel(profile.hardwareScalingLevel);
+}
+
+function applyTextureQuality(scene: Scene, profile: RuntimeQualityProfile): void {
+  scene.textures.forEach((texture) => {
+    texture.updateSamplingMode(profile.textureSamplingMode);
+    texture.anisotropicFilteringLevel = profile.anisotropicFilteringLevel;
+  });
+}
+
 function retargetImportedMaterialAtlas(mesh: AbstractMesh, materials: SceneMaterials): void {
   const materialName = mesh.material?.name.toLowerCase() ?? "";
 
@@ -830,7 +914,11 @@ function createGlbActorMotion(
   };
 }
 
-async function loadModularAssetKit(scene: Scene, materials: SceneMaterials): Promise<ModularAssetLoadResult> {
+async function loadModularAssetKit(
+  scene: Scene,
+  materials: SceneMaterials,
+  qualityProfile: RuntimeQualityProfile
+): Promise<ModularAssetLoadResult> {
   try {
     const response = await fetch(`${glbRoot}asset-kit.manifest.json`);
 
@@ -840,89 +928,33 @@ async function loadModularAssetKit(scene: Scene, materials: SceneMaterials): Pro
 
     const manifest = (await response.json()) as ModularAssetKitManifest;
     const entriesById = new Map(manifest.assets.map((entry) => [entry.id, entry]));
-    const placements = createModularAssetPlacements();
+    const placements = createModularAssetPlacements(qualityProfile);
+    const criticalPlacements = placements.filter((placement) => !placement.defer);
+    const deferredPlacements = placements.filter((placement) => placement.defer);
     const containers = new Map<string, Awaited<ReturnType<typeof SceneLoader.LoadAssetContainerAsync>>>();
-    let heroStreetLoaded = false;
     const actorMotions: GlbActorMotionRoutine[] = [];
-
-    await Promise.all(
-      [...new Set(placements.map((placement) => placement.assetId))].map(async (assetId) => {
-        const entry = entriesById.get(assetId);
-
-        if (!entry) {
-          console.warn(`Memphis GLB asset "${assetId}" is missing from the asset-kit manifest.`);
-          return;
-        }
-
-        const container = await SceneLoader.LoadAssetContainerAsync(glbRoot, entry.fileName, scene);
-        containers.set(assetId, container);
-      })
+    const heroStreetLoaded = await loadAndPlaceModularAssets(
+      scene,
+      materials,
+      entriesById,
+      containers,
+      criticalPlacements,
+      actorMotions,
+      qualityProfile
     );
 
-    for (const placement of placements) {
-      const entry = entriesById.get(placement.assetId);
-      const container = containers.get(placement.assetId);
-
-      if (!entry || !container) {
-        continue;
-      }
-
-      const instance = container.instantiateModelsToScene((sourceName) => `${placement.name}-${sourceName}`, false);
-      const root = new TransformNode(placement.name, scene);
-      root.metadata = {
-        category: entry.category,
-        evidenceLevel: entry.evidenceLevel,
-        runtimeAssetId: entry.runtimeAssetId
-      };
-
-      for (const node of instance.rootNodes) {
-        node.parent = root;
-      }
-
-      root.position.copyFrom(placement.position);
-      root.rotation.y = placement.rotationY ?? 0;
-      root.scaling.setAll(placement.scale ?? 1);
-
-      for (const mesh of root.getChildMeshes(false)) {
-        retargetImportedMaterialAtlas(mesh, materials);
-        calibrateImportedFilmBakeMaterial(mesh);
-        mesh.checkCollisions = false;
-        mesh.isPickable = false;
-
-        if (isHeroStreetCorridorAsset(placement.assetId) && /heroV2Low(ForegroundCanopy|Canopy)/.test(mesh.name)) {
-          mesh.setEnabled(false);
-          continue;
-        }
-
-        if (placement.lodDistance && !placement.animated && mesh instanceof Mesh) {
-          mesh.addLODLevel(placement.lodDistance, null);
-        }
-
-        if (!placement.animated) {
-          mesh.freezeWorldMatrix();
-        }
-      }
-
-      if (isHeroStreetCorridorAsset(placement.assetId)) {
-        heroStreetLoaded = true;
-      }
-
-      if (placement.animated && "animationGroups" in instance) {
-        instance.rootNodes.forEach((node, index) => {
-          if (placement.assetId === "animated-street-actors" && index > 2) {
-            node.setEnabled(false);
-          }
-        });
-
-        instance.animationGroups?.forEach((group, index) => {
-          group.speedRatio = 0.82 + index * 0.04;
-          group.start(true);
-        });
-
-        if (placement.assetId === "animated-street-actors") {
-          actorMotions.push(...createGlbActorMotionRoutines(root));
-        }
-      }
+    if (deferredPlacements.length > 0) {
+      void loadAndPlaceModularAssets(
+        scene,
+        materials,
+        entriesById,
+        containers,
+        deferredPlacements,
+        actorMotions,
+        qualityProfile
+      ).catch((error: unknown) => {
+        console.warn("Deferred Memphis GLB assets could not be loaded.", error);
+      });
     }
 
     return { heroStreetLoaded, actorMotions };
@@ -932,36 +964,145 @@ async function loadModularAssetKit(scene: Scene, materials: SceneMaterials): Pro
   }
 }
 
-function createModularAssetPlacements(): ModularAssetPlacement[] {
-  return [
+async function loadAndPlaceModularAssets(
+  scene: Scene,
+  materials: SceneMaterials,
+  entriesById: Map<string, ModularAssetEntry>,
+  containers: Map<string, Awaited<ReturnType<typeof SceneLoader.LoadAssetContainerAsync>>>,
+  placements: readonly ModularAssetPlacement[],
+  actorMotions: GlbActorMotionRoutine[],
+  qualityProfile: RuntimeQualityProfile
+): Promise<boolean> {
+  await Promise.all(
+    [...new Set(placements.map((placement) => placement.assetId))].map(async (assetId) => {
+      if (containers.has(assetId)) {
+        return;
+      }
+
+      const entry = entriesById.get(assetId);
+
+      if (!entry) {
+        console.warn(`Memphis GLB asset "${assetId}" is missing from the asset-kit manifest.`);
+        return;
+      }
+
+      const container = await SceneLoader.LoadAssetContainerAsync(glbRoot, entry.fileName, scene);
+      containers.set(assetId, container);
+      applyTextureQuality(scene, qualityProfile);
+    })
+  );
+
+  let heroStreetLoaded = false;
+
+  for (const placement of placements) {
+    const entry = entriesById.get(placement.assetId);
+    const container = containers.get(placement.assetId);
+
+    if (!entry || !container) {
+      continue;
+    }
+
+    const instance = container.instantiateModelsToScene((sourceName) => `${placement.name}-${sourceName}`, false);
+    const root = new TransformNode(placement.name, scene);
+    root.metadata = {
+      category: entry.category,
+      evidenceLevel: entry.evidenceLevel,
+      runtimeAssetId: entry.runtimeAssetId,
+      runtimeQualityProfile: qualityProfile.mode
+    };
+
+    for (const node of instance.rootNodes) {
+      node.parent = root;
+    }
+
+    root.position.copyFrom(placement.position);
+    root.rotation.y = placement.rotationY ?? 0;
+    root.scaling.setAll(placement.scale ?? 1);
+
+    for (const mesh of root.getChildMeshes(false)) {
+      retargetImportedMaterialAtlas(mesh, materials);
+      calibrateImportedFilmBakeMaterial(mesh);
+      mesh.checkCollisions = false;
+      mesh.isPickable = false;
+
+      if (isHeroStreetCorridorAsset(placement.assetId) && /heroV2Low(ForegroundCanopy|Canopy)/.test(mesh.name)) {
+        mesh.setEnabled(false);
+        continue;
+      }
+
+      if (placement.lodDistance && !placement.animated && mesh instanceof Mesh) {
+        mesh.addLODLevel(placement.lodDistance, null);
+      }
+
+      if (!placement.animated) {
+        mesh.freezeWorldMatrix();
+      }
+    }
+
+    if (isHeroStreetCorridorAsset(placement.assetId)) {
+      heroStreetLoaded = true;
+    }
+
+    if (placement.animated && "animationGroups" in instance) {
+      instance.rootNodes.forEach((node, index) => {
+        if (placement.assetId === "animated-street-actors" && index > 2) {
+          node.setEnabled(false);
+        }
+      });
+
+      instance.animationGroups?.forEach((group, index) => {
+        group.speedRatio = 0.82 + index * 0.04;
+        group.start(true);
+      });
+
+      if (placement.assetId === "animated-street-actors") {
+        actorMotions.push(...createGlbActorMotionRoutines(root));
+      }
+    }
+  }
+
+  return heroStreetLoaded;
+}
+
+function createModularAssetPlacements(qualityProfile: RuntimeQualityProfile): ModularAssetPlacement[] {
+  const boatPlacements = [
     {
       assetId: "nile-boat-large",
       name: "glbNileBoatLandingMain",
       position: new Vector3(-47.4, 0.16, -51.6),
       rotationY: 0.06,
-      scale: 1.12
+      scale: 1.12,
+      defer: true
     },
     {
       assetId: "nile-boat-large",
       name: "glbNileBoatMooredNorth",
       position: new Vector3(-51.8, 0.13, -24),
       rotationY: -0.18,
-      scale: 0.82
+      scale: 0.82,
+      defer: true
     },
     {
       assetId: "nile-boat-large",
       name: "glbNileBoatMooredSouth",
       position: new Vector3(-49.6, 0.12, 23.5),
       rotationY: 0.14,
-      scale: 0.9
-    },
-    ...[-63, -43, -23, -3, 17, 37, 57].map((z, index) => ({
+      scale: 0.9,
+      defer: true
+    }
+  ].slice(0, qualityProfile.nileBoatCount);
+  const reedPlacements = [-63, -43, -23, -3, 17, 37, 57].slice(0, qualityProfile.reedBankCount).map((z, index) => ({
       assetId: "reed-bank-cluster",
       name: `glbReedBank-${index}`,
       position: new Vector3(-36.1 + (index % 2) * 0.5, 0, z),
       rotationY: index * 0.38,
-      scale: 0.82 + (index % 3) * 0.08
-    })),
+      scale: 0.82 + (index % 3) * 0.08,
+      defer: true
+    }));
+
+  return [
+    ...boatPlacements,
+    ...reedPlacements,
     ...[
       { assetId: "hero-street-corridor-near", name: "glbHeroStreetCorridorNear", lodDistance: 92 },
       { assetId: "hero-street-corridor-mid", name: "glbHeroStreetCorridorMid", lodDistance: 118 },
@@ -973,7 +1114,7 @@ function createModularAssetPlacements(): ModularAssetPlacement[] {
       rotationY: 0,
       scale: 1,
       collides: true,
-      lodDistance
+      lodDistance: Math.round(lodDistance * qualityProfile.lodDistanceMultiplier)
     })),
     {
       assetId: "animated-street-actors",
@@ -1017,7 +1158,7 @@ function createBaseDistrict(scene: Scene, materials: SceneMaterials): Mesh {
   return ground;
 }
 
-function createNileEdge(scene: Scene, materials: SceneMaterials): void {
+function createNileEdge(scene: Scene, materials: SceneMaterials, qualityProfile: RuntimeQualityProfile): void {
   const river = MeshBuilder.CreateGround("nileBranch", { width: 32, height: 158, subdivisions: 8 }, scene);
   river.position.x = -53;
   river.position.y = 0.015;
@@ -1028,7 +1169,7 @@ function createNileEdge(scene: Scene, materials: SceneMaterials): void {
   wetBank.position.y = 0.025;
   wetBank.material = materials.reed;
 
-  for (let index = 0; index < 9; index += 1) {
+  for (let index = 0; index < qualityProfile.waterHighlightCount; index += 1) {
     createWaterHighlight(scene, materials, new Vector3(-55 + Math.sin(index) * 5, 0.035, -64 + index * 15.5), index);
   }
 
@@ -1198,30 +1339,140 @@ function createGroundShadow(
   shadow.isPickable = false;
 }
 
-function createWallDetailCluster(scene: Scene, materials: SceneMaterials, name: string, x: number, z: number, side: number): void {
-  const plasterPatch = MeshBuilder.CreateBox(`${name}-plasterPatch`, { width: 0.05, height: 0.74, depth: 1.28 }, scene);
-  plasterPatch.position = new Vector3(x, 1.28, z);
-  plasterPatch.material = materials.plaster;
-  plasterPatch.isPickable = false;
+type WallFaceAxis = "x" | "z";
 
-  for (let index = 0; index < 4; index += 1) {
-    const crack = MeshBuilder.CreateBox(`${name}-hairlineCrack-${index}`, {
-      width: 0.035,
-      height: 0.48 + index * 0.08,
-      depth: 0.025
-    }, scene);
-    crack.position = new Vector3(x + side * 0.035, 1.02 + index * 0.24, z - 0.48 + index * 0.31);
-    crack.rotation.y = side * 0.05;
-    crack.rotation.z = Math.sin(index) * 0.18;
-    crack.material = materials.shadow;
-    crack.isPickable = false;
+interface WallSurfacePatchSpec {
+  offsetAlong: number;
+  y: number;
+  length: number;
+  height: number;
+  material: PBRMaterial;
+  visibility?: number;
+  tilt?: number;
+}
+
+function createWallSurfacePatch(
+  scene: Scene,
+  name: string,
+  axis: WallFaceAxis,
+  facePosition: Vector3,
+  patch: WallSurfacePatchSpec
+): void {
+  const isZFace = axis === "z";
+  const mesh = MeshBuilder.CreateBox(name, {
+    width: isZFace ? patch.length : 0.035,
+    height: patch.height,
+    depth: isZFace ? 0.035 : patch.length
+  }, scene);
+
+  mesh.position = new Vector3(
+    facePosition.x + (isZFace ? patch.offsetAlong : 0),
+    patch.y,
+    facePosition.z + (isZFace ? 0 : patch.offsetAlong)
+  );
+  mesh.rotation.z = patch.tilt ?? 0;
+  mesh.material = patch.material;
+  mesh.visibility = patch.visibility ?? 1;
+  mesh.isPickable = false;
+}
+
+function createPlasteredWallWear(
+  scene: Scene,
+  materials: SceneMaterials,
+  name: string,
+  axis: WallFaceAxis,
+  facePosition: Vector3,
+  faceLength: number,
+  faceHeight: number,
+  seed: number
+): void {
+  const baseLength = Math.max(1.8, faceLength * 0.28);
+  createWallSurfacePatch(scene, `${name}-lowPackedDirt`, axis, facePosition, {
+    offsetAlong: Math.sin(seed) * faceLength * 0.08,
+    y: 0.34,
+    length: faceLength * 0.86,
+    height: 0.42,
+    material: materials.contactShadow,
+    visibility: 0.22
+  });
+  createWallSurfacePatch(scene, `${name}-roofEdgeShade`, axis, facePosition, {
+    offsetAlong: Math.cos(seed * 1.7) * faceLength * 0.04,
+    y: faceHeight - 0.34,
+    length: faceLength * 0.72,
+    height: 0.22,
+    material: materials.contactShadow,
+    visibility: 0.16,
+    tilt: Math.sin(seed * 1.3) * 0.018
+  });
+
+  for (let index = 0; index < 3; index += 1) {
+    createWallSurfacePatch(scene, `${name}-chalkyPlasterScumble-${index}`, axis, facePosition, {
+      offsetAlong: -faceLength * 0.34 + index * faceLength * 0.3 + Math.sin(seed + index) * 0.45,
+      y: 1.1 + index * 0.42 + Math.cos(seed + index) * 0.18,
+      length: baseLength * (0.68 + index * 0.16),
+      height: 0.32 + Math.sin(seed * 0.7 + index) * 0.08,
+      material: materials.plaster,
+      visibility: 0.56,
+      tilt: Math.sin(seed + index * 1.9) * 0.035
+    });
   }
 
-  const darkBase = MeshBuilder.CreateBox(`${name}-baseDirt`, { width: 0.06, height: 0.28, depth: 1.7 }, scene);
-  darkBase.position = new Vector3(x + side * 0.025, 0.19, z + 0.1);
-  darkBase.material = materials.contactShadow;
-  darkBase.visibility = 0.72;
-  darkBase.isPickable = false;
+  for (let index = 0; index < 2; index += 1) {
+    createWallSurfacePatch(scene, `${name}-exposedDaubWear-${index}`, axis, facePosition, {
+      offsetAlong: -faceLength * 0.18 + index * faceLength * 0.36 + Math.cos(seed + index) * 0.35,
+      y: 0.82 + index * 0.56,
+      length: Math.min(1.35, faceLength * 0.16),
+      height: 0.24 + index * 0.08,
+      material: materials.mudbrick,
+      visibility: 0.42,
+      tilt: Math.cos(seed * 1.4 + index) * 0.04
+    });
+  }
+
+  for (let index = 0; index < 2; index += 1) {
+    createWallSurfacePatch(scene, `${name}-hairlineSettlementCrack-${index}`, axis, facePosition, {
+      offsetAlong: -faceLength * 0.26 + index * faceLength * 0.48 + Math.sin(seed * 2 + index) * 0.3,
+      y: 1.72 + index * 0.34,
+      length: 0.045,
+      height: 0.82,
+      material: materials.shadow,
+      visibility: 0.28,
+      tilt: Math.sin(seed + index) * 0.11
+    });
+  }
+}
+
+function createWallDetailCluster(scene: Scene, materials: SceneMaterials, name: string, x: number, z: number, side: number): void {
+  createWallSurfacePatch(scene, `${name}-plasterScumble`, "x", new Vector3(x, 0, z), {
+    offsetAlong: 0,
+    y: 1.28,
+    length: 1.28,
+    height: 0.74,
+    material: materials.plaster,
+    visibility: 0.58,
+    tilt: side * 0.018
+  });
+
+  for (let index = 0; index < 4; index += 1) {
+    createWallSurfacePatch(scene, `${name}-hairlineCrack-${index}`, "x", new Vector3(x + side * 0.035, 0, z), {
+      offsetAlong: -0.48 + index * 0.31,
+      y: 1.02 + index * 0.24,
+      length: 0.035,
+      height: 0.48 + index * 0.08,
+      material: materials.shadow,
+      visibility: 0.25,
+      tilt: Math.sin(index) * 0.18
+    });
+  }
+
+  createWallSurfacePatch(scene, `${name}-baseDirt`, "x", new Vector3(x + side * 0.025, 0, z + 0.1), {
+    offsetAlong: 0,
+    y: 0.19,
+    length: 1.7,
+    height: 0.28,
+    material: materials.contactShadow,
+    visibility: 0.42
+  });
 }
 
 function createForegroundMarketCluster(
@@ -1496,16 +1747,56 @@ function createWhiteWallsThreshold(scene: Scene, materials: SceneMaterials): voi
     }, scene);
     base.position = new Vector3(spec.position.x, 0.4, spec.position.z);
     base.material = materials.mudbrick;
+
+    createPlasteredWallWear(
+      scene,
+      materials,
+      `${spec.name}-nileFaceWear`,
+      "z",
+      new Vector3(spec.position.x, 0, spec.position.z - spec.size.z / 2 - 0.024),
+      spec.size.x,
+      spec.size.y,
+      spec.position.x * 0.17
+    );
+    createPlasteredWallWear(
+      scene,
+      materials,
+      `${spec.name}-cityFaceWear`,
+      "z",
+      new Vector3(spec.position.x, 0, spec.position.z + spec.size.z / 2 + 0.024),
+      spec.size.x,
+      spec.size.y,
+      spec.position.x * 0.21
+    );
   });
 
   const gateLintel = MeshBuilder.CreateBox("whiteWallGateLintel", { width: 10, height: 0.55, depth: 1.35 }, scene);
   gateLintel.position = new Vector3(-23.2, 3.35, -33);
   gateLintel.material = materials.plaster;
 
+  createWallSurfacePatch(scene, "whiteWallGateLintelLowerShade", "z", new Vector3(-23.2, 0, -33.7), {
+    offsetAlong: 0,
+    y: 3.1,
+    length: 8.4,
+    height: 0.18,
+    material: materials.contactShadow,
+    visibility: 0.18
+  });
+
   const guardStore = MeshBuilder.CreateBox("riverGateStorehouse", { width: 4.8, height: 2.5, depth: 4.6 }, scene);
   guardStore.position = new Vector3(-37.2, 1.25, -26.5);
   guardStore.material = materials.mudbrick;
   guardStore.checkCollisions = true;
+  createPlasteredWallWear(
+    scene,
+    materials,
+    "riverGateStorehouseStreetFaceWear",
+    "z",
+    new Vector3(-37.2, 0, -28.82),
+    4.2,
+    2.5,
+    12.4
+  );
 }
 
 function createCourtyard(scene: Scene, materials: SceneMaterials, position: Vector3): void {
@@ -1664,6 +1955,50 @@ function createPrecinctWall(scene: Scene, materials: SceneMaterials, name: strin
   }, scene);
   mudbrickBase.position = new Vector3(position.x, 0.5, position.z);
   mudbrickBase.material = materials.mudbrick;
+
+  if (size.x >= size.z) {
+    createPlasteredWallWear(
+      scene,
+      materials,
+      `${name}-outerFaceWear`,
+      "z",
+      new Vector3(position.x, 0, position.z - size.z / 2 - 0.025),
+      size.x,
+      size.y,
+      position.x * 0.31 + position.z * 0.07
+    );
+    createPlasteredWallWear(
+      scene,
+      materials,
+      `${name}-innerFaceWear`,
+      "z",
+      new Vector3(position.x, 0, position.z + size.z / 2 + 0.025),
+      size.x,
+      size.y,
+      position.x * 0.23 + position.z * 0.11
+    );
+  } else {
+    createPlasteredWallWear(
+      scene,
+      materials,
+      `${name}-outerSideWear`,
+      "x",
+      new Vector3(position.x + Math.sign(position.x || 1) * size.x / 2 + Math.sign(position.x || 1) * 0.025, 0, position.z),
+      size.z,
+      size.y,
+      position.x * 0.19 + position.z * 0.13
+    );
+    createPlasteredWallWear(
+      scene,
+      materials,
+      `${name}-innerSideWear`,
+      "x",
+      new Vector3(position.x - Math.sign(position.x || 1) * size.x / 2 - Math.sign(position.x || 1) * 0.025, 0, position.z),
+      size.z,
+      size.y,
+      position.x * 0.29 + position.z * 0.09
+    );
+  }
 }
 
 function createPaintedWall(scene: Scene, materials: SceneMaterials, name: string, position: Vector3, size: Vector3): void {
@@ -2029,8 +2364,8 @@ function updateGlbActorMotions(actors: GlbActorMotionRoutine[], time: number): v
   });
 }
 
-function createSmoke(scene: Scene, materials: SceneMaterials): TransformNode[] {
-  return Array.from({ length: 10 }, (_, index) => {
+function createSmoke(scene: Scene, materials: SceneMaterials, qualityProfile: RuntimeQualityProfile): TransformNode[] {
+  return Array.from({ length: qualityProfile.smokeCount }, (_, index) => {
     const smoke = MeshBuilder.CreateSphere(`incenseSmoke-${index}`, { diameter: 0.72 + index * 0.06, segments: 12 }, scene);
     smoke.position = new Vector3((index % 2) * 0.5 - 0.25, 1.1 + index * 0.32, 90.5 + Math.sin(index) * 0.3);
     smoke.material = materials.smoke;
@@ -2047,8 +2382,8 @@ function updateSmoke(nodes: TransformNode[], time: number): void {
   });
 }
 
-function createBirds(scene: Scene, materials: SceneMaterials): BirdRoutine[] {
-  return Array.from({ length: 7 }, (_, index) => {
+function createBirds(scene: Scene, materials: SceneMaterials, qualityProfile: RuntimeQualityProfile): BirdRoutine[] {
+  return Array.from({ length: qualityProfile.birdCount }, (_, index) => {
     const root = new TransformNode(`distantBird-${index}`, scene);
     const wingColor = index % 2 === 0 ? "#4d4333" : "#5d5948";
 

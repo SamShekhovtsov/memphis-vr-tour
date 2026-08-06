@@ -16,15 +16,15 @@ const checkedDate = "2026-07-10";
 const materialAtlasSpecs = [
   {
     key: "mudbrick",
-    label: "Nile alluvial mudbrick with straw temper, worn brick courses, and softened plaster scars",
+    label: "Nile alluvial mudbrick with straw temper, softened courses, and plaster scars",
     kind: "mudbrick",
     evidenceLevel: "inferred",
-    dark: "#4f301f",
-    mid: "#795033",
-    light: "#bb875a",
-    accent: "#d0aa72",
+    dark: "#543821",
+    mid: "#7f5a38",
+    light: "#b88a5a",
+    accent: "#d6bd8e",
     roughness: 0.96,
-    normalStrength: 2.4,
+    normalStrength: 1.75,
     referenceSourceIds: ["aera-memphis", "sfar-kom-el-fakhry", "petrie-memphis-i", "met-open-access"]
   },
   {
@@ -37,7 +37,7 @@ const materialAtlasSpecs = [
     light: "#eadbb8",
     accent: "#6a4328",
     roughness: 0.94,
-    normalStrength: 1.65,
+    normalStrength: 1.38,
     referenceSourceIds: ["met-open-access", "cleveland-open-access", "petrie-memphis-i"]
   },
   {
@@ -251,9 +251,9 @@ function sampleMaterialSurface(spec, x, y, width, height) {
   let color = mixColor(spec.darkColor, spec.lightColor, tone);
 
   if (spec.kind === "mudbrick") {
-    const brickW = 178;
-    const brickH = 78;
-    const mortar = 8;
+    const brickW = 196;
+    const brickH = 86;
+    const mortar = 5;
     const row = Math.floor(y / brickH);
     const offsetX = row % 2 === 0 ? 0 : brickW / 2;
     const localX = positiveModulo(x + offsetX, brickW);
@@ -261,27 +261,29 @@ function sampleMaterialSurface(spec, x, y, width, height) {
     const edgeDistance = Math.min(localX, localY, brickW - localX, brickH - localY);
     const mortarLine = edgeDistance < mortar ? clamp01((mortar - edgeDistance) / mortar) : 0;
     const wornEdge = clamp01((22 - edgeDistance) / 22);
-    const plasterScab = clamp01((layeredNoise(x, y, spec.seed + 61, [[0.013, 1], [0.047, 0.45]]) - 0.42) * 1.3);
+    const plasterScab = clamp01((layeredNoise(x, y, spec.seed + 61, [[0.011, 1], [0.041, 0.45]]) - 0.35) * 1.1);
     const crack = crackMask(x, y, spec.seed + 5, 0.018);
     const straw = strawMask(x, y, spec.seed + 7) * (1 - mortarLine);
 
-    tone = clamp01(tone + 0.07 - mortarLine * 0.24 - crack * 0.18);
-    surfaceHeight = clamp01(surfaceHeight + 0.16 - mortarLine * 0.3 - wornEdge * 0.1 - crack * 0.16 + straw * 0.055);
+    tone = clamp01(tone + 0.08 - mortarLine * 0.1 - crack * 0.14 + plasterScab * 0.06);
+    surfaceHeight = clamp01(surfaceHeight + 0.13 - mortarLine * 0.14 - wornEdge * 0.07 - crack * 0.13 + straw * 0.045);
     roughness = clamp01(0.94 + mortarLine * 0.05 + straw * 0.03);
-    ao = clamp01(0.92 - mortarLine * 0.28 - crack * 0.2 - wornEdge * 0.06);
+    ao = clamp01(0.92 - mortarLine * 0.13 - crack * 0.16 - wornEdge * 0.04);
     color = mixColor(spec.darkColor, spec.lightColor, tone);
-    color = mixColor(color, spec.accentColor, plasterScab * 0.18 + straw * 0.32);
+    color = mixColor(color, spec.accentColor, plasterScab * 0.32 + straw * 0.18);
   } else if (spec.kind === "plaster") {
     const chip = clamp01((layeredNoise(x, y, spec.seed + 41, [[0.011, 1], [0.039, 0.5]]) - 0.5) * 1.7);
-    const stain = clamp01(Math.max(0, Math.sin(u * Math.PI * 7 + broad * 1.8)) * 0.18 + Math.max(0, v - 0.62) * 0.16);
+    const bottomGrime = clamp01((0.34 - v) * 1.75);
+    const verticalStain = Math.max(0, Math.sin(u * Math.PI * 6.5 + broad * 1.8)) * 0.11;
+    const stain = clamp01(verticalStain + bottomGrime * 0.28);
     const crack = crackMask(x, y, spec.seed + 12, 0.022);
 
-    tone = clamp01(tone + 0.18 - stain * 0.28 - chip * 0.2 - crack * 0.24);
-    surfaceHeight = clamp01(surfaceHeight + 0.1 - chip * 0.2 - crack * 0.22);
-    roughness = clamp01(0.91 + fine * 0.04 + chip * 0.06);
-    ao = clamp01(0.9 - chip * 0.2 - crack * 0.24 - stain * 0.08);
+    tone = clamp01(tone + 0.2 - stain * 0.2 - chip * 0.14 - crack * 0.18);
+    surfaceHeight = clamp01(surfaceHeight + 0.08 - chip * 0.14 - crack * 0.18 - bottomGrime * 0.04);
+    roughness = clamp01(0.92 + fine * 0.035 + chip * 0.045 + bottomGrime * 0.035);
+    ao = clamp01(0.91 - chip * 0.14 - crack * 0.18 - stain * 0.12);
     color = mixColor(spec.darkColor, spec.lightColor, tone);
-    color = mixColor(color, spec.accentColor, chip * 0.45);
+    color = mixColor(color, spec.accentColor, chip * 0.28 + bottomGrime * 0.16);
   } else if (spec.kind === "dust") {
     const leftRut = Math.exp(-1 * (((u - (0.39 + Math.sin(v * 16) * 0.025)) / 0.04) ** 2));
     const rightRut = Math.exp(-1 * (((u - (0.61 + Math.cos(v * 15) * 0.024)) / 0.04) ** 2));
