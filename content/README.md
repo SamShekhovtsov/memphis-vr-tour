@@ -13,4 +13,5 @@ Do not place arbitrary scraped media here. Step 3 of the project will decide wha
 Current visual QA lock:
 
 - `scene-data/hero-street.camera-lock.json` defines the canonical hero street camera for texture/material/light quality passes.
+- `scene-data/hero-street.paintover.json` defines the Hero Shot Paintover Pass target zones for composition, material, light, and historical restraint.
 - Use `npm run qa:hero-camera` to print the locked URL, viewport, camera position, look-at target, and canonical screenshot output.

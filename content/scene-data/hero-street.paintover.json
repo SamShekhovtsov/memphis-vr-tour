@@ -1,0 +1,204 @@
+{
+  "id": "hero-street-paintover-v1",
+  "cameraLockId": "hero-street-camera-lock",
+  "activeShotId": "hero-street-main",
+  "version": 1,
+  "label": "Hero Street Paintover Pass v1",
+  "canonicalUrl": "http://127.0.0.1:5573/?shot=hero-street-main&chrome=0",
+  "paintoverUrl": "http://127.0.0.1:5573/?shot=hero-street-main&paintover=1&chrome=0",
+  "canonicalOutput": "docs/design/screenshots/hero-street-main-current.jpg",
+  "paintoverOutput": "docs/design/screenshots/hero-street-paintover-v1.jpg",
+  "historicalScope": "Ancient Memphis, Early Dynastic / Old Kingdom, Kom el-Fakhry / Mit Rahina settlement evidence with early Ptah / Hwt-ka-Ptah endpoint.",
+  "purpose": "A fixed visual target for improving the existing hero street composition, materials, and lighting without moving the approved district layout or adding more district content.",
+  "qualityTarget": "Cinematic eye-height street composition: foreground frame, dense lane, clear vanishing point, authored ground, dark door interiors, contact shadows, warm sun, cooler shade, and restrained Old Kingdom material culture.",
+  "annotations": [
+    {
+      "id": "overhead-linen-shadow-frame",
+      "label": "Overhead linen shadow frame",
+      "priority": 1,
+      "evidenceLevel": "inferred",
+      "kind": "frame",
+      "frame": { "x": 0.06, "y": 0.02, "width": 0.88, "height": 0.17 },
+      "labelPosition": { "x": 0.07, "y": 0.16 },
+      "actionTarget": "Darken and shape the existing awning/canopy read so the shot has a cinematic top shadow, but keep it simple linen/reed shade rather than decorative later-period fabric.",
+      "notes": [
+        "Use shade and silhouette; do not add ornate New Kingdom tenting.",
+        "Should read as practical sun protection in a domestic lane."
+      ]
+    },
+    {
+      "id": "left-foreground-occluder",
+      "label": "Left foreground wall and object frame",
+      "priority": 1,
+      "evidenceLevel": "inferred",
+      "kind": "frame",
+      "frame": { "x": 0.02, "y": 0.2, "width": 0.2, "height": 0.72 },
+      "labelPosition": { "x": 0.04, "y": 0.68 },
+      "actionTarget": "Use the existing left facade, baskets, pottery, linen, and wall grime as close framing elements. Improve material depth instead of adding more props.",
+      "notes": [
+        "Foreground materials must hold up from player eye height.",
+        "Keep baskets, clay, reed, linen, wood, and plaster historically restrained."
+      ]
+    },
+    {
+      "id": "right-foreground-human-scale",
+      "label": "Right foreground human scale",
+      "priority": 1,
+      "evidenceLevel": "inferred",
+      "kind": "frame",
+      "frame": { "x": 0.68, "y": 0.38, "width": 0.22, "height": 0.5 },
+      "labelPosition": { "x": 0.7, "y": 0.44 },
+      "actionTarget": "Prefer one readable worker or carrier silhouette near the right third over many weak placeholders. Clothing stays plain linen, bare feet/simple sandals, minimal adornment.",
+      "notes": [
+        "This is a composition target, not a request for more crowd density.",
+        "Motion should feel grounded and street-scale."
+      ]
+    },
+    {
+      "id": "center-lane-vanishing-point",
+      "label": "Clear lane spine and vanishing point",
+      "priority": 1,
+      "evidenceLevel": "speculative",
+      "kind": "line",
+      "line": { "from": { "x": 0.5, "y": 0.92 }, "to": { "x": 0.51, "y": 0.37 } },
+      "labelPosition": { "x": 0.53, "y": 0.39 },
+      "actionTarget": "Keep the visitor eye pulled down the street center. Do not move the locked road or houses; use light, shadows, ground wear, and facade contrast to strengthen the axis.",
+      "notes": [
+        "This is cinematic composition, not a confirmed street alignment.",
+        "The walking route remains centered and unobstructed."
+      ]
+    },
+    {
+      "id": "authored-packed-dust-ground",
+      "label": "Continuous packed-dust ground read",
+      "priority": 1,
+      "evidenceLevel": "inferred",
+      "kind": "frame",
+      "frame": { "x": 0.25, "y": 0.5, "width": 0.5, "height": 0.43 },
+      "labelPosition": { "x": 0.27, "y": 0.88 },
+      "actionTarget": "Break all visible tiling with a continuous authored ground read: compacted dust, darker traffic lane, footprints, ruts, straw, pottery chips, pebbles, and swept wall-base dirt.",
+      "notes": [
+        "Avoid bright orange carpet color.",
+        "Ground should be sandy/tan with darker dirt where people walk."
+      ]
+    },
+    {
+      "id": "doorway-darkness-left",
+      "label": "Left doorway darkness pockets",
+      "priority": 2,
+      "evidenceLevel": "inferred",
+      "kind": "frame",
+      "frame": { "x": 0.18, "y": 0.35, "width": 0.12, "height": 0.24 },
+      "labelPosition": { "x": 0.22, "y": 0.34 },
+      "actionTarget": "Push existing door interiors nearly black with warm reflected jamb edges and stronger contact AO.",
+      "notes": [
+        "A few dark pockets will make the sun feel brighter.",
+        "No ornate painted door program for ordinary street houses."
+      ]
+    },
+    {
+      "id": "doorway-darkness-right",
+      "label": "Right doorway darkness pockets",
+      "priority": 2,
+      "evidenceLevel": "inferred",
+      "kind": "frame",
+      "frame": { "x": 0.7, "y": 0.34, "width": 0.13, "height": 0.26 },
+      "labelPosition": { "x": 0.66, "y": 0.32 },
+      "actionTarget": "Match the right-side doorway darkness to the left side, so the lane reads as shaded interior volumes instead of flat wall decals.",
+      "notes": [
+        "This should be material/light polish, not new architecture."
+      ]
+    },
+    {
+      "id": "wall-base-contact-shadow",
+      "label": "Wall-base grime and contact shadows",
+      "priority": 2,
+      "evidenceLevel": "inferred",
+      "kind": "frame",
+      "frame": { "x": 0.12, "y": 0.63, "width": 0.75, "height": 0.16 },
+      "labelPosition": { "x": 0.13, "y": 0.79 },
+      "actionTarget": "Strengthen baked-looking dirt and AO where walls, jars, benches, poles, baskets, and feet meet the ground.",
+      "notes": [
+        "The effect must stay non-colliding and not recreate the transparent wall artifacts seen earlier."
+      ]
+    },
+    {
+      "id": "sun-strips-cool-shade",
+      "label": "Warm sun strips and cooler shade",
+      "priority": 2,
+      "evidenceLevel": "speculative",
+      "kind": "line",
+      "line": { "from": { "x": 0.2, "y": 0.68 }, "to": { "x": 0.86, "y": 0.46 } },
+      "labelPosition": { "x": 0.78, "y": 0.48 },
+      "actionTarget": "Use diagonal awning and facade shadows to separate hot sun from cooler shade. Reduce flat white haze and one-note brown grading.",
+      "notes": [
+        "Lighting is cinematic but should still feel like practical Egyptian sun and shade."
+      ]
+    },
+    {
+      "id": "midground-human-depth",
+      "label": "Two to three strong human silhouettes",
+      "priority": 3,
+      "evidenceLevel": "inferred",
+      "kind": "frame",
+      "frame": { "x": 0.39, "y": 0.42, "width": 0.22, "height": 0.3 },
+      "labelPosition": { "x": 0.39, "y": 0.42 },
+      "actionTarget": "Keep only a few readable humans in the canonical shot, with Old Kingdom domestic clothing and restored walking locomotion where applicable.",
+      "notes": [
+        "Do not chase crowd count before silhouette quality."
+      ]
+    }
+  ],
+  "paletteTargets": [
+    {
+      "id": "sun",
+      "label": "Warm low sun",
+      "target": "#d9a75e",
+      "avoid": "flat white haze or saturated orange wash",
+      "evidenceLevel": "inferred"
+    },
+    {
+      "id": "shade",
+      "label": "Cooler shade",
+      "target": "#665f55",
+      "avoid": "uniform sepia/brown shadow",
+      "evidenceLevel": "speculative"
+    },
+    {
+      "id": "plaster",
+      "label": "Dusty plaster",
+      "target": "#b89263",
+      "avoid": "regular exposed block grid on ordinary house facades",
+      "evidenceLevel": "inferred"
+    },
+    {
+      "id": "ground",
+      "label": "Packed Nile dust",
+      "target": "#9b7149",
+      "avoid": "bright yellow carpet or repeated tile bands",
+      "evidenceLevel": "inferred"
+    },
+    {
+      "id": "linen",
+      "label": "Pale linen",
+      "target": "#d8c9ad",
+      "avoid": "royal/fantasy saturated fabric",
+      "evidenceLevel": "confirmed"
+    },
+    {
+      "id": "pottery",
+      "label": "Clay pottery",
+      "target": "#8a4b2e",
+      "avoid": "glossy ceramic finish",
+      "evidenceLevel": "confirmed"
+    }
+  ],
+  "acceptanceChecks": [
+    "Paintover URL renders the overlay from the locked hero-street-main camera.",
+    "The district layout, road, houses, gates, and route coordinates remain unchanged during this pass.",
+    "Every visual target improves the existing hero street instead of adding new district content.",
+    "The target respects early Memphis / Old Kingdom restraint: mudbrick, plaster, linen, reed/wood, clay, packed dust, simple daily life.",
+    "No late New Kingdom, Ptolemaic, fantasy, or copied-media visual language is introduced.",
+    "Future screenshots can be compared against the same target zones and palette targets."
+  ]
+}

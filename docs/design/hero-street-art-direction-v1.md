@@ -34,6 +34,10 @@ Secondary diagnostic URLs:
 - `http://127.0.0.1:5573/?shot=street-entry&chrome=0`
 - `http://127.0.0.1:5573/?shot=hero-street-material&chrome=0`
 
+Paintover target URL:
+
+- `http://127.0.0.1:5573/?shot=hero-street-main&paintover=1&chrome=0`
+
 Current captures:
 
 - `docs/design/screenshots/street-entry-current.png`
@@ -73,6 +77,8 @@ Current shot weaknesses:
 ## Target Paintover Spec
 
 Think of the next pass as a paintover translated into assets and shaders:
+
+The machine-readable source of truth is `content/scene-data/hero-street.paintover.json`.
 
 1. Darken the top canopy and use it as a strong foreground shadow frame.
 2. Pull the eye down the center lane with a darker, irregular walking path and brighter sun strips.

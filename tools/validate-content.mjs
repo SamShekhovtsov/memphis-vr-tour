@@ -7,6 +7,7 @@ const rootDir = path.resolve(fileURLToPath(new URL("..", import.meta.url)));
 const paths = {
   cameraLock: path.join(rootDir, "content", "scene-data", "hero-street.camera-lock.json"),
   evidence: path.join(rootDir, "content", "scene-data", "memphis-white-walls.evidence.json"),
+  paintover: path.join(rootDir, "content", "scene-data", "hero-street.paintover.json"),
   assetKit: path.join(rootDir, "apps", "web-tour", "public", "assets", "generated", "glb", "asset-kit.manifest.json"),
   referencePack: path.join(rootDir, "content", "reference-datasets", "memphis-beauty-pass-reference-pack.json"),
   runtimeAssets: path.join(rootDir, "content", "processed", "runtime-assets.manifest.json"),
@@ -75,6 +76,30 @@ function requireVector3(value, label) {
   }
 
   value.forEach((component, index) => requireNumber(component, `${label}[${index}]`));
+  return true;
+}
+
+function requireNormalizedNumber(value, label) {
+  if (!requireNumber(value, label)) {
+    return false;
+  }
+
+  if (value < 0 || value > 1) {
+    addError(`${label} must be normalized between 0 and 1.`);
+    return false;
+  }
+
+  return true;
+}
+
+function requireNormalizedPoint(value, label) {
+  if (typeof value !== "object" || value === null) {
+    addError(`${label} must be an object.`);
+    return false;
+  }
+
+  requireNormalizedNumber(value.x, `${label}.x`);
+  requireNormalizedNumber(value.y, `${label}.y`);
   return true;
 }
 
@@ -176,6 +201,112 @@ function validateCameraLock(cameraLock, tour) {
   if (!shotsById.has("hero-street-main")) {
     addError('Camera lock must include the canonical "hero-street-main" shot.');
   }
+}
+
+function validatePaintover(paintover, cameraLock) {
+  requireString(paintover.id, "paintover.id");
+  requireString(paintover.label, "paintover.label");
+  requireString(paintover.cameraLockId, "paintover.cameraLockId");
+  requireString(paintover.activeShotId, "paintover.activeShotId");
+  requireString(paintover.paintoverUrl, "paintover.paintoverUrl");
+  requireString(paintover.historicalScope, "paintover.historicalScope");
+  requireString(paintover.qualityTarget, "paintover.qualityTarget");
+
+  if (paintover.cameraLockId !== cameraLock.id) {
+    addError(`Paintover cameraLockId "${paintover.cameraLockId}" does not match camera lock "${cameraLock.id}".`);
+  }
+
+  if (paintover.activeShotId !== cameraLock.activeShotId) {
+    addError(
+      `Paintover activeShotId "${paintover.activeShotId}" does not match camera lock active shot "${cameraLock.activeShotId}".`
+    );
+  }
+
+  if (!String(paintover.paintoverUrl).includes("paintover=1")) {
+    addError('Paintover URL must include "paintover=1".');
+  }
+
+  if (!String(paintover.historicalScope).includes("Old Kingdom")) {
+    addError('Paintover historicalScope must include "Old Kingdom".');
+  }
+
+  if (!requireArray(paintover.annotations, "paintover.annotations")) {
+    return;
+  }
+
+  if (paintover.annotations.length < 6) {
+    addError("Paintover must include at least six visual target annotations.");
+  }
+
+  const annotationIds = new Set();
+
+  for (const annotation of paintover.annotations) {
+    if (!requireString(annotation.id, "paintover annotation id")) {
+      continue;
+    }
+
+    if (annotationIds.has(annotation.id)) {
+      addError(`Duplicate paintover annotation id "${annotation.id}".`);
+      continue;
+    }
+
+    annotationIds.add(annotation.id);
+    requireString(annotation.label, `paintover annotation "${annotation.id}" label`);
+    requireString(annotation.kind, `paintover annotation "${annotation.id}" kind`);
+    requireString(annotation.actionTarget, `paintover annotation "${annotation.id}" actionTarget`);
+    requireNumber(annotation.priority, `paintover annotation "${annotation.id}" priority`);
+    requireNormalizedPoint(annotation.labelPosition, `paintover annotation "${annotation.id}" labelPosition`);
+
+    if (!evidenceLevels.has(annotation.evidenceLevel)) {
+      addError(`Paintover annotation "${annotation.id}" has unknown evidenceLevel "${annotation.evidenceLevel}".`);
+    }
+
+    if (annotation.kind === "frame") {
+      validatePaintoverFrame(annotation);
+    } else if (annotation.kind === "line") {
+      validatePaintoverLine(annotation);
+    } else {
+      addError(`Paintover annotation "${annotation.id}" has unsupported kind "${annotation.kind}".`);
+    }
+  }
+
+  if (!requireArray(paintover.paletteTargets, "paintover.paletteTargets")) {
+    return;
+  }
+
+  if (paintover.paletteTargets.length < 5) {
+    addError("Paintover must include at least five palette targets.");
+  }
+
+  if (!requireArray(paintover.acceptanceChecks, "paintover.acceptanceChecks")) {
+    return;
+  }
+
+  if (paintover.acceptanceChecks.length < 4) {
+    addError("Paintover must include at least four acceptance checks.");
+  }
+}
+
+function validatePaintoverFrame(annotation) {
+  if (typeof annotation.frame !== "object" || annotation.frame === null) {
+    addError(`Paintover annotation "${annotation.id}" frame must be an object.`);
+    return;
+  }
+
+  requireNormalizedNumber(annotation.frame.x, `paintover annotation "${annotation.id}" frame.x`);
+  requireNormalizedNumber(annotation.frame.y, `paintover annotation "${annotation.id}" frame.y`);
+  requireNormalizedNumber(annotation.frame.width, `paintover annotation "${annotation.id}" frame.width`);
+  requireNormalizedNumber(annotation.frame.height, `paintover annotation "${annotation.id}" frame.height`);
+}
+
+function validatePaintoverLine(annotation) {
+  if (typeof annotation.line !== "object" || annotation.line === null) {
+    addError(`Paintover annotation "${annotation.id}" line must be an object.`);
+    return;
+  }
+
+  requireNormalizedPoint(annotation.line.from, `paintover annotation "${annotation.id}" line.from`);
+  requireNormalizedPoint(annotation.line.to, `paintover annotation "${annotation.id}" line.to`);
 }
 
 function validateGuidedRoute(tour) {
@@ -549,18 +680,20 @@ function validateReferenceSources(asset, sourcesById) {
   }
 }
 
-const [sourceRegister, tour, evidence, runtimeAssets, referencePack, assetKit, cameraLock] = await Promise.all([
+const [sourceRegister, tour, evidence, runtimeAssets, referencePack, assetKit, cameraLock, paintover] = await Promise.all([
   readJson(paths.sourceRegister),
   readJson(paths.tour),
   readJson(paths.evidence),
   readJson(paths.runtimeAssets),
   readJson(paths.referencePack),
   readJson(paths.assetKit),
-  readJson(paths.cameraLock)
+  readJson(paths.cameraLock),
+  readJson(paths.paintover)
 ]);
 
 const sourcesById = buildSourceMap(sourceRegister);
 validateCameraLock(cameraLock, tour);
+validatePaintover(paintover, cameraLock);
 validateGuidedRoute(tour);
 validateReferencePack(referencePack, sourcesById);
 validateEvidence(tour, evidence, sourcesById);

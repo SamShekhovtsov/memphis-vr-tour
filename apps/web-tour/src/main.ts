@@ -12,6 +12,7 @@ import type {
 } from "@egyptvr/shared-scene";
 import { evidenceColors, evidenceDescriptions, evidenceLabels } from "@egyptvr/shared-scene";
 import evidenceData from "../../../content/scene-data/memphis-white-walls.evidence.json";
+import paintoverData from "../../../content/scene-data/hero-street.paintover.json";
 import tourData from "../../../content/scene-data/memphis-white-walls.tour.json";
 import sourceRegisterData from "../../../content/source-references/memphis-source-register.json";
 import { createMemphisWhiteWallsScene } from "./scene/MemphisWhiteWallsScene";
@@ -19,9 +20,11 @@ import "./styles.css";
 
 const manifest = tourData as unknown as TourManifest;
 const evidenceManifest = evidenceData as unknown as EvidenceManifest;
+const heroShotPaintover = paintoverData as unknown as HeroShotPaintover;
 const sourceRegister = sourceRegisterData as unknown as SourceRegister;
 const evidenceByStopId = new Map(evidenceManifest.records.map((record) => [record.stopId, record]));
 const sourcesById = new Map(sourceRegister.sources.map((source) => [source.id, source]));
+const searchParams = new URLSearchParams(window.location.search);
 
 const canvas = getElement<HTMLCanvasElement>("#renderCanvas");
 const errorPanel = getElement<HTMLElement>("#errorPanel");
@@ -43,12 +46,50 @@ const evidenceClaims = getElement<HTMLUListElement>("#evidenceClaims");
 const reconstructionNotes = getElement<HTMLUListElement>("#reconstructionNotes");
 const evidenceSources = getElement<HTMLUListElement>("#evidenceSources");
 
-if (new URLSearchParams(window.location.search).get("chrome") === "0") {
+if (searchParams.get("chrome") === "0") {
   document.body.classList.add("qa-clean-shot");
+}
+
+if (shouldShowPaintover(searchParams)) {
+  mountHeroShotPaintover(heroShotPaintover);
 }
 
 let currentStop = manifest.stops[0];
 let evidenceModeVisible = false;
+
+interface HeroShotPaintover {
+  id: string;
+  label: string;
+  activeShotId: string;
+  annotations: HeroShotPaintoverAnnotation[];
+}
+
+interface HeroShotPaintoverAnnotation {
+  id: string;
+  label: string;
+  priority: number;
+  evidenceLevel: EvidenceLevel;
+  kind: "frame" | "line";
+  frame?: HeroShotPaintoverFrame;
+  line?: {
+    from: HeroShotPaintoverPoint;
+    to: HeroShotPaintoverPoint;
+  };
+  labelPosition: HeroShotPaintoverPoint;
+  actionTarget: string;
+}
+
+interface HeroShotPaintoverFrame {
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+}
+
+interface HeroShotPaintoverPoint {
+  x: number;
+  y: number;
+}
 
 function getElement<TElement extends Element>(selector: string): TElement {
   const element = document.querySelector<TElement>(selector);
@@ -58,6 +99,145 @@ function getElement<TElement extends Element>(selector: string): TElement {
   }
 
   return element;
+}
+
+function shouldShowPaintover(params: URLSearchParams): boolean {
+  const value = params.get("paintover");
+  return value === "1" || value === "true";
+}
+
+function mountHeroShotPaintover(spec: HeroShotPaintover): void {
+  const overlay = document.createElement("aside");
+
+  document.body.classList.add("qa-paintover-shot");
+  overlay.className = "paintover-overlay";
+  overlay.setAttribute("aria-label", spec.label);
+  overlay.innerHTML = renderPaintoverSvg(spec);
+  document.body.append(overlay);
+}
+
+function renderPaintoverSvg(spec: HeroShotPaintover): string {
+  const width = 1280;
+  const height = 720;
+  const annotations = spec.annotations.map((annotation, index) => {
+    const color = evidenceColors[annotation.evidenceLevel];
+    const labelPoint = toViewportPoint(annotation.labelPosition, width, height);
+    const labelOffset = labelPoint.x > width * 0.72 ? -16 : 16;
+    const labelAnchor = labelPoint.x > width * 0.72 ? "end" : "start";
+    const label = `${index + 1}. ${annotation.label}`;
+    const body =
+      annotation.kind === "line" && annotation.line
+        ? renderPaintoverLine(annotation, width, height, color)
+        : renderPaintoverFrame(annotation, width, height, color);
+
+    return `
+      <g class="paintover-zone" data-priority="${annotation.priority}">
+        <title>${escapeSvg(annotation.actionTarget)}</title>
+        ${body}
+        <circle cx="${labelPoint.x}" cy="${labelPoint.y}" r="11" fill="${color}" opacity="0.92" />
+        <text x="${labelPoint.x + labelOffset}" y="${labelPoint.y + 5}" text-anchor="${labelAnchor}" fill="#fff7df">${escapeSvg(label)}</text>
+      </g>`;
+  });
+
+  return `
+    <svg viewBox="0 0 ${width} ${height}" role="img" aria-label="${escapeSvg(spec.label)}">
+      <defs>
+        <marker id="paintover-arrow" viewBox="0 0 12 12" refX="10" refY="6" markerWidth="9" markerHeight="9" orient="auto-start-reverse">
+          <path d="M 1 1 L 11 6 L 1 11 z" fill="#fff7df" opacity="0.9"></path>
+        </marker>
+        <filter id="paintover-label-shadow" x="-30%" y="-30%" width="160%" height="160%">
+          <feDropShadow dx="0" dy="2" stdDeviation="2" flood-color="#1a1209" flood-opacity="0.9" />
+        </filter>
+      </defs>
+      <rect x="0" y="0" width="${width}" height="${height}" fill="rgba(20, 11, 4, 0.1)" />
+      ${annotations.join("")}
+    </svg>`;
+}
+
+function renderPaintoverFrame(
+  annotation: HeroShotPaintoverAnnotation,
+  viewportWidth: number,
+  viewportHeight: number,
+  color: string
+): string {
+  if (!annotation.frame) {
+    return "";
+  }
+
+  const frame = toViewportFrame(annotation.frame, viewportWidth, viewportHeight);
+  return `
+    <rect
+      x="${frame.x}"
+      y="${frame.y}"
+      width="${frame.width}"
+      height="${frame.height}"
+      rx="3"
+      fill="${color}"
+      fill-opacity="0.11"
+      stroke="${color}"
+      stroke-width="3"
+      stroke-dasharray="${annotation.priority === 1 ? "0" : "12 9"}"
+    />`;
+}
+
+function renderPaintoverLine(
+  annotation: HeroShotPaintoverAnnotation,
+  viewportWidth: number,
+  viewportHeight: number,
+  color: string
+): string {
+  if (!annotation.line) {
+    return "";
+  }
+
+  const from = toViewportPoint(annotation.line.from, viewportWidth, viewportHeight);
+  const to = toViewportPoint(annotation.line.to, viewportWidth, viewportHeight);
+
+  return `
+    <line
+      x1="${from.x}"
+      y1="${from.y}"
+      x2="${to.x}"
+      y2="${to.y}"
+      stroke="${color}"
+      stroke-width="${annotation.priority === 1 ? 5 : 3}"
+      stroke-linecap="round"
+      stroke-dasharray="${annotation.priority === 1 ? "0" : "16 10"}"
+      marker-end="url(#paintover-arrow)"
+    />`;
+}
+
+function toViewportFrame(frame: HeroShotPaintoverFrame, viewportWidth: number, viewportHeight: number) {
+  return {
+    x: Math.round(frame.x * viewportWidth),
+    y: Math.round(frame.y * viewportHeight),
+    width: Math.round(frame.width * viewportWidth),
+    height: Math.round(frame.height * viewportHeight)
+  };
+}
+
+function toViewportPoint(point: HeroShotPaintoverPoint, viewportWidth: number, viewportHeight: number) {
+  return {
+    x: Math.round(point.x * viewportWidth),
+    y: Math.round(point.y * viewportHeight)
+  };
+}
+
+function escapeSvg(value: string): string {
+  return value.replace(/[&<>"']/g, (match) => {
+    switch (match) {
+      case "&":
+        return "&amp;";
+      case "<":
+        return "&lt;";
+      case ">":
+        return "&gt;";
+      case '"':
+        return "&quot;";
+      default:
+        return "&#39;";
+    }
+  });
 }
 
 createIcons({ icons });

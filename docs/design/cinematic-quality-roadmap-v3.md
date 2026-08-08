@@ -131,3 +131,11 @@ Before accepting each pass, check:
 - Added `content/optimization/browser-runtime-budget.json` plus `npm run validate:optimization` to enforce active GLB, fallback GLB, and texture budgets.
 - Wired optimization validation into the root build after content and historical validation.
 - Historical guardrail: optimization changes preserve the Kom el-Fakhry / Mit Rahina anchored Old Kingdom domestic street, the early Ptah endpoint, the near/mid/far chunk source of truth, and the no copied-media policy.
+
+### 2026-08-06: Step 1 Hero Shot Paintover Pass
+
+- Added `content/scene-data/hero-street.paintover.json` as the machine-readable paintover target for the locked canonical shot.
+- Added a development-only browser overlay at `?shot=hero-street-main&paintover=1&chrome=0`.
+- Added validation that keeps the paintover tied to `hero-street-camera-lock` and the active `hero-street-main` shot.
+- Added `docs/design/hero-shot-paintover-pass-v1.md` to define the paintover target, historical restraint, acceptance checks, and next-pass usage.
+- Historical guardrail: no district placement, house position, route, gate, temple, or runtime art content was moved. The pass defines how to judge the existing street before more visual polish.

@@ -4,7 +4,9 @@ import { fileURLToPath } from "node:url";
 
 const rootDir = path.resolve(fileURLToPath(new URL("..", import.meta.url)));
 const cameraLockPath = path.join(rootDir, "content", "scene-data", "hero-street.camera-lock.json");
+const paintoverPath = path.join(rootDir, "content", "scene-data", "hero-street.paintover.json");
 const cameraLock = JSON.parse(await readFile(cameraLockPath, "utf8"));
+const paintover = JSON.parse(await readFile(paintoverPath, "utf8"));
 const activeShot = cameraLock.shots.find((shot) => shot.id === cameraLock.activeShotId);
 
 if (!activeShot) {
@@ -20,5 +22,8 @@ if (!activeShot) {
   console.log(`- Position: [${activeShot.position.join(", ")}]`);
   console.log(`- Look at: [${activeShot.lookAt.join(", ")}]`);
   console.log(`- Canonical output: ${cameraLock.canonicalOutput}`);
+  console.log(`- Paintover URL: ${paintover.paintoverUrl}`);
+  console.log(`- Paintover output: ${paintover.paintoverOutput}`);
+  console.log(`- Paintover annotations: ${paintover.annotations.length}`);
   console.log(`- Scope: ${cameraLock.historicalScope}`);
 }

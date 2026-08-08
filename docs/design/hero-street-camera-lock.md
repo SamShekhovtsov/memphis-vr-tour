@@ -13,6 +13,7 @@ Use one fixed eye-height camera for every visual-quality comparison. This preven
 - Shot id: `hero-street-main`
 - URL: `http://127.0.0.1:5573/?shot=hero-street-main&chrome=0`
 - Alias URL: `http://127.0.0.1:5573/?shot=canonical&chrome=0`
+- Paintover URL: `http://127.0.0.1:5573/?shot=hero-street-main&paintover=1&chrome=0`
 - Viewport: `1280x720`
 - Position: `[-6.6, 1.65, -18]`
 - Look at: `[-6, 1.48, 8]`
@@ -47,6 +48,7 @@ This camera is for the current cinematic-quality pass, especially:
 Do not change the canonical shot unless the user explicitly approves a new camera benchmark. If it changes, update all of these together:
 
 - `content/scene-data/hero-street.camera-lock.json`
+- `content/scene-data/hero-street.paintover.json`
 - `docs/design/hero-street-camera-lock.md`
 - `docs/design/hero-street-art-direction-v1.md`
 - any current comparison screenshots in `docs/design/screenshots/`
