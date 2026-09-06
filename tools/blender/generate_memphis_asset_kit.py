@@ -49,6 +49,7 @@ HERO_STREET_SHARED_NOTES = [
     "Street-mouth cleanup: the Main Wall-side house bay is intentionally omitted on both rows so the transition from the White Walls gate to the offset residential street remains open and walkable.",
     "Hero Shot Paintover Pass v3 adds controlled imperfection only: dried Nile-silt scuffs, asymmetric dust clumps, chipped plaster lips, wall-base grime, and non-blocking contact decals. It does not move layout or add new architecture.",
     "Hero Shot Paintover Pass v4 is a cinematic composition/material reset: visible linen canopy frame, lighter packed Nile-silt street dust, smaller organic contact grime, softened plastered end walls, and reduced toy-like rectangular wall damage.",
+    "Hero Shot Paintover Pass v5 tightens the eye-height camera read: darker dust-stained shade cloth, broad close plaster unifier skins, stronger doorway pockets, wall-base dirt, and irregular compacted-ground breakup inside the protected lane only.",
     "Old Kingdom / Kom el-Fakhry / Mit Rahina visual guardrails: compact house masses, flat roofs, small openings, compact mudbrick domestic lane, restrained domestic wall marks, linen shade cloth, plain clothing silhouettes, and no copied source media.",
     "Layout follows docs/design/memphis-hero-district-plan.md and avoids overlapping architecture systems.",
 ]
@@ -459,6 +460,7 @@ def create_materials() -> dict[str, bpy.types.Material]:
         "reed": make_pbr_material("river reed green", (0.17, 0.26, 0.12, 1), (0.42, 0.50, 0.24, 1), 0.92, 61, 0.16),
         "dry_reed": make_pbr_material("dry reed straw", (0.38, 0.27, 0.12, 1), (0.62, 0.47, 0.24, 1), 0.95, 67, 0.14),
         "linen": make_pbr_material("sun bleached woven linen", (0.7, 0.59, 0.39, 1), (0.92, 0.78, 0.54, 1), 0.96, 71, 0.14),
+        "dust_stained_shade_cloth": make_material("dust stained shade cloth", (0.32, 0.23, 0.12, 1), 0.98, 1),
         "dark": make_material("deep doorway shadow", (0.08, 0.055, 0.035, 1), 0.98),
         "baked_shadow": make_material("baked warm contact shadow", (0.055, 0.038, 0.024, 0.16), 1, 0.16),
         "baked_shadow_deep": make_material("baked deep doorway contact shadow", (0.026, 0.018, 0.012, 0.38), 1, 0.38),
@@ -1826,6 +1828,133 @@ def add_v3_controlled_imperfection(materials: dict[str, bpy.types.Material]) -> 
         )
 
 
+def add_v5_camera_paintover_weathering(materials: dict[str, bpy.types.Material]) -> None:
+    rng = random.Random("hero-shot-paintover-v5-camera-weathering")
+    street_center_x = HERO_STREET_LOCAL_CENTER_X
+
+    # V5 begins inside the lane, leaving the Main Wall-side approach clear and walkable.
+    near_lane_start = HERO_STREET_DETAIL_START_Y + 0.55
+    near_lane_end = HERO_STREET_DETAIL_END_Y - 1.2
+
+    for side_name, facade_x, side_dir, center_y, frontage, height in [
+        ("left", -14.9, 1, -5.8, 9.6, 2.58),
+        ("right", -5.92, -1, -4.9, 8.3, 2.36),
+    ]:
+        irregular_facade_skin(
+            f"heroV5CloseCameraPlasterUnifier-{side_name}",
+            facade_x,
+            side_dir,
+            center_y,
+            frontage,
+            height,
+            materials["plaster"],
+            rng,
+            x_offset=0.235,
+        )
+        wall_surface_patch(
+            f"heroV5CloseCameraHeavyWallBaseDirt-{side_name}",
+            facade_x,
+            side_dir,
+            center_y + rng.uniform(-0.26, 0.26),
+            0.34,
+            frontage * 0.92,
+            rng.uniform(0.5, 0.72),
+            materials["wall_base_grime"],
+            rng,
+            x_offset=0.256,
+            edge_jitter=0.075,
+        )
+        wall_surface_patch(
+            f"heroV5CloseCameraChalkyPlasterBloom-{side_name}",
+            facade_x,
+            side_dir,
+            center_y + rng.uniform(-0.42, 0.42),
+            1.28,
+            frontage * 0.62,
+            rng.uniform(0.52, 0.86),
+            materials["plaster_veil"],
+            rng,
+            x_offset=0.268,
+            edge_jitter=0.105,
+        )
+        wall_surface_patch(
+            f"heroV5CloseCameraDoorPocketDarkness-{side_name}",
+            facade_x,
+            side_dir,
+            center_y + (0.84 if side_name == "left" else -0.62),
+            0.86,
+            1.1,
+            1.48,
+            materials["baked_shadow_deep"],
+            rng,
+            x_offset=0.282,
+            edge_jitter=0.035,
+        )
+
+        for crack_index in range(4):
+            wall_surface_sliver(
+                f"heroV5CloseCameraHairlineCrack-{side_name}-{crack_index}",
+                facade_x,
+                side_dir,
+                center_y + rng.uniform(-frontage * 0.42, frontage * 0.42),
+                rng.uniform(0.72, height * 0.9),
+                rng.uniform(0.42, 1.24),
+                materials["dark"],
+                rng,
+                x_offset=0.29,
+            )
+
+    for index in range(34):
+        y = rng.uniform(near_lane_start, near_lane_end)
+        center_pull = math.sin(y * 0.23) * 0.45 + rng.uniform(-0.72, 0.72)
+        x = street_center_x + center_pull
+        material = materials["dried_silt_scuff"] if index % 3 else materials["dust_dark"]
+        ground_decal(
+            f"heroV5-irregularCompactedDustScuff-{index}",
+            (x, y, 0.116 + index * 0.00012),
+            rng.uniform(0.22, 0.72),
+            rng.uniform(0.52, 1.95),
+            material,
+            rot_z=math.radians(rng.uniform(-11, 11)),
+            organic=True,
+        )
+
+    for index, y in enumerate([-9.2, -4.0, 2.8, 9.8, 16.8, 21.4]):
+        ground_decal(
+            f"heroV5-softDiagonalAwningShadow-{index}",
+            (street_center_x + rng.uniform(-0.38, 0.38), y, 0.124 + index * 0.00015),
+            rng.uniform(5.2, 7.9),
+            rng.uniform(1.35, 2.55),
+            materials["baked_shadow_soft" if index % 2 else "baked_shadow_cool"],
+            rot_z=math.radians(rng.uniform(-7.5, 5.0)),
+            organic=True,
+        )
+
+    for side_index, (side_name, x) in enumerate([("left", -14.28), ("right", -6.62)]):
+        for index, y in enumerate([-8.8, -2.6, 4.8, 12.2, 19.6]):
+            ground_decal(
+                f"heroV5-{side_name}-objectAndWallContactDirt-{index}",
+                (x + rng.uniform(-0.08, 0.08), y + rng.uniform(-0.55, 0.55), 0.132 + (side_index * 5 + index) * 0.00012),
+                rng.uniform(0.64, 1.08),
+                rng.uniform(1.55, 3.4),
+                materials["baked_shadow"],
+                rot_z=math.radians(rng.uniform(-4, 4)),
+                organic=True,
+            )
+
+    for index in range(18):
+        x = street_center_x + rng.uniform(-2.35, 2.35)
+        y = rng.uniform(near_lane_start + 0.5, near_lane_end)
+        cylinder_between(
+            f"heroV5-dryStrawScratch-{index}",
+            (x, y, 0.076),
+            (x + rng.uniform(-0.52, 0.52), y + rng.uniform(-0.42, 0.42), 0.082),
+            rng.uniform(0.004, 0.008),
+            materials["dry_reed"],
+            5,
+        )
+
+
 def add_baked_street_lighting(materials: dict[str, bpy.types.Material]) -> None:
     street_center_x = HERO_STREET_LOCAL_CENTER_X
 
@@ -2126,7 +2255,7 @@ def add_foreground_film_set(materials: dict[str, bpy.types.Material]) -> None:
         (HERO_STREET_LOCAL_CENTER_X, -3.8, 3.05),
         8.05,
         4.55,
-        materials["linen"],
+        materials["dust_stained_shade_cloth"],
         sag=0.22,
         rot=(math.radians(4), 0, math.radians(-0.8)),
     )
@@ -2143,10 +2272,10 @@ def add_foreground_film_set(materials: dict[str, bpy.types.Material]) -> None:
     sagging_cloth_panel(
         "heroV4EyeHeightLinenCeilingFrame",
         (HERO_STREET_LOCAL_CENTER_X - 0.02, -10.6, 2.72),
-        8.55,
-        4.15,
-        materials["linen"],
-        sag=0.32,
+        8.25,
+        3.75,
+        materials["dust_stained_shade_cloth"],
+        sag=0.28,
         rot=(math.radians(7), math.radians(-1.2), math.radians(-0.9)),
     )
     cylinder_between(
@@ -2303,6 +2432,7 @@ def build_hero_street_corridor(materials: dict[str, bpy.types.Material]) -> None
     add_cinematic_depth_layers(materials)
     add_hero_ground_details(materials)
     add_v3_controlled_imperfection(materials)
+    add_v5_camera_paintover_weathering(materials)
 
 
 def build_residential_market_details(materials: dict[str, bpy.types.Material]) -> None:

@@ -45,10 +45,10 @@ const materialAtlasSpecs = [
     label: "Packed street dust with ruts, footprints, straw, pebbles, dried Nile-silt scuffs, and swept wall-base dirt",
     kind: "dust",
     evidenceLevel: "inferred",
-    dark: "#4b3426",
-    mid: "#8c6a4d",
-    light: "#c4a16f",
-    accent: "#d5c18a",
+    dark: "#5f4a36",
+    mid: "#9c8060",
+    light: "#d1bb8c",
+    accent: "#e0d0a5",
     roughness: 0.99,
     normalStrength: 2.1,
     referenceSourceIds: ["natural-earth", "met-open-access", "petrie-memphis-i"]
@@ -462,7 +462,7 @@ function createSandTexture(width, height) {
 }
 
 function createHeroStreetGroundTexture(width, height) {
-  const image = createImage(width, height, "#c4aa78");
+  const image = createImage(width, height, "#c8ad78");
   const random = seededRandom(1703);
 
   forEachPixel(image, (x, y) => {
@@ -480,16 +480,19 @@ function createHeroStreetGroundTexture(width, height) {
     const leftRut = Math.exp(-1 * (((normalizedX - (0.4 + Math.sin(normalizedY * 17.2) * 0.028)) / 0.034) ** 2));
     const rightRut = Math.exp(-1 * (((normalizedX - (0.59 + Math.cos(normalizedY * 16.5) * 0.03)) / 0.036) ** 2));
     const diagonalSweep = Math.sin((normalizedY * 6.8 + normalizedX * 2.6) * Math.PI + n * 0.024) * 6;
-    const centerDust = wornCenter * 9;
-    const wallGrime = (leftWallGrime + rightWallGrime) * 14;
-    const rutDarkening = (leftRut + rightRut) * 10;
+    const centerDust = wornCenter * 5.5;
+    const wallGrime = (leftWallGrime + rightWallGrime) * 17;
+    const rutDarkening = (leftRut + rightRut) * 12;
+    const steppedSilt = Math.max(0, Math.sin(normalizedY * Math.PI * 19 + normalizedX * 4.7)) * wornCenter * 4.2;
     const patchNoise = layeredNoise(x + 91, y - 33, 1719, [
       [0.006, 12],
       [0.027, 7],
       [0.11, 3]
     ]);
-    const value = clamp01(0.6 + (n + diagonalSweep + centerDust + patchNoise * 0.28 - wallGrime * 0.82 - rutDarkening * 0.76) / 158);
-    return mixHex("#806246", "#e0ca99", value);
+    const value = clamp01(
+      0.56 + (n + diagonalSweep + centerDust + steppedSilt + patchNoise * 0.34 - wallGrime * 0.92 - rutDarkening * 0.84) / 152
+    );
+    return mixHex("#7e6650", "#e1cfaa", value);
   });
 
   for (let index = 0; index < 64; index += 1) {
@@ -501,8 +504,8 @@ function createHeroStreetGroundTexture(width, height) {
       random() * height,
       14 + random() * 42,
       28 + random() * 92,
-      index % 4 === 0 ? "#715238" : "#a27f58",
-      nearWall ? 0.11 : 0.065,
+      index % 4 === 0 ? "#705844" : "#aa8c66",
+      nearWall ? 0.105 : 0.055,
       random() * Math.PI
     );
   }
@@ -514,8 +517,8 @@ function createHeroStreetGroundTexture(width, height) {
       random() * height,
       7 + random() * 22,
       52 + random() * 128,
-      index % 2 === 0 ? "#72543a" : "#997351",
-      0.075,
+      index % 2 === 0 ? "#715a43" : "#a18461",
+      0.068,
       -0.08 + random() * 0.24
     );
   }
@@ -528,9 +531,22 @@ function createHeroStreetGroundTexture(width, height) {
       random() * height,
       18 + random() * 42,
       54 + random() * 150,
-      "#715037",
-      0.105,
+      "#71543c",
+      0.095,
       random() * 0.25
+    );
+  }
+
+  for (let index = 0; index < 34; index += 1) {
+    drawSoftEllipse(
+      image,
+      width * (0.38 + random() * 0.28),
+      random() * height,
+      16 + random() * 42,
+      12 + random() * 34,
+      index % 2 === 0 ? "#735a42" : "#d6bf92",
+      index % 2 === 0 ? 0.052 : 0.032,
+      -0.55 + random() * 1.1
     );
   }
 
@@ -569,10 +585,10 @@ function createHeroStreetGroundTexture(width, height) {
     );
   }
 
-  addSpeckles(image, 9200, "#806246", 0.08, 1707);
-  addSpeckles(image, 5600, "#ead8aa", 0.085, 1709);
-  addSpeckles(image, 2100, "#604633", 0.065, 1710);
-  addHairlineCracks(image, 48, "#674d38", 0.105, 1711);
+  addSpeckles(image, 11200, "#725943", 0.085, 1707);
+  addSpeckles(image, 6400, "#ead9b6", 0.062, 1709);
+  addSpeckles(image, 3200, "#5b4636", 0.065, 1710);
+  addHairlineCracks(image, 72, "#66503f", 0.115, 1711);
   return image;
 }
 
@@ -600,9 +616,9 @@ function createHeroStreetNormalTexture(width, height) {
     ]);
 
     return {
-      r: Math.round(clamp01(0.5 + dx / 78) * 255),
-      g: Math.round(clamp01(0.5 + dy / 78) * 255),
-      b: 232,
+      r: Math.round(clamp01(0.5 + dx / 62) * 255),
+      g: Math.round(clamp01(0.5 + dy / 62) * 255),
+      b: 226,
       a: 255
     };
   });
@@ -627,23 +643,24 @@ function createHeroStreetRoughnessTexture(width, height) {
 }
 
 function createHeroStreetAoTexture(width, height) {
-  const image = createImage(width, height, "#ddd2bd");
+  const image = createImage(width, height, "#d2c1a7");
 
   forEachPixel(image, (x, y) => {
     const normalizedX = x / width;
     const normalizedY = y / height;
-    const edgeShade = Math.abs(normalizedX - 0.5) * 0.32;
-    const leftRutShade = Math.exp(-1 * (((normalizedX - (0.4 + Math.sin(normalizedY * 17.2) * 0.028)) / 0.038) ** 2)) * 0.07;
-    const rightRutShade = Math.exp(-1 * (((normalizedX - (0.59 + Math.cos(normalizedY * 16.5) * 0.03)) / 0.04) ** 2)) * 0.065;
-    const wallFootShade = Math.exp(-1 * ((normalizedX - 0.1) / 0.095) ** 2) * 0.105
-      + Math.exp(-1 * ((normalizedX - 0.9) / 0.095) ** 2) * 0.105;
-    const doorwayPulse = Math.max(0, Math.sin(normalizedY * Math.PI * 9.5 + normalizedX * 2.2)) * wallFootShade * 0.42;
+    const edgeShade = Math.abs(normalizedX - 0.5) * 0.38;
+    const leftRutShade = Math.exp(-1 * (((normalizedX - (0.4 + Math.sin(normalizedY * 17.2) * 0.028)) / 0.038) ** 2)) * 0.09;
+    const rightRutShade = Math.exp(-1 * (((normalizedX - (0.59 + Math.cos(normalizedY * 16.5) * 0.03)) / 0.04) ** 2)) * 0.085;
+    const wallFootShade = Math.exp(-1 * ((normalizedX - 0.1) / 0.095) ** 2) * 0.14
+      + Math.exp(-1 * ((normalizedX - 0.9) / 0.095) ** 2) * 0.14;
+    const doorwayPulse = Math.max(0, Math.sin(normalizedY * Math.PI * 9.5 + normalizedX * 2.2)) * wallFootShade * 0.54;
+    const awningPulse = Math.max(0, Math.sin((normalizedY * 6.8 - normalizedX * 1.4) * Math.PI)) * 0.045;
     const n = layeredNoise(x, y, 1501, [
       [0.009, 18],
       [0.04, 8],
       [0.14, 3]
     ]);
-    const value = Math.round(clamp01(0.94 - edgeShade - wallFootShade - doorwayPulse - leftRutShade - rightRutShade + n / 210) * 255);
+    const value = Math.round(clamp01(0.9 - edgeShade - wallFootShade - doorwayPulse - awningPulse - leftRutShade - rightRutShade + n / 230) * 255);
     return { r: value, g: value, b: value, a: 255 };
   });
 
@@ -651,7 +668,7 @@ function createHeroStreetAoTexture(width, height) {
 }
 
 function createHeroStreetLightmapTexture(width, height) {
-  const image = createImage(width, height, "#e2c99c");
+  const image = createImage(width, height, "#d7bf91");
   const random = seededRandom(1601);
   const streetYMin = -30;
   const streetYMax = 38;
@@ -660,19 +677,19 @@ function createHeroStreetLightmapTexture(width, height) {
   forEachPixel(image, (x, y) => {
     const normalizedX = x / width;
     const normalizedY = y / height;
-    const edgeOcclusion = Math.exp(-1 * ((normalizedX - 0.08) / 0.12) ** 2) * 0.08
-      + Math.exp(-1 * ((normalizedX - 0.92) / 0.12) ** 2) * 0.08;
-    const walkingAxisLight = Math.exp(-1 * ((normalizedX - 0.53) / 0.31) ** 2) * 0.2;
-    const warmSunPulse = Math.max(0, Math.sin(normalizedY * Math.PI * 6.7 - normalizedX * 2.1)) * 0.06;
+    const edgeOcclusion = Math.exp(-1 * ((normalizedX - 0.08) / 0.12) ** 2) * 0.12
+      + Math.exp(-1 * ((normalizedX - 0.92) / 0.12) ** 2) * 0.12;
+    const walkingAxisLight = Math.exp(-1 * ((normalizedX - 0.53) / 0.31) ** 2) * 0.15;
+    const warmSunPulse = Math.max(0, Math.sin(normalizedY * Math.PI * 6.7 - normalizedX * 2.1)) * 0.075;
     const diagonalDust = Math.sin((normalizedX * 3.2 + normalizedY * 2.4) * Math.PI) * 0.022;
-    const shadeFlutter = Math.max(0, Math.sin((normalizedY * 11.5 - normalizedX * 4.4) * Math.PI)) * 0.024;
+    const shadeFlutter = Math.max(0, Math.sin((normalizedY * 11.5 - normalizedX * 4.4) * Math.PI)) * 0.04;
     const grit = layeredNoise(x, y, 1601, [
       [0.006, 10],
       [0.028, 6],
       [0.09, 3]
     ]) / 180;
-    const value = clamp01(0.86 + walkingAxisLight + warmSunPulse + diagonalDust + grit - edgeOcclusion - shadeFlutter);
-    return mixHex("#9c744d", "#f0d7a5", value);
+    const value = clamp01(0.78 + walkingAxisLight + warmSunPulse + diagonalDust + grit - edgeOcclusion - shadeFlutter);
+    return mixHex("#78634e", "#e3cfa4", value);
   });
 
   for (const [worldY, radiusY, opacity] of [

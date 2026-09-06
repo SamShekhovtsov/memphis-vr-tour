@@ -165,3 +165,12 @@ Before accepting each pass, check:
 - Regenerated runtime material targets toward lighter Nile-silt dust, reduced rectangular/tiled ground read, softer AO, and more believable plaster scumble.
 - Updated the Blender hero-street kit so existing house ends get uneven plaster skins and the locked shot gains a non-blocking practical overhead linen frame with soft canopy shade.
 - Historical guardrail: V4 makes no district expansion and keeps the lane within Early Dynastic / Old Kingdom Memphis restraint: plain mudbrick construction, plastered domestic walls, packed dust, clay pottery, reed/wood, linen, and no copied reference media.
+
+### 2026-09-06: Hero Shot Paintover Pass v5
+
+- Upgraded the active paintover file to `hero-street-paintover-v5` with a versioned URL: `?shot=hero-street-main&paintover=v5&chrome=0`.
+- Re-locked the benchmark camera to a narrower eye-height frame so the review judges close walls, ground, shade cloth, and contact detail rather than a wide empty floor.
+- Rebalanced runtime lighting toward lower exposure, less white haze, stronger warm sun, cooler/darker ambient fill, and a stronger vignette.
+- Rebuilt the generated hero-ground texture response with darker compacted dirt, stronger ruts, dried-silt scuffs, hairline cracks, straw scratches, and a deeper AO/lightmap read.
+- Updated the Blender hero-street kit with dust-stained shade cloth, broad close plaster unifier skins, stronger doorway pockets, wall-base dirt, and non-blocking ground weathering inside the protected lane.
+- Historical guardrail: V5 still makes no district expansion and keeps the Main Wall-side entry open while improving only Old Kingdom-appropriate mudbrick/plaster/dust/linen/reed/wood/clay material reads.

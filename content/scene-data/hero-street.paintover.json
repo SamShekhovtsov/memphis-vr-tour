@@ -1,16 +1,16 @@
 {
-  "id": "hero-street-paintover-v4",
+  "id": "hero-street-paintover-v5",
   "cameraLockId": "hero-street-camera-lock",
   "activeShotId": "hero-street-main",
-  "version": 4,
-  "label": "Hero Shot Paintover Pass v4",
+  "version": 5,
+  "label": "Hero Shot Paintover Pass v5",
   "canonicalUrl": "http://127.0.0.1:5573/?shot=hero-street-main&chrome=0",
-  "paintoverUrl": "http://127.0.0.1:5573/?shot=hero-street-main&paintover=v4&chrome=0",
-  "canonicalOutput": "docs/design/screenshots/hero-street-main-current.jpg",
-  "paintoverOutput": "docs/design/screenshots/hero-street-paintover-v4.jpg",
+  "paintoverUrl": "http://127.0.0.1:5573/?shot=hero-street-main&paintover=v5&chrome=0",
+  "canonicalOutput": "docs/design/screenshots/hero-street-main-current.png",
+  "paintoverOutput": "docs/design/screenshots/hero-street-paintover-v5.png",
   "historicalScope": "Ancient Memphis, Early Dynastic / Old Kingdom, Kom el-Fakhry / Mit Rahina settlement evidence with early Ptah / Hwt-ka-Ptah endpoint.",
-  "purpose": "A production paintover for closing the remaining CG gap in the locked hero street shot through a more cinematic camera crop, visible linen ceiling frame, lighter packed-dust read, softened plastered house ends, stronger contact darkness, and controlled mud/dust imperfection without changing the approved district layout.",
-  "qualityTarget": "A believable cinematic eye-height Old Kingdom Memphis domestic lane: practical overhead linen shade, controlled imperfection in mud-plastered walls, lighter packed Nile-silt dust, darker wall-base dirt, worn foot traffic, straw and pottery fragments, shadowed door pockets, warm directional sun, cooler shade, restrained linen and clay material culture, and no copied reference media.",
+  "purpose": "A production paintover for closing the remaining CG gap in the locked hero street shot through a tighter eye-height camera, darker dust-stained shade cloth, stronger close plaster read, denser compacted-ground breakup, baked-looking contact darkness, and controlled mud/dust imperfection without changing the approved district layout.",
+  "qualityTarget": "A believable cinematic eye-height Old Kingdom Memphis domestic lane: narrow camera compression, practical dust-stained linen shade, controlled imperfection in mud-plastered walls, darker doorway pockets, contact shadows, lighter but dirty compacted Nile-silt dust, stronger wall-base dirt, worn foot traffic, straw and pottery fragments, warm directional sun, cooler shade, restrained linen and clay material culture, and no copied reference media.",
   "referenceUsePolicy": [
     "Use the attached cinematic images only for composition, density, lighting mood, foreground depth, and surface-quality ambition.",
     "Do not copy source pixels, layouts, exact people, exact buildings, captions, later New Kingdom details, or fantasy monument language.",
@@ -110,20 +110,47 @@
       "evidenceLevel": "inferred"
     }
   ],
+  "v5CinematicCorrections": [
+    {
+      "id": "centered-narrow-eye-height-camera",
+      "description": "The active benchmark camera is narrowed and lowered slightly so the shot judges the lived-in lane instead of broad empty floor, blank sky, or over-bright canopy.",
+      "evidenceLevel": "speculative"
+    },
+    {
+      "id": "dust-stained-shade-cloth",
+      "description": "Large overhead shade cloth should read as practical dust-stained linen/reed-supported textile, not glowing white or yellow geometry.",
+      "evidenceLevel": "inferred"
+    },
+    {
+      "id": "close-plaster-unifier",
+      "description": "The close visible house faces should be unified by hand-applied plaster skins and grime so they stop reading as regular block-panel modules.",
+      "evidenceLevel": "inferred"
+    },
+    {
+      "id": "dirty-compacted-ground",
+      "description": "The center road should show compacted dust, darker ruts, irregular dried-silt scuffs, hairline cracks, straw scratches, and wall-base dirt without blocking the walking route.",
+      "evidenceLevel": "inferred"
+    },
+    {
+      "id": "stronger-grounded-contact",
+      "description": "Doorways, posts, baskets, benches, pottery, and wall bases need visibly darker contact pools to reduce the floating low-poly look.",
+      "evidenceLevel": "inferred"
+    }
+  ],
   "implementationKnobs": [
     {
-      "id": "runtime-atlas-v4",
-      "description": "Rebalance tools/generate-runtime-assets.mjs toward a lighter continuous packed-dust road, non-repeating low-frequency dirt, softened AO, more believable plaster scumble, and less obvious tile/rectangle read.",
+      "id": "runtime-atlas-v5",
+      "description": "Rebalance tools/generate-runtime-assets.mjs toward dirtier compacted dust, stronger AO/lightmap response, non-repeating silt scuffs, and less smooth carpet-like ground.",
       "status": "active"
     },
     {
-      "id": "glb-composition-v4",
-      "description": "Use tools/blender/generate_memphis_asset_kit.py for non-colliding V4 composition/detail only: linen ceiling frame, dry reed ropes, soft canopy shade, softened plastered house ends, and smaller organic contact grime.",
+      "id": "glb-composition-v5",
+      "description": "Use tools/blender/generate_memphis_asset_kit.py for non-colliding V5 quality detail only: dust-stained shade cloth, close plaster unifier skins, doorway pockets, wall-base grime, and irregular compacted-ground scuffs.",
       "status": "active"
     },
     {
-      "id": "overlay-review-v4",
-      "description": "Use http://127.0.0.1:5573/?shot=hero-street-main&paintover=v4&chrome=0 after every art change.",
+      "id": "overlay-review-v5",
+      "description": "Use http://127.0.0.1:5573/?shot=hero-street-main&paintover=v5&chrome=0 after every art change.",
       "status": "active"
     }
   ],
@@ -381,15 +408,15 @@
     { "id": "historical-restraint", "label": "Early Memphis / Old Kingdom restraint", "weight": 6 }
   ],
   "acceptanceChecks": [
-    "Paintover URL renders the V4 overlay from the locked hero-street-main camera.",
+    "Paintover URL renders the V5 overlay from the locked hero-street-main camera.",
     "The district layout, road, houses, gates, and route coordinates remain unchanged during this pass.",
     "The street-mouth clearance near the Main Wall remains open and walkable.",
-    "Ground no longer reads as a dark red overlay, bright yellow strip, or repeated rectangular tile; it reads as lighter compacted dust with irregular wear.",
-    "Close walls and house ends read as plastered/whitewashed mudbrick with uneven age, not regular block-grid wallpaper or toy-like panels.",
-    "The locked shot has a practical overhead linen frame and stronger foreground depth without blocking the route.",
-    "Dirt, mud, dust, cracks, chips, and contact shadows improve realism without adding clutter or blocking collision.",
+    "Ground no longer reads as a smooth carpet, dark red overlay, bright yellow strip, or repeated rectangular tile; it reads as dirty compacted dust with irregular wear.",
+    "Close walls and house ends read as plastered/whitewashed mudbrick with uneven age and broad scumble, not regular block-grid wallpaper or toy-like panels.",
+    "The locked shot has a practical dust-stained overhead linen frame and stronger foreground depth without blocking the route.",
+    "Dirt, mud, dust, cracks, chips, and contact shadows are visibly stronger while remaining shallow/non-blocking.",
     "The target respects early Memphis / Old Kingdom restraint: mudbrick, plaster/whitewash, linen, reed/wood, clay pottery, packed dust, simple daily life.",
     "No late New Kingdom, Ptolemaic, fantasy, royal, or copied-media visual language is introduced.",
-    "Future screenshots can be compared against the same V4 target zones, imperfection targets, protected clear zones, cinematic reset targets, and visual score weights."
+    "Future screenshots can be compared against the same V5 target zones, imperfection targets, protected clear zones, cinematic reset targets, V5 cinematic corrections, and visual score weights."
   ]
 }

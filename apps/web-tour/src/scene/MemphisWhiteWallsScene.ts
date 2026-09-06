@@ -262,17 +262,17 @@ export async function createMemphisWhiteWallsScene(
     ...(scene.metadata as Record<string, unknown> | null),
     runtimeQualityProfile: qualityProfile.mode
   };
-  scene.clearColor = new Color4(0.72, 0.68, 0.58, 1);
-  scene.ambientColor = new Color3(0.46, 0.39, 0.31);
-  scene.fogColor = Color3.FromHexString("#caa879");
+  scene.clearColor = new Color4(0.69, 0.65, 0.56, 1);
+  scene.ambientColor = new Color3(0.42, 0.38, 0.33);
+  scene.fogColor = Color3.FromHexString("#bfa37a");
   scene.fogMode = Scene.FOGMODE_EXP2;
-  scene.fogDensity = 0.00058;
+  scene.fogDensity = 0.00042;
   scene.collisionsEnabled = true;
-  scene.imageProcessingConfiguration.exposure = 1.03;
-  scene.imageProcessingConfiguration.contrast = 1.48;
+  scene.imageProcessingConfiguration.exposure = 0.9;
+  scene.imageProcessingConfiguration.contrast = 1.5;
   scene.imageProcessingConfiguration.toneMappingEnabled = true;
   scene.imageProcessingConfiguration.vignetteEnabled = true;
-  scene.imageProcessingConfiguration.vignetteWeight = 0.72;
+  scene.imageProcessingConfiguration.vignetteWeight = 0.82;
   scene.imageProcessingConfiguration.vignetteColor = new Color4(0.28, 0.18, 0.11, 1);
 
   const materials = createMaterials(scene);
@@ -289,20 +289,20 @@ export async function createMemphisWhiteWallsScene(
   applyCameraShotBookmark(camera);
 
   const skyLight = new HemisphericLight("skyLight", new Vector3(0, 1, 0), scene);
-  skyLight.diffuse = Color3.FromHexString("#d6c2a0");
+  skyLight.diffuse = Color3.FromHexString("#d0c0a2");
   skyLight.groundColor = Color3.FromHexString("#46362e");
-  skyLight.intensity = 0.48;
+  skyLight.intensity = 0.46;
 
   const sun = new DirectionalLight("lowGoldSun", new Vector3(-0.62, -0.74, 0.27), scene);
   sun.position = new Vector3(64, 88, -76);
-  sun.diffuse = Color3.FromHexString("#ffd08a");
+  sun.diffuse = Color3.FromHexString("#ffdca7");
   sun.specular = Color3.FromHexString("#ffe8bd");
-  sun.intensity = 5.15;
+  sun.intensity = 4.65;
 
   const sunBounce = new DirectionalLight("warmDustBounce", new Vector3(0.42, -0.32, -0.24), scene);
-  sunBounce.diffuse = Color3.FromHexString("#a56437");
+  sunBounce.diffuse = Color3.FromHexString("#8a5a3e");
   sunBounce.specular = Color3.Black();
-  sunBounce.intensity = 0.24;
+  sunBounce.intensity = 0.18;
 
   const shrineGlow = new PointLight("shrineOilLampGlow", new Vector3(0, 2.2, 90), scene);
   shrineGlow.diffuse = Color3.FromHexString("#f2a451");
@@ -320,7 +320,7 @@ export async function createMemphisWhiteWallsScene(
   if (modularAssets.heroStreetLoaded) {
     hideLegacyHeroStreetScaffold(scene);
     createHeroStreetCollisionGuides(scene);
-    createHeroStreetV4DustSurface(scene, materials);
+    createHeroStreetV5DustSurface(scene, materials);
   }
   const cinematicHumans = modularAssets.heroStreetLoaded ? [] : createHeroStreetV2FilmSet(scene, materials);
   const glbActorMotions = modularAssets.actorMotions;
@@ -449,7 +449,7 @@ function createMaterials(scene: Scene): SceneMaterials {
     directIntensity: 1.28,
     environmentIntensity: 0.52
   });
-  const heroGround = material(scene, "heroStreetGround", "#c7ad7a", {
+  const heroGround = material(scene, "heroStreetGround", "#e2c999", {
     textureName: "hero-street-ground.jpg",
     bumpTextureName: "hero-street-normal.jpg",
     ambientTextureName: "hero-street-ao.jpg",
@@ -461,15 +461,15 @@ function createMaterials(scene: Scene): SceneMaterials {
     metallicTextureVScale: 1,
     lightmapUScale: 1,
     lightmapVScale: 1,
-    ambientTextureStrength: 0.2,
-    lightmapLevel: 0.46,
+    ambientTextureStrength: 0.34,
+    lightmapLevel: 0.72,
     useLightmapAsShadowmap: true,
     useAmbientOcclusionFromMetallicTextureRed: false,
     roughness: 0.98,
     bump: true,
-    bumpLevel: 0.095,
-    directIntensity: 1.72,
-    environmentIntensity: 0.58
+    bumpLevel: 0.13,
+    directIntensity: 1.34,
+    environmentIntensity: 0.48
   });
   const plaster = material(scene, "plaster", "#c8b58e", {
     textureName: "atlas-plaster-albedo.jpg",
@@ -482,8 +482,8 @@ function createMaterials(scene: Scene): SceneMaterials {
     roughness: 0.97,
     bump: true,
     bumpLevel: 0.085,
-    directIntensity: 1.5,
-    environmentIntensity: 0.62
+    directIntensity: 1.36,
+    environmentIntensity: 0.52
   });
   const reed = material(scene, "reed", "#5c7d4b", {
     textureName: "reed-bundle.jpg",
@@ -508,7 +508,7 @@ function createMaterials(scene: Scene): SceneMaterials {
     bump: true,
     bumpLevel: 0.09
   });
-  const linen = material(scene, "linen", "#e0d0a8", {
+  const linen = material(scene, "linen", "#d6c49d", {
     textureName: "atlas-linen-albedo.jpg",
     bumpTextureName: "atlas-linen-normal.jpg",
     metallicTextureName: "atlas-linen-mrao.jpg",
@@ -519,8 +519,8 @@ function createMaterials(scene: Scene): SceneMaterials {
     roughness: 0.97,
     bump: true,
     bumpLevel: 0.046,
-    directIntensity: 1.46,
-    environmentIntensity: 0.66
+    directIntensity: 1.18,
+    environmentIntensity: 0.46
   });
   linen.backFaceCulling = false;
   dryReed.backFaceCulling = false;
@@ -548,7 +548,7 @@ function createMaterials(scene: Scene): SceneMaterials {
     roughness: 1
   });
   const contactShadow = material(scene, "softContactShadow", "#17110c", {
-    alpha: 0.42,
+    alpha: 0.5,
     roughness: 1
   });
   contactShadow.backFaceCulling = false;
@@ -840,8 +840,14 @@ function calibrateImportedFilmBakeMaterial(mesh: AbstractMesh): void {
     mat.directIntensity = 1.24;
     mat.environmentIntensity = 0.5;
 
-    if (/linen|woven/.test(materialName)) {
+    if (/linen|woven|shade cloth|canopy|ceiling/.test(materialName)) {
       mat.backFaceCulling = false;
+    }
+
+    if (/dust stained shade cloth/.test(materialName)) {
+      mat.directIntensity = 0.92;
+      mat.environmentIntensity = 0.26;
+      return;
     }
 
     if (/dry reed|straw/.test(materialName)) {
@@ -851,7 +857,7 @@ function calibrateImportedFilmBakeMaterial(mesh: AbstractMesh): void {
     }
 
     if (/warm suspended street haze|haze/.test(materialName)) {
-      mat.alpha = Math.min(mat.alpha, 0.036);
+      mat.alpha = Math.min(mat.alpha, 0.028);
       mat.emissiveColor = Color3.FromHexString("#2d1c0e");
       return;
     }
@@ -863,12 +869,12 @@ function calibrateImportedFilmBakeMaterial(mesh: AbstractMesh): void {
     }
 
     if (/deep doorway|doorway/.test(materialName)) {
-      mat.alpha = Math.max(0.34, mat.alpha * 0.82);
+      mat.alpha = Math.max(0.48, mat.alpha * 0.98);
       return;
     }
 
     if (/soft awning shadow|cool bounced/.test(materialName)) {
-      mat.alpha *= 0.32;
+      mat.alpha *= 0.55;
       return;
     }
 
@@ -876,7 +882,7 @@ function calibrateImportedFilmBakeMaterial(mesh: AbstractMesh): void {
       /contact shadow|settled dark street dust|ambient occlusion/.test(materialName) ||
       /wall base grime|plaster water stain|edge shade|dusty wall corner|stain|grime|scumble|veil/.test(materialName)
     ) {
-      mat.alpha *= 0.48;
+      mat.alpha *= 0.72;
     }
   };
 
@@ -1303,32 +1309,58 @@ function createResidentialStreet(scene: Scene, materials: SceneMaterials): void 
   }
 }
 
-function createHeroStreetV4DustSurface(scene: Scene, materials: SceneMaterials): void {
+function createHeroStreetV5DustSurface(scene: Scene, materials: SceneMaterials): void {
   const centerX = heroStreetCenterX;
-  const v4DustSurface = MeshBuilder.CreateGround("heroV4ContinuousCinematicDustSurface", {
-    width: 9.4,
-    height: 64,
-    subdivisions: 18
+  const v5DustSurface = MeshBuilder.CreateGround("heroV5ContinuousCompactedDustSurface", {
+    width: 9.05,
+    height: 63.5,
+    subdivisions: 22
   }, scene);
-  v4DustSurface.position = new Vector3(centerX + 0.04, 0.058, 3.8);
-  const v4DustMaterial = materials.heroGround.clone("heroV4ContinuousCinematicDustMaterial") as PBRMaterial | null;
-  if (v4DustMaterial) {
-    v4DustMaterial.albedoColor = Color3.FromHexString("#ae8e62");
-    v4DustMaterial.lightmapTexture = null;
-    v4DustMaterial.ambientTexture = null;
-    v4DustMaterial.directIntensity = 1.42;
-    v4DustMaterial.environmentIntensity = 0.5;
-    v4DustSurface.material = v4DustMaterial;
+  v5DustSurface.position = new Vector3(centerX + 0.02, 0.058, 3.85);
+  const v5DustMaterial = materials.heroGround.clone("heroV5ContinuousCompactedDustMaterial") as PBRMaterial | null;
+  if (v5DustMaterial) {
+    v5DustMaterial.albedoColor = Color3.FromHexString("#f3dfb8");
+    v5DustMaterial.ambientTextureStrength = 0.38;
+    if (v5DustMaterial.lightmapTexture) {
+      v5DustMaterial.lightmapTexture.level = 0.78;
+    }
+    if (v5DustMaterial.bumpTexture) {
+      v5DustMaterial.bumpTexture.level = 0.145;
+    }
+    v5DustMaterial.directIntensity = 1.16;
+    v5DustMaterial.environmentIntensity = 0.44;
+    v5DustSurface.material = v5DustMaterial;
   } else {
-    v4DustSurface.material = materials.heroGround;
+    v5DustSurface.material = materials.heroGround;
   }
-  v4DustSurface.isPickable = false;
+  v5DustSurface.isPickable = false;
+  v5DustSurface.receiveShadows = true;
+
+  [
+    { name: "heroV5LeftWallBaseDustOcclusion", x: centerX - 4.18, z: 4.5, width: 0.76, depth: 48.5, alpha: 0.28, rotation: 0.006 },
+    { name: "heroV5RightWallBaseDustOcclusion", x: centerX + 4.08, z: 5.4, width: 0.82, depth: 47.5, alpha: 0.3, rotation: -0.005 },
+    { name: "heroV5ForegroundCanopyCastShadow", x: centerX - 0.25, z: -8.4, width: 8.35, depth: 4.9, alpha: 0.16, rotation: -0.045 },
+    { name: "heroV5MidStreetCanopyCastShadow", x: centerX + 0.18, z: 5.7, width: 7.45, depth: 3.55, alpha: 0.11, rotation: 0.035 },
+    { name: "heroV5CoolRightForegroundDirtWedge", x: centerX + 2.68, z: -8.2, width: 2.75, depth: 7.2, alpha: 0.14, rotation: -0.04 },
+    { name: "heroV5WarmCenterFootTrafficHighlight", x: centerX - 0.15, z: 2.6, width: 2.4, depth: 42.0, alpha: 0.055, rotation: 0.018 }
+  ].forEach((shadow) => {
+    createGroundShadow(
+      scene,
+      materials,
+      shadow.name,
+      new Vector3(shadow.x, 0.071, shadow.z),
+      shadow.width,
+      shadow.depth,
+      shadow.alpha,
+      shadow.rotation
+    );
+  });
 }
 
 function createHeroStreetV2FilmSet(scene: Scene, materials: SceneMaterials): CinematicHumanRoutine[] {
   const centerX = heroStreetCenterX;
 
-  createHeroStreetV4DustSurface(scene, materials);
+  createHeroStreetV5DustSurface(scene, materials);
 
   [
     { x: centerX - 4.5, z: -22, width: 1.15, depth: 10, alpha: 0.22 },
@@ -1414,10 +1446,12 @@ function createGroundShadow(
   position: Vector3,
   width: number,
   depth: number,
-  alpha: number
+  alpha: number,
+  rotationY = 0
 ): void {
   const shadow = MeshBuilder.CreateGround(name, { width, height: depth, subdivisions: 1 }, scene);
   shadow.position = position;
+  shadow.rotation.y = rotationY;
   shadow.material = materials.contactShadow;
   shadow.visibility = alpha;
   shadow.isPickable = false;

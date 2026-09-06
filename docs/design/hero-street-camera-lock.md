@@ -13,12 +13,12 @@ Use one fixed eye-height camera for every visual-quality comparison. This preven
 - Shot id: `hero-street-main`
 - URL: `http://127.0.0.1:5573/?shot=hero-street-main&chrome=0`
 - Alias URL: `http://127.0.0.1:5573/?shot=canonical&chrome=0`
-- Paintover URL: `http://127.0.0.1:5573/?shot=hero-street-main&paintover=v4&chrome=0`
+- Paintover URL: `http://127.0.0.1:5573/?shot=hero-street-main&paintover=v5&chrome=0`
 - Viewport: `1280x720`
-- Position: `[-6.35, 1.58, -15.8]`
-- Look at: `[-6.02, 1.16, 10.2]`
-- FOV: `0.62`
-- Canonical output: `docs/design/screenshots/hero-street-main-current.jpg`
+- Position: `[-6.08, 1.52, -16.4]`
+- Look at: `[-6.0, 1.14, 11.6]`
+- FOV: `0.54`
+- Canonical output: `docs/design/screenshots/hero-street-main-current.png`
 
 ## Runbook
 
@@ -50,7 +50,7 @@ Do not change the canonical shot unless the user explicitly approves a new camer
 
 - `content/scene-data/hero-street.camera-lock.json`
 - `content/scene-data/hero-street.paintover.json`
-- `docs/design/hero-shot-paintover-pass-v4.md`
+- `docs/design/hero-shot-paintover-pass-v5.md`
 - `docs/design/hero-street-camera-lock.md`
 - `docs/design/hero-street-art-direction-v1.md`
 - any current comparison screenshots in `docs/design/screenshots/`

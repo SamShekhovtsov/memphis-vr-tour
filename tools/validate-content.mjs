@@ -293,6 +293,10 @@ function validatePaintover(paintover, cameraLock) {
     validatePaintoverV4Targets(paintover);
   }
 
+  if (paintover.version >= 5) {
+    validatePaintoverV5Targets(paintover);
+  }
+
   if (!requireArray(paintover.acceptanceChecks, "paintover.acceptanceChecks")) {
     return;
   }
@@ -401,6 +405,31 @@ function validatePaintoverV4Targets(paintover) {
   for (const term of ["linen", "packed", "plaster", "reed", "shadow"]) {
     if (!resetText.includes(term)) {
       addError(`Paintover V4 cinematicResetTargets must mention "${term}".`);
+    }
+  }
+}
+
+function validatePaintoverV5Targets(paintover) {
+  const qualityTarget = String(paintover.qualityTarget ?? "").toLowerCase();
+
+  for (const term of ["camera", "doorway", "compacted", "contact"]) {
+    if (!qualityTarget.includes(term)) {
+      addError(`Paintover V5 qualityTarget must include "${term}".`);
+    }
+  }
+
+  if (!requireArray(paintover.v5CinematicCorrections, "paintover.v5CinematicCorrections")) {
+    return;
+  }
+
+  if (paintover.v5CinematicCorrections.length < 5) {
+    addError("paintover.v5CinematicCorrections must include at least five V5 correction targets.");
+  }
+
+  const correctionText = JSON.stringify(paintover.v5CinematicCorrections).toLowerCase();
+  for (const term of ["camera", "shade cloth", "plaster", "ground", "contact"]) {
+    if (!correctionText.includes(term)) {
+      addError(`Paintover V5 cinematic corrections must mention "${term}".`);
     }
   }
 }

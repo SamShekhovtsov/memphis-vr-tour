@@ -17,9 +17,9 @@ Alias:
 
 Camera bookmark:
 
-- Position: `[-6.35, 1.58, -15.8]`
-- Look at: `[-6.02, 1.16, 10.2]`
-- FOV: `0.62`
+- Position: `[-6.08, 1.52, -16.4]`
+- Look at: `[-6.0, 1.14, 11.6]`
+- FOV: `0.54`
 - Viewport: `1280x720`
 - Canonical output: `docs/design/screenshots/hero-street-main-current.jpg`
 - Purpose: eye-height visitor view down the dense residential lane.
@@ -37,7 +37,7 @@ Secondary diagnostic URLs:
 
 Paintover target URL:
 
-- `http://127.0.0.1:5573/?shot=hero-street-main&paintover=v4&chrome=0`
+- `http://127.0.0.1:5573/?shot=hero-street-main&paintover=v5&chrome=0`
 
 Current captures:
 
@@ -80,7 +80,7 @@ Current shot weaknesses:
 Think of the next pass as a paintover translated into assets and shaders:
 
 The machine-readable source of truth is `content/scene-data/hero-street.paintover.json`.
-The current production brief is `docs/design/hero-shot-paintover-pass-v4.md`.
+The current production brief is `docs/design/hero-shot-paintover-pass-v5.md`.
 
 1. Bring the existing shade-cloth/awning read into the upper frame so the shot has a cinematic top silhouette.
 2. Make the left and right foreground walls the proof of quality: rounded plaster, chipped lips, lower grime, dark recesses, and no regular block-grid wallpaper.

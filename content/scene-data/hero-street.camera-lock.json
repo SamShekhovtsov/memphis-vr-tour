@@ -1,7 +1,7 @@
 {
   "id": "hero-street-camera-lock",
   "tourId": "memphis-white-walls-early-kingdom",
-  "version": 2,
+  "version": 3,
   "activeShotId": "hero-street-main",
   "localDevPort": 5573,
   "viewport": {
@@ -10,7 +10,7 @@
     "deviceScaleFactor": 1
   },
   "canonicalUrl": "http://127.0.0.1:5573/?shot=hero-street-main&chrome=0",
-  "canonicalOutput": "docs/design/screenshots/hero-street-main-current.jpg",
+  "canonicalOutput": "docs/design/screenshots/hero-street-main-current.png",
   "historicalScope": "Ancient Memphis, Early Dynastic / Old Kingdom, Kom el-Fakhry / Mit Rahina settlement evidence with early Ptah / Hwt-ka-Ptah endpoint.",
   "qualityTarget": "Cinematic eye-height hero street benchmark for material, ground, plaster, mudbrick, contact-shadow, haze, and color-grading passes.",
   "shots": [
@@ -18,13 +18,13 @@
       "id": "hero-street-main",
       "label": "Hero Street Main",
       "role": "canonical-beauty-benchmark",
-      "position": [-6.35, 1.58, -15.8],
-      "lookAt": [-6.02, 1.16, 10.2],
-      "fov": 0.62,
+      "position": [-6.08, 1.52, -16.4],
+      "lookAt": [-6.0, 1.14, 11.6],
+      "fov": 0.54,
       "locked": true,
       "notes": [
-        "Primary V4 eye-height first-person composition down the dense residential lane.",
-        "V4 keeps the approved district layout fixed, but tightens the benchmark lens and lower aim so the shot judges walls, ground, linen, and contact detail instead of blank sky.",
+        "Primary V5 eye-height first-person composition down the dense residential lane.",
+        "V5 keeps the approved district layout fixed, but tightens the benchmark lens and lower aim so the shot judges walls, ground, linen, and contact detail instead of blank sky or empty floor.",
         "Use this shot for before/after decisions during texture, material, baked-light, haze, and color passes.",
         "Do not move the street layout, route, gates, or houses when changing this composition benchmark."
       ]
