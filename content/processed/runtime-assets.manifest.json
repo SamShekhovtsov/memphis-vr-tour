@@ -1,7 +1,7 @@
 {
   "$schema": "../scene-data/runtime-assets.schema.json",
   "tourId": "memphis-white-walls-early-kingdom",
-  "checkedDate": "2026-07-08",
+  "checkedDate": "2026-09-06",
   "assets": [
     {
       "id": "procedural-nile-landing",
@@ -160,12 +160,12 @@
       "licenseStatus": "Project-generated synthetic PBR-style texture set; no source media copied.",
       "notes": [
         "Includes hero-street-ground.jpg, hero-street-normal.jpg, hero-street-roughness.jpg, hero-street-ao.jpg, and hero-street-lightmap.jpg.",
-        "Used to give the residential corridor packed dust, footprints, stones, straw, and worn walking lanes."
+        "Hero Shot Paintover Pass v3 uses this set to give the residential corridor compacted dust, dried Nile-silt scuffs, footprints, stones, straw, pottery chips, darker ruts, and worn walking lanes."
       ]
     },
     {
       "id": "generated-hero-street-real-material-atlases",
-      "label": "Generated PBR material atlas sets for Hero Street v2 surfaces",
+      "label": "Generated PBR material atlas sets for Hero Street v3 surfaces",
       "assetType": "texture",
       "origin": "generated",
       "runtimeUrl": "/assets/generated/textures/material-atlases.manifest.json",
@@ -178,7 +178,8 @@
       "notes": [
         "Includes mudbrick, plaster, dust, wood, linen, pottery, and skin atlas families.",
         "Each family includes albedo, normal, roughness, AO, height, and packed MRAO maps for Babylon PBR use.",
-        "Materials are restrained for early Memphis / Old Kingdom street reconstruction: mudbrick, whitewash, plain linen, clay pottery, and dark wood."
+        "Materials are restrained for early Memphis / Old Kingdom street reconstruction: mudbrick, whitewash, plain linen, clay pottery, and dark wood.",
+        "V3 increases controlled imperfection through non-repeating dust, wall-base grime, plaster scumble, chips, cracks, and dried mud/silt wear without copying external media."
       ]
     },
     {
@@ -213,6 +214,7 @@
       "notes": [
         "Includes mudbrick house clusters, awnings, jars, baskets, mats, benches, painted wall panels, baked-looking contact/shadow geometry, and low-poly NPC placeholders.",
         "Step 5 improves existing wall planes in place with irregular plaster scumble, wall-base grime, exposed mud daub, corner AO, doorway dirt, and fine cracks; no new wall rows or house placements are added.",
+        "Hero Shot Paintover Pass v3 adds controlled non-blocking surface imperfection: dried Nile-silt scuffs, low mud splashes, small chips, wall scratches, asymmetric dust clumps, and stronger contact detail.",
         "The street-mouth transition from the White Walls gate into the offset residential lane omits the Main Wall-side house bay on both rows and is kept clear of facade spillover, foreground occluders, haze planes, prop piles, and collision rails.",
         "Restricted Memphis-specific references guide human reconstruction choices only."
       ]

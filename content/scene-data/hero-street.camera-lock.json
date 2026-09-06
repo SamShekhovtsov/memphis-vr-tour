@@ -1,7 +1,7 @@
 {
   "id": "hero-street-camera-lock",
   "tourId": "memphis-white-walls-early-kingdom",
-  "version": 1,
+  "version": 2,
   "activeShotId": "hero-street-main",
   "localDevPort": 5573,
   "viewport": {
@@ -18,13 +18,15 @@
       "id": "hero-street-main",
       "label": "Hero Street Main",
       "role": "canonical-beauty-benchmark",
-      "position": [-6.6, 1.65, -18],
-      "lookAt": [-6, 1.48, 8],
+      "position": [-6.35, 1.58, -15.8],
+      "lookAt": [-6.02, 1.16, 10.2],
+      "fov": 0.62,
       "locked": true,
       "notes": [
-        "Primary eye-height first-person composition down the dense residential lane.",
+        "Primary V4 eye-height first-person composition down the dense residential lane.",
+        "V4 keeps the approved district layout fixed, but tightens the benchmark lens and lower aim so the shot judges walls, ground, linen, and contact detail instead of blank sky.",
         "Use this shot for before/after decisions during texture, material, baked-light, haze, and color passes.",
-        "Do not move this camera unless the user explicitly approves a new canonical benchmark."
+        "Do not move the street layout, route, gates, or houses when changing this composition benchmark."
       ]
     },
     {
@@ -55,6 +57,7 @@
   "acceptanceChecks": [
     "The canonical shot is captured at 1280x720 with chrome=0.",
     "The camera position and lookAt values match this lock file.",
+    "The benchmark lens stays tight enough to show a framed street rather than a wide empty corridor.",
     "The district layout is not moved while judging material quality.",
     "The street no longer reads as tiled or banded from the canonical shot.",
     "Doorways and wall bases show credible baked-looking darkness.",

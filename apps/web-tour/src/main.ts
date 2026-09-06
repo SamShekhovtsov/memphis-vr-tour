@@ -61,7 +61,10 @@ interface HeroShotPaintover {
   id: string;
   label: string;
   activeShotId: string;
+  version: number;
+  qualityTarget: string;
   annotations: HeroShotPaintoverAnnotation[];
+  visualScoreWeights?: HeroShotPaintoverScoreWeight[];
 }
 
 interface HeroShotPaintoverAnnotation {
@@ -91,6 +94,12 @@ interface HeroShotPaintoverPoint {
   y: number;
 }
 
+interface HeroShotPaintoverScoreWeight {
+  id: string;
+  label: string;
+  weight: number;
+}
+
 function getElement<TElement extends Element>(selector: string): TElement {
   const element = document.querySelector<TElement>(selector);
 
@@ -103,7 +112,11 @@ function getElement<TElement extends Element>(selector: string): TElement {
 
 function shouldShowPaintover(params: URLSearchParams): boolean {
   const value = params.get("paintover");
-  return value === "1" || value === "true";
+  if (value === null) {
+    return false;
+  }
+
+  return value === "1" || value === "true" || value === `v${heroShotPaintover.version}`;
 }
 
 function mountHeroShotPaintover(spec: HeroShotPaintover): void {
@@ -150,8 +163,42 @@ function renderPaintoverSvg(spec: HeroShotPaintover): string {
         </filter>
       </defs>
       <rect x="0" y="0" width="${width}" height="${height}" fill="rgba(20, 11, 4, 0.1)" />
+      <g class="paintover-title" aria-hidden="true">
+        <rect x="28" y="22" width="390" height="82" rx="6" fill="rgba(22, 14, 8, 0.72)" stroke="rgba(255, 231, 173, 0.42)" />
+        <text x="48" y="52" fill="#ffe7ad">${escapeSvg(spec.label)}</text>
+        <text x="48" y="78" fill="#fff7df">${escapeSvg("Composition + material target, not runtime art")}</text>
+      </g>
+      ${renderPaintoverScoreStrip(spec, width, height)}
       ${annotations.join("")}
     </svg>`;
+}
+
+function renderPaintoverScoreStrip(spec: HeroShotPaintover, width: number, height: number): string {
+  if (!spec.visualScoreWeights || spec.visualScoreWeights.length === 0) {
+    return "";
+  }
+
+  const totalWeight = spec.visualScoreWeights.reduce((sum, item) => sum + item.weight, 0);
+  const labelList = spec.visualScoreWeights.map((item) => item.id.replace(/-/g, " ")).join(", ");
+  let x = 28;
+  const y = height - 34;
+  const stripWidth = width - 56;
+  const segments = spec.visualScoreWeights.map((item, index) => {
+    const segmentWidth = Math.max(72, Math.round((item.weight / totalWeight) * stripWidth));
+    const segmentX = x;
+    x += segmentWidth;
+    const opacity = index % 2 === 0 ? 0.56 : 0.42;
+
+    return `
+      <rect x="${segmentX}" y="${y}" width="${segmentWidth - 3}" height="12" fill="#f0b84b" opacity="${opacity}" />
+      <title>${escapeSvg(`${item.label}: ${item.weight}%`)}</title>`;
+  });
+
+  return `
+    <g class="paintover-score-strip" aria-hidden="true">
+      <text x="28" y="${y - 8}" fill="#fff7df">V${spec.version} scoring: ${escapeSvg(labelList)}</text>
+      ${segments.join("")}
+    </g>`;
 }
 
 function renderPaintoverFrame(

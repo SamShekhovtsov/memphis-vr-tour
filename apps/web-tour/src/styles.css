@@ -72,6 +72,21 @@ body.qa-clean-shot .error-panel {
   filter: url("#paintover-label-shadow");
 }
 
+.paintover-title text:first-of-type {
+  font-size: 18px;
+  font-weight: 900;
+}
+
+.paintover-title text:last-of-type,
+.paintover-score-strip text {
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0;
+  paint-order: stroke;
+  stroke: rgba(18, 11, 4, 0.78);
+  stroke-width: 4px;
+}
+
 body.qa-paintover-shot #renderCanvas {
   cursor: crosshair;
 }

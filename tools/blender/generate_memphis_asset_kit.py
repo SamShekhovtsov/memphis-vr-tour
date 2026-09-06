@@ -47,6 +47,8 @@ HERO_STREET_SHARED_NOTES = [
     "Step 6 historical-compliance pass: domestic wall construction remains mudbrick, but visible street surfaces read as continuous mud-plastered/whitewashed earthen walls with irregular wear instead of regular exposed block-grid masonry.",
     "Roadmap v3 Step 4 wall-face pass: existing house fronts use continuous uneven plaster skins, softened massing, darker door depth, and subdued daub exposure to avoid a repeated block-panel read.",
     "Street-mouth cleanup: the Main Wall-side house bay is intentionally omitted on both rows so the transition from the White Walls gate to the offset residential street remains open and walkable.",
+    "Hero Shot Paintover Pass v3 adds controlled imperfection only: dried Nile-silt scuffs, asymmetric dust clumps, chipped plaster lips, wall-base grime, and non-blocking contact decals. It does not move layout or add new architecture.",
+    "Hero Shot Paintover Pass v4 is a cinematic composition/material reset: visible linen canopy frame, lighter packed Nile-silt street dust, smaller organic contact grime, softened plastered end walls, and reduced toy-like rectangular wall damage.",
     "Old Kingdom / Kom el-Fakhry / Mit Rahina visual guardrails: compact house masses, flat roofs, small openings, compact mudbrick domestic lane, restrained domestic wall marks, linen shade cloth, plain clothing silhouettes, and no copied source media.",
     "Layout follows docs/design/memphis-hero-district-plan.md and avoids overlapping architecture systems.",
 ]
@@ -317,7 +319,7 @@ def make_packed_dust_albedo_image(name: str, size: int = 512) -> bpy.types.Image
         foot_rut_b = math.exp(-((nx - (0.58 + math.cos(ny * 17) * 0.024)) / 0.03) ** 2) * 0.16
         swept_patch = math.sin((nx * 5.1 + ny * 2.8) * math.pi + tonal_noise(x, y, 307)) * 0.06
         t = clamp01(0.5 + n + walking_lane + swept_patch - wall_dirt - foot_rut_a - foot_rut_b)
-        return mix_color((0.34, 0.18, 0.08, 1), (0.78, 0.55, 0.29, 1), t)
+        return mix_color((0.48, 0.31, 0.18, 1), (0.86, 0.68, 0.42, 1), t)
 
     return packed_image(name, size, pixel)
 
@@ -406,7 +408,7 @@ def make_pbr_material(
 
 
 def make_packed_dust_material() -> bpy.types.Material:
-    material = make_material("packed sandy street dust", (0.45, 0.27, 0.13, 1), 0.98)
+    material = make_material("packed sandy street dust", (0.72, 0.56, 0.35, 1), 0.98)
     material["textureSet"] = {
         "albedo": "packed sandy street dust albedo",
         "normal": "packed sandy street dust normal",
@@ -449,21 +451,23 @@ def make_packed_dust_material() -> bpy.types.Material:
 
 def create_materials() -> dict[str, bpy.types.Material]:
     return {
-        "mudbrick": make_pbr_material("sun baked mudbrick", (0.30, 0.18, 0.10, 1), (0.55, 0.36, 0.20, 1), 0.98, 13, 0.38),
-        "mud_plaster": make_pbr_material("weathered Nile mud plaster wall", (0.43, 0.31, 0.18, 1), (0.72, 0.58, 0.39, 1), 0.98, 19, 0.2),
-        "plaster": make_pbr_material("chalky cracked plaster", (0.49, 0.42, 0.29, 1), (0.76, 0.68, 0.48, 1), 0.97, 29, 0.26),
+        "mudbrick": make_pbr_material("sun baked mudbrick", (0.34, 0.22, 0.13, 1), (0.62, 0.42, 0.25, 1), 0.98, 13, 0.34),
+        "mud_plaster": make_pbr_material("weathered Nile mud plaster wall", (0.49, 0.37, 0.23, 1), (0.78, 0.64, 0.44, 1), 0.98, 19, 0.18),
+        "plaster": make_pbr_material("chalky cracked plaster", (0.55, 0.47, 0.32, 1), (0.82, 0.72, 0.50, 1), 0.98, 29, 0.22),
         "limestone": make_pbr_material("worn pale limestone", (0.46, 0.41, 0.31, 1), (0.72, 0.64, 0.47, 1), 0.92, 41, 0.18),
         "wood": make_pbr_material("dark acacia wood", (0.20, 0.11, 0.055, 1), (0.52, 0.32, 0.18, 1), 0.82, 53, 0.2),
-        "reed": make_pbr_material("river reed green", (0.19, 0.30, 0.13, 1), (0.58, 0.66, 0.33, 1), 0.92, 61, 0.16),
-        "dry_reed": make_pbr_material("dry reed straw", (0.50, 0.38, 0.17, 1), (0.86, 0.70, 0.35, 1), 0.94, 67, 0.16),
-        "linen": make_pbr_material("sun bleached woven linen", (0.68, 0.58, 0.39, 1), (0.9, 0.79, 0.57, 1), 0.94, 71, 0.16),
+        "reed": make_pbr_material("river reed green", (0.17, 0.26, 0.12, 1), (0.42, 0.50, 0.24, 1), 0.92, 61, 0.16),
+        "dry_reed": make_pbr_material("dry reed straw", (0.38, 0.27, 0.12, 1), (0.62, 0.47, 0.24, 1), 0.95, 67, 0.14),
+        "linen": make_pbr_material("sun bleached woven linen", (0.7, 0.59, 0.39, 1), (0.92, 0.78, 0.54, 1), 0.96, 71, 0.14),
         "dark": make_material("deep doorway shadow", (0.08, 0.055, 0.035, 1), 0.98),
-        "baked_shadow": make_material("baked warm contact shadow", (0.045, 0.032, 0.02, 0.34), 1, 0.34),
-        "baked_shadow_deep": make_material("baked deep doorway contact shadow", (0.026, 0.018, 0.012, 0.5), 1, 0.5),
-        "baked_shadow_soft": make_material("baked soft awning shadow", (0.07, 0.045, 0.026, 0.16), 1, 0.16),
-        "baked_shadow_cool": make_material("baked cool bounced street shadow", (0.052, 0.047, 0.044, 0.13), 1, 0.13),
-        "baked_sun_strip": make_material("baked warm sunlit dust strip", (0.82, 0.55, 0.26, 0.11), 1, 0.11),
-        "dust_dark": make_material("settled dark street dust", (0.11, 0.067, 0.036, 0.23), 0.99, 0.23),
+        "baked_shadow": make_material("baked warm contact shadow", (0.055, 0.038, 0.024, 0.16), 1, 0.16),
+        "baked_shadow_deep": make_material("baked deep doorway contact shadow", (0.026, 0.018, 0.012, 0.38), 1, 0.38),
+        "baked_shadow_soft": make_material("baked soft awning shadow", (0.08, 0.055, 0.034, 0.055), 1, 0.055),
+        "baked_shadow_cool": make_material("baked cool bounced street shadow", (0.06, 0.054, 0.048, 0.05), 1, 0.05),
+        "baked_sun_strip": make_material("baked warm sunlit dust strip", (0.9, 0.64, 0.34, 0.06), 1, 0.06),
+        "dust_dark": make_material("settled dark street dust", (0.15, 0.095, 0.055, 0.105), 0.99, 0.105),
+        "dried_silt_scuff": make_material("settled dark street dust scuff", (0.20, 0.14, 0.085, 0.13), 0.99, 0.13),
+        "chalky_grit_grime": make_material("chalky plaster grit grime", (0.48, 0.39, 0.25, 0.21), 0.99, 0.21),
         "plaster_stain": make_material("thin plaster water stain", (0.18, 0.12, 0.065, 0.56), 1, 0.56),
         "wall_base_grime": make_material("transparent wall base grime", (0.12, 0.075, 0.038, 0.42), 1, 0.42),
         "plaster_veil": make_material("chalky plaster scumble veil", (0.73, 0.64, 0.43, 0.28), 0.98, 0.28),
@@ -682,6 +686,38 @@ def flat_panel(
     return obj
 
 
+def organic_flat_panel(
+    name: str,
+    loc: tuple[float, float, float],
+    width: float,
+    depth: float,
+    material: bpy.types.Material,
+    rot: tuple[float, float, float] = (0, 0, 0),
+    points: int = 12,
+) -> bpy.types.Object:
+    rng = random.Random(f"{name}-organic-flat-panel")
+    mesh = bpy.data.meshes.new(f"{name}Mesh")
+    verts: list[tuple[float, float, float]] = []
+
+    for index in range(points):
+        angle = (index / points) * math.tau
+        radius_noise = rng.uniform(0.74, 1.12)
+        tangent_wobble = rng.uniform(-0.06, 0.06)
+        x = math.cos(angle + tangent_wobble) * width * 0.5 * radius_noise
+        y = math.sin(angle - tangent_wobble) * depth * 0.5 * rng.uniform(0.78, 1.08)
+        verts.append((x, y, 0))
+
+    mesh.from_pydata(verts, [], [tuple(range(points))])
+    mesh.update()
+    obj = bpy.data.objects.new(name, mesh)
+    bpy.context.collection.objects.link(obj)
+    obj.location = loc
+    obj.rotation_euler = rot
+    obj.data.materials.append(material)
+    ensure_uv(obj)
+    return obj
+
+
 def sagging_cloth_panel(
     name: str,
     loc: tuple[float, float, float],
@@ -731,8 +767,15 @@ def ground_decal(
     material: bpy.types.Material,
     rot_z: float = 0,
     unit_uv: bool = False,
+    organic: bool = False,
 ) -> bpy.types.Object:
-    return flat_panel(name, loc, width, depth, material, rot=(0, 0, rot_z), unit_uv=unit_uv)
+    if unit_uv:
+        return flat_panel(name, loc, width, depth, material, rot=(0, 0, rot_z), unit_uv=True)
+
+    if organic:
+        return organic_flat_panel(name, loc, width, depth, material, rot=(0, 0, rot_z))
+
+    return flat_panel(name, loc, width, depth, material, rot=(0, 0, rot_z))
 
 
 def wall_surface_patch(
@@ -869,7 +912,75 @@ def irregular_facade_skin(
             column = vertex_index % (columns + 1)
             uv_layer.data[loop_index].uv = (column / columns, row / rows)
 
+    if hasattr(obj.data, "use_auto_smooth"):
+        obj.data.use_auto_smooth = True
+
     normals = obj.modifiers.new("continuous plaster weighted normals", "WEIGHTED_NORMAL")
+    normals.keep_sharp = True
+    return obj
+
+
+def irregular_end_wall_skin(
+    name: str,
+    center_x: float,
+    end_y: float,
+    depth: float,
+    height: float,
+    material: bpy.types.Material,
+    rng: random.Random,
+) -> bpy.types.Object:
+    """Wrap visible house ends with the same hand-plastered surface language."""
+    columns = 5
+    rows = 4
+    bottom_z = 0.1
+    top_z = height * 0.88
+    verts: list[tuple[float, float, float]] = []
+
+    for row in range(rows + 1):
+        z_ratio = row / rows
+        for column in range(columns + 1):
+            x_ratio = column / columns
+            edge_weight = max(abs(x_ratio - 0.5) * 2, abs(z_ratio - 0.5) * 1.4)
+            center_bulge = math.sin(math.pi * x_ratio) * math.sin(math.pi * z_ratio)
+            x = center_x - depth * 0.46 + depth * 0.92 * x_ratio
+            z = bottom_z + (top_z - bottom_z) * z_ratio
+
+            if column in [0, columns]:
+                x += rng.uniform(-0.04, 0.04)
+            if row in [0, rows]:
+                z += rng.uniform(-0.028, 0.028)
+
+            y = end_y + (center_bulge * 0.014 + edge_weight * 0.005 + rng.uniform(-0.008, 0.008))
+            verts.append((x, y, z))
+
+    faces: list[tuple[int, int, int, int]] = []
+    for row in range(rows):
+        for column in range(columns):
+            a = row * (columns + 1) + column
+            b = a + 1
+            c = (row + 1) * (columns + 1) + column
+            d = c + 1
+            faces.append((a, c, d, b))
+
+    mesh = bpy.data.meshes.new(f"{name}Mesh")
+    mesh.from_pydata(verts, [], faces)
+    mesh.update()
+    obj = bpy.data.objects.new(name, mesh)
+    bpy.context.collection.objects.link(obj)
+    obj.data.materials.append(material)
+
+    uv_layer = obj.data.uv_layers.new(name="UVMap")
+    for polygon in obj.data.polygons:
+        for loop_index in polygon.loop_indices:
+            vertex_index = obj.data.loops[loop_index].vertex_index
+            row = vertex_index // (columns + 1)
+            column = vertex_index % (columns + 1)
+            uv_layer.data[loop_index].uv = (column / columns, row / rows)
+
+    if hasattr(obj.data, "use_auto_smooth"):
+        obj.data.use_auto_smooth = True
+
+    normals = obj.modifiers.new("end plaster weighted normals", "WEIGHTED_NORMAL")
     normals.keep_sharp = True
     return obj
 
@@ -1135,26 +1246,26 @@ def add_sculpted_facade_details(
     materials: dict[str, bpy.types.Material],
     rng: random.Random,
 ) -> None:
-    for chip_index in range(9):
-        edge_y = center_y - frontage * 0.48 + frontage * chip_index / 8 + rng.uniform(-0.12, 0.12)
+    for chip_index in range(5):
+        edge_y = center_y - frontage * 0.46 + frontage * chip_index / 4 + rng.uniform(-0.16, 0.16)
         cube(
             f"{name}-handRoundedParapetChip-{chip_index}",
             (facade_x + side_dir * 0.18, edge_y, height + rng.uniform(0.06, 0.24)),
-            (0.16, rng.uniform(0.16, 0.44), rng.uniform(0.09, 0.21)),
-            materials["exposed_wall_core" if chip_index % 5 == 0 else "mud_plaster"],
+            (0.09, rng.uniform(0.1, 0.27), rng.uniform(0.055, 0.14)),
+            materials["exposed_wall_core" if chip_index == 2 and rng.random() > 0.45 else "mud_plaster"],
             rot=(0, 0, rng.uniform(-0.18, 0.18)),
-            bevel=0.035,
+            bevel=0.04,
         )
 
     for lip_index, y in enumerate([center_y - frontage * 0.48, center_y + frontage * 0.48]):
-        for z_index in range(4):
+        for z_index in range(3):
             cube(
                 f"{name}-erodedCornerLip-{lip_index}-{z_index}",
                 (facade_x + side_dir * 0.17, y + rng.uniform(-0.06, 0.06), 0.52 + z_index * height * 0.22),
-                (0.18, rng.uniform(0.16, 0.32), rng.uniform(0.14, 0.36)),
+                (0.1, rng.uniform(0.1, 0.24), rng.uniform(0.09, 0.25)),
                 materials["exposed_wall_core" if z_index == 1 else "mud_plaster"],
                 rot=(0, 0, rng.uniform(-0.14, 0.14)),
-                bevel=0.03,
+                bevel=0.035,
             )
 
     cube(
@@ -1186,6 +1297,7 @@ def add_sculpted_facade_details(
         1.32,
         materials["baked_shadow"],
         rot_z=rng.uniform(-0.05, 0.05),
+        organic=True,
     )
 
     peg_points: list[tuple[float, float]] = []
@@ -1370,6 +1482,16 @@ def make_facade_house(
         materials["plaster"],
         rng,
     )
+    for end_index, end_y in enumerate([center_y - frontage * 0.505, center_y + frontage * 0.505]):
+        irregular_end_wall_skin(
+            f"{name}-softPlasteredEndSkin-{end_index}",
+            center_x,
+            end_y,
+            depth,
+            height,
+            materials["plaster"],
+            rng,
+        )
     cube(f"{name}-roofLipFront", (facade_x + side_dir * 0.08, center_y, height + 0.14), (0.26, frontage, 0.28), materials["mud_plaster"], bevel=0.05)
     cube(f"{name}-roofLipBack", (center_x - side_dir * depth * 0.47, center_y, height + 0.14), (0.22, frontage, 0.28), materials["mud_plaster"], bevel=0.035)
     cube(f"{name}-roofLipA", (center_x, center_y - frontage * 0.5, height + 0.14), (depth, 0.16, 0.28), materials["mud_plaster"], bevel=0.045)
@@ -1534,6 +1656,7 @@ def add_hero_ground_details(materials: dict[str, bpy.types.Material]) -> None:
             rng.uniform(0.42, 0.88),
             materials["dust_dark"],
             rot_z=rng.uniform(-0.32, 0.32),
+            organic=True,
         )
 
     for index, x in enumerate([-11.5, -9.35]):
@@ -1555,6 +1678,7 @@ def add_hero_ground_details(materials: dict[str, bpy.types.Material]) -> None:
                 rng.uniform(2.4, 4.2),
                 materials["baked_shadow"],
                 rot_z=rng.uniform(-0.05, 0.05),
+                organic=True,
             )
 
     for pair_index in range(20):
@@ -1623,6 +1747,82 @@ def add_hero_ground_details(materials: dict[str, bpy.types.Material]) -> None:
             materials["packed_dust" if index % 2 else "mudbrick"],
             scale=(1.6, 0.9, 0.24),
             segments=8,
+        )
+
+
+def add_v3_controlled_imperfection(materials: dict[str, bpy.types.Material]) -> None:
+    rng = random.Random("hero-shot-paintover-v3-controlled-imperfection")
+    street_center_x = HERO_STREET_LOCAL_CENTER_X
+
+    for index in range(30):
+        y = rng.uniform(HERO_STREET_DETAIL_START_Y + 1.0, HERO_STREET_DETAIL_END_Y)
+        x = street_center_x + rng.uniform(-2.2, 2.2) + math.sin(y * 0.31) * 0.18
+        ground_decal(
+            f"heroV3-driedSiltScuff-{index}",
+            (x, y, 0.104 + index * 0.00015),
+            rng.uniform(0.32, 0.86),
+            rng.uniform(0.9, 2.7),
+            materials["dried_silt_scuff"],
+            rot_z=math.radians(rng.uniform(-9, 9)),
+            organic=True,
+        )
+
+    for index in range(18):
+        side_name, x = ("left", -14.38) if index % 2 == 0 else ("right", -6.48)
+        y = rng.uniform(HERO_STREET_DETAIL_START_Y + 0.4, HERO_STREET_DETAIL_END_Y)
+        ground_decal(
+            f"heroV3-wallBaseMudGathering-{side_name}-{index}",
+            (x + rng.uniform(-0.14, 0.14), y, 0.109 + index * 0.00018),
+            rng.uniform(0.42, 0.74),
+            rng.uniform(0.8, 2.0),
+            materials["baked_shadow"],
+            rot_z=math.radians(rng.uniform(-4, 4)),
+            organic=True,
+        )
+
+    for index in range(26):
+        x = rng.uniform(-13.9, -7.0)
+        y = rng.uniform(HERO_STREET_DETAIL_START_Y + 0.8, HERO_STREET_DETAIL_END_Y)
+        material = materials["pottery"] if index % 4 == 0 else materials["chalky_grit_grime"]
+        cube(
+            f"heroV3-irregularStreetChip-{index}",
+            (x, y, 0.065 + (index % 5) * 0.003),
+            (rng.uniform(0.08, 0.22), rng.uniform(0.035, 0.12), rng.uniform(0.012, 0.026)),
+            material,
+            rot=(0, 0, rng.uniform(0, math.tau)),
+            bevel=0.006,
+        )
+
+    for index in range(16):
+        for side_name, facade_x, side_dir in [("left", -14.9, 1), ("right", -5.92, -1)]:
+            y = rng.uniform(HERO_STREET_DETAIL_START_Y + 0.8, HERO_STREET_DETAIL_END_Y)
+            z = rng.uniform(0.42, 1.42)
+            wall_surface_patch(
+                f"heroV3-{side_name}-lowMudSplash-{index}",
+                facade_x,
+                side_dir,
+                y,
+                z,
+                rng.uniform(0.22, 0.72),
+                rng.uniform(0.1, 0.34),
+                materials["dried_silt_scuff"] if index % 3 else materials["wall_base_grime"],
+                rng,
+                x_offset=0.205,
+                edge_jitter=0.08,
+            )
+
+    for index in range(12):
+        side_name, facade_x, side_dir = ("left", -14.9, 1) if index % 2 == 0 else ("right", -5.92, -1)
+        wall_surface_sliver(
+            f"heroV3-{side_name}-fineSettlementScratch-{index}",
+            facade_x,
+            side_dir,
+            rng.uniform(HERO_STREET_DETAIL_START_Y + 0.8, HERO_STREET_DETAIL_END_Y),
+            rng.uniform(0.9, 2.55),
+            rng.uniform(0.34, 0.9),
+            materials["dark"],
+            rng,
+            x_offset=0.215,
         )
 
 
@@ -1698,6 +1898,7 @@ def add_baked_street_lighting(materials: dict[str, bpy.types.Material]) -> None:
                 1.24,
                 materials["baked_shadow_deep"],
                 rot_z=math.radians((3 if side_name == "left" else -3) + math.sin(index) * 2),
+                organic=True,
             )
             cube(
                 f"heroV2-doorwayVerticalBake-{side_name}-{index}",
@@ -1729,6 +1930,7 @@ def add_baked_street_lighting(materials: dict[str, bpy.types.Material]) -> None:
             depth,
             materials["baked_shadow_deep" if index < 4 else "baked_shadow"],
             rot_z=math.radians(4 - index * 3),
+            organic=True,
         )
 
     for index, y in enumerate([-3.4, 15.8, 21.0]):
@@ -1740,6 +1942,7 @@ def add_baked_street_lighting(materials: dict[str, bpy.types.Material]) -> None:
                 0.72,
                 materials["baked_shadow_deep"],
                 rot_z=math.radians(index * 9),
+                organic=True,
             )
 
 
@@ -1937,6 +2140,40 @@ def add_foreground_film_set(materials: dict[str, bpy.types.Material]) -> None:
         materials["dust_dark"],
         rot_z=math.radians(1.2),
     )
+    sagging_cloth_panel(
+        "heroV4EyeHeightLinenCeilingFrame",
+        (HERO_STREET_LOCAL_CENTER_X - 0.02, -10.6, 2.72),
+        8.55,
+        4.15,
+        materials["linen"],
+        sag=0.32,
+        rot=(math.radians(7), math.radians(-1.2), math.radians(-0.9)),
+    )
+    cylinder_between(
+        "heroV4EyeHeightLinenCeilingFrontRope",
+        (-14.55, -12.55, 2.66),
+        (-6.25, -12.18, 2.55),
+        0.016,
+        materials["dry_reed"],
+        7,
+    )
+    cylinder_between(
+        "heroV4EyeHeightLinenCeilingBackRope",
+        (-14.42, -8.22, 2.78),
+        (-6.32, -8.08, 2.68),
+        0.016,
+        materials["dry_reed"],
+        7,
+    )
+    ground_decal(
+        "heroV4EyeHeightLinenCeilingSoftShade",
+        (HERO_STREET_LOCAL_CENTER_X + 0.08, -10.15, 0.105),
+        7.95,
+        4.35,
+        materials["baked_shadow_soft"],
+        rot_z=math.radians(-1.6),
+        organic=True,
+    )
 
     for index, (x, y, scale) in enumerate([
         (-14.2, -8.2, 1.28),
@@ -2065,6 +2302,7 @@ def build_hero_street_corridor(materials: dict[str, bpy.types.Material]) -> None
     add_foreground_film_set(materials)
     add_cinematic_depth_layers(materials)
     add_hero_ground_details(materials)
+    add_v3_controlled_imperfection(materials)
 
 
 def build_residential_market_details(materials: dict[str, bpy.types.Material]) -> None:
@@ -2361,16 +2599,20 @@ BUILDERS = {
 
 
 def export_asset(asset: dict[str, object]) -> None:
+    print(f"[memphis-glb] Building {asset['id']}...", flush=True)
     reset_scene()
     materials = create_materials()
     asset_id = str(asset["id"])
     BUILDERS[asset_id](materials)
+    print(f"[memphis-glb] Built {asset_id} with {len(bpy.context.scene.objects)} objects.", flush=True)
 
     if asset_id in HERO_STREET_CHUNK_RANGES:
         prune_hero_street_chunk(asset_id)
+        print(f"[memphis-glb] Pruned {asset_id} to {len(bpy.context.scene.objects)} objects.", flush=True)
 
     if asset_id != "animated-street-actors":
         optimize_scene_for_export(asset_id)
+        print(f"[memphis-glb] Optimized {asset_id} to {len(bpy.context.scene.objects)} objects.", flush=True)
 
     bpy.ops.object.select_all(action="SELECT")
     export_options = {
@@ -2398,6 +2640,7 @@ def export_asset(asset: dict[str, object]) -> None:
     bpy.ops.export_scene.gltf(
         **export_options
     )
+    print(f"[memphis-glb] Exported {asset['fileName']}.", flush=True)
 
 
 def optimize_scene_for_export(asset_id: str) -> None:
@@ -2471,6 +2714,7 @@ def write_manifest() -> None:
             "aoAndHeight": "AO, doorway darkness, wall-base dirt, cloth shade, cracks, eroded plaster scumble, exposed mud daub, corner grime, and height-like surface breakup are authored as visible decal/contact geometry for this pass.",
             "bakedLightAndContact": "Hero Street v2 now includes layered baked-looking shadow geometry: broad awning bands, continuous wall-base AO, doorway pools, vertical door darkness, post contacts, prop grounding, and warm sun-dust strips.",
             "wallQuality": "Step 5 improves existing wall planes only: no new architecture placement, no district expansion, and no new wall rows.",
+            "controlledImperfection": "Hero Shot Paintover Pass v3 adds non-blocking surface imperfection decals: dried Nile-silt scuffs, asymmetric dust clumps, low mud splashes, small chipped pottery/plaster fragments, and fine wall scratches.",
             "historicalCompliance": "Step 6 keeps mudbrick as the domestic construction system, but makes visible house exteriors mostly continuous mud plaster/whitewash with irregular daub exposure; regular exposed block-grid masonry is avoided for Old Kingdom residential facades.",
             "optimization": "Step 7 splits the hero street into near/mid/far runtime chunks and leaves the full corridor as a fallback/reference export.",
             "nextPass": "After the chunked runtime is approved, add verified decoder-backed Draco/Meshopt and KTX2 pipelines."

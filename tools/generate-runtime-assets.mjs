@@ -11,7 +11,7 @@ const materialAtlasManifestPath = path.join(textureDir, "material-atlases.manife
 
 const textureSize = 1024;
 const sampleRate = 22050;
-const checkedDate = "2026-07-10";
+const checkedDate = "2026-09-06";
 
 const materialAtlasSpecs = [
   {
@@ -42,13 +42,13 @@ const materialAtlasSpecs = [
   },
   {
     key: "dust",
-    label: "Packed street dust with ruts, footprints, straw, pebbles, and swept wall-base dirt",
+    label: "Packed street dust with ruts, footprints, straw, pebbles, dried Nile-silt scuffs, and swept wall-base dirt",
     kind: "dust",
     evidenceLevel: "inferred",
-    dark: "#55321d",
-    mid: "#94623a",
-    light: "#d5a45e",
-    accent: "#d9ba74",
+    dark: "#4b3426",
+    mid: "#8c6a4d",
+    light: "#c4a16f",
+    accent: "#d5c18a",
     roughness: 0.99,
     normalStrength: 2.1,
     referenceSourceIds: ["natural-earth", "met-open-access", "petrie-memphis-i"]
@@ -272,18 +272,20 @@ function sampleMaterialSurface(spec, x, y, width, height) {
     color = mixColor(spec.darkColor, spec.lightColor, tone);
     color = mixColor(color, spec.accentColor, plasterScab * 0.32 + straw * 0.18);
   } else if (spec.kind === "plaster") {
-    const chip = clamp01((layeredNoise(x, y, spec.seed + 41, [[0.011, 1], [0.039, 0.5]]) - 0.5) * 1.7);
-    const bottomGrime = clamp01((0.34 - v) * 1.75);
-    const verticalStain = Math.max(0, Math.sin(u * Math.PI * 6.5 + broad * 1.8)) * 0.11;
-    const stain = clamp01(verticalStain + bottomGrime * 0.28);
+    const chip = clamp01((layeredNoise(x, y, spec.seed + 41, [[0.009, 1], [0.035, 0.55], [0.12, 0.22]]) - 0.43) * 1.55);
+    const bottomGrime = clamp01((0.38 - v) * 1.95);
+    const handSmudge = Math.max(0, Math.sin(u * Math.PI * 13 + v * 4.2 + broad * 1.2)) * 0.055;
+    const verticalStain = Math.max(0, Math.sin(u * Math.PI * 6.5 + broad * 1.8)) * 0.14;
+    const limeScumble = clamp01((layeredNoise(x + 71, y - 29, spec.seed + 91, [[0.016, 1], [0.062, 0.44]]) - 0.32) * 0.82);
+    const stain = clamp01(verticalStain + bottomGrime * 0.36 + handSmudge);
     const crack = crackMask(x, y, spec.seed + 12, 0.022);
 
-    tone = clamp01(tone + 0.2 - stain * 0.2 - chip * 0.14 - crack * 0.18);
-    surfaceHeight = clamp01(surfaceHeight + 0.08 - chip * 0.14 - crack * 0.18 - bottomGrime * 0.04);
-    roughness = clamp01(0.92 + fine * 0.035 + chip * 0.045 + bottomGrime * 0.035);
-    ao = clamp01(0.91 - chip * 0.14 - crack * 0.18 - stain * 0.12);
+    tone = clamp01(tone + 0.16 + limeScumble * 0.08 - stain * 0.24 - chip * 0.16 - crack * 0.2);
+    surfaceHeight = clamp01(surfaceHeight + 0.07 + limeScumble * 0.04 - chip * 0.16 - crack * 0.2 - bottomGrime * 0.06);
+    roughness = clamp01(0.92 + fine * 0.035 + chip * 0.055 + bottomGrime * 0.045);
+    ao = clamp01(0.91 - chip * 0.15 - crack * 0.2 - stain * 0.15 - handSmudge * 0.1);
     color = mixColor(spec.darkColor, spec.lightColor, tone);
-    color = mixColor(color, spec.accentColor, chip * 0.28 + bottomGrime * 0.16);
+    color = mixColor(color, spec.accentColor, chip * 0.3 + bottomGrime * 0.2 + handSmudge * 0.14);
   } else if (spec.kind === "dust") {
     const leftRut = Math.exp(-1 * (((u - (0.39 + Math.sin(v * 16) * 0.025)) / 0.04) ** 2));
     const rightRut = Math.exp(-1 * (((u - (0.61 + Math.cos(v * 15) * 0.024)) / 0.04) ** 2));
@@ -291,13 +293,17 @@ function sampleMaterialSurface(spec, x, y, width, height) {
     const straw = strawMask(x, y, spec.seed + 29);
     const pebble = clamp01((layeredNoise(x, y, spec.seed + 33, [[0.14, 1], [0.31, 0.32]]) - 0.62) * 4.2);
     const wallDirt = Math.exp(-1 * ((u - 0.08) / 0.12) ** 2) + Math.exp(-1 * ((u - 0.92) / 0.12) ** 2);
+    const driedSilt = clamp01((layeredNoise(x + 53, y - 41, spec.seed + 89, [[0.008, 1], [0.038, 0.48], [0.16, 0.18]]) - 0.34) * 0.9);
+    const sweptDust = Math.max(0, Math.sin((u * 2.7 + v * 8.2) * Math.PI + broad * 1.6)) * 0.075;
+    const crossScuff = Math.max(0, Math.sin((u * 10.5 - v * 2.1) * Math.PI + fine * 1.7)) * 0.045;
 
-    tone = clamp01(tone + 0.08 - wallDirt * 0.12 - (leftRut + rightRut) * 0.06 - footprint * 0.12 + straw * 0.2 + pebble * 0.1);
-    surfaceHeight = clamp01(surfaceHeight - (leftRut + rightRut) * 0.12 - footprint * 0.16 + straw * 0.06 + pebble * 0.16);
-    roughness = clamp01(0.96 + straw * 0.03 + pebble * 0.01);
-    ao = clamp01(0.91 - wallDirt * 0.13 - (leftRut + rightRut) * 0.08 - footprint * 0.13 - pebble * 0.05);
+    tone = clamp01(tone + 0.04 - wallDirt * 0.16 - driedSilt * 0.1 - (leftRut + rightRut) * 0.075 - footprint * 0.15 + straw * 0.16 + pebble * 0.08 + sweptDust);
+    surfaceHeight = clamp01(surfaceHeight - driedSilt * 0.08 - (leftRut + rightRut) * 0.13 - footprint * 0.18 + straw * 0.055 + pebble * 0.15 + crossScuff * 0.04);
+    roughness = clamp01(0.965 + straw * 0.03 + pebble * 0.012 + driedSilt * 0.018);
+    ao = clamp01(0.91 - wallDirt * 0.16 - driedSilt * 0.09 - (leftRut + rightRut) * 0.09 - footprint * 0.14 - pebble * 0.055);
     color = mixColor(spec.darkColor, spec.lightColor, tone);
-    color = mixColor(color, spec.accentColor, straw * 0.46);
+    color = mixColor(color, spec.accentColor, straw * 0.42 + sweptDust * 0.5);
+    color = mixColor(color, spec.darkColor, driedSilt * 0.2 + crossScuff * 0.12);
   } else if (spec.kind === "wood") {
     const grain = Math.sin(y * 0.052 + Math.sin(x * 0.013) * 2.5 + broad * 1.9);
     const darkLine = clamp01((Math.abs(grain) - 0.78) * 3.7);
@@ -456,73 +462,117 @@ function createSandTexture(width, height) {
 }
 
 function createHeroStreetGroundTexture(width, height) {
-  const image = createImage(width, height, "#aa8a61");
-  const random = seededRandom(1203);
+  const image = createImage(width, height, "#c4aa78");
+  const random = seededRandom(1703);
 
   forEachPixel(image, (x, y) => {
-    const n = layeredNoise(x, y, 1203, [
-      [0.0025, 42],
-      [0.011, 24],
-      [0.047, 11],
-      [0.18, 4]
+    const n = layeredNoise(x, y, 1703, [
+      [0.0014, 36],
+      [0.006, 22],
+      [0.026, 12],
+      [0.11, 5]
     ]);
     const normalizedX = x / width;
     const normalizedY = y / height;
-    const wornCenter = Math.exp(-1 * (((normalizedX - 0.5) / 0.34) ** 2));
-    const wallGrime = Math.exp(-1 * (((normalizedX - 0.08) / 0.1) ** 2)) * 17
-      + Math.exp(-1 * (((normalizedX - 0.92) / 0.1) ** 2)) * 17;
-    const leftRut = Math.exp(-1 * (((normalizedX - (0.42 + Math.sin(normalizedY * 18) * 0.025)) / 0.035) ** 2)) * 10;
-    const rightRut = Math.exp(-1 * (((normalizedX - (0.58 + Math.cos(normalizedY * 17) * 0.025)) / 0.035) ** 2)) * 9;
-    const slowRidge = Math.sin(normalizedY * Math.PI * 7.6 + normalizedX * 4 + n * 0.035) * 6;
-    const centerLight = wornCenter * 23;
-    const value = clamp01(0.56 + (n + slowRidge + centerLight - wallGrime - leftRut - rightRut) / 138);
-    return mixHex("#79634a", "#d5bf8f", value);
+    const wornCenter = Math.exp(-1 * (((normalizedX - 0.51) / 0.33) ** 2));
+    const leftWallGrime = Math.exp(-1 * (((normalizedX - 0.08) / 0.11) ** 2));
+    const rightWallGrime = Math.exp(-1 * (((normalizedX - 0.92) / 0.11) ** 2));
+    const leftRut = Math.exp(-1 * (((normalizedX - (0.4 + Math.sin(normalizedY * 17.2) * 0.028)) / 0.034) ** 2));
+    const rightRut = Math.exp(-1 * (((normalizedX - (0.59 + Math.cos(normalizedY * 16.5) * 0.03)) / 0.036) ** 2));
+    const diagonalSweep = Math.sin((normalizedY * 6.8 + normalizedX * 2.6) * Math.PI + n * 0.024) * 6;
+    const centerDust = wornCenter * 9;
+    const wallGrime = (leftWallGrime + rightWallGrime) * 14;
+    const rutDarkening = (leftRut + rightRut) * 10;
+    const patchNoise = layeredNoise(x + 91, y - 33, 1719, [
+      [0.006, 12],
+      [0.027, 7],
+      [0.11, 3]
+    ]);
+    const value = clamp01(0.6 + (n + diagonalSweep + centerDust + patchNoise * 0.28 - wallGrime * 0.82 - rutDarkening * 0.76) / 158);
+    return mixHex("#806246", "#e0ca99", value);
   });
 
-  for (let index = 0; index < 72; index += 1) {
+  for (let index = 0; index < 64; index += 1) {
+    const nearWall = index % 3 === 0;
+    const x = nearWall ? width * (index % 2 === 0 ? 0.12 : 0.88) + (random() - 0.5) * width * 0.13 : random() * width;
     drawSoftEllipse(
       image,
-      random() * width,
+      x,
       random() * height,
-      18 + random() * 34,
-      36 + random() * 72,
-      index % 3 === 0 ? "#776047" : "#8f704d",
-      0.09,
+      14 + random() * 42,
+      28 + random() * 92,
+      index % 4 === 0 ? "#715238" : "#a27f58",
+      nearWall ? 0.11 : 0.065,
       random() * Math.PI
     );
   }
 
-  for (let index = 0; index < 34; index += 1) {
-    const side = index % 2 === 0 ? 0.15 : 0.85;
+  for (let index = 0; index < 58; index += 1) {
     drawSoftEllipse(
       image,
-      width * side + (random() - 0.5) * width * 0.16,
+      width * (0.32 + random() * 0.36),
       random() * height,
-      22 + random() * 32,
-      88 + random() * 122,
-      "#6f5a42",
-      0.16,
-      random() * 0.18
+      7 + random() * 22,
+      52 + random() * 128,
+      index % 2 === 0 ? "#72543a" : "#997351",
+      0.075,
+      -0.08 + random() * 0.24
     );
   }
 
-  for (let pairIndex = 0; pairIndex < 34; pairIndex += 1) {
-    const y = (pairIndex / 34) * height + (random() - 0.5) * 24;
-    const x = width * (0.45 + Math.sin(pairIndex * 0.73) * 0.08 + (random() - 0.5) * 0.04);
-    const rotation = (random() - 0.5) * 0.5;
-    drawSoftEllipse(image, x - 11, y, 7 + random() * 3, 18 + random() * 5, "#6d5740", 0.18, rotation);
-    drawSoftEllipse(image, x + 15, y + 26, 7 + random() * 3, 18 + random() * 5, "#6d5740", 0.16, rotation);
+  for (let index = 0; index < 40; index += 1) {
+    const side = index % 2 === 0 ? 0.1 : 0.9;
+    drawSoftEllipse(
+      image,
+      width * side + (random() - 0.5) * width * 0.12,
+      random() * height,
+      18 + random() * 42,
+      54 + random() * 150,
+      "#715037",
+      0.105,
+      random() * 0.25
+    );
   }
 
-  for (let index = 0; index < 70; index += 1) {
+  for (let pairIndex = 0; pairIndex < 62; pairIndex += 1) {
+    const y = (pairIndex / 62) * height + (random() - 0.5) * 28;
+    const x = width * (0.45 + Math.sin(pairIndex * 0.67) * 0.09 + (random() - 0.5) * 0.055);
+    const rotation = (random() - 0.5) * 0.55;
+    const opacity = 0.11 + random() * 0.07;
+    drawSoftEllipse(image, x - 11, y, 6 + random() * 4, 15 + random() * 6, "#725238", opacity * 0.82, rotation);
+    drawSoftEllipse(image, x + 15, y + 24, 6 + random() * 4, 15 + random() * 6, "#725238", opacity * 0.72, rotation);
+  }
+
+  for (let index = 0; index < 180; index += 1) {
     const x = random() * width;
     const y = random() * height;
-    drawLine(image, x, y, x + (random() - 0.5) * 76, y + (random() - 0.5) * 28, index % 4 === 0 ? "#d2a866" : "#b8894c");
+    drawLine(
+      image,
+      x,
+      y,
+      x + (random() - 0.5) * 58,
+      y + (random() - 0.5) * 26,
+      index % 5 === 0 ? "#e4c994" : index % 3 === 0 ? "#b18d63" : "#856344"
+    );
   }
 
-  addSpeckles(image, 4200, "#6d5942", 0.1, 1207);
-  addSpeckles(image, 3000, "#dfcc9d", 0.1, 1209);
-  addHairlineCracks(image, 22, "#594937", 0.13, 1211);
+  for (let index = 0; index < 34; index += 1) {
+    drawSoftEllipse(
+      image,
+      random() * width,
+      random() * height,
+      4 + random() * 9,
+      3 + random() * 8,
+      index % 2 === 0 ? "#5c412e" : "#c39a68",
+      0.28,
+      random() * Math.PI
+    );
+  }
+
+  addSpeckles(image, 9200, "#806246", 0.08, 1707);
+  addSpeckles(image, 5600, "#ead8aa", 0.085, 1709);
+  addSpeckles(image, 2100, "#604633", 0.065, 1710);
+  addHairlineCracks(image, 48, "#674d38", 0.105, 1711);
   return image;
 }
 
@@ -577,17 +627,23 @@ function createHeroStreetRoughnessTexture(width, height) {
 }
 
 function createHeroStreetAoTexture(width, height) {
-  const image = createImage(width, height, "#e0d8c8");
+  const image = createImage(width, height, "#ddd2bd");
 
   forEachPixel(image, (x, y) => {
     const normalizedX = x / width;
-    const edgeShade = Math.abs(normalizedX - 0.5) * 0.34;
-    const rutShade = Math.max(0, 0.08 - Math.abs(normalizedX - 0.43)) * 0.78;
+    const normalizedY = y / height;
+    const edgeShade = Math.abs(normalizedX - 0.5) * 0.32;
+    const leftRutShade = Math.exp(-1 * (((normalizedX - (0.4 + Math.sin(normalizedY * 17.2) * 0.028)) / 0.038) ** 2)) * 0.07;
+    const rightRutShade = Math.exp(-1 * (((normalizedX - (0.59 + Math.cos(normalizedY * 16.5) * 0.03)) / 0.04) ** 2)) * 0.065;
+    const wallFootShade = Math.exp(-1 * ((normalizedX - 0.1) / 0.095) ** 2) * 0.105
+      + Math.exp(-1 * ((normalizedX - 0.9) / 0.095) ** 2) * 0.105;
+    const doorwayPulse = Math.max(0, Math.sin(normalizedY * Math.PI * 9.5 + normalizedX * 2.2)) * wallFootShade * 0.42;
     const n = layeredNoise(x, y, 1501, [
       [0.009, 18],
-      [0.04, 8]
+      [0.04, 8],
+      [0.14, 3]
     ]);
-    const value = Math.round(clamp01(0.88 - edgeShade - rutShade + n / 180) * 255);
+    const value = Math.round(clamp01(0.94 - edgeShade - wallFootShade - doorwayPulse - leftRutShade - rightRutShade + n / 210) * 255);
     return { r: value, g: value, b: value, a: 255 };
   });
 
@@ -595,7 +651,7 @@ function createHeroStreetAoTexture(width, height) {
 }
 
 function createHeroStreetLightmapTexture(width, height) {
-  const image = createImage(width, height, "#ead2a6");
+  const image = createImage(width, height, "#e2c99c");
   const random = seededRandom(1601);
   const streetYMin = -30;
   const streetYMax = 38;
@@ -604,18 +660,19 @@ function createHeroStreetLightmapTexture(width, height) {
   forEachPixel(image, (x, y) => {
     const normalizedX = x / width;
     const normalizedY = y / height;
-    const edgeOcclusion = Math.exp(-1 * ((normalizedX - 0.08) / 0.12) ** 2) * 0.11
-      + Math.exp(-1 * ((normalizedX - 0.92) / 0.12) ** 2) * 0.11;
-    const walkingAxisLight = Math.exp(-1 * ((normalizedX - 0.53) / 0.3) ** 2) * 0.18;
-    const warmSunPulse = Math.max(0, Math.sin(normalizedY * Math.PI * 6.7 - normalizedX * 2.1)) * 0.07;
-    const diagonalDust = Math.sin((normalizedX * 3.2 + normalizedY * 2.4) * Math.PI) * 0.018;
+    const edgeOcclusion = Math.exp(-1 * ((normalizedX - 0.08) / 0.12) ** 2) * 0.08
+      + Math.exp(-1 * ((normalizedX - 0.92) / 0.12) ** 2) * 0.08;
+    const walkingAxisLight = Math.exp(-1 * ((normalizedX - 0.53) / 0.31) ** 2) * 0.2;
+    const warmSunPulse = Math.max(0, Math.sin(normalizedY * Math.PI * 6.7 - normalizedX * 2.1)) * 0.06;
+    const diagonalDust = Math.sin((normalizedX * 3.2 + normalizedY * 2.4) * Math.PI) * 0.022;
+    const shadeFlutter = Math.max(0, Math.sin((normalizedY * 11.5 - normalizedX * 4.4) * Math.PI)) * 0.024;
     const grit = layeredNoise(x, y, 1601, [
       [0.006, 10],
       [0.028, 6],
       [0.09, 3]
     ]) / 180;
-    const value = clamp01(0.88 + walkingAxisLight + warmSunPulse + diagonalDust + grit - edgeOcclusion);
-    return mixHex("#9a815f", "#eed8ac", value);
+    const value = clamp01(0.86 + walkingAxisLight + warmSunPulse + diagonalDust + grit - edgeOcclusion - shadeFlutter);
+    return mixHex("#9c744d", "#f0d7a5", value);
   });
 
   for (const [worldY, radiusY, opacity] of [
@@ -633,15 +690,15 @@ function createHeroStreetLightmapTexture(width, height) {
       worldYToImageY(worldY),
       width * (0.44 + random() * 0.18),
       radiusY,
-      "#87613d",
-      opacity * 0.62,
+      "#92704d",
+      opacity * 0.28,
       -0.08 + random() * 0.05
     );
   }
 
   for (const worldY of [-24.5, -18.2, -12.1, -5.7, 1.6, 7.8, 15.2, 22.7, 30.4]) {
-    drawSoftEllipse(image, width * 0.08, worldYToImageY(worldY), 58, 28, "#5f412a", 0.12, 0.04);
-    drawSoftEllipse(image, width * 0.92, worldYToImageY(worldY + 0.5), 62, 30, "#5f412a", 0.11, -0.04);
+    drawSoftEllipse(image, width * 0.08, worldYToImageY(worldY), 58, 28, "#806044", 0.06, 0.04);
+    drawSoftEllipse(image, width * 0.92, worldYToImageY(worldY + 0.5), 62, 30, "#806044", 0.055, -0.04);
   }
 
   for (const [worldY, normalizedX, widthRadius, opacity] of [
@@ -656,8 +713,8 @@ function createHeroStreetLightmapTexture(width, height) {
       worldYToImageY(worldY),
       widthRadius,
       26,
-      "#fff0bf",
-      opacity * 1.28,
+      "#fff0bd",
+      opacity * 1.36,
       -0.06
     );
   }
@@ -712,36 +769,53 @@ function createMudbrickTexture(width, height) {
 }
 
 function createPlasterTexture(width, height) {
-  const image = createImage(width, height, "#c9bb99");
+  const image = createImage(width, height, "#cbb990");
 
   forEachPixel(image, (x, y) => {
-    const n = layeredNoise(x, y, 61, [
-      [0.007, 20],
-      [0.034, 12],
-      [0.21, 4]
+    const normalizedY = y / height;
+    const n = layeredNoise(x, y, 861, [
+      [0.004, 24],
+      [0.021, 14],
+      [0.13, 5]
     ]);
-    const stain = Math.sin((x + y * 0.7) * 0.006) * 12;
-    const drip = Math.max(0, Math.sin(x * 0.017 + n * 0.05)) * 6;
-    return mixHex("#8d7a5a", "#d6c8a7", clamp01(0.58 + (n + stain - drip) / 96));
+    const limeScumble = Math.sin((x * 0.006 + y * 0.002) + n * 0.04) * 9;
+    const drip = Math.max(0, Math.sin(x * 0.014 + n * 0.045)) * 7;
+    const lowerGrime = clamp01((normalizedY - 0.52) * 1.9) * 17;
+    const handSmudge = Math.max(0, Math.sin(x * 0.027 + y * 0.007 + n * 0.035)) * 6;
+    return mixHex("#806846", "#e6d5ad", clamp01(0.6 + (n + limeScumble - drip - lowerGrime - handSmudge) / 108));
   });
 
-  for (let index = 0; index < 42; index += 1) {
-    const random = seededRandom(910 + index);
+  for (let index = 0; index < 72; index += 1) {
+    const random = seededRandom(1810 + index);
     drawSoftEllipse(
       image,
       random() * width,
       random() * height,
-      18 + random() * 24,
-      36 + random() * 80,
-      "#6f5f48",
-      0.1,
+      12 + random() * 46,
+      24 + random() * 112,
+      index % 5 === 0 ? "#6e5538" : "#9e8664",
+      0.095,
       random() * Math.PI
     );
   }
 
-  addHairlineCracks(image, 36, "#6f6049", 0.42, 118);
-  addSpeckles(image, 2400, "#eadab8", 0.08, 127);
-  addSpeckles(image, 2600, "#755f43", 0.09, 128);
+  for (let index = 0; index < 34; index += 1) {
+    const random = seededRandom(1960 + index);
+    drawSoftEllipse(
+      image,
+      random() * width,
+      random() * height,
+      10 + random() * 18,
+      8 + random() * 22,
+      "#70442a",
+      0.16,
+      random() * Math.PI
+    );
+  }
+
+  addHairlineCracks(image, 72, "#6d593e", 0.36, 1818);
+  addSpeckles(image, 4800, "#ead9b7", 0.085, 1827);
+  addSpeckles(image, 5200, "#71583b", 0.085, 1828);
   return image;
 }
 

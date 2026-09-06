@@ -139,3 +139,29 @@ Before accepting each pass, check:
 - Added validation that keeps the paintover tied to `hero-street-camera-lock` and the active `hero-street-main` shot.
 - Added `docs/design/hero-shot-paintover-pass-v1.md` to define the paintover target, historical restraint, acceptance checks, and next-pass usage.
 - Historical guardrail: no district placement, house position, route, gate, temple, or runtime art content was moved. The pass defines how to judge the existing street before more visual polish.
+
+### 2026-09-05: Hero Shot Paintover Pass v2
+
+- Upgraded the active paintover file to `hero-street-paintover-v2` with a versioned URL: `?shot=hero-street-main&paintover=v2&chrome=0`.
+- Added sharper reference-gap targets for foreground depth, surface realism, lighting depth, and human believability.
+- Added V2 visual score weights so future screenshots can be judged consistently: ground, walls, lighting, composition, humans, and historical restraint.
+- Added `docs/design/hero-shot-paintover-pass-v2.md` as the next production brief.
+- Historical guardrail: V2 still treats the user-provided cinematic images as composition/light-quality inspiration only, not copied media or period evidence.
+
+### 2026-09-06: Hero Shot Paintover Pass v3
+
+- Upgraded the active paintover file to `hero-street-paintover-v3` with a versioned URL: `?shot=hero-street-main&paintover=v3&chrome=0`.
+- Added protected clear-zone rules so the Main Wall-side street-mouth remains open and walkable while surface quality improves.
+- Added a V3 controlled-imperfection score: mud/dust wear, dried Nile-silt scuffs, irregular ruts, chipped plaster, wall-base grime, and non-blocking contact detail.
+- Rebalanced the runtime texture generator toward less yellow ground, stronger compacted dust variation, deeper AO, and more aged plaster scumble.
+- Added non-colliding Blender decal geometry for scuffs, low mud splashes, chips, wall scratches, and wall-base dirt. No street, house, road, gate, or route coordinates were moved.
+- Historical guardrail: V3 keeps the lane domestic and Old Kingdom restrained: mudbrick construction, plaster/whitewash skin, packed dust, clay pottery, reed/wood, plain linen, and no copied-media or later-period spectacle.
+
+### 2026-09-06: Hero Shot Paintover Pass v4
+
+- Upgraded the active paintover file to `hero-street-paintover-v4` with a versioned URL: `?shot=hero-street-main&paintover=v4&chrome=0`.
+- Tightened the locked eye-height benchmark camera so V4 judges the street surface, close plaster, overhead linen, and contact detail instead of a wide exposed corridor.
+- Added V4 cinematic reset targets: linen ceiling frame, lighter continuous packed dust, softened plastered house ends, dry reed/wood supports, and shadow decals that stay subordinate to material atlases.
+- Regenerated runtime material targets toward lighter Nile-silt dust, reduced rectangular/tiled ground read, softer AO, and more believable plaster scumble.
+- Updated the Blender hero-street kit so existing house ends get uneven plaster skins and the locked shot gains a non-blocking practical overhead linen frame with soft canopy shade.
+- Historical guardrail: V4 makes no district expansion and keeps the lane within Early Dynastic / Old Kingdom Memphis restraint: plain mudbrick construction, plastered domestic walls, packed dust, clay pottery, reed/wood, linen, and no copied reference media.

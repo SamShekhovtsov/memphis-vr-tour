@@ -1,5 +1,5 @@
 {
-  "checkedDate": "2026-07-10",
+  "checkedDate": "2026-09-06",
   "generator": "tools/generate-runtime-assets.mjs",
   "policy": "Project-generated synthetic PBR material atlas sets. No protected source images, scans, video frames, or recordings are copied.",
   "usage": "Each atlas set contains albedo, normal, roughness, ambient-occlusion, height, and packed MRAO maps. MRAO uses red=AO, green=roughness, blue=metallic.",
@@ -47,7 +47,7 @@
     },
     {
       "key": "dust",
-      "label": "Packed street dust with ruts, footprints, straw, pebbles, and swept wall-base dirt",
+      "label": "Packed street dust with ruts, footprints, straw, pebbles, dried Nile-silt scuffs, and swept wall-base dirt",
       "evidenceLevel": "inferred",
       "files": [
         "/assets/generated/textures/atlas-dust-albedo.jpg",

@@ -208,6 +208,7 @@ function validatePaintover(paintover, cameraLock) {
   requireString(paintover.label, "paintover.label");
   requireString(paintover.cameraLockId, "paintover.cameraLockId");
   requireString(paintover.activeShotId, "paintover.activeShotId");
+  requireNumber(paintover.version, "paintover.version");
   requireString(paintover.paintoverUrl, "paintover.paintoverUrl");
   requireString(paintover.historicalScope, "paintover.historicalScope");
   requireString(paintover.qualityTarget, "paintover.qualityTarget");
@@ -222,8 +223,10 @@ function validatePaintover(paintover, cameraLock) {
     );
   }
 
-  if (!String(paintover.paintoverUrl).includes("paintover=1")) {
-    addError('Paintover URL must include "paintover=1".');
+  const expectedPaintoverParam = `paintover=v${paintover.version}`;
+
+  if (!String(paintover.paintoverUrl).includes(expectedPaintoverParam)) {
+    addError(`Paintover URL must include "${expectedPaintoverParam}".`);
   }
 
   if (!String(paintover.historicalScope).includes("Old Kingdom")) {
@@ -278,12 +281,127 @@ function validatePaintover(paintover, cameraLock) {
     addError("Paintover must include at least five palette targets.");
   }
 
+  if (paintover.version >= 2) {
+    validatePaintoverV2Targets(paintover);
+  }
+
+  if (paintover.version >= 3) {
+    validatePaintoverV3Targets(paintover);
+  }
+
+  if (paintover.version >= 4) {
+    validatePaintoverV4Targets(paintover);
+  }
+
   if (!requireArray(paintover.acceptanceChecks, "paintover.acceptanceChecks")) {
     return;
   }
 
   if (paintover.acceptanceChecks.length < 4) {
     addError("Paintover must include at least four acceptance checks.");
+  }
+}
+
+function validatePaintoverV2Targets(paintover) {
+  if (!String(paintover.qualityTarget).includes("Old Kingdom")) {
+    addError('Paintover V2 qualityTarget must include "Old Kingdom".');
+  }
+
+  for (const field of ["referenceUsePolicy", "layoutLocks", "referenceGapSummary", "visualScoreWeights"]) {
+    if (!requireArray(paintover[field], `paintover.${field}`)) {
+      continue;
+    }
+
+    if (paintover[field].length === 0) {
+      addError(`paintover.${field} must not be empty.`);
+    }
+  }
+
+  const annotationIds = new Set(paintover.annotations?.map((annotation) => annotation.id) ?? []);
+  const requiredV2Annotations = [
+    "missing-overhead-linen-frame",
+    "left-close-plaster-read",
+    "right-close-plaster-read",
+    "continuous-packed-dust-hero-ground",
+    "warm-sun-cool-shade-wedge",
+    "wall-base-contact-ao"
+  ];
+
+  for (const annotationId of requiredV2Annotations) {
+    if (!annotationIds.has(annotationId)) {
+      addError(`Paintover V2 is missing required annotation "${annotationId}".`);
+    }
+  }
+}
+
+function validatePaintoverV3Targets(paintover) {
+  const qualityTarget = String(paintover.qualityTarget ?? "").toLowerCase();
+
+  for (const term of ["imperfection", "dust", "old kingdom"]) {
+    if (!qualityTarget.includes(term)) {
+      addError(`Paintover V3 qualityTarget must include "${term}".`);
+    }
+  }
+
+  for (const field of ["imperfectionTargets", "implementationKnobs", "protectedClearZones"]) {
+    if (!requireArray(paintover[field], `paintover.${field}`)) {
+      continue;
+    }
+
+    if (paintover[field].length === 0) {
+      addError(`paintover.${field} must not be empty for V3.`);
+    }
+  }
+
+  const annotationIds = new Set(paintover.annotations?.map((annotation) => annotation.id) ?? []);
+  const requiredV3Annotations = [
+    "dried-silt-scuff-clusters",
+    "footprint-rut-randomness",
+    "right-foreground-worker-silhouette",
+    "center-walking-figures"
+  ];
+
+  for (const annotationId of requiredV3Annotations) {
+    if (!annotationIds.has(annotationId)) {
+      addError(`Paintover V3 is missing required annotation "${annotationId}".`);
+    }
+  }
+
+  const scoreIds = new Set(paintover.visualScoreWeights?.map((item) => item.id) ?? []);
+  if (!scoreIds.has("controlled-imperfection")) {
+    addError('Paintover V3 visualScoreWeights must include "controlled-imperfection".');
+  }
+
+  const clearZoneText = JSON.stringify(paintover.protectedClearZones ?? []).toLowerCase();
+  for (const term of ["main wall", "walkable"]) {
+    if (!clearZoneText.includes(term)) {
+      addError(`Paintover V3 protectedClearZones must mention "${term}".`);
+    }
+  }
+}
+
+function validatePaintoverV4Targets(paintover) {
+  const qualityTarget = String(paintover.qualityTarget ?? "").toLowerCase();
+
+  for (const term of ["cinematic", "linen", "plaster", "dust"]) {
+    if (!qualityTarget.includes(term)) {
+      addError(`Paintover V4 qualityTarget must include "${term}".`);
+    }
+  }
+
+  if (!requireArray(paintover.cinematicResetTargets, "paintover.cinematicResetTargets")) {
+    return;
+  }
+
+  if (paintover.cinematicResetTargets.length < 4) {
+    addError("paintover.cinematicResetTargets must include at least four V4 reset targets.");
+  }
+
+  const resetText = JSON.stringify(paintover.cinematicResetTargets).toLowerCase();
+  for (const term of ["linen", "packed", "plaster", "reed", "shadow"]) {
+    if (!resetText.includes(term)) {
+      addError(`Paintover V4 cinematicResetTargets must mention "${term}".`);
+    }
   }
 }
 

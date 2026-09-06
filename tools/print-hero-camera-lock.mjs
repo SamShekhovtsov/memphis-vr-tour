@@ -21,7 +21,9 @@ if (!activeShot) {
   console.log(`- Viewport: ${cameraLock.viewport.width}x${cameraLock.viewport.height} @ ${cameraLock.viewport.deviceScaleFactor}x`);
   console.log(`- Position: [${activeShot.position.join(", ")}]`);
   console.log(`- Look at: [${activeShot.lookAt.join(", ")}]`);
+  console.log(`- FOV: ${activeShot.fov ?? "runtime default"}`);
   console.log(`- Canonical output: ${cameraLock.canonicalOutput}`);
+  console.log(`- Paintover: ${paintover.id} (${paintover.label})`);
   console.log(`- Paintover URL: ${paintover.paintoverUrl}`);
   console.log(`- Paintover output: ${paintover.paintoverOutput}`);
   console.log(`- Paintover annotations: ${paintover.annotations.length}`);

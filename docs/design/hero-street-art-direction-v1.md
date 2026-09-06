@@ -17,8 +17,9 @@ Alias:
 
 Camera bookmark:
 
-- Position: `[-6.6, 1.65, -18]`
-- Look at: `[-6, 1.48, 8]`
+- Position: `[-6.35, 1.58, -15.8]`
+- Look at: `[-6.02, 1.16, 10.2]`
+- FOV: `0.62`
 - Viewport: `1280x720`
 - Canonical output: `docs/design/screenshots/hero-street-main-current.jpg`
 - Purpose: eye-height visitor view down the dense residential lane.
@@ -36,7 +37,7 @@ Secondary diagnostic URLs:
 
 Paintover target URL:
 
-- `http://127.0.0.1:5573/?shot=hero-street-main&paintover=1&chrome=0`
+- `http://127.0.0.1:5573/?shot=hero-street-main&paintover=v4&chrome=0`
 
 Current captures:
 
@@ -79,15 +80,18 @@ Current shot weaknesses:
 Think of the next pass as a paintover translated into assets and shaders:
 
 The machine-readable source of truth is `content/scene-data/hero-street.paintover.json`.
+The current production brief is `docs/design/hero-shot-paintover-pass-v4.md`.
 
-1. Darken the top canopy and use it as a strong foreground shadow frame.
-2. Pull the eye down the center lane with a darker, irregular walking path and brighter sun strips.
-3. Break the ground tile look with one continuous authored hero-road atlas: dust, footprints, pebble clusters, wheel/drag ruts, straw, pottery chips, and wall-base grime.
-4. Push doorway interiors nearly black, with warm reflected edges around the jambs.
-5. Add localized AO around all wall bases, benches, jars, poles, baskets, and feet.
-6. Reduce white haze; use amber dust depth with a slightly darker sky/upper background.
-7. Move visual interest closer to the camera: one foreground basket/linen shape on the left and one worker or carrier silhouette near the right third.
-8. Keep Old Kingdom restraint: mudbrick domestic lane, simple plaster, linen kilts/sheath-like garments, bare feet/simple sandals, minimal jewelry.
+1. Bring the existing shade-cloth/awning read into the upper frame so the shot has a cinematic top silhouette.
+2. Make the left and right foreground walls the proof of quality: rounded plaster, chipped lips, lower grime, dark recesses, and no regular block-grid wallpaper.
+3. Use one practical foreground basket/cloth/pottery anchor without cluttering the route.
+4. Pull the eye down the center lane with a darker irregular traffic path, brighter sun strips, and a clear vanishing point.
+5. Break the ground tile look with one continuous authored hero-road atlas: compacted dust, dried Nile-silt scuffs, footprints, pebble clusters, ruts, straw, pottery chips, swept dirt, and wall-base grime.
+6. Push doorway interiors nearly black, with warm reflected edges around the jambs.
+7. Add localized AO around all wall bases, benches, jars, poles, baskets, feet, and low plaster/mud-splash edges.
+8. Restore character believability with two or three grounded Old Kingdom silhouettes and visible locomotion where people are walking.
+9. Reduce white haze; use amber dust depth, warm sun, cooler shade, darker dirt, pale linen, clay pottery, and muted reed/wood.
+10. Keep Old Kingdom restraint: domestic mudbrick/plaster lane, simple clothing, minimal jewelry, controlled imperfection from real materials, no copied-media or later-period spectacle.
 
 ## Material Rebuild
 

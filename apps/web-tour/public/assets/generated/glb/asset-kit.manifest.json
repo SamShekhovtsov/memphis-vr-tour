@@ -1,7 +1,7 @@
 {
   "$schema": "./asset-kit.schema.json",
   "id": "memphis-modular-glb-kit-v1",
-  "checkedDate": "2026-07-30",
+  "checkedDate": "2026-09-06",
   "generatedBy": "tools/blender/generate_memphis_asset_kit.py",
   "generator": "Blender procedural mesh script",
   "blenderVersion": "3.6.23",
@@ -12,6 +12,7 @@
     "aoAndHeight": "AO, doorway darkness, wall-base dirt, cloth shade, cracks, eroded plaster scumble, exposed mud daub, corner grime, and height-like surface breakup are authored as visible decal/contact geometry for this pass.",
     "bakedLightAndContact": "Hero Street v2 now includes layered baked-looking shadow geometry: broad awning bands, continuous wall-base AO, doorway pools, vertical door darkness, post contacts, prop grounding, and warm sun-dust strips.",
     "wallQuality": "Step 5 improves existing wall planes only: no new architecture placement, no district expansion, and no new wall rows.",
+    "controlledImperfection": "Hero Shot Paintover Pass v3 adds non-blocking surface imperfection decals: dried Nile-silt scuffs, asymmetric dust clumps, low mud splashes, small chipped pottery/plaster fragments, and fine wall scratches.",
     "historicalCompliance": "Step 6 keeps mudbrick as the domestic construction system, but makes visible house exteriors mostly continuous mud plaster/whitewash with irregular daub exposure; regular exposed block-grid masonry is avoided for Old Kingdom residential facades.",
     "optimization": "Step 7 splits the hero street into near/mid/far runtime chunks and leaves the full corridor as a fallback/reference export.",
     "nextPass": "After the chunked runtime is approved, add verified decoder-backed Draco/Meshopt and KTX2 pipelines."
@@ -104,6 +105,8 @@
         "Step 6 historical-compliance pass: domestic wall construction remains mudbrick, but visible street surfaces read as continuous mud-plastered/whitewashed earthen walls with irregular wear instead of regular exposed block-grid masonry.",
         "Roadmap v3 Step 4 wall-face pass: existing house fronts use continuous uneven plaster skins, softened massing, darker door depth, and subdued daub exposure to avoid a repeated block-panel read.",
         "Street-mouth cleanup: the Main Wall-side house bay is intentionally omitted on both rows so the transition from the White Walls gate to the offset residential street remains open and walkable.",
+        "Hero Shot Paintover Pass v3 adds controlled imperfection only: dried Nile-silt scuffs, asymmetric dust clumps, chipped plaster lips, wall-base grime, and non-blocking contact decals. It does not move layout or add new architecture.",
+        "Hero Shot Paintover Pass v4 is a cinematic composition/material reset: visible linen canopy frame, lighter packed Nile-silt street dust, smaller organic contact grime, softened plastered end walls, and reduced toy-like rectangular wall damage.",
         "Old Kingdom / Kom el-Fakhry / Mit Rahina visual guardrails: compact house masses, flat roofs, small openings, compact mudbrick domestic lane, restrained domestic wall marks, linen shade cloth, plain clothing silhouettes, and no copied source media.",
         "Layout follows docs/design/memphis-hero-district-plan.md and avoids overlapping architecture systems.",
         "Step 7 optimization pass keeps this full corridor as a fallback/reference export; the browser runtime now prefers the near/mid/far chunked exports."
@@ -134,6 +137,8 @@
         "Step 6 historical-compliance pass: domestic wall construction remains mudbrick, but visible street surfaces read as continuous mud-plastered/whitewashed earthen walls with irregular wear instead of regular exposed block-grid masonry.",
         "Roadmap v3 Step 4 wall-face pass: existing house fronts use continuous uneven plaster skins, softened massing, darker door depth, and subdued daub exposure to avoid a repeated block-panel read.",
         "Street-mouth cleanup: the Main Wall-side house bay is intentionally omitted on both rows so the transition from the White Walls gate to the offset residential street remains open and walkable.",
+        "Hero Shot Paintover Pass v3 adds controlled imperfection only: dried Nile-silt scuffs, asymmetric dust clumps, chipped plaster lips, wall-base grime, and non-blocking contact decals. It does not move layout or add new architecture.",
+        "Hero Shot Paintover Pass v4 is a cinematic composition/material reset: visible linen canopy frame, lighter packed Nile-silt street dust, smaller organic contact grime, softened plastered end walls, and reduced toy-like rectangular wall damage.",
         "Old Kingdom / Kom el-Fakhry / Mit Rahina visual guardrails: compact house masses, flat roofs, small openings, compact mudbrick domestic lane, restrained domestic wall marks, linen shade cloth, plain clothing silhouettes, and no copied source media.",
         "Layout follows docs/design/memphis-hero-district-plan.md and avoids overlapping architecture systems.",
         "Step 7 optimized chunk: near/entry film-set geometry for first-person arrival and close foreground composition."
@@ -164,6 +169,8 @@
         "Step 6 historical-compliance pass: domestic wall construction remains mudbrick, but visible street surfaces read as continuous mud-plastered/whitewashed earthen walls with irregular wear instead of regular exposed block-grid masonry.",
         "Roadmap v3 Step 4 wall-face pass: existing house fronts use continuous uneven plaster skins, softened massing, darker door depth, and subdued daub exposure to avoid a repeated block-panel read.",
         "Street-mouth cleanup: the Main Wall-side house bay is intentionally omitted on both rows so the transition from the White Walls gate to the offset residential street remains open and walkable.",
+        "Hero Shot Paintover Pass v3 adds controlled imperfection only: dried Nile-silt scuffs, asymmetric dust clumps, chipped plaster lips, wall-base grime, and non-blocking contact decals. It does not move layout or add new architecture.",
+        "Hero Shot Paintover Pass v4 is a cinematic composition/material reset: visible linen canopy frame, lighter packed Nile-silt street dust, smaller organic contact grime, softened plastered end walls, and reduced toy-like rectangular wall damage.",
         "Old Kingdom / Kom el-Fakhry / Mit Rahina visual guardrails: compact house masses, flat roofs, small openings, compact mudbrick domestic lane, restrained domestic wall marks, linen shade cloth, plain clothing silhouettes, and no copied source media.",
         "Layout follows docs/design/memphis-hero-district-plan.md and avoids overlapping architecture systems.",
         "Step 7 optimized chunk: middle street geometry, long sandy lane surface, and central market/street detail."
@@ -194,6 +201,8 @@
         "Step 6 historical-compliance pass: domestic wall construction remains mudbrick, but visible street surfaces read as continuous mud-plastered/whitewashed earthen walls with irregular wear instead of regular exposed block-grid masonry.",
         "Roadmap v3 Step 4 wall-face pass: existing house fronts use continuous uneven plaster skins, softened massing, darker door depth, and subdued daub exposure to avoid a repeated block-panel read.",
         "Street-mouth cleanup: the Main Wall-side house bay is intentionally omitted on both rows so the transition from the White Walls gate to the offset residential street remains open and walkable.",
+        "Hero Shot Paintover Pass v3 adds controlled imperfection only: dried Nile-silt scuffs, asymmetric dust clumps, chipped plaster lips, wall-base grime, and non-blocking contact decals. It does not move layout or add new architecture.",
+        "Hero Shot Paintover Pass v4 is a cinematic composition/material reset: visible linen canopy frame, lighter packed Nile-silt street dust, smaller organic contact grime, softened plastered end walls, and reduced toy-like rectangular wall damage.",
         "Old Kingdom / Kom el-Fakhry / Mit Rahina visual guardrails: compact house masses, flat roofs, small openings, compact mudbrick domestic lane, restrained domestic wall marks, linen shade cloth, plain clothing silhouettes, and no copied source media.",
         "Layout follows docs/design/memphis-hero-district-plan.md and avoids overlapping architecture systems.",
         "Step 7 optimized chunk: far/temple-side depth layer for route continuity and distant composition."
