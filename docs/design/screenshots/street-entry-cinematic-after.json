@@ -1,0 +1,30 @@
+{
+  "url": "http://127.0.0.1:5573/?shot=street-entry&chrome=0&qa=1&quality=balanced",
+  "viewport": {
+    "width": 1280,
+    "height": 720,
+    "deviceScaleFactor": 1
+  },
+  "renderer": "Chrome SwiftShader; not a hardware performance benchmark",
+  "ready": true,
+  "heroLoaded": true,
+  "meshes": 679,
+  "activeMeshes": 433,
+  "activeIndices": 568822,
+  "vertices": 312947,
+  "drawCalls": 517,
+  "meanFrameMs": 29.109999998410544,
+  "estimatedTextureMiB": 304.33333333333337,
+  "textures": 47,
+  "textureErrors": [],
+  "renderWidth": 1280,
+  "renderHeight": 720,
+  "camera": [
+    -7,
+    1.7,
+    -28
+  ],
+  "animationSeconds": 2,
+  "quality": "balanced",
+  "bakeId": "hero-street-authored-v1"
+}

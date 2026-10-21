@@ -1,0 +1,24 @@
+{
+  "url": "http://127.0.0.1:5573/?shot=hero-street-main&chrome=0&qa=1&quality=balanced",
+  "viewport": {
+    "width": 1280,
+    "height": 720,
+    "deviceScaleFactor": 1
+  },
+  "renderer": "Chrome SwiftShader; not a hardware performance benchmark",
+  "ready": true,
+  "heroLoaded": true,
+  "meshes": 730,
+  "activeMeshes": 356,
+  "triangles": 122841.33333333333,
+  "textures": 42,
+  "renderWidth": 1280,
+  "renderHeight": 720,
+  "camera": [
+    -6.08,
+    1.52,
+    -16.4
+  ],
+  "animationSeconds": 2,
+  "quality": "balanced"
+}

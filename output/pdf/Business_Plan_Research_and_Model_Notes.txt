@@ -1,0 +1,156 @@
+ANCIENT MEMPHIS - HYBRID REVISION, 22 October 2026, USD
+Current PDF: Ancient_Memphis_Business_Plan.pdf (10 pages).
+Rebuild model with hybrid_model.py; rebuild PDF with build_business_plan.py.
+Original PDF, model, scripts and research notes are archived under archive/venue-only.
+Investor brief and application code were not modified.
+
+All demand, conversion, CAC, refund, staffing and development-duration inputs are assumptions.
+Published comparables establish category existence and prices, not this project's sales.
+A technical founder accepting $2500-$3000 monthly pay is essential and unconfirmed.
+No deferred wages are omitted. This budget is not a conventional full-time US development team.
+
+Gross orders are before refunds; retained orders are expected licences, not verified unique people.
+Price realised after discounts/regional mix: $8.50 excluding tax, proposed list $9.99.
+Store fee allowance30%; confirm current contracts. Net company revenue is a management measure.
+Consumer contribution=8.50*(1-refund)*(.70-.05)-.25-paid_share*CAC.
+Base contribution2.7225/order; before acquisition4.7225. Paid $8 CAC orders lose3.2775 each.
+Paid spending is limited testing subsidised by organic sales; scale only when CAC is below contribution.
+At assumed2%conversion, baseM1 needs15000qualified store visits; M24 needs40000.
+M24 needs600organic orders/30000organic visits. These are required audiences, not measured reach.
+UpsideM24 requires120000qualified visits. No calendar seasonality is assumed.
+
+Base venue funnel:120qualified accounts over24months;6winsYear1,8winsYear2;60-120day sales cycles assumed.
+New-site and loss month schedules are explicit in hybrid_model.py. Losses remove annual-renewal cohorts.
+Later cohorts have not all reached renewal within the24month horizon.
+Venue revenue250/site+2.50/paidvisit+500/newsite.
+Venue cost60/site+.25/visit+.08*venue_revenue+300/newsite.
+Usage ramp50%,75%,100%; mature monthly visits120/180/240 by scenario.
+Capacity1200slots/site is a ceiling, not forecast demand. Sessions are not unique customers.
+Base mature site contribution539/month, launch contribution160.
+Partner example at180visits:1800ticket revenue-700licence-54processing-600sharedstaff-250equipment-100hygiene=96.
+Dedicated staff, rent and tax would reduce that partner margin. Verify in paid pilots.
+
+Base/downside fixed6500/monthYear1,7500Year2. Upside7500/9500.
+All revenue collected one month later; costs/reserves expensed and paid immediately.
+Steam settlement supports this timing; actual Meta terms may differ.
+Opening equipment/setup6000M1 and refresh2000M13. Validation hardware must be funded before launch;
+its opening allowance is included in the modelled post-MVP envelope.
+Income tax, financing, depreciation and historical sunk costs excluded. No grants, DLC or hardware sales.
+Reserves are conservative cash expenses, not counted again. They are not exact Unreal royalty calculations.
+Unreal standard5%above1m attributable lifetime gross; venue ticket attribution requires review.
+Funding=peak deficit*1.2 rounded upward to next5000. Longer settlement/withholding can add need.
+Prelaunch estimate60000=6months*6500+11000additional assets/voice/QA+10000contingency.
+Requires quotes and hardware spike, not a price or delivery commitment.
+
+Consumer-only and venue-only hold base fixed costs/capex constant to isolate channel contribution.
+These are not separately optimised businesses. Original480000fixed vs revised168000=65%less;
+original20endvenues vs revised12. Savings reflect changed scope, team and sales ambitions.
+Break-even7500fixed:2755consumerorders alone,14maturevenues alone,or10venues+776orders.
+No launch fees included in that threshold.
+Base firstprofitM23,cashflowpositiveM24; no24month cumulative payback.
+Upside postMVPcashpaybackM22 does not repay additional60000prelaunch within24months.
+Downside is not a loss ceiling; zero sales can occur. Shutdown gates are not simulated in the model.
+Source links, research findings and image credits are in PDF page10.
+All forward schedules and formulas are in hybrid_model.py; monthly outputs in the JSON file.
+
+SCENARIO SUMMARIES (unrounded)
+Downside
+{
+  "orders": 3410,
+  "retained": 2728.0,
+  "paid_visits": 7500.0,
+  "revenue": 54731.6,
+  "consumer_net": 16231.6,
+  "venue_revenue": 38500.0,
+  "operating_result": -139695.3,
+  "acquisition": 13640.0,
+  "fixed": 168000,
+  "end_sites": 5,
+  "end_result": -5386.0,
+  "first_profit": null,
+  "first_cash_profit": null,
+  "payback": null,
+  "peak_need": 151397.30000000002,
+  "funding": 185000,
+  "end_cash": -151397.30000000002
+}
+Base
+{
+  "orders": 10640,
+  "retained": 9576.0,
+  "paid_visits": 21195.0,
+  "revenue": 148964.7,
+  "consumer_net": 56977.200000000004,
+  "venue_revenue": 91987.5,
+  "operating_result": -71582.85,
+  "acquisition": 21280.0,
+  "fixed": 168000,
+  "end_sites": 12,
+  "end_result": 1029.25,
+  "first_profit": 23,
+  "first_cash_profit": 24,
+  "payback": null,
+  "peak_need": 92651.5,
+  "funding": 115000,
+  "end_cash": -92429.35
+}
+Upside
+{
+  "orders": 30650,
+  "retained": 28198.0,
+  "paid_visits": 57120.0,
+  "revenue": 385828.1,
+  "consumer_net": 167778.1,
+  "venue_revenue": 218050.0,
+  "operating_result": 62282.45,
+  "acquisition": 45975.0,
+  "fixed": 204000,
+  "end_sites": 20,
+  "end_result": 11530.199999999997,
+  "first_profit": 9,
+  "first_cash_profit": 10,
+  "payback": 22,
+  "peak_need": 45828.65,
+  "funding": 55000,
+  "end_cash": 24094.85
+}
+Consumer only
+{
+  "orders": 10640,
+  "retained": 9576.0,
+  "paid_visits": 0,
+  "revenue": 56977.200000000004,
+  "consumer_net": 56977.200000000004,
+  "venue_revenue": 0.0,
+  "operating_result": -139032.6,
+  "acquisition": 21280.0,
+  "fixed": 168000,
+  "end_sites": 0,
+  "end_result": -5322.0,
+  "first_profit": null,
+  "first_cash_profit": null,
+  "payback": null,
+  "peak_need": 151316.6,
+  "funding": 185000,
+  "end_cash": -151316.6
+}
+Lean venues only
+{
+  "orders": 0,
+  "retained": 0.0,
+  "paid_visits": 21195.0,
+  "revenue": 91987.5,
+  "consumer_net": 0.0,
+  "venue_revenue": 91987.5,
+  "operating_result": -100550.25,
+  "acquisition": 0.0,
+  "fixed": 168000,
+  "end_sites": 12,
+  "end_result": -1148.75,
+  "first_profit": null,
+  "first_cash_profit": null,
+  "payback": null,
+  "peak_need": 117112.75,
+  "funding": 145000,
+  "end_cash": -117112.75
+}

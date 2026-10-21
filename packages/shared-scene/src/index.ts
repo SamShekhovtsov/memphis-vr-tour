@@ -131,6 +131,31 @@ export interface RuntimeAssetManifest {
   assets: readonly RuntimeAssetRecord[];
 }
 
+/** Portable binding contract; runtimes choose how to consume irradiance. */
+export interface HeroBakeManifest {
+  id: string;
+  units: "meters";
+  format: "glTF 2.0";
+  materials: Record<string, string>;
+  assets: {
+    assetId: string;
+    fileName: string;
+    irradiance: string;
+    uvSet: number;
+  }[];
+  bake: {
+    engine: string;
+    samples: number;
+    resolution: number;
+    includesAlbedo: boolean;
+    includesSunDirect: boolean;
+    colorSpace: "linear";
+    uvSet: number;
+  };
+  lockedInputs: Record<string, string>;
+  sourceHashes: Record<string, string>;
+}
+
 export const evidenceLabels: Record<EvidenceLevel, string> = {
   confirmed: "Confirmed",
   inferred: "Inferred",

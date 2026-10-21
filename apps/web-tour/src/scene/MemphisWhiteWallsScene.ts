@@ -12,6 +12,7 @@ import {
   PointLight,
   Scene,
   SceneLoader,
+  ShadowGenerator,
   Texture,
   TransformNode,
   UniversalCamera,
@@ -20,6 +21,7 @@ import {
 import type { EvidenceLevel, TourManifest, TourStop } from "@egyptvr/shared-scene";
 import { evidenceColors } from "@egyptvr/shared-scene";
 import cameraLockData from "../../../../content/scene-data/hero-street.camera-lock.json";
+import { authoredHeroRoot, createHeroMaterialBinder, type HeroBakeManifest } from "./HeroStreetMaterials";
 
 export interface MemphisSceneController {
   scene: Scene;
@@ -255,6 +257,7 @@ export async function createMemphisWhiteWallsScene(
   manifest: TourManifest
 ): Promise<MemphisSceneController> {
   const qualityProfile = selectRuntimeQualityProfile();
+  const qaTime = new URLSearchParams(window.location.search).has("qa") ? 2 : undefined;
   applyRuntimeQualityProfile(engine, qualityProfile);
 
   const scene = new Scene(engine);
@@ -317,10 +320,31 @@ export async function createMemphisWhiteWallsScene(
   createTemple(scene, materials);
   createRouteLine(scene, routeTrack.points);
   const modularAssets = await loadModularAssetKit(scene, materials, qualityProfile);
+  if (scene.metadata?.heroBakeId) {
+    sun.intensity = 2;
+    const shadows = new ShadowGenerator(qualityProfile.mode === "performance" ? 1024 : 2048, sun);
+    shadows.usePercentageCloserFiltering = true;
+    shadows.filteringQuality = ShadowGenerator.QUALITY_MEDIUM;
+    shadows.bias = .0005;
+    shadows.normalBias = .035;
+    sun.autoCalcShadowZBounds = true;
+    for (const root of scene.transformNodes.filter(node => node.metadata?.runtimeAssetId && (node.name.startsWith("glbHeroStreet") || node.name === "glbAnimatedStreetActors"))) {
+      for (const mesh of root.getChildMeshes()) {
+        shadows.addShadowCaster(mesh, false);
+        mesh.receiveShadows = true;
+        if (root.name.startsWith("glbHeroStreet")) {
+          // Sky/bounce already come from Cycles. Only the sun is added here.
+          skyLight.excludedMeshes.push(mesh);
+          sunBounce.excludedMeshes.push(mesh);
+          shrineGlow.excludedMeshes.push(mesh);
+        }
+      }
+    }
+  }
   if (modularAssets.heroStreetLoaded) {
     hideLegacyHeroStreetScaffold(scene);
     createHeroStreetCollisionGuides(scene);
-    createHeroStreetV5DustSurface(scene, materials);
+    if (!scene.metadata?.heroBakeId) createHeroStreetV5DustSurface(scene, materials);
   }
   const cinematicHumans = modularAssets.heroStreetLoaded ? [] : createHeroStreetV2FilmSet(scene, materials);
   const glbActorMotions = modularAssets.actorMotions;
@@ -358,7 +382,7 @@ export async function createMemphisWhiteWallsScene(
       }
     }
 
-    const time = performance.now() / 1000;
+    const time = qaTime ?? performance.now() / 1000;
     updateWalkers(walkers, time);
     updateSmoke(smokeNodes, time);
     updateBirds(birds, time);
@@ -998,6 +1022,25 @@ async function loadModularAssetKit(
     }
 
     const manifest = (await response.json()) as ModularAssetKitManifest;
+    if (new URLSearchParams(window.location.search).get("materials") !== "legacy") {
+      try {
+        const bakeResponse = await fetch(`${authoredHeroRoot}manifest.json`);
+        if (!bakeResponse.ok) throw new Error(`HTTP ${bakeResponse.status}`);
+        const bake = await bakeResponse.json() as HeroBakeManifest;
+        if (bake.bake.includesAlbedo !== false || bake.bake.includesSunDirect !== false || bake.bake.colorSpace !== "linear") {
+          throw new Error("Incompatible irradiance bake; regenerate with npm run bake:hero.");
+        }
+        scene.metadata.heroBake = bake;
+        scene.metadata.heroBakeId = bake.id;
+        scene.metadata.bindHeroMaterial = createHeroMaterialBinder(scene, bake);
+        scene.ambientColor = Color3.White();
+        scene.imageProcessingConfiguration.exposure = 1.12;
+        scene.imageProcessingConfiguration.contrast = 1.2;
+        scene.imageProcessingConfiguration.vignetteWeight = .35;
+      } catch (error) {
+        console.warn("Authored hero bake unavailable; using generated street.", error);
+      }
+    }
     const entriesById = new Map(manifest.assets.map((entry) => [entry.id, entry]));
     const placements = createModularAssetPlacements(qualityProfile);
     const criticalPlacements = placements.filter((placement) => !placement.defer);
@@ -1015,7 +1058,7 @@ async function loadModularAssetKit(
     );
 
     if (deferredPlacements.length > 0) {
-      void loadAndPlaceModularAssets(
+      const deferredLoad = loadAndPlaceModularAssets(
         scene,
         materials,
         entriesById,
@@ -1026,6 +1069,7 @@ async function loadModularAssetKit(
       ).catch((error: unknown) => {
         console.warn("Deferred Memphis GLB assets could not be loaded.", error);
       });
+      if (new URLSearchParams(window.location.search).has("qa")) await deferredLoad;
     }
 
     return { heroStreetLoaded, actorMotions };
@@ -1057,7 +1101,8 @@ async function loadAndPlaceModularAssets(
         return;
       }
 
-      const container = await SceneLoader.LoadAssetContainerAsync(glbRoot, entry.fileName, scene);
+      const bakedAsset = (scene.metadata?.heroBake as HeroBakeManifest | undefined)?.assets.find(asset => asset.assetId === assetId);
+      const container = await SceneLoader.LoadAssetContainerAsync(bakedAsset ? authoredHeroRoot : glbRoot, bakedAsset?.fileName ?? entry.fileName, scene);
       containers.set(assetId, container);
       applyTextureQuality(scene, qualityProfile);
     })
@@ -1091,8 +1136,12 @@ async function loadAndPlaceModularAssets(
     root.scaling.setAll(placement.scale ?? 1);
 
     for (const mesh of root.getChildMeshes(false)) {
-      retargetImportedMaterialAtlas(mesh, materials);
-      calibrateImportedFilmBakeMaterial(mesh);
+      if (scene.metadata?.heroBakeId && isHeroStreetCorridorAsset(placement.assetId)) {
+        scene.metadata.bindHeroMaterial(mesh, placement.assetId);
+      } else {
+        retargetImportedMaterialAtlas(mesh, materials);
+        calibrateImportedFilmBakeMaterial(mesh);
+      }
       mesh.checkCollisions = false;
       mesh.isPickable = false;
 
@@ -1119,6 +1168,10 @@ async function loadAndPlaceModularAssets(
       instance.animationGroups?.forEach((group, index) => {
         group.speedRatio = 0.82 + index * 0.04;
         group.start(true);
+        if (new URLSearchParams(window.location.search).has("qa")) {
+          group.goToFrame(group.from + Math.min(48, group.to - group.from));
+          group.pause();
+        }
       });
 
       if (placement.assetId === "animated-street-actors") {

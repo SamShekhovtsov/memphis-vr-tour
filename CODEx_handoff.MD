@@ -80,8 +80,9 @@ Canonical benchmark:
 - URL: `http://127.0.0.1:5573/?shot=hero-street-main&chrome=0`
 - Alias URL: `http://127.0.0.1:5573/?shot=canonical&chrome=0`
 - Viewport: `1280x720`
-- Position: `[-6.6, 1.65, -18]`
-- Look at: `[-6, 1.48, 8]`
+- Position: `[-6.08, 1.52, -16.4]`
+- Look at: `[-6.0, 1.14, 11.6]`
+- FOV: `0.54` (existing V5 lock; documentation synchronized, camera not changed).
 
 Use this camera for every texture, material, lighting, haze, and color-grading quality comparison. Do not change the canonical camera unless the user explicitly approves a new benchmark shot.
 

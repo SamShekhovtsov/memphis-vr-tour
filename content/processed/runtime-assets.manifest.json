@@ -4,6 +4,24 @@
   "checkedDate": "2026-09-06",
   "assets": [
     {
+      "id": "authored-hero-street-bake",
+      "label": "Old Kingdom Memphis hero street plaster, dust and baked sky illumination",
+      "assetType": "geometry",
+      "origin": "procedural",
+      "runtimeUrl": "/assets/authored/hero-street/manifest.json",
+      "generatedBy": "tools/blender/bake_hero_street.py",
+      "evidenceLevel": "inferred",
+      "runtimeAllowed": true,
+      "sourceIds": [],
+      "referenceSourceIds": ["aera-memphis", "sfar-kom-el-fakhry", "petrie-memphis-i"],
+      "licenseStatus": "Project-authored procedural surfaces and Cycles baking of existing owned GLBs; no reference media copied.",
+      "notes": [
+        "Existing locked Old Kingdom Memphis mudbrick/plaster street. Camera, route and building placements are preserved.",
+        "Synthetic dust and plaster maps, independent non-overlapping lightmap UVs, sky illumination and sun-bounce bake. Real-time direct sun is excluded from the bake.",
+        "Lighting, exact weathering and reconstruction are artistic; no new historical certainty is claimed."
+      ]
+    },
+    {
       "id": "procedural-nile-landing",
       "label": "Procedural Nile landing and quay props",
       "assetType": "geometry",

@@ -4,7 +4,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 
 const rootDir = path.resolve(fileURLToPath(new URL("..", import.meta.url)));
-const scriptPath = path.join(rootDir, "tools", "blender", "generate_memphis_asset_kit.py");
+const scriptPath = path.join(rootDir, "tools", "blender", process.argv.includes("--hero-bake") ? "bake_hero_street.py" : "generate_memphis_asset_kit.py");
 
 const candidates = [
   process.env.BLENDER_BIN,

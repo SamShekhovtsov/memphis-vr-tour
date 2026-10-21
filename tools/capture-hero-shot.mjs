@@ -1,5 +1,5 @@
 import { spawn } from "node:child_process";
-import { copyFile, mkdir, rm, writeFile } from "node:fs/promises";
+import { mkdir, rm, writeFile, readFile } from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
@@ -10,8 +10,14 @@ const chromeBin =
   process.env.CHROME_BIN ??
   "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe";
 const port = Number(process.env.CDP_PORT ?? 9237);
-const viewport = { width: 1280, height: 720, deviceScaleFactor: 1 };
-const paintoverVersion = process.argv[2] ?? "v5";
+const lock = JSON.parse(await readFile(path.join(rootDir, "content/scene-data/hero-street.camera-lock.json"), "utf8"));
+const viewport = lock.viewport;
+const label = process.argv[2] ?? "current";
+if (!/^[a-z0-9-]+$/i.test(label)) throw new Error("Use a simple capture label.");
+const selectedShot = process.argv.find(arg => arg.startsWith("--shot="))?.slice(7);
+if (selectedShot && !lock.shots.some(shot => shot.id === selectedShot)) throw new Error("Unknown locked shot.");
+const shots = selectedShot ? [selectedShot] : process.argv.includes("--all") ? lock.shots.map(shot => shot.id) : [lock.activeShotId];
+const legacy = process.argv.includes("--legacy");
 
 await mkdir(screenshotDir, { recursive: true });
 
@@ -39,32 +45,26 @@ const chrome = spawn(
   ],
   { stdio: ["ignore", "pipe", "pipe"], windowsHide: true }
 );
+chrome.stderr.on("data", (data) => {
+  if (/DevTools listening|crash server|self-terminating/.test(String(data))) process.stderr.write(data);
+});
+chrome.on("error", (error) => console.error(error));
 
 try {
   await waitForChrome();
 
-  const canonicalOutput = path.join(screenshotDir, `hero-street-main-current-${paintoverVersion}.png`);
-  const paintoverOutput = path.join(screenshotDir, `hero-street-paintover-${paintoverVersion}.png`);
-
-  await capture(
-    `http://127.0.0.1:5573/?shot=hero-street-main&chrome=0`,
-    canonicalOutput
-  );
-  await capture(
-    `http://127.0.0.1:5573/?shot=hero-street-main&paintover=${paintoverVersion}&chrome=0`,
-    paintoverOutput
-  );
-
-  await copyFile(canonicalOutput, path.join(screenshotDir, "hero-street-main-current.png"));
-  await copyFile(canonicalOutput, path.join(screenshotDir, `hero-street-main-current-${paintoverVersion}-final.png`));
-  await copyFile(paintoverOutput, path.join(screenshotDir, `hero-street-paintover-${paintoverVersion}-final.png`));
-
-  console.log(`Captured ${canonicalOutput}`);
-  console.log(`Captured ${paintoverOutput}`);
+  for (const shot of shots) {
+    const output = path.join(screenshotDir, `${shot}-${label}.png`);
+    await capture(`http://127.0.0.1:${lock.localDevPort}/?shot=${shot}&chrome=0&qa=1&quality=balanced${legacy ? "&materials=legacy" : ""}`, output);
+    console.log(`Captured ${output}`);
+  }
 } finally {
   chrome.kill();
   await sleep(400);
-  await rm(profileDir, { recursive: true, force: true }).catch(() => undefined);
+  const resolvedProfile = path.resolve(profileDir);
+  if (path.dirname(resolvedProfile) === path.resolve(os.tmpdir()) && path.basename(resolvedProfile).startsWith("egyptvr-hero-shot-")) {
+    await rm(resolvedProfile, { recursive: true, force: true }).catch(() => undefined);
+  }
 }
 
 async function capture(url, outputPath) {
@@ -81,8 +81,10 @@ async function capture(url, outputPath) {
       mobile: false
     });
     await client.send("Page.navigate", { url });
-    await client.waitForEvent("Page.loadEventFired", 20_000);
-    await waitForSceneReady(client);
+    const metrics = await waitForSceneReady(client);
+    if (!metrics.heroLoaded) throw new Error("Capture refused: hero GLB chunks did not load.");
+    if (metrics.textureErrors?.length) throw new Error(`Capture refused: failed textures ${metrics.textureErrors.join(", ")}`);
+    if (!legacy && !metrics.bakeId) throw new Error("Capture refused: authored bake missing. Use --legacy for baseline captures.");
 
     const screenshot = await client.send("Page.captureScreenshot", {
       format: "png",
@@ -90,6 +92,7 @@ async function capture(url, outputPath) {
       fromSurface: true
     });
     await writeFile(outputPath, Buffer.from(screenshot.data, "base64"));
+    await writeFile(outputPath.replace(/\.png$/, ".json"), JSON.stringify({ url, viewport, renderer: "Chrome SwiftShader; not a hardware performance benchmark", ...metrics }, null, 2) + "\n");
   } finally {
     client.close();
     await fetch(`http://127.0.0.1:${port}/json/close/${target.id}`);
@@ -97,31 +100,28 @@ async function capture(url, outputPath) {
 }
 
 async function waitForSceneReady(client) {
-  const deadline = Date.now() + 18_000;
+  const deadline = Date.now() + 120_000;
 
   while (Date.now() < deadline) {
     const result = await client.send("Runtime.evaluate", {
-      expression: `(() => {
-        const canvas = document.querySelector("#renderCanvas");
-        const hiddenHud = document.body.classList.contains("qa-clean-shot");
-        return Boolean(canvas && canvas.clientWidth >= 1200 && hiddenHud && document.readyState === "complete");
-      })()`,
+      expression: `window.memphisQA ?? null`,
       returnByValue: true
     });
 
-    if (result.result?.value === true) {
-      await sleep(3500);
-      return;
+    if (result.result?.value?.ready) {
+      return result.result.value;
     }
 
     await sleep(250);
   }
 
-  throw new Error("Timed out waiting for the hero scene canvas.");
+  const diagnostic = await client.send("Runtime.evaluate", { expression: `({ready: document.readyState, error: document.querySelector('#errorPanel')?.textContent, html: document.documentElement.dataset.sceneReady})`, returnByValue: true });
+  console.error(diagnostic.result?.value);
+  throw new Error("Timed out waiting for the hero scene readiness signal.");
 }
 
 async function waitForChrome() {
-  const deadline = Date.now() + 12_000;
+  const deadline = Date.now() + 45_000;
 
   while (Date.now() < deadline) {
     try {
@@ -158,9 +158,12 @@ async function createCdpClient(webSocketUrl) {
 
   ws.addEventListener("message", (event) => {
     const message = JSON.parse(event.data);
+    if (message.method === "Runtime.exceptionThrown") console.error(JSON.stringify(message.params));
+    if (message.method === "Runtime.consoleAPICalled" && ["error", "warning"].includes(message.params.type)) console.error(message.params.args.map(arg => arg.value ?? arg.description).join(" "));
 
     if (message.id && pending.has(message.id)) {
-      const { resolve, reject } = pending.get(message.id);
+      const { resolve, reject, timer } = pending.get(message.id);
+      clearTimeout(timer);
       pending.delete(message.id);
       if (message.error) {
         reject(new Error(message.error.message));
@@ -182,7 +185,11 @@ async function createCdpClient(webSocketUrl) {
       nextId += 1;
       ws.send(JSON.stringify({ id, method, params }));
       return new Promise((resolve, reject) => {
-        pending.set(id, { resolve, reject });
+        const timer = setTimeout(() => {
+          pending.delete(id);
+          reject(new Error(`Browser did not respond to ${method} within 45 seconds.`));
+        }, 45_000);
+        pending.set(id, { resolve, reject, timer });
       });
     },
     waitForEvent(method, timeoutMs) {

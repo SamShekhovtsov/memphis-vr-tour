@@ -1,0 +1,24 @@
+{
+  "url": "http://127.0.0.1:5573/?shot=street-entry&chrome=0&qa=1&quality=balanced",
+  "viewport": {
+    "width": 1280,
+    "height": 720,
+    "deviceScaleFactor": 1
+  },
+  "renderer": "Chrome SwiftShader; not a hardware performance benchmark",
+  "ready": true,
+  "heroLoaded": true,
+  "meshes": 730,
+  "activeMeshes": 484,
+  "triangles": 145825.33333333334,
+  "textures": 42,
+  "renderWidth": 1280,
+  "renderHeight": 720,
+  "camera": [
+    -7,
+    1.7,
+    -28
+  ],
+  "animationSeconds": 2,
+  "quality": "balanced"
+}

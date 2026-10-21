@@ -1,0 +1,152 @@
+ANCIENT MEMPHIS - BUSINESS PLAN RESEARCH AND MODEL NOTES
+Prepared 22 October 2026. Currency: US dollars.
+
+Purpose
+A short investor business plan with 24 monthly forecasts after a commercially
+ready VR pilot/MVP. The existing browser prototype is not that paid VR MVP.
+No launch calendar date, budget, team roster, signed clients or paid pilot data
+were supplied. The user requested USD and delegated market/model choices.
+
+Evidence versus assumptions
+The research establishes that ticketed cultural VR, institutional content
+licensing and relevant cultural audiences exist. It cannot establish actual
+future sales of Ancient Memphis. Every forward customer, usage, price, cost,
+retention and cash figure is therefore explicitly conditional. Scenarios have
+no assigned probabilities and are not statistical confidence intervals.
+
+Primary evidence used (all consulted 22 October 2026)
+1. Field Museum: VR Odyssey, Drop in the Ocean. Eight-minute experience;
+   $12 general admission / $10 members. This is a short-format price reference,
+   not proof that the same price or demand can be achieved by this startup.
+   https://www.fieldmuseum.org/exhibition/experience/drop-in-the-ocean
+2. Intrepid Museum: Apollo 11 & Beyond VR. Published $13 general / $8 members.
+   https://intrepidmuseum.org/plan-your-visit/experiences/3d-4d-films-vr/apollo-beyond-vr
+3. Musee d'Orsay / Orangerie: 2024 results, published 6 January 2025.
+   Reports 80,000 visitors to Un soir avec les impressionnistes VR.
+   A major museum's successful exhibition is NOT extrapolated to a small startup.
+   https://presse-orsay-orangerie.epmo-musees.fr/4-950-000-visiteurs-pour-letablissement-public-du-musee-dorsay-et-du-musee-de-lorangerie-en-2024/?lang=fra
+4. Horizon of Khufu: official NYC experience page describes a 45-minute Egyptian
+   VR experience. Used as a format/theme competitor, not a current NYC launch
+   recommendation or revenue benchmark. Its global page marks NYC finished.
+   https://horizonkheopsexperience.com/nyc/
+5. The Dali Museum: Dreams of Dali. Offers licensing enquiries to museums and
+   educational institutions. Onsite access is included in museum admission.
+   Commercial licensing rates are not public and are NOT inferred from this.
+   https://thedali.org/exhibit/dreams-of-dali-in-virtual-reality/
+6. American Alliance of Museums, 1 April 2025 accreditation announcement:
+   about 33,000 US museums, 1,116 accredited at publication. Historical snapshot;
+   the total is not a count of buyers with VR budget or suitable footfall.
+   https://www.aam-us.org/2025/04/01/aam-announces-latest-accreditation-awards-35-museums-achieve-this-distinction-2/
+7. AAM, 23 February 2026, Museum Attendance: trends and adaptations.
+   Reports 55% of museums in its 2025 survey remained below 2019 attendance.
+   Used as a market risk; no causal VR adoption claim is made.
+   https://www.aam-us.org/2026/02/23/museum-attendance-trends-and-adaptations/
+8. US Bureau of Labor Statistics: May 2024 median annual developer wage
+   $133,080. Salary benchmark only, not a contractor quote or 2026 salary.
+   https://www.bls.gov/ooh/computer-and-information-technology/software-developers.htm
+9. Epic Games licensing. Commercial royalty/seat treatment depends on use.
+   https://www.unrealengine.com/license
+10. Unity pricing. Plan and platform eligibility may affect delivery costs.
+    https://unity.com/products
+
+Why this model
+Initial commercial focus is a US English-language venue channel, with VR as
+the flagship and no forecast browser revenue. A $10 net-before-sales-tax
+visitor ticket is a pricing hypothesis below the two general-admission US
+benchmarks. Company licensing is assumed to be $250/site/month + $2.50/net
+paid visit, plus $500 delivered onboarding. These licensing fees require
+direct buyer testing; they are not represented as market-average rates.
+
+The 200-account qualified prospect target is a proposed research/sales workload,
+not a verified serviceable market or an existing pipeline. Base funnel:
+Year 1: 100 qualified prospects -> 40 demos -> 16 trials -> 8 wins.
+Year 2: 100 qualified prospects -> 50 demos -> 28 trials -> 14 wins.
+This assumes roughly 30 raw accounts contacted monthly, 60-120 day sales cycles
+and evidence/referrals improving Year 2 conversion. The 50% trial-close ratio
+is a model assumption, not published sector data.
+
+Base has 22 paying sites acquired and two Year 1 accounts not renewed at their
+12-month anniversaries (M15, M21); 20 remain in M24. Each live site's first two
+months operate at 50% then 75% of mature usage. Mature base usage is 240 net
+paid sessions/month, compared with a 1,200 monthly capacity ceiling:
+4 headsets x 3 twenty-minute slots/hour x 5 hours/day x 20 days.
+At a proposed qualifying venue with 10,000 monthly visitors, 240 sessions
+would require 2.4% uptake. Neither 10,000 footfall nor 2.4% uptake is measured
+for an identified buyer. Selection must verify footfall and actual take-up.
+
+Scenarios
+Conservative: 10 gross wins, 2 losses, 8 end sites, 120 mature visits/month.
+Base: 22 gross wins, 2 losses, 20 end sites, 240 mature visits/month.
+Upside: 37 gross wins, 3 losses, 34 end sites, 360 mature visits/month.
+Conservative and base fixed spending: $18,000/month Y1, $22,000/month Y2.
+Upside fixed spending: $18,000/month Y1, $26,000/month Y2 for added capacity.
+No calendar seasonality, price inflation or automatic growth in same-site
+usage after the ramp is assumed. The downside is not a cost-reduction plan.
+
+Revenue, profit and cash
+Venue ticket sales are NOT startup revenue. Model JSON reports both separately.
+Paid sessions are not de-duplicated people. Paying sites are locations; one
+institution could own more than one, so these are not necessarily unique
+legal customer entities. No consumer storefront, school subscription, grant,
+sponsorship, custom commission or acquisition income is included.
+
+Direct expenses = $60 per live site + $0.25 per net paid visit + $300 per new
+site + 8% of company revenue. The 8% is a planning reserve: 3% for payment/
+collection costs and 5% for engine/distribution contingency. It is not an
+assertion that a particular engine charges 5% of the startup's licence revenue.
+Applicable terms and potentially different gross-revenue bases need review.
+Fixed costs include distributed/part-time production, founder-led business
+development, QA/history, sales/travel, admin/tools and general contingency.
+No fully staffed US development studio is implied by this lean budget.
+
+Operating result = company revenue minus fixed and direct costs. It is before
+tax, interest and depreciation and includes the budget reserve above; it is
+a management planning result, not audited accounting profit.
+Revenue collections lag one month. All operating expenses are paid in the
+month incurred. Demo/test equipment costs $15,000 in M1 and $3,000 in M13.
+Prior MVP development, sales taxes, debt/financing and company income tax are
+outside the model. Venue-owned systems are outside startup capex.
+
+Base reconciliation
+Year 1 company revenue: $34,550; Year 2: $145,200; total: $179,750.
+Net paid visits: 8,220 + 38,280 = 46,500.
+24-month operating deficit: $345,455.
+Equipment cash spending: $18,000; ending receivables: $17,050.
+Peak cash need: $380,505. With 20% buffer, rounded upward to $5,000: $460,000.
+Base mature recurring site revenue: $850; direct costs: $188;
+contribution: $662. Ceiling($22,000/$662) = 34 mature sites to break even.
+This exceeds the base end count; no base break-even date is asserted.
+Upside first positive operating month is M22 but remains cumulatively negative.
+
+Venue feasibility
+At 240 visits x $10 = $2,400, less $850 licence/usage, $72 payment cost,
+$800 incremental shared staffing, $250 equipment allocation and $100 other
+incremental overhead = $328/month contribution before existing rent/tax.
+Equipment allocation assumes $12,000 / 48 months; obtain hardware quotes.
+The venue buys equipment; the startup's demo/test capex is separate.
+A dedicated 100-hour attendant rather than 40 incremental shared hours adds
+$1,200 and turns $328 into -$872. Model requires shared staffing/existing space.
+Variable margin is $10 - $2.50 - $0.30 = $7.20; fixed venue costs $1,400.
+Venue break-even is ceiling($1,400/$7.20) = 195 paid visits/month.
+
+Investment framing
+$460,000 is a conditional post-MVP planning envelope, not a valuation or a
+verified fundraising requirement. Proposed staged review: $150,000 for M1-M6,
+then $310,000 only against usage, sales and operational evidence. Initial VR
+production must be costed separately before claiming an end-to-end capital ask.
+Best initial fit may be strategic operators, cultural-tech angels and impact
+capital. No VC return multiple or exit promise is invented.
+
+Verification
+business_plan_model.py validates all three scenarios: site rolls, usage limits,
+revenue components, operating calculations, collections lag and cash bridge.
+PDF: exactly 10 pages, all M01-M24 table rows present, headline amounts checked,
+12 clickable source/licence links, four image placements and two vector charts.
+All pages rendered with Poppler and visually reviewed; detailed checks on the
+monthly table, scenario chart, costs and source page. No application code changed.
+Original investor brief was preserved.
+
+Reproduction
+Run business_plan_model.py, then build_business_plan.py with ReportLab, Pillow,
+and the referenced Windows fonts. The JSON contains all 24 months for all
+three cases and can be imported into another planning tool for recalibration.

@@ -16,6 +16,12 @@ Use AI and procedural tools to draft quickly, then curate aggressively. The proj
 
 ## Current Browser Asset Kit
 
+The 2026-10-22 hero-street pass adds a separate authored layer over the generated
+near/mid/far source chunks. See [the implementation and QA runbook](design/hero-street-material-lighting-pass-2026-10-22.md).
+Run `npm run bake:hero` explicitly to refresh this layer; a normal build preserves
+it. `npm run validate:hero` detects stale geometry/camera/route inputs and validates
+the material/UV/lighting contract. `materials=legacy` selects the generated baseline.
+
 The first high-detail browser pass now uses project-authored GLB modules generated from Blender:
 
 - Generator: `tools/blender/generate_memphis_asset_kit.py`

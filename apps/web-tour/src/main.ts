@@ -1,4 +1,4 @@
-import { Engine } from "@babylonjs/core";
+import { Engine, SceneInstrumentation } from "@babylonjs/core";
 import "@babylonjs/loaders";
 import { createIcons, icons } from "lucide";
 import type {
@@ -456,6 +456,40 @@ async function boot(): Promise<void> {
   engine.runRenderLoop(() => {
     controller.scene.render();
   });
+  if (searchParams.has("qa")) {
+    await controller.scene.whenReadyAsync();
+    const instrumentation = new SceneInstrumentation(controller.scene);
+    instrumentation.captureFrameTime = true;
+    let frames = 0;
+    controller.scene.onAfterRenderObservable.add(() => {
+      if (++frames !== 30) return;
+      const scene = controller.scene;
+      const qa = {
+        ready: true,
+        heroLoaded: scene.transformNodes.filter((node) => node.name.includes("glbHeroStreet") && node.metadata?.runtimeAssetId).length === 3,
+        meshes: scene.meshes.length,
+        activeMeshes: scene.getActiveMeshes().length,
+        activeIndices: scene.getActiveIndices(),
+        vertices: scene.getTotalVertices(),
+        drawCalls: instrumentation.drawCallsCounter.current,
+        meanFrameMs: instrumentation.frameTimeCounter.average,
+        estimatedTextureMiB: scene.textures.reduce((sum, tex) => {
+          const size = tex.getSize();
+          return sum + size.width * size.height * 4 * (tex.isCube ? 6 : 1) * 4 / 3;
+        }, 0) / 1048576,
+        textures: scene.textures.length,
+        textureErrors: scene.textures.filter(texture => texture.loadingError).map(texture => texture.name),
+        renderWidth: engine.getRenderWidth(), renderHeight: engine.getRenderHeight(),
+        camera: scene.activeCamera?.position.asArray(),
+        animationSeconds: 2,
+        quality: scene.metadata?.runtimeQualityProfile,
+        bakeId: scene.metadata?.heroBakeId ?? null
+      };
+      document.documentElement.dataset.sceneReady = "true";
+      (window as unknown as { memphisQA: typeof qa }).memphisQA = qa;
+      instrumentation.dispose();
+    });
+  }
 }
 
 boot().catch((error: unknown) => {

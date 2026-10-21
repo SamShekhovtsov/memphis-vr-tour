@@ -1,0 +1,125 @@
+ANCIENT MEMPHIS - REVIEW AND BRAND NOTES
+Revision: 22 October 2026
+
+The investor PDF is now nine pages (approximately 4.18 MB). The cover,
+positioning and milestones put the high-end headset experience first and
+describe the browser as a simplified companion. Two new pages illustrate
+headsets and explain the shared content / Unreal-Unity / browser architecture.
+All 17 original supplied images remain, plus three headset photographs.
+The initial review and static check results below remain dated 8 October;
+no new application or headset testing is claimed by this document revision.
+Unreal remains the primary planned VR engine; Unity is an alternative adapter.
+Headset images illustrate the product vision, not certified device support.
+
+Headset photo credits (also linked in the PDF)
+Oculus Rift CV1: Evan-Amos, public domain.
+https://commons.wikimedia.org/wiki/File:Oculus-Rift-CV1-Headset-Front.jpg
+Meta Quest 3: Kyu3a, CC BY-SA 4.0.
+https://commons.wikimedia.org/wiki/File:Meta_Quest_3_-_1.jpg
+https://creativecommons.org/licenses/by-sa/4.0/
+Apple Vision Pro: Hay Kranen, CC BY 4.0.
+https://commons.wikimedia.org/wiki/File:Vision_Pro_-_Facing_left.jpg
+https://creativecommons.org/licenses/by/4.0/
+Photographs are resized/recompressed for placement, not retouched or cropped.
+The images retain their respective licences. No endorsement is implied.
+Source and licence pages consulted 22 October 2026.
+
+Revision QA: rendered and visually inspected all nine pages, including
+full-size inspections of the headset and architecture pages. Verified text,
+page count and 20 image placements. Original PDF preserved in tmp/pdfs as
+Ancient_Memphis_Investor_Brief_2026-10-08.pdf.
+
+INITIAL REVIEW RECORD (superseded page count and document description below)
+8 October 2026
+
+Deliverables
+Ancient_Memphis_Investor_Brief.pdf - seven landscape pages, all 17 supplied images.
+Ancient_Memphis_Logotype.svg - editable vector logo with transparent background.
+Ancient_Memphis_Logotype.png - high-resolution preview on a warm ivory background.
+build_investor_brief.py - reproducible document source using ReportLab and Windows fonts.
+
+Review scope
+Read the requested CODEx_handoff.MD, README.md and README_ABOUT.MD in full.
+Reviewed browser entry/UI code, relevant scene controller, WebXR, audio, route and
+quality-profile implementation; shared data contracts, tour manifest, architecture,
+engine-target notes, MVP scope, cinematic roadmap and validator definitions/results.
+Screenshots are supplied by the user, not fresh captures from this review.
+This is a source/document review and static validation, not a live browser,
+security, accessibility, performance or headset certification exercise.
+
+Material findings reflected in the brief
+1. Current runnable target is a Babylon.js/TypeScript browser prototype. main.ts
+   constructs Babylon Engine, not WebGPUEngine. WebGPU is a direction, not a
+   verified currently deployed capability.
+2. The current tour manifest specifies 210 seconds and six story/evidence stops.
+   Earlier documentation mentions 180 seconds, 2-5 minutes, or 3-9 minutes.
+   The brief uses the current configured value and avoids invented visitor metrics.
+3. The Evidence UI exposes claim confidence, reconstruction notes and source links.
+   This supports an evidence-transparency proposition; it does not establish that
+   every reconstruction has received independent scholarly approval.
+4. The internal toggleNarrator name currently controls the soundscape. Authored
+   narration is not described as a finished feature in the investor brief.
+5. The app requests WebXR via the browser and Babylon's default XR experience.
+   Full headset compatibility, three validated locomotion modes and comfort
+   certification have not been demonstrated by this review.
+6. Unreal is a project shell with a planned import bridge. Unity is a reserved
+   adapter. Shared content contracts are implemented; a shared production engine
+   across all three runtimes is not established.
+7. The visual roadmap and supplied product screenshots show the main remaining
+   quality gap: physical material response, ground repetition/banding, convincing
+   contact shadows and character fidelity. Preserve the locked district and
+   canonical camera; polish the existing hero street before expanding the world.
+8. No billing, subscription, login or commercial analytics implementation was
+   located in the browser source search. No customer, revenue, signed partnership,
+   team, fundraising amount or unit-economics evidence was supplied. Commercial
+   models in the brief are proposals, not existing revenue streams or forecasts.
+
+Checks run and passed
+npm run typecheck
+npm run validate:content
+npm run validate:history
+npm run validate:optimization
+
+Content validator reported: 6 tour stops; 6 evidence records; 15 runtime asset
+records; 11 GLB kit records; 3 locked camera shots; 11 reference-pack sources;
+25 sources. Asset-budget validator reported 6,743,984 active unique GLB bytes,
+5,466,456 fallback GLB bytes and 4,492,559 generated texture bytes.
+These are automated schema/policy/budget checks, not measured frame rates or
+independent historical verification. The full asset-regenerating build was not run.
+
+PDF QA
+Rendered all seven pages with Poppler and inspected the page contact sheet,
+with an additional full-size check of the execution/source page and logo.
+Verified PDF page count, extractable text and embedded image counts:
+1, 3, 0, 0, 0, 5, 8 images respectively (17 total supplied visuals).
+The application source and district layout were not changed.
+
+Brand concept
+ANCIENT MEMPHIS / WALK INTO HISTORY
+An original geometric gateway welcomes the visitor; a sun suggests warmth and
+discovery; a river line connects the identity to the Nile. It is a modern brand
+symbol, not a claimed ancient Egyptian hieroglyph. The experience subtitle stays
+'A Walk Through the White Walls'; Egypt VR Tour remains the project identity.
+Palette: Nile charcoal #152D30; sun gold #B78745; warm ivory #F6F1E7.
+The vector uses editable Georgia/Segoe UI text; outline the text in a vector
+editor if a future print supplier requires font-independent artwork.
+
+Reference handling
+All 14 supplied Memphis reference images appear in the PDF, as do the three
+supplied application screenshots. Reference images are fitted intact and retain
+visible creator marks; they are labelled as aspirational, not runtime output.
+Several portray other periods or artistic/fantastical architecture. They should
+guide mood rather than determine the Early Dynastic / Old Kingdom historical plan.
+Media ownership/redistribution rights were not established; the PDF records that
+public promotion should use cleared or project-owned material.
+
+External primary source
+Excurio, Horizon of Khufu, https://www.excurio.com/en/horizon-of-khufu/
+Consulted 8 October 2026. Used only as a category precedent; no market-size,
+revenue, partnership or traction claim is inferred for Egypt VR Tour.
+
+Suggested next production step
+Cost an authored material/lightmap and character pass for the existing locked
+hero street. Agree a target device matrix, then measure completion, visual
+response and support effort in a small paid institutional pilot. Set fundraising
+size and schedule from that scoped plan rather than from speculative forecasts.

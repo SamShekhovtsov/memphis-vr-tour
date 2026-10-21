@@ -1,0 +1,30 @@
+{
+  "url": "http://127.0.0.1:5573/?shot=hero-street-material&chrome=0&qa=1&quality=balanced",
+  "viewport": {
+    "width": 1280,
+    "height": 720,
+    "deviceScaleFactor": 1
+  },
+  "renderer": "Chrome SwiftShader; not a hardware performance benchmark",
+  "ready": true,
+  "heroLoaded": true,
+  "meshes": 679,
+  "activeMeshes": 339,
+  "activeIndices": 479460,
+  "vertices": 312947,
+  "drawCalls": 430,
+  "meanFrameMs": 19.419999998807906,
+  "estimatedTextureMiB": 304.33333333333337,
+  "textures": 47,
+  "textureErrors": [],
+  "renderWidth": 1280,
+  "renderHeight": 720,
+  "camera": [
+    -8.9,
+    1.35,
+    -17.6
+  ],
+  "animationSeconds": 2,
+  "quality": "balanced",
+  "bakeId": "hero-street-authored-v1"
+}
