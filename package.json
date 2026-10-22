@@ -15,6 +15,7 @@
     "bake:hero": "node tools/run-blender-asset-kit.mjs --hero-bake",
     "qa:hero-camera": "node tools/print-hero-camera-lock.mjs",
     "qa:hero-capture": "node tools/capture-hero-shot.mjs",
+    "qa:collisions": "node tools/capture-hero-shot.mjs collision-check --hardware --collision-audit",
     "validate:hero": "node tools/validate-hero-bake.mjs",
     "validate:actors": "node tools/validate-actor-lock.mjs",
     "build:people": "node tools/run-blender-asset-kit.mjs --hero-people",

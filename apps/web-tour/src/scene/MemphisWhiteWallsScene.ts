@@ -334,7 +334,7 @@ export async function createMemphisWhiteWallsScene(
   createNileEdge(scene, materials, qualityProfile);
   createResidentialStreet(scene, materials);
   createCraftsmenArea(scene, materials);
-  createTemple(scene, materials);
+  const templeFloors = createTemple(scene, materials);
   createRouteLine(scene, routeTrack.points);
   const modularAssets = await loadModularAssetKit(scene, materials, qualityProfile);
   if (scene.metadata?.heroBakeId) {
@@ -486,7 +486,7 @@ export async function createMemphisWhiteWallsScene(
       }
 
       xrPromise ??= scene.createDefaultXRExperienceAsync({
-        floorMeshes: [ground]
+        floorMeshes: [ground, ...templeFloors]
       });
       const xr = await xrPromise;
       xr.baseExperience.onStateChangedObservable.add(state => rendering.setHeadset(state !== WebXRState.NOT_IN_XR));
@@ -1016,7 +1016,9 @@ function hideLegacyHeroStreetScaffold(scene: Scene): void {
 
 function createHeroStreetCollisionGuides(scene: Scene): void {
   const guideStartZ = -10.6;
-  const guideEndZ = 38.8;
+  // The remaining house frontage ends around z=18.3. The former rails ran
+  // through the open temple approach (including the route's turn at z=34).
+  const guideEndZ = 18.5;
   const guideDepth = guideEndZ - guideStartZ;
   const guideCenterZ = guideStartZ + guideDepth / 2;
   const guideSpecs = [
@@ -2134,11 +2136,14 @@ function createCraftsmenArea(scene: Scene, materials: SceneMaterials): void {
   }
 }
 
-function createTemple(scene: Scene, materials: SceneMaterials): void {
-  const outerCourt = MeshBuilder.CreateGround("ptahPrecinctCourt", { width: 28, height: 44 }, scene);
-  outerCourt.position.z = 69;
+function createTemple(scene: Scene, materials: SceneMaterials): Mesh[] {
+  // districtGround ends at z=75. These floors must support the visitor beyond
+  // it, with overlapping coverage through to the precinct and shrine walls.
+  const outerCourt = MeshBuilder.CreateGround("ptahPrecinctCourt", { width: 28, height: 46 }, scene);
+  outerCourt.position.z = 70;
   outerCourt.position.y = 0.03;
   outerCourt.material = materials.plaster;
+  outerCourt.checkCollisions = true;
 
   createPrecinctWall(scene, materials, "ptahFrontWallWest", new Vector3(-8.5, 2.05, 48), new Vector3(11, 4.1, 1.4));
   createPrecinctWall(scene, materials, "ptahFrontWallEast", new Vector3(8.5, 2.05, 48), new Vector3(11, 4.1, 1.4));
@@ -2173,11 +2178,13 @@ function createTemple(scene: Scene, materials: SceneMaterials): void {
   const processionalStrip = MeshBuilder.CreateBox("ptahPackedEarthAxis", { width: 4.2, height: 0.07, depth: 37 }, scene);
   processionalStrip.position = new Vector3(0, 0.08, 67);
   processionalStrip.material = materials.limestone;
+  processionalStrip.checkCollisions = true;
 
-  const shrineCourt = MeshBuilder.CreateGround("ptahInnerShrineFloor", { width: 18, height: 18 }, scene);
+  const shrineCourt = MeshBuilder.CreateGround("ptahInnerShrineFloor", { width: 18, height: 20 }, scene);
   shrineCourt.position.z = 84;
   shrineCourt.position.y = 0.04;
   shrineCourt.material = materials.shadow;
+  shrineCourt.checkCollisions = true;
 
   createPaintedWall(scene, materials, "paintedBackWall", new Vector3(0, 2.7, 94), new Vector3(17, 5.4, 0.28));
   createPaintedWall(scene, materials, "paintedLeftWall", new Vector3(-8.5, 2.7, 85), new Vector3(0.28, 5.4, 18));
@@ -2211,6 +2218,7 @@ function createTemple(scene: Scene, materials: SceneMaterials): void {
   const cultBlock = MeshBuilder.CreateBox("ptahCultFocusBlock", { width: 1.4, height: 1.8, depth: 0.9 }, scene);
   cultBlock.position = new Vector3(0, 0.9, 93);
   cultBlock.material = materials.stone;
+  return [outerCourt, processionalStrip, shrineCourt];
 }
 
 function createPrecinctWall(scene: Scene, materials: SceneMaterials, name: string, position: Vector3, size: Vector3): void {

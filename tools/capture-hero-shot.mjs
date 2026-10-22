@@ -20,6 +20,7 @@ const shots = selectedShot ? [selectedShot] : process.argv.includes("--all") ? l
 const legacy = process.argv.includes("--legacy");
 const ikAudit = process.argv.includes("--ik-audit");
 const benchmark = process.argv.includes("--benchmark");
+const collisionAudit = process.argv.includes("--collision-audit");
 const hardware = process.argv.includes("--hardware");
 const quality = process.argv.find(arg=>arg.startsWith("--quality="))?.slice(10) ?? "balanced";
 if (!["balanced","cinematic","performance","headset"].includes(quality)) throw new Error("Unknown quality tier");
@@ -60,7 +61,7 @@ try {
 
   for (const shot of shots) {
     const output = path.join(screenshotDir, `${shot}-${label}.png`);
-    await capture(`http://127.0.0.1:${lock.localDevPort}/?shot=${shot}&chrome=0&qa=1&quality=${quality}${legacy ? "&materials=legacy" : ""}${ikAudit ? "&ikAudit=1" : ""}${benchmark ? "&benchmark=1" : ""}`, output);
+    await capture(`http://127.0.0.1:${lock.localDevPort}/?shot=${shot}&chrome=0&qa=1&quality=${quality}${legacy ? "&materials=legacy" : ""}${ikAudit ? "&ikAudit=1" : ""}${benchmark ? "&benchmark=1" : ""}${collisionAudit ? "&collisionAudit=1" : ""}`, output);
     console.log(`Captured ${output}`);
   }
 } finally {
@@ -98,6 +99,10 @@ async function capture(url, outputPath) {
     });
     await writeFile(outputPath, Buffer.from(screenshot.data, "base64"));
     await writeFile(outputPath.replace(/\.png$/, ".json"), JSON.stringify({ url, viewport, renderer: hardware ? "Chrome default GPU selection; inspect gpu field" : "Chrome SwiftShader; not a hardware performance benchmark", ...metrics }, null, 2) + "\n");
+    if (collisionAudit && !metrics.collisionAudit?.passed) {
+      const failures = metrics.collisionAudit?.checks.filter(check => !check.passed).map(check => check.name) ?? ["audit missing"];
+      throw new Error(`District collision audit failed: ${failures.join(", ")}`);
+    }
   } finally {
     client.close();
     await fetch(`http://127.0.0.1:${port}/json/close/${target.id}`);

@@ -16,6 +16,7 @@ import paintoverData from "../../../content/scene-data/hero-street.paintover.jso
 import tourData from "../../../content/scene-data/memphis-white-walls.tour.json";
 import sourceRegisterData from "../../../content/source-references/memphis-source-register.json";
 import { createMemphisWhiteWallsScene } from "./scene/MemphisWhiteWallsScene";
+import { auditDistrictCollisions } from "./scene/DistrictCollisionAudit";
 import "./styles.css";
 
 const manifest = tourData as unknown as TourManifest;
@@ -473,6 +474,7 @@ async function boot(): Promise<void> {
       const scene = controller.scene;
       const qa = {
         ready: true,
+        collisionAudit: searchParams.has("collisionAudit") ? auditDistrictCollisions(scene) : null,
         heroLoaded: scene.transformNodes.filter((node) => node.name.includes("glbHeroStreet") && node.metadata?.runtimeAssetId).length === 3,
         meshes: scene.meshes.length,
         activeMeshes: scene.getActiveMeshes().length,

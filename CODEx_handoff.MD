@@ -1,5 +1,11 @@
 # CODEx Handoff: EgyptVRTour
 
+Ptah floor and approach collision repair (2026-10-22): temple floors now support
+collisions and WebXR floor queries through to the rear walls; obsolete street
+collision rail tails are removed from both sides of the open temple approach.
+Run `npm run qa:collisions` against the dev server on port 5573. See
+[causes, fixes and live collision checks](docs/design/temple-approach-collision-fix-2026-10-22.md).
+
 This file is the project compass for future Codex runs. At the start of every run, respect these baseline decisions before making edits, planning new work, or suggesting changes.
 
 Latest stages 5–7 pass: solid cloth backs/hems and refined vessel/support
