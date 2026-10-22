@@ -186,6 +186,18 @@ const { activeBytes, fallbackBytes } = await validateAssetBudgets(budget, assetK
 const textureBytes = await validateTextureBudget(budget);
 await validateRuntimeWiring(budget, assetKit);
 await validateDocs();
+const authoredRoot = path.join(rootDir,"apps/web-tour/public/assets/authored");
+const street = await readJson(path.join(authoredRoot,"hero-street/manifest.json"));
+const people = await readJson(path.join(authoredRoot,"people/manifest.json"));
+const totalSize = async files => (await Promise.all(files.map(file=>stat(file)))).reduce((sum,s)=>sum+s.size,0);
+const highBytes = await totalSize(street.assets.map(a=>path.join(authoredRoot,"hero-street",a.fileName)));
+const lodBytes = await totalSize(street.assets.flatMap(a=>(a.lods??[]).map(l=>path.join(authoredRoot,"hero-street",l.fileName))));
+const peopleBytes = await totalSize(people.assets.map(a=>path.join(authoredRoot,"people",a.fileName)));
+const textureNames = [...street.assets.map(a=>a.irradiance),...['dust','plaster','linen','pottery','wood'].flatMap(s=>['albedo','normal','orm'].map(c=>`${s}-${c}.png`))];
+const authoredTextureBytes = await totalSize(textureNames.map(n=>path.join(authoredRoot,"hero-street",street.textureVariants?.[n]??n)));
+for(const [key,value] of Object.entries({streetHighGlbBytes:highBytes,streetLodGlbBytes:lodBytes,sharedPeopleGlbBytes:peopleBytes,streetTextureDeliveryBytes:authoredTextureBytes})) {
+  if(!budget.authoredBudgets?.[key] || value>budget.authoredBudgets[key])addError(`Authored budget ${key}: ${value} exceeds ${budget.authoredBudgets?.[key]}`);
+}
 
 if (errors.length > 0) {
   console.error("Browser optimization validation failed:");
@@ -197,4 +209,5 @@ if (errors.length > 0) {
   console.log(
     `Browser optimization validation passed: active unique GLBs ${activeBytes} bytes, fallback GLB ${fallbackBytes} bytes, generated textures ${textureBytes} bytes.`
   );
+  console.log(`Authored delivery: street high ${highBytes}, streamed LODs ${lodBytes}, shared people ${peopleBytes}, texture delivery ${authoredTextureBytes} bytes.`);
 }

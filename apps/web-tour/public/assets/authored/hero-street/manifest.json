@@ -59,13 +59,13 @@
       "lods": [
         {
           "fileName": "hero_street_corridor_near.lod1.glb",
-          "triangles": 35779,
-          "ratio": 0.549972331529759
+          "triangles": 35780,
+          "ratio": 0.5499877029021151
         },
         {
           "fileName": "hero_street_corridor_near.lod2.glb",
-          "triangles": 18214,
-          "ratio": 0.2799741760944417
+          "triangles": 18215,
+          "ratio": 0.27998954746679783
         }
       ]
     },
@@ -218,8 +218,8 @@
   },
   "deliveryCompression": {
     "format": "lossless WebP with PNG fallback",
-    "sourceBytes": 17350722,
-    "deliveryBytes": 10702672,
+    "sourceBytes": 17345799,
+    "deliveryBytes": 10692696,
     "gpuMemoryReduced": false
   }
 }

@@ -1,0 +1,242 @@
+{
+  "date": "2026-10-22",
+  "method": "One accelerated 180-rendered-frame guided-route sweep per tier, 169 wall-clock frame intervals after warmup. Includes on-demand LOD loading. Headless desktop Chrome, not a headset or thermal-duration test.",
+  "pairs": {
+    "hero-street-main": {
+      "camera": [
+        -6.08,
+        1.52,
+        -16.4
+      ],
+      "viewport": {
+        "width": 1280,
+        "height": 720,
+        "deviceScaleFactor": 1
+      },
+      "drawCallsBefore": 431,
+      "drawCallsAfter": 359,
+      "activeIndicesBefore": 1046368,
+      "activeIndicesAfter": 1776088,
+      "note": "Timing comparison omitted: baseline captures used SwiftShader; route benchmarks below use the real GPU."
+    },
+    "street-entry": {
+      "camera": [
+        -7,
+        1.7,
+        -28
+      ],
+      "viewport": {
+        "width": 1280,
+        "height": 720,
+        "deviceScaleFactor": 1
+      },
+      "drawCallsBefore": 547,
+      "drawCallsAfter": 481,
+      "activeIndicesBefore": 1114462,
+      "activeIndicesAfter": 1673722,
+      "note": "Timing comparison omitted: baseline captures used SwiftShader; route benchmarks below use the real GPU."
+    }
+  },
+  "profiles": {
+    "performance": {
+      "gpu": {
+        "vendor": "Google Inc. (Intel)",
+        "renderer": "ANGLE (Intel, Intel(R) HD Graphics 4600 (0x00000416) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+        "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+      },
+      "renderSize": [
+        948,
+        533
+      ],
+      "frameIntervalsMs": {
+        "samples": 169,
+        "p50": 25.30000001192093,
+        "p95": 80.80000001192093,
+        "max": 156
+      },
+      "medianEquivalentFps": 39.52569168098091,
+      "rendering": {
+        "tier": "performance",
+        "antialiasing": "FXAA",
+        "toneMapping": "ACES",
+        "exposure": 1.08,
+        "shadowMapSize": 1024
+      },
+      "lodsAtEnd": [
+        {
+          "assetId": "hero-street-corridor-near",
+          "level": 2,
+          "loaded": [
+            0,
+            2,
+            1
+          ],
+          "triangles": 18215,
+          "failed": []
+        },
+        {
+          "assetId": "hero-street-corridor-mid",
+          "level": 2,
+          "loaded": [
+            0,
+            1,
+            2
+          ],
+          "triangles": 26537,
+          "failed": []
+        },
+        {
+          "assetId": "hero-street-corridor-far",
+          "level": 2,
+          "loaded": [
+            0,
+            1,
+            2
+          ],
+          "triangles": 9457,
+          "failed": []
+        }
+      ]
+    },
+    "balanced": {
+      "gpu": {
+        "vendor": "Google Inc. (Intel)",
+        "renderer": "ANGLE (Intel, Intel(R) HD Graphics 4600 (0x00000416) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+        "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+      },
+      "renderSize": [
+        1280,
+        720
+      ],
+      "frameIntervalsMs": {
+        "samples": 169,
+        "p50": 24.700000047683716,
+        "p95": 63,
+        "max": 154.5
+      },
+      "medianEquivalentFps": 40.48582988135568,
+      "rendering": {
+        "tier": "balanced",
+        "antialiasing": "FXAA",
+        "toneMapping": "ACES",
+        "exposure": 1.08,
+        "shadowMapSize": 2048
+      },
+      "lodsAtEnd": [
+        {
+          "assetId": "hero-street-corridor-near",
+          "level": 2,
+          "loaded": [
+            0,
+            2,
+            1
+          ],
+          "triangles": 18215,
+          "failed": []
+        },
+        {
+          "assetId": "hero-street-corridor-mid",
+          "level": 2,
+          "loaded": [
+            0,
+            1,
+            2
+          ],
+          "triangles": 26537,
+          "failed": []
+        },
+        {
+          "assetId": "hero-street-corridor-far",
+          "level": 2,
+          "loaded": [
+            0,
+            1,
+            2
+          ],
+          "triangles": 9457,
+          "failed": []
+        }
+      ]
+    },
+    "cinematic": {
+      "gpu": {
+        "vendor": "Google Inc. (Intel)",
+        "renderer": "ANGLE (Intel, Intel(R) HD Graphics 4600 (0x00000416) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+        "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+      },
+      "renderSize": [
+        1280,
+        720
+      ],
+      "frameIntervalsMs": {
+        "samples": 169,
+        "p50": 37.09999996423721,
+        "p95": 107.69999998807907,
+        "max": 301.39999997615814
+      },
+      "medianEquivalentFps": 26.95417792355678,
+      "rendering": {
+        "tier": "cinematic",
+        "antialiasing": "MSAA4 + FXAA",
+        "toneMapping": "ACES",
+        "exposure": 1.08,
+        "shadowMapSize": 2048
+      },
+      "lodsAtEnd": [
+        {
+          "assetId": "hero-street-corridor-near",
+          "level": 2,
+          "loaded": [
+            0,
+            1,
+            2
+          ],
+          "triangles": 18215,
+          "failed": []
+        },
+        {
+          "assetId": "hero-street-corridor-mid",
+          "level": 1,
+          "loaded": [
+            0,
+            1
+          ],
+          "triangles": 52127,
+          "failed": []
+        },
+        {
+          "assetId": "hero-street-corridor-far",
+          "level": 2,
+          "loaded": [
+            0,
+            1,
+            2
+          ],
+          "triangles": 9457,
+          "failed": []
+        }
+      ]
+    }
+  },
+  "streetTrianglesByLod": [
+    193610,
+    106483,
+    54209
+  ],
+  "textureDelivery": {
+    "format": "lossless WebP with PNG fallback",
+    "sourceBytes": 17345799,
+    "deliveryBytes": 10692696,
+    "gpuMemoryReduced": false
+  },
+  "motionAudit": {
+    "frames": 300,
+    "comparisons": 1246,
+    "plantedDrift": 0.6761746127631767,
+    "animationDrift": 6.789719874684988,
+    "maxError": 0.04452309277352958,
+    "rootChanges": 0
+  },
+  "headsetConfigurationBooted": true,
+  "physicalHeadsetTested": false
+}

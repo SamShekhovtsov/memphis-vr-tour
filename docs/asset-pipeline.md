@@ -76,3 +76,17 @@ Draco export is still opt-in with `EGYPTVR_ENABLE_DRACO=1`, because Draco requir
 See [Step 3 Source And ML Policy](research/step-03-source-and-ml-policy.md) and the source register at `content/source-references/memphis-source-register.json`.
 
 Important rule: material that is not shown directly in the app may still be restricted for model training, embedding, or upload into third-party generation tools. Use CC0, public-domain, owned, commissioned, or explicitly ML-permitted sources for datasets and fine-tuning.
+
+## Hero street stages 5–7 follow-up
+
+The authored street has solid cloth backs/hems, refined lips/supports, two
+measured replacement LODs per chunk and lossless WebP texture variants. LODs
+preserve lightmap seams and stream on demand. Initial high-detail chunks remain
+resident; this is not complete district streaming. Generated fallback budgets
+and authored delivery budgets are checked separately by `validate:optimization`.
+
+`npm run build:people` adapts the CC0 source rigs in `content/source-assets/characters/`;
+`npm run validate:people` checks weights, clothing, provenance and triangle/byte
+budgets. See [implementation, screenshots and benchmark](design/hero-street-stages-5-7-2026-10-22.md).
+GPU KTX2/Basis and Draco/Meshopt remain behind the existing decoder validation
+gate. Lossless WebP reduces transfer size without claiming GPU memory savings.

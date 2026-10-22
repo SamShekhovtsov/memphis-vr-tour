@@ -487,6 +487,7 @@ async function boot(): Promise<void> {
           rendering: scene.metadata.rendering,
           heroPeople: scene.metadata.heroPeople?.length ?? 0,
           heroPeopleSource: scene.metadata.heroPeopleSource ?? null,
+          heroInteractions: scene.metadata.heroInteractions ?? [],
         estimatedTextureMiB: scene.textures.reduce((sum, tex) => {
           const size = tex.getSize();
           return sum + size.width * size.height * 4 * (tex.isCube ? 6 : 1) * 4 / 3;

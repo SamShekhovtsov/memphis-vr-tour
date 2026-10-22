@@ -55,7 +55,7 @@ function setWorldOrientation(node: TransformNode, world: Matrix): void {
   node.computeWorldMatrix(true);
 }
 
-function aim(node: TransformNode, from: Vector3, to: Vector3): void {
+export function aim(node: TransformNode, from: Vector3, to: Vector3): void {
   if (from.lengthSquared() < 1e-10 || to.lengthSquared() < 1e-10) return;
   const delta = Quaternion.Identity();
   Quaternion.FromUnitVectorsToRef(from.normalize(), to.normalize(), delta);

@@ -339,7 +339,7 @@ export async function createMemphisWhiteWallsScene(
   const modularAssets = await loadModularAssetKit(scene, materials, qualityProfile);
   if (scene.metadata?.heroBakeId) {
     sun.intensity = 2;
-    const shadows = new ShadowGenerator(qualityProfile.mode === "performance" ? 1024 : 2048, sun);
+    const shadows = new ShadowGenerator(qualityProfile.mode === "performance" || qualityProfile.mode === "headset" ? 1024 : 2048, sun);
     shadows.usePercentageCloserFiltering = true;
     shadows.filteringQuality = ShadowGenerator.QUALITY_MEDIUM;
     shadows.bias = .0005;

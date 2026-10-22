@@ -1,5 +1,5 @@
 import { Quaternion, Scene, SceneLoader, ShadowGenerator, TransformNode, Vector3, AbstractMesh } from "@babylonjs/core";
-import { solveContactLeg, type ContactLeg } from "./GroundContactIK";
+import { aim, solveContactLeg, type ContactLeg } from "./GroundContactIK";
 
 export interface HeroPerson {
   root: TransformNode;
@@ -23,6 +23,10 @@ export async function loadHeroPeople(scene: Scene): Promise<HeroPerson[]> {
     const avatar = new TransformNode(prefix + "avatar", scene);
     avatar.parent = root;
     avatar.scaling.setAll(index === 0 ? 1.07 : .96);
+    // The source A-pose has nearly straight knees. Reserve a small amount of
+    // flexion in the body pose so planted feet can stay reached during travel.
+    // The locked path root is untouched.
+    avatar.position.y = -.035;
     for (const node of instance.rootNodes) {
       node.parent = avatar;
       // The existing actor already supplies glTF handedness conversion.
@@ -37,7 +41,13 @@ export async function loadHeroPeople(scene: Scene): Promise<HeroPerson[]> {
     }
     // Retain only the existing carried load from the old visible character.
     const jar = root.getChildTransformNodes().find(n => n.name.endsWith("headJarRoot"));
+    const pad = oldMeshes.find(n => n.name.endsWith("headPad"));
+    const workBlock = oldMeshes.find(n => n.name.endsWith("workBlock"));
+    const tool = oldMeshes.find(n => n.name.endsWith("woodTool"));
     const loadMeshes = new Set<AbstractMesh>(jar?.getChildMeshes() ?? []);
+    if (pad) loadMeshes.add(pad);
+    if (workBlock) loadMeshes.add(workBlock);
+    if (tool) loadMeshes.add(tool);
     for (const mesh of oldMeshes) if (!loadMeshes.has(mesh)) mesh.setEnabled(false);
     const head = bone("head");
     const rest = new Map(nodes.map(n => [n, n.rotationQuaternion?.clone() ?? Quaternion.FromEulerVector(n.rotation)]));
@@ -49,7 +59,12 @@ export async function loadHeroPeople(scene: Scene): Promise<HeroPerson[]> {
         soleHeight: .074 * avatar.scaling.y, soleHalfLength: .13 * avatar.scaling.y, soleUpAxis: up, gaitScale: 2.1 };
     });
     const arms = ["L","R"].map(side => ({ upper: bone(`upperarm01.${side}`), knee: bone(`lowerarm01.${side}`), foot: bone(`wrist.${side}`), soleHeight: 0 }));
-    const upperBody = nodes.filter(n => /upperarm|lowerarm|wrist|spine01|finger/.test(n.name));
+    if (tool) {
+      tool.setParent(arms[0].foot);
+      tool.position.set(0,.12,0);
+      tool.rotationQuaternion=Quaternion.Identity();
+    }
+    const upperBody = nodes.filter(n => /upperarm|lowerarm|wrist|spine0[15]|finger/.test(n.name));
     let previous: Vector3 | undefined, previousTime: number | undefined, phase = 0, blend = 0;
     people.push({ root, legs, update(time) {
       root.computeWorldMatrix(true);
@@ -63,17 +78,41 @@ export async function loadHeroPeople(scene: Scene): Promise<HeroPerson[]> {
       for (const n of upperBody) n.rotationQuaternion = rest.get(n)!.clone();
       const world = root.computeWorldMatrix(true);
       const forward = Vector3.TransformNormal(Vector3.Forward(), world).normalize();
+      let workPoint: Vector3 | undefined;
+      if (workBlock) {
+        workBlock.computeWorldMatrix(true);
+        workPoint=workBlock.getAbsolutePosition().clone();
+        workPoint.y=workBlock.getBoundingInfo().boundingBox.maximumWorld.y;
+        const pelvis=bone('spine05');
+        const headPoint=head.getAbsolutePosition().clone();
+        const lean=workPoint.subtract(pelvis.getAbsolutePosition()); lean.y=0; lean.normalize().scaleInPlace(.16);
+        aim(pelvis,headPoint.subtract(pelvis.getAbsolutePosition()),headPoint.subtract(pelvis.getAbsolutePosition()).add(lean).subtract(new Vector3(0,.04,0)));
+      }
+      const spine = bone("spine01");
+      if (spine) spine.rotationQuaternion = rest.get(spine)!.multiply(Quaternion.RotationAxis(Vector3.Up(), Math.sin(phase) * .025 * blend));
+      if (role === "Carrier") {
+        for (const node of upperBody.filter(n => /finger[1-5]-[1-3]\./.test(n.name))) {
+          node.rotationQuaternion = rest.get(node)!.multiply(Quaternion.RotationAxis(Vector3.Right(), .32));
+        }
+      }
       for (const [side, arm] of arms.entries()) {
         const sign = side === 0 ? 1 : -1;
         let local = new Vector3(sign * .24, .84, .07 + Math.sin(phase + side * Math.PI) * .13 * blend);
-        if (role === "Carrier") local = new Vector3(sign * .17, 1.76, .045);
-        if (role === "StoneWorker") local = new Vector3(sign * .14, 1.00 + .035 * Math.sin(time * 3 + side), .29);
-        solveContactLeg(arm, Vector3.TransformCoordinates(local, world), forward);
+        if (role === "Carrier") local = new Vector3(sign * .17, 1.84, .045);
+        const target = role === "StoneWorker" && workPoint
+          ? workPoint.add(new Vector3(0, side===0 ? .35 + .025*Math.sin(time*3) : .22, 0)).add(Vector3.TransformNormal(new Vector3(side===0 ? -.035 : -.15,0,0),world))
+          : Vector3.TransformCoordinates(local, world);
+        solveContactLeg(arm, target, forward);
+        if (tool && workPoint && side===0) {
+          const axis=Vector3.TransformNormal(Vector3.Up(),arm.foot.computeWorldMatrix(true));
+          aim(arm.foot,axis,workPoint.subtract(arm.foot.getAbsolutePosition()));
+        }
       }
       if (jar && head) {
         head.computeWorldMatrix(true);
         const localHead = Vector3.TransformCoordinates(head.getAbsolutePosition(), world.clone().invert());
-        jar.position.y = localHead.y + .115;
+        jar.position.y = localHead.y + .20;
+        if (pad) pad.position.y = localHead.y + .17;
       }
       previous = current; previousTime = time;
     }});
@@ -85,5 +124,8 @@ export async function loadHeroPeople(scene: Scene): Promise<HeroPerson[]> {
   }
   scene.metadata.heroPeople = people;
   scene.metadata.heroPeopleSource = "CC0 MakeHuman-derived anatomy; project-authored linen";
+  scene.metadata.heroInteractions = people.map(person=>({root:person.root.name,
+    toolAttached:person.root.getChildMeshes().some(mesh=>mesh.name.endsWith('woodTool')&&mesh.parent?.name.includes('heroPerson')),
+    workBlockRetained:person.root.getChildMeshes().some(mesh=>mesh.name.endsWith('workBlock')&&mesh.isEnabled())}));
   return people;
 }

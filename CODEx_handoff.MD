@@ -2,6 +2,14 @@
 
 This file is the project compass for future Codex runs. At the start of every run, respect these baseline decisions before making edits, planning new work, or suggesting changes.
 
+Latest stages 5–7 pass: solid cloth backs/hems and refined vessel/support
+silhouettes; three CC0 anatomical rig replacements with project-authored linen;
+ACES desktop/headset tiers; measured, streamed replacement LODs and lossless WebP
+delivery. Original actor roots, paths, district and cameras remain locked.
+See [implementation, matched views and performance](docs/design/hero-street-stages-5-7-2026-10-22.md).
+Run `npm run validate:people` as well as the existing actor/street validators.
+Rebaking clears texture variants; rerun `tools/compress-hero-textures.py` afterward.
+
 Latest hero-street surface pass (2026-10-22): authored bake v2 rounds existing
 plaster edges, folds/sags existing cloth and refines pottery/wood/linen materials.
 District, route and camera locks stay unchanged. See

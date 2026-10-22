@@ -9,7 +9,7 @@
   ],
   "scripts": {
     "dev": "npm --workspace @egyptvr/web-tour run dev",
-    "build": "npm run generate:assets && npm run validate:content && npm run validate:history && npm run validate:optimization && npm run validate:hero && npm run validate:actors && npm run build --workspaces",
+    "build": "npm run generate:assets && npm run validate:content && npm run validate:history && npm run validate:optimization && npm run validate:hero && npm run validate:actors && npm run validate:people && npm run build --workspaces",
     "generate:assets": "node tools/generate-runtime-assets.mjs",
     "generate:glb": "node tools/run-blender-asset-kit.mjs",
     "bake:hero": "node tools/run-blender-asset-kit.mjs --hero-bake",
