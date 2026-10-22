@@ -1,5 +1,5 @@
 {
-  "id": "hero-street-authored-v1",
+  "id": "hero-street-authored-v2",
   "units": "meters",
   "format": "glTF 2.0",
   "source": "Existing locked project-authored street GLBs; no external media",
@@ -26,6 +26,24 @@
   },
   "surfaceTextureMeters": 2,
   "normalConvention": "glTF tangent space",
+  "surfaceScaleMeters": {
+    "dust": 2,
+    "plaster": 2,
+    "linen": 0.5,
+    "pottery": 0.5,
+    "wood": 0.5
+  },
+  "surfaceRefinement": {
+    "plasterBevelMeters": 0.018,
+    "clothFoldMaxMeters": 0.04,
+    "clothSagMaxMeters": 0.085,
+    "clothThicknessMeters": 0.003,
+    "hemHeightMeters": 0.004,
+    "woodBendMaxMeters": 0.006,
+    "potteryLipBevelMeters": 0.004,
+    "potteryBulgeMaxMeters": 0.018,
+    "objectTransforms": "unchanged"
+  },
   "packing": {
     "r": "ambient occlusion",
     "g": "roughness",
@@ -36,19 +54,58 @@
       "assetId": "hero-street-corridor-near",
       "fileName": "hero_street_corridor_near.glb",
       "irradiance": "near-irradiance.png",
-      "uvSet": 1
+      "uvSet": 1,
+      "triangles": 65056,
+      "lods": [
+        {
+          "fileName": "hero_street_corridor_near.lod1.glb",
+          "triangles": 35779,
+          "ratio": 0.549972331529759
+        },
+        {
+          "fileName": "hero_street_corridor_near.lod2.glb",
+          "triangles": 18214,
+          "ratio": 0.2799741760944417
+        }
+      ]
     },
     {
       "assetId": "hero-street-corridor-mid",
       "fileName": "hero_street_corridor_mid.glb",
       "irradiance": "mid-irradiance.png",
-      "uvSet": 1
+      "uvSet": 1,
+      "triangles": 94778,
+      "lods": [
+        {
+          "fileName": "hero_street_corridor_mid.lod1.glb",
+          "triangles": 52127,
+          "ratio": 0.5499905041254299
+        },
+        {
+          "fileName": "hero_street_corridor_mid.lod2.glb",
+          "triangles": 26537,
+          "ratio": 0.27999113718373464
+        }
+      ]
     },
     {
       "assetId": "hero-street-corridor-far",
       "fileName": "hero_street_corridor_far.glb",
       "irradiance": "far-irradiance.png",
-      "uvSet": 1
+      "uvSet": 1,
+      "triangles": 33776,
+      "lods": [
+        {
+          "fileName": "hero_street_corridor_far.lod1.glb",
+          "triangles": 18576,
+          "ratio": 0.5499763145428707
+        },
+        {
+          "fileName": "hero_street_corridor_far.lod2.glb",
+          "triangles": 9457,
+          "ratio": 0.27999171009000473
+        }
+      ]
     }
   ],
   "materials": {
@@ -138,5 +195,31 @@
     "hero_street_corridor_near.glb": "6a147fde2debb4fcec69d94b0731244bdcc108c39f8ae1b7810371dbc9eec9e5",
     "hero_street_corridor_mid.glb": "6e28934e920e226d87e173d409d6926a6c0cadf4e0c5d36ee5651851e2bd9688",
     "hero_street_corridor_far.glb": "7508bd413aaf4bbd552431173eed71b64d6299530ef43c8fe3d7f479e187e772"
+  },
+  "textureVariants": {
+    "dust-albedo.png": "dust-albedo.webp",
+    "dust-normal.png": "dust-normal.webp",
+    "dust-orm.png": "dust-orm.webp",
+    "far-irradiance.png": "far-irradiance.webp",
+    "linen-albedo.png": "linen-albedo.webp",
+    "linen-normal.png": "linen-normal.webp",
+    "linen-orm.png": "linen-orm.webp",
+    "mid-irradiance.png": "mid-irradiance.webp",
+    "near-irradiance.png": "near-irradiance.webp",
+    "plaster-albedo.png": "plaster-albedo.webp",
+    "plaster-normal.png": "plaster-normal.webp",
+    "plaster-orm.png": "plaster-orm.webp",
+    "pottery-albedo.png": "pottery-albedo.webp",
+    "pottery-normal.png": "pottery-normal.webp",
+    "pottery-orm.png": "pottery-orm.webp",
+    "wood-albedo.png": "wood-albedo.webp",
+    "wood-normal.png": "wood-normal.webp",
+    "wood-orm.png": "wood-orm.webp"
+  },
+  "deliveryCompression": {
+    "format": "lossless WebP with PNG fallback",
+    "sourceBytes": 17350722,
+    "deliveryBytes": 10702672,
+    "gpuMemoryReduced": false
   }
 }

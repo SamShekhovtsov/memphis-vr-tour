@@ -1,0 +1,23 @@
+{
+  "id": "hero-people-v1",
+  "assets": [
+    {
+      "id": "male",
+      "fileName": "hero_male.glb",
+      "sourceSha256": "d15a07e2b4cf1d08a3b91cb212a9a06a91438077f05a3f2a62f45351e8a71eb8",
+      "triangles": 30514,
+      "bones": 163,
+      "bytes": 1787016,
+      "license": "CC0-1.0"
+    },
+    {
+      "id": "female",
+      "fileName": "hero_female.glb",
+      "sourceSha256": "a571a5872a5f9d75c013ce6d88b3484436cf2109bf133fbc31e42c41f52389f1",
+      "triangles": 33291,
+      "bones": 163,
+      "bytes": 1906092,
+      "license": "CC0-1.0"
+    }
+  ]
+}

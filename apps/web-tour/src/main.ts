@@ -461,8 +461,15 @@ async function boot(): Promise<void> {
     const instrumentation = new SceneInstrumentation(controller.scene);
     instrumentation.captureFrameTime = true;
     let frames = 0;
+      const frameIntervals: number[] = [];
+      let previousFrame = performance.now();
+      controller.scene.metadata.benchmarkReady = searchParams.has("benchmark");
     controller.scene.onAfterRenderObservable.add(() => {
-      if (++frames !== 30) return;
+        const now = performance.now();
+        if (frames > 10) frameIntervals.push(now-previousFrame);
+        previousFrame = now;
+      if (searchParams.has("ikAudit")) document.documentElement.dataset.ikAuditFrames = String(frames + 1);
+        if (++frames !== (searchParams.has("benchmark") ? 180 : searchParams.has("ikAudit") ? 60 : 30)) return;
       const scene = controller.scene;
       const qa = {
         ready: true,
@@ -473,6 +480,13 @@ async function boot(): Promise<void> {
         vertices: scene.getTotalVertices(),
         drawCalls: instrumentation.drawCallsCounter.current,
         meanFrameMs: instrumentation.frameTimeCounter.average,
+          gpu: engine.getGlInfo(),
+          frameIntervalsMs: (()=>{const sorted=[...frameIntervals].sort((a,b)=>a-b);return {samples:sorted.length,p50:sorted[Math.floor(sorted.length*.5)],p95:sorted[Math.floor(sorted.length*.95)],max:sorted.at(-1)};})(),
+          benchmarkProgress: scene.metadata.benchmarkProgress ?? null,
+          streetLods: scene.metadata.streetLods ?? [],
+          rendering: scene.metadata.rendering,
+          heroPeople: scene.metadata.heroPeople?.length ?? 0,
+          heroPeopleSource: scene.metadata.heroPeopleSource ?? null,
         estimatedTextureMiB: scene.textures.reduce((sum, tex) => {
           const size = tex.getSize();
           return sum + size.width * size.height * 4 * (tex.isCube ? 6 : 1) * 4 / 3;
@@ -482,6 +496,12 @@ async function boot(): Promise<void> {
         renderWidth: engine.getRenderWidth(), renderHeight: engine.getRenderHeight(),
         camera: scene.activeCamera?.position.asArray(),
         animationSeconds: 2,
+        groundContacts: scene.metadata?.groundContacts ?? [],
+        groundContactAudit: scene.metadata?.groundContactAudit ?? null,
+        actorJoints: scene.transformNodes.filter(node => /-elbow$|-knee$/.test(node.name)).map(node => ({
+          name: node.name, rotation: node.rotationQuaternion?.asArray() ?? node.rotation.asArray()
+        })),
+        actorAnimationGroups: scene.animationGroups.filter(group => group.name.includes('actorHero')).map(group => ({name:group.name,frame:group.getCurrentFrame(),speedRatio:group.speedRatio,targets:group.targetedAnimations.length})),
         quality: scene.metadata?.runtimeQualityProfile,
         bakeId: scene.metadata?.heroBakeId ?? null
       };

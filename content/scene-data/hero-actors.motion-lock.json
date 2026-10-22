@@ -1,0 +1,178 @@
+{
+  "roots": [
+    {
+      "name": "actorHeroCarrier",
+      "translation": [
+        -10.699999809265137,
+        0.05506606772542,
+        22.5
+      ],
+      "rotation": [
+        0,
+        0.008726535364985466,
+        0,
+        0.9999619126319885
+      ]
+    },
+    {
+      "name": "actorHeroStoneWorker",
+      "translation": [
+        -7.449999809265137,
+        0.06468070298433304,
+        8.699999809265137
+      ],
+      "rotation": [
+        0,
+        -0.6156614422798157,
+        0,
+        0.7880107760429382
+      ]
+    },
+    {
+      "name": "actorHeroStreetWalker",
+      "translation": [
+        -13.199999809265137,
+        0.053457438945770264,
+        3.4000000953674316
+      ],
+      "rotation": [
+        0,
+        0.9998477101325989,
+        0,
+        0.017452383413910866
+      ]
+    }
+  ],
+  "motion": [
+    {
+      "node": "actorHeroCarrier-headJarRoot",
+      "path": "rotation",
+      "input": "5c90dedb26c82ce39a1359d18827f272f15113bf98eba0582c450d555b021f58",
+      "output": "5b29163c343df59ec43d74160109dabeb89c6516c457cb1ea3faabb61e65b729",
+      "interpolation": "LINEAR"
+    },
+    {
+      "node": "actorHeroCarrier-leftArm-pivot",
+      "path": "rotation",
+      "input": "5c90dedb26c82ce39a1359d18827f272f15113bf98eba0582c450d555b021f58",
+      "output": "e2a6572a81c5fca41e740b7decf19fe39b60c0f2766727ba14ba7a87fd72b595",
+      "interpolation": "LINEAR"
+    },
+    {
+      "node": "actorHeroCarrier-leftLeg-pivot",
+      "path": "rotation",
+      "input": "5c90dedb26c82ce39a1359d18827f272f15113bf98eba0582c450d555b021f58",
+      "output": "0d0b6aabb6f9886a3f349a9860725759ce533ab5067f93758572f44d0a8c193e",
+      "interpolation": "LINEAR"
+    },
+    {
+      "node": "actorHeroCarrier-rightArm-pivot",
+      "path": "rotation",
+      "input": "5c90dedb26c82ce39a1359d18827f272f15113bf98eba0582c450d555b021f58",
+      "output": "2021bb892a86fbb8ee0f7570e1abfca7bbf8df40a85bfb51970009a4a0f3b1d9",
+      "interpolation": "LINEAR"
+    },
+    {
+      "node": "actorHeroCarrier-rightLeg-pivot",
+      "path": "rotation",
+      "input": "5c90dedb26c82ce39a1359d18827f272f15113bf98eba0582c450d555b021f58",
+      "output": "a862774094093a0df82b24549f039d1eb20a2e1a34308716879dece5d138ab2f",
+      "interpolation": "LINEAR"
+    },
+    {
+      "node": "actorHeroCarrier",
+      "path": "rotation",
+      "input": "5c90dedb26c82ce39a1359d18827f272f15113bf98eba0582c450d555b021f58",
+      "output": "4e148230af2b9d40214ba62851ccece2d136ad9d644cc40ee82086883b915379",
+      "interpolation": "LINEAR"
+    },
+    {
+      "node": "actorHeroCarrier",
+      "path": "translation",
+      "input": "5c90dedb26c82ce39a1359d18827f272f15113bf98eba0582c450d555b021f58",
+      "output": "002a5f6b1b04751189a16a37edddc92e4430e55702c92b156d831e761d9b67b3",
+      "interpolation": "LINEAR"
+    },
+    {
+      "node": "actorHeroStoneWorker-leftArm-pivot",
+      "path": "rotation",
+      "input": "d447bc0cfe0b48b8e0c5c5c930fff36bf8dc2db0f2b7e745f2a90498dac4fe83",
+      "output": "fed558035c35be894e28ab341f407f6cfb0fc3a9f3ba15f31e4d5aa4c7af2110",
+      "interpolation": "STEP"
+    },
+    {
+      "node": "actorHeroStoneWorker-leftLeg-pivot",
+      "path": "rotation",
+      "input": "d447bc0cfe0b48b8e0c5c5c930fff36bf8dc2db0f2b7e745f2a90498dac4fe83",
+      "output": "a7d8a4452a5dcd3f6eb33bb7cbce1bf564f759d3f98ae674fbe668ae9f921ffb",
+      "interpolation": "STEP"
+    },
+    {
+      "node": "actorHeroStoneWorker-rightArm-pivot",
+      "path": "rotation",
+      "input": "5c90dedb26c82ce39a1359d18827f272f15113bf98eba0582c450d555b021f58",
+      "output": "02f2916cd7fbb64455f884a21828ea6f89e78d2bcad96807028108083ccb8544",
+      "interpolation": "LINEAR"
+    },
+    {
+      "node": "actorHeroStoneWorker-rightLeg-pivot",
+      "path": "rotation",
+      "input": "d447bc0cfe0b48b8e0c5c5c930fff36bf8dc2db0f2b7e745f2a90498dac4fe83",
+      "output": "c092e7e7bb95f18dadab7cd9d492e2e8fb41d24662d11fbb7d460a698b0554fb",
+      "interpolation": "STEP"
+    },
+    {
+      "node": "actorHeroStoneWorker",
+      "path": "translation",
+      "input": "5c90dedb26c82ce39a1359d18827f272f15113bf98eba0582c450d555b021f58",
+      "output": "1e13e239a00935eba0fade87f92bf6d5dadc1949f998f7956530837c398bd0eb",
+      "interpolation": "LINEAR"
+    },
+    {
+      "node": "actorHeroStreetWalker-leftArm-pivot",
+      "path": "rotation",
+      "input": "5c90dedb26c82ce39a1359d18827f272f15113bf98eba0582c450d555b021f58",
+      "output": "4db3720d8cd9833fe1bba67fbb2d2995b34a2369977b859df951e40ccc42d096",
+      "interpolation": "LINEAR"
+    },
+    {
+      "node": "actorHeroStreetWalker-leftLeg-pivot",
+      "path": "rotation",
+      "input": "5c90dedb26c82ce39a1359d18827f272f15113bf98eba0582c450d555b021f58",
+      "output": "fa6557879e7590eab87309b216e8545b3a2e041ca08c0c15e1b403454d68a87d",
+      "interpolation": "LINEAR"
+    },
+    {
+      "node": "actorHeroStreetWalker-rightArm-pivot",
+      "path": "rotation",
+      "input": "5c90dedb26c82ce39a1359d18827f272f15113bf98eba0582c450d555b021f58",
+      "output": "b30df9b81a0e94eda1da3868b47b2cf72c13f9f8642d0552d7c7ee9973c01048",
+      "interpolation": "LINEAR"
+    },
+    {
+      "node": "actorHeroStreetWalker-rightLeg-pivot",
+      "path": "rotation",
+      "input": "5c90dedb26c82ce39a1359d18827f272f15113bf98eba0582c450d555b021f58",
+      "output": "2b38c2cd10df634ef170a0d3b26058d79c77fb655f5af5ebaf8d37b967cfe4d8",
+      "interpolation": "LINEAR"
+    },
+    {
+      "node": "actorHeroStreetWalker",
+      "path": "rotation",
+      "input": "5c90dedb26c82ce39a1359d18827f272f15113bf98eba0582c450d555b021f58",
+      "output": "2a9114d26c2d7ba430dc9df1f05b881c92b59dfafa9e7c8fa084fba3802d41e7",
+      "interpolation": "LINEAR"
+    },
+    {
+      "node": "actorHeroStreetWalker",
+      "path": "translation",
+      "input": "5c90dedb26c82ce39a1359d18827f272f15113bf98eba0582c450d555b021f58",
+      "output": "dbb4cf2f218690f3f5c2cc3fb2f2495910649301f0e030413754d245feab08e7",
+      "interpolation": "LINEAR"
+    }
+  ],
+  "locks": {
+    "content/scene-data/hero-street.camera-lock.json": "ad68ca5727db3c7efd640d7d320ca358885df14e919765f2ba831260b0d0761e",
+    "content/scene-data/memphis-white-walls.tour.json": "bb1c0df8e4a7850c72703ffa0e267a3778eb03d958f808709b7147ceeaae930b"
+  }
+}

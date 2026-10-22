@@ -1,0 +1,30 @@
+{
+  "url": "http://127.0.0.1:5573/?shot=hero-street-main&chrome=0&qa=1&quality=balanced",
+  "viewport": {
+    "width": 1280,
+    "height": 720,
+    "deviceScaleFactor": 1
+  },
+  "renderer": "Chrome SwiftShader; not a hardware performance benchmark",
+  "ready": true,
+  "heroLoaded": true,
+  "meshes": 679,
+  "activeMeshes": 311,
+  "activeIndices": 942256,
+  "vertices": 387112,
+  "drawCalls": 401,
+  "meanFrameMs": 17.216666660706203,
+  "estimatedTextureMiB": 316.3333333333335,
+  "textures": 56,
+  "textureErrors": [],
+  "renderWidth": 1280,
+  "renderHeight": 720,
+  "camera": [
+    -6.08,
+    1.52,
+    -16.4
+  ],
+  "animationSeconds": 2,
+  "quality": "balanced",
+  "bakeId": "hero-street-authored-v2"
+}

@@ -4,7 +4,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 
 const rootDir = path.resolve(fileURLToPath(new URL("..", import.meta.url)));
-const scriptPath = path.join(rootDir, "tools", "blender", process.argv.includes("--hero-bake") ? "bake_hero_street.py" : "generate_memphis_asset_kit.py");
+const scriptPath = path.join(rootDir, "tools", "blender", process.argv.includes("--hero-people") ? "build_hero_people.py" : process.argv.includes("--hero-bake") ? "bake_hero_street.py" : "generate_memphis_asset_kit.py");
 
 const candidates = [
   process.env.BLENDER_BIN,
@@ -53,7 +53,7 @@ if (!blenderBin) {
   process.exit(1);
 }
 
-const result = spawnSync(blenderBin, ["--background", "--python", scriptPath], {
+const result = spawnSync(blenderBin, ["--background", "--python-exit-code", "1", "--python", scriptPath], {
   cwd: rootDir,
   encoding: "utf8",
   stdio: "inherit"

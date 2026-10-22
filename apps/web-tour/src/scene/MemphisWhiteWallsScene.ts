@@ -10,18 +10,24 @@ import {
   MeshBuilder,
   PBRMaterial,
   PointLight,
+  Ray,
   Scene,
   SceneLoader,
   ShadowGenerator,
   Texture,
   TransformNode,
   UniversalCamera,
+  WebXRState,
   Vector3
 } from "@babylonjs/core";
 import type { EvidenceLevel, TourManifest, TourStop } from "@egyptvr/shared-scene";
 import { evidenceColors } from "@egyptvr/shared-scene";
 import cameraLockData from "../../../../content/scene-data/hero-street.camera-lock.json";
 import { authoredHeroRoot, createHeroMaterialBinder, type HeroBakeManifest } from "./HeroStreetMaterials";
+import { GroundContactIK } from "./GroundContactIK";
+import { loadHeroPeople, type HeroPerson } from "./HeroPeople";
+import { attachStreetLods } from "./StreetLods";
+import { configureRendering } from "./RenderingTiers";
 
 export interface MemphisSceneController {
   scene: Scene;
@@ -197,7 +203,7 @@ interface ModularAssetLoadResult {
   actorMotions: GlbActorMotionRoutine[];
 }
 
-type RuntimeQualityMode = "performance" | "balanced" | "cinematic";
+type RuntimeQualityMode = "performance" | "balanced" | "cinematic" | "headset";
 
 interface RuntimeQualityProfile {
   mode: RuntimeQualityMode;
@@ -213,6 +219,12 @@ interface RuntimeQualityProfile {
 }
 
 const runtimeQualityProfiles: Record<RuntimeQualityMode, RuntimeQualityProfile> = {
+  headset: {
+    mode: "headset", hardwareScalingLevel: 1,
+    textureSamplingMode: Texture.TRILINEAR_SAMPLINGMODE, anisotropicFilteringLevel: 2,
+    lodDistanceMultiplier: .8, nileBoatCount: 1, reedBankCount: 4,
+    waterHighlightCount: 4, smokeCount: 5, birdCount: 4
+  },
   performance: {
     mode: "performance",
     hardwareScalingLevel: 1.35,
@@ -257,7 +269,12 @@ export async function createMemphisWhiteWallsScene(
   manifest: TourManifest
 ): Promise<MemphisSceneController> {
   const qualityProfile = selectRuntimeQualityProfile();
-  const qaTime = new URLSearchParams(window.location.search).has("qa") ? 2 : undefined;
+  const benchmark = new URLSearchParams(window.location.search).has("benchmark");
+  const qaTime = new URLSearchParams(window.location.search).has("qa") && !benchmark ? 2 : undefined;
+  const ikAudit = new URLSearchParams(window.location.search).has("ikAudit");
+  let auditFrame = 0;
+  const previousContacts = new Map<string, GroundContactIK["diagnostics"][number]>();
+  const contactAudit = { frames: 0, comparisons: 0, plantedDrift: 0, animationDrift: 0, maxError: 0, rootChanges: 0 };
   applyRuntimeQualityProfile(engine, qualityProfile);
 
   const scene = new Scene(engine);
@@ -348,6 +365,14 @@ export async function createMemphisWhiteWallsScene(
   }
   const cinematicHumans = modularAssets.heroStreetLoaded ? [] : createHeroStreetV2FilmSet(scene, materials);
   const glbActorMotions = modularAssets.actorMotions;
+  const rendering = configureRendering(scene, camera, qualityProfile.mode);
+  const heroPeople = await loadHeroPeople(scene).catch(error => {
+    console.warn("Anatomical people unavailable; retaining existing actors", error); return [];
+  });
+  const groundContacts = createActorGroundContacts(scene);
+  scene.onBeforeAnimationsObservable.add(() => {
+    if (!ikAudit || auditFrame < 300) groundContacts.forEach(contact => contact.restore());
+  });
 
   const evidenceRoot = createEvidenceMarkers(scene, manifest, materials);
   evidenceRoot.setEnabled(false);
@@ -359,6 +384,7 @@ export async function createMemphisWhiteWallsScene(
   applyTextureQuality(scene, qualityProfile);
 
   let autoplay = false;
+  let benchmarkFrame = 0;
   let evidenceVisible = false;
   let narratorEnabled = false;
   let elapsedSeconds = 0;
@@ -369,7 +395,13 @@ export async function createMemphisWhiteWallsScene(
   scene.onBeforeRenderObservable.add(() => {
     const deltaSeconds = engine.getDeltaTime() / 1000;
 
-    if (autoplay) {
+    if (benchmark && scene.metadata.benchmarkReady) {
+      const progress = Math.min(1, benchmarkFrame++ / 179);
+      const sample = sampleGuidedRoute(routeTrack, progress);
+      camera.position.copyFrom(sample.position); camera.position.y = 1.7;
+      camera.setTarget(sample.lookAt);
+      scene.metadata.benchmarkProgress = progress;
+    } else if (autoplay) {
       elapsedSeconds = Math.min(routeDuration, elapsedSeconds + deltaSeconds);
       const progress = elapsedSeconds / routeDuration;
       const routeSample = sampleGuidedRoute(routeTrack, progress);
@@ -382,13 +414,46 @@ export async function createMemphisWhiteWallsScene(
       }
     }
 
-    const time = qaTime ?? performance.now() / 1000;
+    // Audit five simulation steps per render; keep identical 60 Hz contact math
+    // without paying for 300 full SwiftShader street/shadow renders.
+    for (let substep = 0; substep < (ikAudit ? 5 : 1); substep++) {
+    if (ikAudit && auditFrame >= 300) break;
+    if (ikAudit && substep > 0) groundContacts.forEach(contact => contact.restore());
+    const time = ikAudit ? 2 + auditFrame / 60 : qaTime ?? performance.now() / 1000;
+    if (ikAudit) {
+      for (const group of scene.animationGroups.filter(group => group.name.startsWith("glbAnimatedStreetActors"))) {
+        group.goToFrame(group.from + (48 + auditFrame) % Math.max(1, group.to - group.from));
+      }
+      auditFrame++;
+    }
     updateWalkers(walkers, time);
     updateSmoke(smokeNodes, time);
     updateBirds(birds, time);
     updateCinematicHumans(cinematicHumans, time);
     updateGlbActorMotions(glbActorMotions, time);
+    heroPeople.forEach(person => person.update(time));
+    groundContacts.forEach(contact => {
+      const rootBefore = ikAudit ? contact.root.position.clone() : undefined;
+      contact.update(time);
+      if (rootBefore && !rootBefore.equals(contact.root.position)) contactAudit.rootChanges++;
+    });
+    scene.metadata.groundContacts = groundContacts.flatMap(contact => contact.diagnostics);
+    if (ikAudit) {
+      contactAudit.frames++;
+      for (const contact of groundContacts.flatMap(controller => controller.diagnostics)) {
+        const previous = previousContacts.get(contact.name);
+        if (previous?.planted && contact.planted && previous.placement === contact.placement) {
+          contactAudit.comparisons++;
+          contactAudit.plantedDrift += Vector3.Distance(Vector3.FromArray(contact.position), Vector3.FromArray(previous.position));
+          contactAudit.animationDrift += Vector3.Distance(Vector3.FromArray(contact.animationPosition), Vector3.FromArray(previous.animationPosition));
+        }
+        contactAudit.maxError = Math.max(contactAudit.maxError, contact.error);
+        previousContacts.set(contact.name, contact);
+      }
+      scene.metadata.groundContactAudit = contactAudit;
+    }
     animateMaterials(materials, time);
+    }
     const nearestStop = findNearestStop(manifest.stops, camera.position);
 
     if (nearestStop.id !== currentStop.id) {
@@ -424,6 +489,7 @@ export async function createMemphisWhiteWallsScene(
         floorMeshes: [ground]
       });
       const xr = await xrPromise;
+      xr.baseExperience.onStateChangedObservable.add(state => rendering.setHeadset(state !== WebXRState.NOT_IN_XR));
       await xr.baseExperience.enterXRAsync("immersive-vr", "local-floor");
     },
     resetTour() {
@@ -777,7 +843,7 @@ function createTiledTexture(scene: Scene, fileName: string, uScale: number, vSca
 function selectRuntimeQualityProfile(): RuntimeQualityProfile {
   const requested = new URLSearchParams(window.location.search).get("quality");
 
-  if (requested === "performance" || requested === "cinematic" || requested === "balanced") {
+  if (requested === "performance" || requested === "cinematic" || requested === "balanced" || requested === "headset") {
     return runtimeQualityProfiles[requested];
   }
 
@@ -982,6 +1048,37 @@ function createGlbActorMotionRoutines(root: TransformNode): GlbActorMotionRoutin
   ].filter((routine): routine is GlbActorMotionRoutine => Boolean(routine));
 }
 
+function createActorGroundContacts(scene: Scene): GroundContactIK[] {
+  if (new URLSearchParams(window.location.search).get("ik") === "0") return [];
+  const streetMeshes = new Set(scene.transformNodes.filter(node => node.name.startsWith("glbHeroStreet") && node.metadata?.runtimeAssetId)
+    .flatMap(root => root.getChildMeshes()));
+  const groundHeight = (point: Vector3): { height: number; normal: Vector3 } | undefined => {
+    // The approved lane is near y=.052. Start below benches/props so their
+    // tops cannot hide the ground under an existing character's foot.
+    const ray = new Ray(new Vector3(point.x, .24, point.z), new Vector3(0, -1, 0), .5);
+    // Keep the original ground query geometry available even when its visual LOD
+    // is hidden; replacement LODs must not interrupt a character's stance.
+    const hit = ray.intersectsMeshes([...streetMeshes])[0];
+    const normal = hit?.getNormal(true);
+    return hit?.hit && hit.pickedPoint && normal && normal.y > .75 && hit.pickedPoint.y < .25
+      ? { height: hit.pickedPoint.y, normal: normal.normalize() } : undefined;
+  };
+  return ["actorHeroCarrier", "actorHeroStoneWorker", "actorHeroStreetWalker"].flatMap(name => {
+    const root = scene.transformNodes.find(node => node.name.endsWith(name));
+    if (!root) return [];
+    const person = (scene.metadata?.heroPeople as HeroPerson[] | undefined)?.find(person => person.root === root);
+    const legs = person?.legs ?? ["left", "right"].flatMap(side => {
+      const upper = scene.transformNodes.find(node => node.name.endsWith(`${name}-${side}Leg-upperBone`));
+      const knee = scene.transformNodes.find(node => node.name.endsWith(`${name}-${side}Leg-knee`));
+      const foot = [...scene.meshes, ...scene.transformNodes].find(node => node.name.endsWith(`${name}-${side}Foot`));
+      if (!upper || !knee || !foot) return [];
+      const scale = name.includes("Carrier") ? 1.02 : name.includes("StoneWorker") ? 1.04 : .98;
+      return [{ upper, knee, foot, soleHeight: .036 * scale, soleHalfLength: .16 * scale }];
+    });
+    return legs.length === 2 ? [new GroundContactIK(root, legs, groundHeight)] : [];
+  });
+}
+
 function createGlbActorMotion(
   root: TransformNode,
   actorName: string,
@@ -1145,7 +1242,7 @@ async function loadAndPlaceModularAssets(
       mesh.checkCollisions = false;
       mesh.isPickable = false;
 
-      if (placement.lodDistance && !placement.animated && mesh instanceof Mesh) {
+      if (placement.lodDistance && !placement.animated && mesh instanceof Mesh && !isHeroStreetCorridorAsset(placement.assetId)) {
         mesh.addLODLevel(placement.lodDistance, null);
       }
 
@@ -1156,6 +1253,8 @@ async function loadAndPlaceModularAssets(
 
     if (isHeroStreetCorridorAsset(placement.assetId)) {
       heroStreetLoaded = true;
+      const binding = (scene.metadata?.heroBake as HeroBakeManifest | undefined)?.assets.find(asset=>asset.assetId===placement.assetId);
+      if (binding) await attachStreetLods(scene,root,binding,qualityProfile.lodDistanceMultiplier);
     }
 
     if (placement.animated && "animationGroups" in instance) {
@@ -1165,9 +1264,10 @@ async function loadAndPlaceModularAssets(
         }
       });
 
-      instance.animationGroups?.forEach((group, index) => {
-        group.speedRatio = 0.82 + index * 0.04;
-        group.start(true);
+      instance.animationGroups?.forEach((group) => {
+        // start(true) previously reset the preceding speedRatio assignment to 1.
+        // Preserve that actual playback rate explicitly for old and new tracks.
+        group.start(true, 1);
         if (new URLSearchParams(window.location.search).has("qa")) {
           group.goToFrame(group.from + Math.min(48, group.to - group.from));
           group.pause();

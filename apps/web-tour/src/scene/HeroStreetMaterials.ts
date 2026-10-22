@@ -20,7 +20,7 @@ export function createHeroMaterialBinder(scene: Scene, manifest: HeroBakeManifes
   const maps = new Map<string, Texture>();
   const getMap = (file: string, color: boolean, uvSet = 0) => {
     const key = `${file}:${uvSet}`;
-    if (!maps.has(key)) maps.set(key, texture(scene, file, color, uvSet));
+    if (!maps.has(key)) maps.set(key, texture(scene, manifest.textureVariants?.[file] ?? file, color, uvSet));
     return maps.get(key)!;
   };
   return (mesh: AbstractMesh, assetId: string) => {
@@ -32,11 +32,12 @@ export function createHeroMaterialBinder(scene: Scene, manifest: HeroBakeManifes
       if (cache.has(key)) return cache.get(key)!;
       const mat = source.clone(`${source.name}-authored`)!;
       const surface = manifest.materials[source.name] ?? "original";
-      if (surface === "dust" || surface === "plaster") {
+      const refined = manifest.id === "hero-street-authored-v2";
+      if ((refined ? ["dust", "plaster", "linen", "pottery", "wood"] : ["dust", "plaster"]).includes(surface)) {
         mat.albedoColor = Color3.White();
         mat.albedoTexture = getMap(`${surface}-albedo.png`, true);
         mat.bumpTexture = getMap(`${surface}-normal.png`, false);
-        mat.bumpTexture.level = surface === "dust" ? .24 : .16;
+        mat.bumpTexture.level = surface === "dust" ? .24 : surface === "plaster" ? (refined ? .12 : .16) : .3;
         mat.invertNormalMapX = !scene.useRightHandedSystem;
         mat.invertNormalMapY = scene.useRightHandedSystem;
         mat.metallicTexture = getMap(`${surface}-orm.png`, false);
@@ -45,9 +46,11 @@ export function createHeroMaterialBinder(scene: Scene, manifest: HeroBakeManifes
         mat.useAmbientOcclusionFromMetallicTextureRed = false;
         mat.roughness = 1;
       }
-      if (surface === "wood") mat.albedoColor = Color3.FromHexString("#897050").toLinearSpace();
-      if (surface === "pottery") mat.albedoColor = Color3.FromHexString("#b5815c").toLinearSpace();
-      if (surface === "linen") mat.albedoColor = Color3.FromHexString("#d6c7a3").toLinearSpace();
+      if (!refined) {
+        if (surface === "wood") mat.albedoColor = Color3.FromHexString("#897050").toLinearSpace();
+        if (surface === "pottery") mat.albedoColor = Color3.FromHexString("#b5815c").toLinearSpace();
+        if (surface === "linen") mat.albedoColor = Color3.FromHexString("#d6c7a3").toLinearSpace();
+      }
       mat.metallic = 0;
       // Cycles sky + sun bounce has no albedo or sun-direct contribution.
       // PBR ambient multiplies the RGB map by surface albedo in linear space.

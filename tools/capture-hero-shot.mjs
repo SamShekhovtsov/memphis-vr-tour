@@ -18,6 +18,11 @@ const selectedShot = process.argv.find(arg => arg.startsWith("--shot="))?.slice(
 if (selectedShot && !lock.shots.some(shot => shot.id === selectedShot)) throw new Error("Unknown locked shot.");
 const shots = selectedShot ? [selectedShot] : process.argv.includes("--all") ? lock.shots.map(shot => shot.id) : [lock.activeShotId];
 const legacy = process.argv.includes("--legacy");
+const ikAudit = process.argv.includes("--ik-audit");
+const benchmark = process.argv.includes("--benchmark");
+const hardware = process.argv.includes("--hardware");
+const quality = process.argv.find(arg=>arg.startsWith("--quality="))?.slice(10) ?? "balanced";
+if (!["balanced","cinematic","performance","headset"].includes(quality)) throw new Error("Unknown quality tier");
 
 await mkdir(screenshotDir, { recursive: true });
 
@@ -38,7 +43,7 @@ const chrome = spawn(
     "--disable-dev-shm-usage",
     "--ignore-gpu-blocklist",
     "--enable-webgl",
-    "--use-angle=swiftshader",
+    ...(hardware ? [] : ["--use-angle=swiftshader"]),
     `--user-data-dir=${profileDir}`,
     `--window-size=${viewport.width},${viewport.height}`,
     "about:blank"
@@ -55,7 +60,7 @@ try {
 
   for (const shot of shots) {
     const output = path.join(screenshotDir, `${shot}-${label}.png`);
-    await capture(`http://127.0.0.1:${lock.localDevPort}/?shot=${shot}&chrome=0&qa=1&quality=balanced${legacy ? "&materials=legacy" : ""}`, output);
+    await capture(`http://127.0.0.1:${lock.localDevPort}/?shot=${shot}&chrome=0&qa=1&quality=${quality}${legacy ? "&materials=legacy" : ""}${ikAudit ? "&ikAudit=1" : ""}${benchmark ? "&benchmark=1" : ""}`, output);
     console.log(`Captured ${output}`);
   }
 } finally {
@@ -92,7 +97,7 @@ async function capture(url, outputPath) {
       fromSurface: true
     });
     await writeFile(outputPath, Buffer.from(screenshot.data, "base64"));
-    await writeFile(outputPath.replace(/\.png$/, ".json"), JSON.stringify({ url, viewport, renderer: "Chrome SwiftShader; not a hardware performance benchmark", ...metrics }, null, 2) + "\n");
+    await writeFile(outputPath.replace(/\.png$/, ".json"), JSON.stringify({ url, viewport, renderer: hardware ? "Chrome default GPU selection; inspect gpu field" : "Chrome SwiftShader; not a hardware performance benchmark", ...metrics }, null, 2) + "\n");
   } finally {
     client.close();
     await fetch(`http://127.0.0.1:${port}/json/close/${target.id}`);
@@ -100,7 +105,7 @@ async function capture(url, outputPath) {
 }
 
 async function waitForSceneReady(client) {
-  const deadline = Date.now() + 120_000;
+  const deadline = Date.now() + (ikAudit || benchmark ? 300_000 : 120_000);
 
   while (Date.now() < deadline) {
     const result = await client.send("Runtime.evaluate", {
@@ -115,7 +120,7 @@ async function waitForSceneReady(client) {
     await sleep(250);
   }
 
-  const diagnostic = await client.send("Runtime.evaluate", { expression: `({ready: document.readyState, error: document.querySelector('#errorPanel')?.textContent, html: document.documentElement.dataset.sceneReady})`, returnByValue: true });
+  const diagnostic = await client.send("Runtime.evaluate", { expression: `({ready: document.readyState, error: document.querySelector('#errorPanel')?.textContent, html: document.documentElement.dataset.sceneReady, auditFrames: document.documentElement.dataset.ikAuditFrames})`, returnByValue: true });
   console.error(diagnostic.result?.value);
   throw new Error("Timed out waiting for the hero scene readiness signal.");
 }

@@ -36,15 +36,34 @@ for (const asset of manifest.assets) {
     assert.ok(Object.hasOwn(manifest.materials, material.name), `Unbound material: ${material.name}`);
   }
   const png = await readFile(path.join(dir, asset.irradiance));
+  let previousTriangles = asset.triangles;
+  for (const lod of asset.lods ?? []) {
+    const lowBytes = await readFile(path.join(dir,lod.fileName));
+    const low = JSON.parse(lowBytes.subarray(20,20+lowBytes.readUInt32LE(12)));
+    let triangles=0;
+    for(const mesh of low.meshes) for(const primitive of mesh.primitives) {
+      assert.notEqual(primitive.attributes.TEXCOORD_1,undefined,'LOD lost its lightmap UVs');
+      assert.ok(Object.hasOwn(manifest.materials,low.materials[primitive.material].name),'Unbound LOD material');
+      triangles+=low.accessors[primitive.indices].count/3;
+    }
+    assert.equal(triangles,lod.triangles,'LOD statistics stale');
+    assert.ok(triangles<previousTriangles*.9,'LOD must reduce real geometry');
+    previousTriangles=triangles;
+  }
   assert.equal(png.readUInt32BE(16), manifest.bake.resolution);
   assert.equal(png.readUInt32BE(20), manifest.bake.resolution);
   textureBytes += png.length;
 }
-for (const surface of ["dust", "plaster"]) for (const channel of ["albedo", "normal", "orm"]) {
+const surfaces = manifest.id === "hero-street-authored-v2" ? ["dust", "plaster", "linen", "pottery", "wood"] : ["dust", "plaster"];
+for (const surface of surfaces) for (const channel of ["albedo", "normal", "orm"]) {
   textureBytes += (await stat(path.join(dir, `${surface}-${channel}.png`))).size;
 }
 // Authored assets have their own honest delivery budgets; source height maps
 // are not loaded by the browser. Existing fallback budgets remain separate.
-assert.ok(glbBytes < 7_000_000, `Authored GLBs exceed 7 MB: ${glbBytes}`);
+// V2 explicitly budgets the rounded plaster and subdivided cloth/prop surfaces.
+// Solid cloth backs/hems and rounded lips explicitly add geometry. LOD files
+// are streamed separately and checked below, rather than hidden in this budget.
+const geometryBudget = manifest.surfaceRefinement?.clothThicknessMeters ? 14_000_000 : manifest.id === "hero-street-authored-v2" ? 10_000_000 : 7_000_000;
+assert.ok(glbBytes < geometryBudget, `Authored GLBs exceed ${geometryBudget/1e6} MB: ${glbBytes}`);
 assert.ok(textureBytes < 20_000_000, `Authored maps exceed 20 MB: ${textureBytes}`);
 console.log(`Hero bake validated: locked camera/route, source hashes, 3 UV1 GLBs, explicit materials, linear irradiance. GLBs ${(glbBytes/1e6).toFixed(2)} MB; runtime maps ${(textureBytes/1e6).toFixed(2)} MB.`);

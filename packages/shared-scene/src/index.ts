@@ -142,6 +142,8 @@ export interface HeroBakeManifest {
     fileName: string;
     irradiance: string;
     uvSet: number;
+    triangles?: number;
+    lods?: { fileName: string; triangles: number; ratio: number }[];
   }[];
   bake: {
     engine: string;
@@ -154,6 +156,7 @@ export interface HeroBakeManifest {
   };
   lockedInputs: Record<string, string>;
   sourceHashes: Record<string, string>;
+  textureVariants?: Record<string, string>;
 }
 
 export const evidenceLabels: Record<EvidenceLevel, string> = {

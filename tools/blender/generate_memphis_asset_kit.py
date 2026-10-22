@@ -2511,6 +2511,51 @@ def key_location(obj: bpy.types.Object, frame: int, loc: tuple[float, float, flo
     obj.keyframe_insert(data_path="location", frame=frame)
 
 
+def actor_profile(name, loc, rings, material, folds=0):
+    """Smooth elliptical cross sections in metres; original actor anchors stay fixed."""
+    segments = 32
+    verts, faces = [], []
+    for row, (z, rx, ry) in enumerate(rings):
+        for col in range(segments):
+            angle = math.tau * col / segments
+            ripple = 1 + folds * math.sin(angle * 9 + row * .18) * row / max(1, len(rings)-1)
+            verts.append((math.cos(angle)*rx*ripple, math.sin(angle)*ry*ripple, z))
+    for row in range(len(rings)-1):
+        for col in range(segments):
+            a = row*segments+col; b = row*segments+(col+1)%segments
+            faces.append((a,b,b+segments,a+segments))
+    faces.extend([tuple(reversed(range(segments))), tuple((len(rings)-1)*segments+i for i in range(segments))])
+    mesh=bpy.data.meshes.new(name+'Mesh'); mesh.from_pydata(verts,[],faces); mesh.update()
+    obj=bpy.data.objects.new(name,mesh); bpy.context.collection.objects.link(obj)
+    obj.location=loc; mesh.materials.append(material)
+    for poly in mesh.polygons: poly.use_smooth = len(poly.vertices)==4
+    ensure_uv(obj)
+    # Custom mesh creation does not flush transforms like bpy primitive operators.
+    # Parent inverses must see the newly created actor/limb pivot in world space.
+    bpy.context.view_layer.update()
+    return obj
+
+
+def actor_ellipsoid(name, loc, radii, material):
+    obj=uv_sphere(name, loc, 1, material, scale=radii, segments=32)
+    for poly in obj.data.polygons: poly.use_smooth=True
+    return obj
+
+
+ACTOR_LIMB_RIGS = {}
+
+
+def attach_to_lower_limb(obj, pivot):
+    rig = ACTOR_LIMB_RIGS[pivot.name]
+    bpy.context.view_layer.update()
+    world = obj.matrix_world.copy()
+    obj.parent = rig
+    obj.parent_type = 'BONE'
+    obj.parent_bone = rig['lowerJoint']
+    bpy.context.view_layer.update()
+    obj.matrix_world = world
+
+
 def make_articulated_limb(
     name: str,
     root: bpy.types.Object,
@@ -2521,8 +2566,43 @@ def make_articulated_limb(
     vertices: int = 10,
 ) -> bpy.types.Object:
     pivot = empty(f"{name}-pivot", joint, root)
-    limb = cylinder(f"{name}-limb", (joint[0], joint[1], joint[2] - length * 0.5), radius, length, material, vertices, bevel=0.004)
+    # Calf/forearm taper and soft joints within the existing animation pivots.
+    shape = [(0,.72),(.08,.9),(.25,1.05),(.48,.82),(.58,.9),(.78,1.25),(.94,1.1),(1,.65)]
+    limb = actor_profile(f"{name}-limb", (joint[0],joint[1],joint[2]-length),
+        [(t*length,radius*r,radius*r*.9) for t,r in shape], material)
     parent_keep_world(limb, pivot)
+    # A continuous mesh, with blended weights around the elbow/knee, avoids
+    # the visible seam of two rigid pieces rotating against one another.
+    data = bpy.data.armatures.new(name+'Skeleton')
+    rig = bpy.data.objects.new(name+'-rig', data)
+    bpy.context.collection.objects.link(rig)
+    rig.location = joint
+    bpy.context.view_layer.update()
+    parent_keep_world(rig, pivot)
+    bpy.ops.object.select_all(action='DESELECT')
+    rig.select_set(True); bpy.context.view_layer.objects.active = rig
+    bpy.ops.object.mode_set(mode='EDIT')
+    upper_name = name+'-upperBone'
+    lower_name = name+('-elbow' if 'Arm' in name else '-knee')
+    upper = data.edit_bones.new(upper_name)
+    upper.head = (0,0,0); upper.tail = (0,0,-length*.5)
+    lower = data.edit_bones.new(lower_name)
+    lower.head = upper.tail; lower.tail = (0,0,-length)
+    lower.parent = upper; lower.use_connect = True
+    bpy.ops.object.mode_set(mode='OBJECT')
+    upper_group = limb.vertex_groups.new(name=upper_name)
+    lower_group = limb.vertex_groups.new(name=lower_name)
+    for vertex in limb.data.vertices:
+        distance = 1 - vertex.co.z/length
+        weight = max(0,min(1,(distance-.38)/.24))
+        weight = weight*weight*(3-2*weight)
+        upper_group.add([vertex.index],1-weight,'REPLACE')
+        lower_group.add([vertex.index],weight,'REPLACE')
+    modifier = limb.modifiers.new('continuous joint skin','ARMATURE')
+    modifier.object = rig
+    rig['lowerJoint'] = lower_name
+    rig.pose.bones[lower_name].rotation_mode = 'XYZ'
+    ACTOR_LIMB_RIGS[pivot.name] = rig
     return pivot
 
 
@@ -2564,51 +2644,60 @@ def make_articulated_actor(
     linen_mat = materials["linen"]
     hair_mat = materials["hair"]
 
-    torso = cylinder(f"{name}-torso", (x, y, z + 0.9 * scale), 0.18 * scale, 0.72 * scale, body_mat, 14, bevel=0.004)
+    torso = actor_profile(f"{name}-torso", (x,y,z),
+        [(h*scale,rx*scale,ry*scale) for h,rx,ry in [(.54,.14,.10),(.67,.16,.105),(.80,.145,.095),(.96,.185,.12),(1.08,.215,.125),(1.16,.22,.105),(1.21,.13,.085),(1.24,.065,.06)]], body_mat)
     parent_keep_world(torso, root)
     shoulders = cylinder_between(
         f"{name}-shoulderLine",
         (x - 0.26 * scale, y, z + 1.16 * scale),
         (x + 0.26 * scale, y, z + 1.16 * scale),
-        0.045 * scale,
+        0.052 * scale,
         body_mat,
-        10,
+        24,
     )
     parent_keep_world(shoulders, root)
     neck = cylinder(f"{name}-neck", (x, y, z + 1.23 * scale), 0.065 * scale, 0.16 * scale, body_mat, 10, bevel=0.003)
     parent_keep_world(neck, root)
 
     if role == "carrier":
-        sheath_top = cylinder(f"{name}-linenSheathUpper", (x, y, z + 0.86 * scale), 0.19 * scale, 0.42 * scale, linen_mat, 16, bevel=0.004)
+        sheath_top = actor_profile(f"{name}-linenSheathUpper", (x,y,z), [(h*scale,rx*scale,ry*scale) for h,rx,ry in [(.65,.18,.12),(.78,.16,.105),(.94,.195,.13),(1.07,.20,.13)]], linen_mat, .025)
         parent_keep_world(sheath_top, root)
-        dress = cone(f"{name}-linenDress", (x, y, z + 0.55 * scale), 0.28 * scale, 0.22 * scale, 0.76 * scale, linen_mat, 16)
+        dress = actor_profile(f"{name}-linenDress", (x,y,z), [(h*scale,rx*scale,ry*scale) for h,rx,ry in [(.17,.25,.17),(.30,.24,.16),(.48,.22,.15),(.66,.19,.125),(.80,.17,.115),(.93,.20,.13)]], linen_mat, .065)
         parent_keep_world(dress, root)
     else:
-        kilt = cone(f"{name}-linenKilt", (x, y, z + 0.44 * scale), 0.28 * scale, 0.19 * scale, 0.42 * scale, linen_mat, 16)
+        kilt = actor_profile(f"{name}-linenKilt", (x,y,z), [(h*scale,rx*scale,ry*scale) for h,rx,ry in [(.23,.26,.18),(.30,.25,.175),(.42,.225,.155),(.56,.19,.13),(.65,.17,.115)]], linen_mat, .07)
         parent_keep_world(kilt, root)
         belt = cylinder(f"{name}-plainLinenBelt", (x, y, z + 0.67 * scale), 0.22 * scale, 0.045 * scale, linen_mat, 16, bevel=0.002)
         parent_keep_world(belt, root)
 
-    head = uv_sphere(f"{name}-head", (x, y, z + 1.36 * scale), 0.17 * scale, body_mat, scale=(0.95, 0.9, 1.08), segments=14)
+    head = actor_profile(f"{name}-head", (x,y,z), [(h*scale,rx*scale,ry*scale) for h,rx,ry in [(1.20,.045,.055),(1.23,.085,.085),(1.28,.12,.115),(1.36,.14,.135),(1.44,.137,.13),(1.50,.10,.10),(1.53,.025,.03)]], body_mat)
     parent_keep_world(head, root)
 
-    hair = cube(f"{name}-hair", (x, y - 0.025 * scale, z + 1.47 * scale), (0.3 * scale, 0.24 * scale, 0.18 * scale), hair_mat, bevel=0.025)
+    hair = actor_profile(f"{name}-hair", (x,y-.012*scale,z), [(h*scale,rx*scale,ry*scale) for h,rx,ry in [(1.415,.14,.132),(1.46,.14,.134),(1.51,.105,.104),(1.55,.025,.03)]], hair_mat)
     parent_keep_world(hair, root)
     nose = uv_sphere(f"{name}-nose", (x, y - 0.16 * scale, z + 1.36 * scale), 0.035 * scale, body_mat, scale=(0.75, 1.25, 0.75), segments=8)
     parent_keep_world(nose, root)
+    for side in (-1,1):
+        ear=actor_ellipsoid(f"{name}-ear-{side}", (x+side*.139*scale,y,z+1.35*scale), (.022*scale,.019*scale,.038*scale), body_mat)
+        parent_keep_world(ear,root)
+        eye=actor_ellipsoid(f"{name}-eye-{side}", (x+side*.052*scale,y-.126*scale,z+1.385*scale), (.017*scale,.006*scale,.008*scale), hair_mat)
+        parent_keep_world(eye,root)
+    mouth=actor_ellipsoid(f"{name}-mouth", (x,y-.112*scale,z+1.285*scale), (.029*scale,.005*scale,.004*scale), hair_mat)
+    parent_keep_world(mouth,root)
 
     left_arm = make_articulated_limb(f"{name}-leftArm", root, (x - 0.22 * scale, y, z + 1.08 * scale), 0.58 * scale, 0.043 * scale, body_mat)
     right_arm = make_articulated_limb(f"{name}-rightArm", root, (x + 0.22 * scale, y, z + 1.08 * scale), 0.58 * scale, 0.043 * scale, body_mat)
-    left_leg = make_articulated_limb(f"{name}-leftLeg", root, (x - 0.09 * scale, y, z + 0.38 * scale), 0.48 * scale, 0.052 * scale, body_mat)
-    right_leg = make_articulated_limb(f"{name}-rightLeg", root, (x + 0.09 * scale, y, z + 0.38 * scale), 0.48 * scale, 0.052 * scale, body_mat)
+    left_leg = make_articulated_limb(f"{name}-leftLeg", root, (x - 0.09 * scale, y, z + 0.38 * scale), 0.345 * scale, 0.052 * scale, body_mat)
+    right_leg = make_articulated_limb(f"{name}-rightLeg", root, (x + 0.09 * scale, y, z + 0.38 * scale), 0.345 * scale, 0.052 * scale, body_mat)
     left_hand = uv_sphere(f"{name}-leftHand", (x - 0.22 * scale, y, z + 0.52 * scale), 0.055 * scale, body_mat, scale=(0.85, 0.85, 1.05), segments=8)
     right_hand = uv_sphere(f"{name}-rightHand", (x + 0.22 * scale, y, z + 0.52 * scale), 0.055 * scale, body_mat, scale=(0.85, 0.85, 1.05), segments=8)
-    parent_keep_world(left_hand, left_arm)
-    parent_keep_world(right_hand, right_arm)
-    left_foot = cube(f"{name}-leftFoot", (x - 0.1 * scale, y - 0.08 * scale, z + 0.035 * scale), (0.13 * scale, 0.28 * scale, 0.07 * scale), body_mat, bevel=0.008)
-    right_foot = cube(f"{name}-rightFoot", (x + 0.1 * scale, y - 0.08 * scale, z + 0.035 * scale), (0.13 * scale, 0.28 * scale, 0.07 * scale), body_mat, bevel=0.008)
-    parent_keep_world(left_foot, root)
-    parent_keep_world(right_foot, root)
+    attach_to_lower_limb(left_hand, left_arm)
+    attach_to_lower_limb(right_hand, right_arm)
+    left_foot = actor_ellipsoid(f"{name}-leftFoot", (x - .1*scale,y-.08*scale,z+.035*scale), (.065*scale,.14*scale,.035*scale),body_mat)
+    right_foot = actor_ellipsoid(f"{name}-rightFoot", (x + .1*scale,y-.08*scale,z+.035*scale), (.065*scale,.14*scale,.035*scale),body_mat)
+    attach_to_lower_limb(left_foot, left_leg)
+    attach_to_lower_limb(right_foot, right_leg)
+    foot_rest = {left_leg.name:left_foot.rotation_euler.copy(),right_leg.name:right_foot.rotation_euler.copy()}
     left_sandal = cube(f"{name}-leftSimpleSandal", (x - 0.1 * scale, y - 0.1 * scale, z + 0.01 * scale), (0.17 * scale, 0.32 * scale, 0.022 * scale), materials["dry_reed"], bevel=0.004)
     right_sandal = cube(f"{name}-rightSimpleSandal", (x + 0.1 * scale, y - 0.1 * scale, z + 0.01 * scale), (0.17 * scale, 0.32 * scale, 0.022 * scale), materials["dry_reed"], bevel=0.004)
     parent_keep_world(left_sandal, left_foot)
@@ -2630,7 +2719,7 @@ def make_articulated_actor(
         block = cube(f"{name}-workBlock", (x + 0.44 * scale, y + 0.36 * scale, z + 0.34 * scale), (0.58 * scale, 0.44 * scale, 0.28 * scale), materials["limestone"], bevel=0.015)
         parent_keep_world(block, root)
         tool = cylinder(f"{name}-woodTool", (x + 0.32 * scale, y + 0.17 * scale, z + 0.82 * scale), 0.025 * scale, 0.46 * scale, materials["wood"], 8, rot=(math.radians(64), 0, 0))
-        parent_keep_world(tool, right_arm)
+        attach_to_lower_limb(tool, right_arm)
 
     if role == "idle":
         stool = cube(f"{name}-doorwayLowStool", (x + 0.42 * scale, y + 0.22 * scale, z + 0.18 * scale), (0.38 * scale, 0.42 * scale, 0.2 * scale), materials["wood"], bevel=0.018)
@@ -2688,10 +2777,39 @@ def make_articulated_actor(
             key_rotation(left_leg, frame, (counter * 0.44, 0, 0))
             key_rotation(right_leg, frame, (stride * 0.44, 0, 0))
 
-    set_linear_animation(animated_objects)
+    # Existing root, shoulder and hip curves above remain byte-for-byte locked.
+    # Sample the new distal joints more densely for smooth swing/stance timing.
+    for frame in range(1,194,8):
+        t = (frame-1)/192*math.tau + phase
+        for pivot, offset in ((left_arm,0),(right_arm,math.pi)):
+            wave = math.sin(t+offset)
+            if role == 'carrier': flex = 65 + 5*wave
+            elif role == 'worker': flex = (55+22*wave) if pivot == right_arm else 25
+            else: flex = 14 + 12*(wave+1)*.5
+            rig = ACTOR_LIMB_RIGS[pivot.name]
+            bone = rig.pose.bones[rig['lowerJoint']]
+            bone.rotation_euler.x = -math.radians(flex)
+            bone.keyframe_insert(data_path='rotation_euler',frame=frame)
+        for pivot, offset in ((left_leg,0),(right_leg,math.pi)):
+            wave = math.sin(t+offset)
+            flex = 7 if role == 'worker' else 5 + 42*max(0,wave)**2
+            rig = ACTOR_LIMB_RIGS[pivot.name]
+            bone = rig.pose.bones[rig['lowerJoint']]
+            bone.rotation_euler.x = math.radians(flex)
+            bone.keyframe_insert(data_path='rotation_euler',frame=frame)
+            foot = left_foot if pivot == left_leg else right_foot
+            hip = math.radians(5 if pivot == left_leg else -4) if role == 'worker' else wave*(.34 if role == 'carrier' else -.44)
+            foot.rotation_euler = foot_rest[pivot.name].copy()
+            foot.rotation_euler.x -= hip + math.radians(flex)
+            foot.keyframe_insert(data_path='rotation_euler',frame=frame)
+    set_linear_animation(animated_objects + [ACTOR_LIMB_RIGS[p.name] for p in (left_arm,right_arm,left_leg,right_leg)])
 
 
 def build_animated_street_actors(materials: dict[str, bpy.types.Material]) -> None:
+    materials = dict(materials)
+    # Dedicated portable PBR colours avoid multiplying skin by the old scenery atlas.
+    materials['skin'] = make_material('actor natural complexion', (.28,.135,.072,1), .67)
+    materials['linen'] = make_material('actor plain flax garment', (.66,.60,.48,1), .94)
     bpy.context.scene.frame_start = 1
     bpy.context.scene.frame_end = 193
     bpy.context.scene.render.fps = 24
@@ -2699,6 +2817,9 @@ def build_animated_street_actors(materials: dict[str, bpy.types.Material]) -> No
     make_articulated_actor("actorHeroCarrier", (-10.7, -22.5, 0.05), materials, 1.02, math.radians(1), "carrier", 0.2, 11.8, 0.34)
     make_articulated_actor("actorHeroStoneWorker", (-7.45, -8.7, 0.05), materials, 1.04, math.radians(-76), "worker", 0.6)
     make_articulated_actor("actorHeroStreetWalker", (-13.2, -3.4, 0.05), materials, 0.98, math.radians(178), "walker", 3.0, -8.6, -0.28)
+    for obj in bpy.context.scene.objects:
+        if obj.type == 'MESH' and any(token in obj.name for token in ('Hand','-nose','-neck','shoulderLine')):
+            for poly in obj.data.polygons: poly.use_smooth = True
 
 
 def build_street_npc_placeholders(materials: dict[str, bpy.types.Material]) -> None:

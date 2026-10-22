@@ -12,9 +12,13 @@ import json
 import math
 import os
 import hashlib
+import sys
+import time
 from pathlib import Path
 from mathutils import Vector
 import numpy as np
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from refine_hero_surfaces import refine_surfaces
 
 ROOT = Path(__file__).resolve().parents[2]
 SOURCE = ROOT / 'apps/web-tour/public/assets/generated/glb'
@@ -32,7 +36,14 @@ def save_image(name, rgb, linear=True):
     im.pixels.foreach_set(rgba.ravel())
     im.filepath_raw = str(OUT / name)
     im.file_format = 'PNG'
-    im.save()
+    # Windows file watchers can briefly hold an existing texture open.
+    for attempt in range(4):
+        try:
+            im.save()
+            break
+        except RuntimeError:
+            if attempt == 3: raise
+            time.sleep(.5)
     return im
 
 def noise(n, cells, seed):
@@ -63,6 +74,10 @@ def surface_maps(kind, base, seed):
     else:
         h += .12*broad
     variation = (broad-.5)*.14 + (medium-.5)*.08 + (grain-.5)*.055 - pits*.10
+    if kind == 'plaster':
+        # Broad hand-applied lime variation, restrained fine surface chatter.
+        variation = (broad-.5)*.10 + (medium-.5)*.045 + (grain-.5)*.018 - pits*.045
+        h = .22*medium + .10*grain + .02*fine + .12*broad - pits*.4
     rgb = np.array(base, dtype=np.float32)[None,None,:] + variation[:,:,None]
     save_image(f'{kind}-albedo.png', rgb, False)
     dx = (np.roll(h, -1, 1)-np.roll(h, 1, 1))*2.2
@@ -83,8 +98,37 @@ def material_id(name):
     if 'wood' in n or 'acacia' in n: return 'wood'
     return 'original'
 
+def prop_maps(kind, base, seed):
+    n = 512
+    broad = noise(n, 8, seed)
+    grain = noise(n, 100, seed+1)
+    y, x = np.mgrid[0:n, 0:n].astype(np.float32)/n
+    if kind == 'linen':
+        relief = .012*(np.sin(x*math.tau*96) + np.sin(y*math.tau*96))
+        tone = (broad-.5)*.055 + relief*.18
+        roughness = .94 + (grain-.5)*.04
+    elif kind == 'wood':
+        relief = .022*np.sin((x*28 + .28*np.sin(y*math.tau*2))*math.tau)
+        tone = (broad-.5)*.065 + relief
+        roughness = .86 + (grain-.5)*.09
+    else:
+        relief = .009*np.sin(y*math.tau*72) + (grain-.5)*.018
+        tone = (broad-.5)*.065 + (grain-.5)*.012
+        roughness = .8 + (broad-.5)*.12
+    rgb = np.array(base)[None,None,:] + tone[:,:,None]
+    save_image(f'{kind}-albedo.png', rgb, False)
+    dx = np.roll(relief,-1,1)-np.roll(relief,1,1)
+    dy = np.roll(relief,-1,0)-np.roll(relief,1,0)
+    normals = np.stack((-dx,-dy,np.ones_like(dx)),axis=2)
+    normals /= np.linalg.norm(normals,axis=2)[:,:,None]
+    save_image(f'{kind}-normal.png', normals*.5+.5)
+    save_image(f'{kind}-orm.png', np.stack((np.ones_like(x),roughness,np.zeros_like(x)),axis=2))
+
 surface_maps('dust', (.57,.49,.38), 710)
 surface_maps('plaster', (.72,.66,.54), 924)
+prop_maps('linen', (.78,.70,.55), 126)
+prop_maps('pottery', (.66,.43,.29), 372)
+prop_maps('wood', (.48,.37,.25), 813)
 
 bpy.ops.object.select_all(action='SELECT')
 bpy.ops.object.delete(use_global=False)
@@ -119,6 +163,7 @@ for part in ('near', 'mid', 'far'):
     bm = bmesh.new(); bm.from_mesh(obj.data)
     bmesh.ops.remove_doubles(bm, verts=list(bm.verts), dist=.00001)
     bm.to_mesh(obj.data); bm.free()
+    refine_surfaces(obj, material_id)
     # Make each chunk's materials independent so bake targets never alias.
     for slot in obj.material_slots:
         slot.material = slot.material.copy()
@@ -126,7 +171,7 @@ for part in ('near', 'mid', 'far'):
         mat = slot.material
         sid = mat['surfaceId']
         bsdf = next(n for n in mat.node_tree.nodes if n.type == 'BSDF_PRINCIPLED')
-        if sid in ('dust', 'plaster'):
+        if sid in ('dust', 'plaster', 'linen', 'pottery', 'wood'):
             tex = mat.node_tree.nodes.new('ShaderNodeTexImage')
             tex.image = bpy.data.images.load(str(OUT/f'{sid}-albedo.png'), check_existing=True)
             uv = mat.node_tree.nodes.new('ShaderNodeUVMap')
@@ -136,14 +181,15 @@ for part in ('near', 'mid', 'far'):
     uv0 = obj.data.uv_layers[0]
     for poly in obj.data.polygons:
         sid = obj.data.materials[poly.material_index]['surfaceId']
-        if sid not in ('dust', 'plaster'): continue
+        if sid not in ('dust', 'plaster', 'linen', 'pottery', 'wood'): continue
         for li in poly.loop_indices:
             v = obj.matrix_world @ obj.data.vertices[obj.data.loops[li].vertex_index].co
             normal = poly.normal
             if abs(normal.z) > .65: u, w = v.x, v.y
             elif abs(normal.x) > abs(normal.y): u, w = v.y, v.z
             else: u, w = v.x, v.z
-            uv0.data[li].uv = (u/2, w/2)
+            scale = 2 if sid in ('dust', 'plaster') else .5
+            uv0.data[li].uv = (u/scale, w/scale)
     obj.data.uv_layers.new(name='LightmapUV')
     obj.data.uv_layers.active_index = 1
     bpy.ops.object.mode_set(mode='EDIT')
@@ -210,18 +256,51 @@ for part, obj in chunks:
     obj.data.uv_layers.active_index = 0
     obj.data.uv_layers[0].active_render = True
     bpy.ops.export_scene.gltf(filepath=str(OUT/f'hero_street_corridor_{part}.glb'), export_format='GLB', use_selection=True, export_yup=True, export_extras=True)
+    lods = []
+    original_triangles = sum(len(p.vertices)-2 for p in obj.data.polygons)
+    for level, ratio in ((1,.55),(2,.28)):
+        low = obj.copy(); low.data = obj.data.copy()
+        scene.collection.objects.link(low)
+        low.name = obj.name + f'-lod{level}'
+        # Keep lightmap charts disconnected: collapsing across atlas seams
+        # samples unrelated irradiance and produces dark checkerboard patches.
+        bm=bmesh.new();bm.from_mesh(low.data)
+        uv=bm.loops.layers.uv.get('LightmapUV')
+        seams=[]
+        for edge in bm.edges:
+            if len(edge.link_faces)!=2: continue
+            if edge.link_faces[0].material_index!=edge.link_faces[1].material_index:
+                seams.append(edge);continue
+            if uv and any((next(l for l in edge.link_faces[0].loops if l.vert==v)[uv].uv-
+                           next(l for l in edge.link_faces[1].loops if l.vert==v)[uv].uv).length>.00001 for v in edge.verts):
+                seams.append(edge)
+        bmesh.ops.split_edges(bm,edges=seams)
+        bm.to_mesh(low.data);bm.free()
+        modifier = low.modifiers.new('Measured silhouette LOD', 'DECIMATE')
+        modifier.ratio = ratio
+        modifier.use_collapse_triangulate = True
+        bpy.ops.object.select_all(action='DESELECT'); low.select_set(True)
+        bpy.context.view_layer.objects.active = low
+        bpy.ops.object.modifier_apply(modifier=modifier.name)
+        triangles = sum(len(p.vertices)-2 for p in low.data.polygons)
+        filename = f'hero_street_corridor_{part}.lod{level}.glb'
+        bpy.ops.export_scene.gltf(filepath=str(OUT/filename), export_format='GLB', use_selection=True, export_yup=True, export_extras=True)
+        lods.append({'fileName':filename,'triangles':triangles,'ratio':triangles/original_triangles})
+        bpy.data.objects.remove(low, do_unlink=True)
     material_bindings.update({mat.name:mat['surfaceId'] for mat in obj.data.materials})
     for slot, mat in zip(obj.material_slots, bake_materials): slot.material = mat
-    bindings.append({'assetId':f'hero-street-corridor-{part}', 'fileName':f'hero_street_corridor_{part}.glb', 'irradiance':f'{part}-irradiance.png', 'uvSet':1})
+    bindings.append({'assetId':f'hero-street-corridor-{part}', 'fileName':f'hero_street_corridor_{part}.glb', 'irradiance':f'{part}-irradiance.png', 'uvSet':1, 'triangles':original_triangles,'lods':lods})
     print(f'EXPORTED {part}', flush=True)
 
 manifest = {
-  'id':'hero-street-authored-v1', 'units':'meters', 'format':'glTF 2.0',
+  'id':'hero-street-authored-v2', 'units':'meters', 'format':'glTF 2.0',
   'source':'Existing locked project-authored street GLBs; no external media',
   'evidenceLevel':'inferred', 'lightingEvidenceLevel':'speculative',
   'sunDirectionBabylon':[-.62,-.74,.27],
   'bake':{'engine':'Cycles','samples':SAMPLES,'resolution':SIZE,'passes':['sky-diffuse-direct','sky-diffuse-indirect','sun-diffuse-indirect'],'includesAlbedo':False,'includesSunDirect':False,'colorSpace':'linear','uvSet':1},
   'surfaceTextureMeters':2, 'normalConvention':'glTF tangent space',
+  'surfaceScaleMeters':{'dust':2,'plaster':2,'linen':.5,'pottery':.5,'wood':.5},
+  'surfaceRefinement':{'plasterBevelMeters':.018,'clothFoldMaxMeters':.04,'clothSagMaxMeters':.085,'clothThicknessMeters':.003,'hemHeightMeters':.004,'woodBendMaxMeters':.006,'potteryLipBevelMeters':.004,'potteryBulgeMaxMeters':.018,'objectTransforms':'unchanged'},
   'packing':{'r':'ambient occlusion','g':'roughness','b':'metallic'},
   'assets':bindings, 'materials':material_bindings,
   'lockedInputs': {str(p.relative_to(ROOT)).replace('\\','/'):hashlib.sha256(p.read_bytes()).hexdigest() for p in [ROOT/'content/scene-data/hero-street.camera-lock.json', ROOT/'content/scene-data/memphis-white-walls.tour.json']},

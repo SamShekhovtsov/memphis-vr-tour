@@ -2,6 +2,20 @@
 
 This file is the project compass for future Codex runs. At the start of every run, respect these baseline decisions before making edits, planning new work, or suggesting changes.
 
+Latest hero-street surface pass (2026-10-22): authored bake v2 rounds existing
+plaster edges, folds/sags existing cloth and refines pottery/wood/linen materials.
+District, route and camera locks stay unchanged. See
+[surface refinement and matched captures](docs/design/hero-street-surface-refinement-2026-10-22.md).
+Regenerate with `npm run bake:hero`; validate with `npm run validate:hero`.
+
+The existing three street actors now have shaped bodies, rounded features and
+folded garments. Their original placements and animation channels are checked by
+`npm run validate:actors`; see [character pass](docs/design/hero-street-character-pass-2026-10-22.md).
+Elbows and knees now use continuous two-bone skinning with hands/feet attached to
+the distal bones. Original root and shoulder/hip animation channels remain locked;
+new tracks share their parent limb's original playback rate. See the
+[joint pass and matched captures](docs/design/hero-street-joint-pass-2026-10-22.md).
+
 ## 1. Core Idea
 
 Project title / experience framing:
@@ -155,3 +169,17 @@ Recent quality-pass direction:
 The product phrase should be "historically plausible reconstruction." The user accepts that uncertainty exists and wants beautiful AI-assisted reconstruction, but the experience should be grounded in evidence, architecture, literature, surviving artifacts, historical writing, and license-safe references.
 
 The cinematic goal should not erase honesty. The scene can be beautiful, but the evidence system must keep confirmed, inferred, and speculative elements visible when requested.
+
+## Ground-contact IK follow-up (2026-10-22)
+
+Ankle refinement: soles follow cached street normals, with restrained heel/toe
+roll and support-edge compensation. See [ankle contact](docs/design/hero-street-ankle-contact-2026-10-22.md)
+for matched captures, tests and rigid-sandal limitations. Foot-centre drift now
+includes intentional rocking and is not a pure sliding measure.
+
+Walking refinement: quintic swing travel, smooth lift/landing and speed-dependent
+swing timing are documented in [walking smoothing](docs/design/hero-street-walking-smoothing-2026-10-22.md).
+Matched before/after views now freeze exactly 300 simulated steps with unchanged
+root paths and cameras. Contact continuity checks were added to the solver test.
+
+Existing hero actors now use browser world-space stance contacts and a two-bone leg solve after their unchanged paths. Source GLBs, district and cameras remain locked. See [implementation, measured drift and matched screenshots](docs/design/hero-street-ground-contact-2026-10-22.md). The captured browser sequence reduced cumulative stance drift by 93.4%; extreme reach and sharp turns remain limited by fixed roots. Disable with ?ik=0. Run node tools/test-ground-contact-ik.mjs for solver checks.
