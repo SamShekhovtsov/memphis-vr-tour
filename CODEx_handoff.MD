@@ -1,5 +1,14 @@
 # CODEx Handoff: EgyptVRTour
 
+Hero daylight/bake cleanup (2026-10-22): legacy translucent sheets were surviving
+as opaque geometry because imported alpha was linked rather than stored in the
+BSDF default value. The baker now retires these using source glTF alpha factors;
+the hero validator rejects them in all LODs. Cloth sag and daylight are refined.
+After rebaking, run `tools/refine-hero-irradiance.py --fresh` with Python/Pillow,
+then `tools/compress-hero-textures.py`. The raw cache lives in ignored
+`content/generated/`; bake first on a fresh checkout. See
+[matched views, remaining quality limits and performance](docs/design/hero-street-daylight-2026-10-22.md).
+
 Ptah floor and approach collision repair (2026-10-22): temple floors now support
 collisions and WebXR floor queries through to the rear walls; obsolete street
 collision rail tails are removed from both sides of the open temple approach.

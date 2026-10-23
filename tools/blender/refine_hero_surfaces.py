@@ -82,7 +82,7 @@ def refine_surfaces(obj, material_id):
                     envelope = math.sin(math.pi*u)*(.35+.65*math.sin(math.pi*w))
                     v.co[normal_axis] += envelope*(.028*math.sin(u*math.pi*8+w*2) + .012*math.sin(w*math.pi*5))
                     if normal_axis == 2:
-                        v.co.z -= .085*math.sin(math.pi*u)*math.sin(math.pi*w)
+                        v.co.z -= .18*math.sin(math.pi*u)*math.sin(math.pi*w)
                     # Raised stitched hems stay inside the existing cloth panel.
                     edge = min(u, 1-u)
                     v.co[normal_axis] += .004*math.exp(-(edge/.035)**2)*math.sin(math.pi*w)

@@ -1,5 +1,6 @@
 import { AbstractMesh, Color3, Material, PBRMaterial, Scene, Texture } from "@babylonjs/core";
 import type { HeroBakeManifest } from "@egyptvr/shared-scene";
+import daylight from "../../../../content/scene-data/hero-street.daylight.json";
 export type { HeroBakeManifest } from "@egyptvr/shared-scene";
 
 export const authoredHeroRoot = "/assets/authored/hero-street/";
@@ -37,7 +38,7 @@ export function createHeroMaterialBinder(scene: Scene, manifest: HeroBakeManifes
         mat.albedoColor = Color3.White();
         mat.albedoTexture = getMap(`${surface}-albedo.png`, true);
         mat.bumpTexture = getMap(`${surface}-normal.png`, false);
-        mat.bumpTexture.level = surface === "dust" ? .24 : surface === "plaster" ? (refined ? .12 : .16) : .3;
+        mat.bumpTexture.level = surface === "dust" ? .18 : surface === "plaster" ? .1 : .2;
         mat.invertNormalMapX = !scene.useRightHandedSystem;
         mat.invertNormalMapY = scene.useRightHandedSystem;
         mat.metallicTexture = getMap(`${surface}-orm.png`, false);
@@ -56,6 +57,9 @@ export function createHeroMaterialBinder(scene: Scene, manifest: HeroBakeManifes
       // PBR ambient multiplies the RGB map by surface albedo in linear space.
       mat.ambientColor = Color3.White();
       mat.ambientTexture = getMap(binding.irradiance, false, binding.uvSet);
+      // Preserve the baked visibility/contact pattern while balancing the sky
+      // contribution against the real-time sun. No flat emissive shadow lift.
+      mat.ambientTexture.level = daylight.indirectLightGain;
       mat.ambientTextureStrength = 1;
       mat.useAmbientInGrayScale = false;
       mat.ambientTextureImpactOnAnalyticalLights = 0;
@@ -63,6 +67,13 @@ export function createHeroMaterialBinder(scene: Scene, manifest: HeroBakeManifes
       mat.environmentIntensity = 0;
       mat.emissiveColor = Color3.Black();
       mat.lightmapTexture = null;
+      if (surface === "linen") {
+        mat.subSurface.isTranslucencyEnabled = true;
+        mat.subSurface.translucencyIntensity = daylight.linenTranslucency;
+        mat.subSurface.useAlbedoToTintTranslucency = true;
+        mat.subSurface.minimumThickness = .001;
+        mat.subSurface.maximumThickness = .003;
+      }
       mat.backFaceCulling = source.backFaceCulling;
       mat.metadata = { surfaceId: surface, bakeId: manifest.id, irradianceUvSet: binding.uvSet };
       cache.set(key, mat);

@@ -14,6 +14,8 @@ import os
 import hashlib
 import sys
 import time
+import re
+import struct
 from pathlib import Path
 from mathutils import Vector
 import numpy as np
@@ -25,7 +27,7 @@ SOURCE = ROOT / 'apps/web-tour/public/assets/generated/glb'
 OUT = ROOT / 'apps/web-tour/public/assets/authored/hero-street'
 OUT.mkdir(parents=True, exist_ok=True)
 SIZE = int(os.environ.get('EGYPTVR_BAKE_SIZE', '2048'))
-SAMPLES = int(os.environ.get('EGYPTVR_BAKE_SAMPLES', '24'))
+SAMPLES = int(os.environ.get('EGYPTVR_BAKE_SAMPLES', '48'))
 
 def save_image(name, rgb, linear=True):
     height, width = rgb.shape[:2]
@@ -134,6 +136,16 @@ bpy.ops.object.select_all(action='SELECT')
 bpy.ops.object.delete(use_global=False)
 chunks = []
 for part in ('near', 'mid', 'far'):
+    # A glTF alpha factor may be linked into the imported shader graph. Reading
+    # only BSDF Alpha.default_value then returns 1 and retains old decal sheets
+    # as opaque geometry. Use the source's explicit glTF material semantics.
+    source_bytes = (SOURCE / f'hero_street_corridor_{part}.glb').read_bytes()
+    json_size = struct.unpack_from('<I', source_bytes, 12)[0]
+    source_document = json.loads(source_bytes[20:20+json_size])
+    material_key = lambda name: re.sub(r'\.\d+$', '', name)
+    retired_sheets = {material_key(m['name']) for m in source_document['materials']
+                      if m.get('alphaMode', 'OPAQUE') == 'BLEND'
+                      and m.get('pbrMetallicRoughness', {}).get('baseColorFactor', [1,1,1,1])[3] < .99}
     previous = set(bpy.context.scene.objects)
     bpy.ops.import_scene.gltf(filepath=str(SOURCE / f'hero_street_corridor_{part}.glb'))
     meshes = [o for o in set(bpy.context.scene.objects)-previous if o.type == 'MESH']
@@ -145,7 +157,7 @@ for part in ('near', 'mid', 'far'):
         for face in bm.faces:
             mat = obj.data.materials[face.material_index]
             bsdf = next((n for n in mat.node_tree.nodes if n.type == 'BSDF_PRINCIPLED'), None)
-            if bsdf and bsdf.inputs['Alpha'].default_value < .99:
+            if material_key(mat.name) in retired_sheets or (bsdf and bsdf.inputs['Alpha'].default_value < .99):
                 remove.append(face)
         bmesh.ops.delete(bm, geom=remove, context='FACES')
         bm.to_mesh(obj.data); bm.free()
@@ -300,7 +312,7 @@ manifest = {
   'bake':{'engine':'Cycles','samples':SAMPLES,'resolution':SIZE,'passes':['sky-diffuse-direct','sky-diffuse-indirect','sun-diffuse-indirect'],'includesAlbedo':False,'includesSunDirect':False,'colorSpace':'linear','uvSet':1},
   'surfaceTextureMeters':2, 'normalConvention':'glTF tangent space',
   'surfaceScaleMeters':{'dust':2,'plaster':2,'linen':.5,'pottery':.5,'wood':.5},
-  'surfaceRefinement':{'plasterBevelMeters':.018,'clothFoldMaxMeters':.04,'clothSagMaxMeters':.085,'clothThicknessMeters':.003,'hemHeightMeters':.004,'woodBendMaxMeters':.006,'potteryLipBevelMeters':.004,'potteryBulgeMaxMeters':.018,'objectTransforms':'unchanged'},
+  'surfaceRefinement':{'plasterBevelMeters':.018,'clothFoldMaxMeters':.04,'clothSagMaxMeters':.18,'clothThicknessMeters':.003,'hemHeightMeters':.004,'woodBendMaxMeters':.006,'potteryLipBevelMeters':.004,'potteryBulgeMaxMeters':.018,'objectTransforms':'unchanged','retiredSheets':'source glTF BLEND alpha factors below 0.99'},
   'packing':{'r':'ambient occlusion','g':'roughness','b':'metallic'},
   'assets':bindings, 'materials':material_bindings,
   'lockedInputs': {str(p.relative_to(ROOT)).replace('\\','/'):hashlib.sha256(p.read_bytes()).hexdigest() for p in [ROOT/'content/scene-data/hero-street.camera-lock.json', ROOT/'content/scene-data/memphis-white-walls.tour.json']},

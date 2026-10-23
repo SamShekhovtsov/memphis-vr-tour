@@ -12,7 +12,7 @@
   ],
   "bake": {
     "engine": "Cycles",
-    "samples": 24,
+    "samples": 48,
     "resolution": 2048,
     "passes": [
       "sky-diffuse-direct",
@@ -36,13 +36,14 @@
   "surfaceRefinement": {
     "plasterBevelMeters": 0.018,
     "clothFoldMaxMeters": 0.04,
-    "clothSagMaxMeters": 0.085,
+    "clothSagMaxMeters": 0.18,
     "clothThicknessMeters": 0.003,
     "hemHeightMeters": 0.004,
     "woodBendMaxMeters": 0.006,
     "potteryLipBevelMeters": 0.004,
     "potteryBulgeMaxMeters": 0.018,
-    "objectTransforms": "unchanged"
+    "objectTransforms": "unchanged",
+    "retiredSheets": "source glTF BLEND alpha factors below 0.99"
   },
   "packing": {
     "r": "ambient occlusion",
@@ -55,17 +56,17 @@
       "fileName": "hero_street_corridor_near.glb",
       "irradiance": "near-irradiance.png",
       "uvSet": 1,
-      "triangles": 65056,
+      "triangles": 58334,
       "lods": [
         {
           "fileName": "hero_street_corridor_near.lod1.glb",
-          "triangles": 35780,
-          "ratio": 0.5499877029021151
+          "triangles": 32083,
+          "ratio": 0.5499880001371413
         },
         {
           "fileName": "hero_street_corridor_near.lod2.glb",
-          "triangles": 18215,
-          "ratio": 0.27998954746679783
+          "triangles": 16333,
+          "ratio": 0.2799910858161621
         }
       ]
     },
@@ -74,17 +75,17 @@
       "fileName": "hero_street_corridor_mid.glb",
       "irradiance": "mid-irradiance.png",
       "uvSet": 1,
-      "triangles": 94778,
+      "triangles": 83912,
       "lods": [
         {
           "fileName": "hero_street_corridor_mid.lod1.glb",
-          "triangles": 52127,
-          "ratio": 0.5499905041254299
+          "triangles": 46151,
+          "ratio": 0.5499928496520164
         },
         {
           "fileName": "hero_street_corridor_mid.lod2.glb",
-          "triangles": 26537,
-          "ratio": 0.27999113718373464
+          "triangles": 23494,
+          "ratio": 0.2799837925445705
         }
       ]
     },
@@ -93,17 +94,17 @@
       "fileName": "hero_street_corridor_far.glb",
       "irradiance": "far-irradiance.png",
       "uvSet": 1,
-      "triangles": 33776,
+      "triangles": 29436,
       "lods": [
         {
           "fileName": "hero_street_corridor_far.lod1.glb",
-          "triangles": 18576,
-          "ratio": 0.5499763145428707
+          "triangles": 16189,
+          "ratio": 0.5499728223943471
         },
         {
           "fileName": "hero_street_corridor_far.lod2.glb",
-          "triangles": 9457,
-          "ratio": 0.27999171009000473
+          "triangles": 8242,
+          "ratio": 0.2799972822394347
         }
       ]
     }
@@ -196,6 +197,16 @@
     "hero_street_corridor_mid.glb": "6e28934e920e226d87e173d409d6926a6c0cadf4e0c5d36ee5651851e2bd9688",
     "hero_street_corridor_far.glb": "7508bd413aaf4bbd552431173eed71b64d6299530ef43c8fe3d7f479e187e772"
   },
+  "irradianceRefinement": {
+    "method": "3x3 median then 0.8-pixel Gaussian on linear RGB irradiance only",
+    "rawDirectory": "content/generated/hero-street-irradiance-raw",
+    "rawSha256": {
+      "near-irradiance.png": "1513075f67b6eebed2d460c65e63cf0256808d712175763965e7a7c02ba80811",
+      "mid-irradiance.png": "35255c08eae583aba2633c808d588e8295add54b1471503afca1a0f26fac1112",
+      "far-irradiance.png": "09e23ba496c4594379c126afb036f23daef17e59b99dc43bd7e4774148eb9cff"
+    },
+    "geometryChanged": false
+  },
   "textureVariants": {
     "dust-albedo.png": "dust-albedo.webp",
     "dust-normal.png": "dust-normal.webp",
@@ -218,8 +229,8 @@
   },
   "deliveryCompression": {
     "format": "lossless WebP with PNG fallback",
-    "sourceBytes": 17345799,
-    "deliveryBytes": 10692696,
+    "sourceBytes": 13042073,
+    "deliveryBytes": 8492500,
     "gpuMemoryReduced": false
   }
 }

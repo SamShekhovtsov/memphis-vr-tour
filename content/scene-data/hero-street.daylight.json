@@ -1,0 +1,12 @@
+{
+  "id": "hero-street-daylight-v1",
+  "evidenceLevel": "speculative",
+  "description": "Art-directed daylight balance. Preserve linear PBR maps and glTF geometry for future engines; light intensity scales require engine-specific calibration.",
+  "sunIntensity": 3,
+  "indirectLightGain": 2.3,
+  "skyFillIntensity": 0.8,
+  "exposure": 1.24,
+  "contrast": 1.02,
+  "fogDensity": 0.0022,
+  "linenTranslucency": 0.28
+}

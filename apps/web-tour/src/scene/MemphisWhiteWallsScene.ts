@@ -17,12 +17,14 @@ import {
   Texture,
   TransformNode,
   UniversalCamera,
+  VertexBuffer,
   WebXRState,
   Vector3
 } from "@babylonjs/core";
 import type { EvidenceLevel, TourManifest, TourStop } from "@egyptvr/shared-scene";
 import { evidenceColors } from "@egyptvr/shared-scene";
 import cameraLockData from "../../../../content/scene-data/hero-street.camera-lock.json";
+import daylight from "../../../../content/scene-data/hero-street.daylight.json";
 import { authoredHeroRoot, createHeroMaterialBinder, type HeroBakeManifest } from "./HeroStreetMaterials";
 import { GroundContactIK } from "./GroundContactIK";
 import { loadHeroPeople, type HeroPerson } from "./HeroPeople";
@@ -309,9 +311,9 @@ export async function createMemphisWhiteWallsScene(
   applyCameraShotBookmark(camera);
 
   const skyLight = new HemisphericLight("skyLight", new Vector3(0, 1, 0), scene);
-  skyLight.diffuse = Color3.FromHexString("#d0c0a2");
-  skyLight.groundColor = Color3.FromHexString("#46362e");
-  skyLight.intensity = 0.46;
+  skyLight.diffuse = Color3.FromHexString("#c9dbe4");
+  skyLight.groundColor = Color3.FromHexString("#a88660");
+  skyLight.intensity = daylight.skyFillIntensity;
 
   const sun = new DirectionalLight("lowGoldSun", new Vector3(-0.62, -0.74, 0.27), scene);
   sun.position = new Vector3(64, 88, -76);
@@ -338,7 +340,7 @@ export async function createMemphisWhiteWallsScene(
   createRouteLine(scene, routeTrack.points);
   const modularAssets = await loadModularAssetKit(scene, materials, qualityProfile);
   if (scene.metadata?.heroBakeId) {
-    sun.intensity = 2;
+    sun.intensity = daylight.sunIntensity;
     const shadows = new ShadowGenerator(qualityProfile.mode === "performance" || qualityProfile.mode === "headset" ? 1024 : 2048, sun);
     shadows.usePercentageCloserFiltering = true;
     shadows.filteringQuality = ShadowGenerator.QUALITY_MEDIUM;
@@ -1001,8 +1003,20 @@ function createSkyDome(scene: Scene): void {
   const sky = MeshBuilder.CreateSphere("goldenDesertSky", { diameter: 220, segments: 24, sideOrientation: Mesh.BACKSIDE }, scene);
   const mat = new PBRMaterial("goldenDesertSkyMaterial", scene);
   mat.unlit = true;
-  mat.albedoColor = Color3.FromHexString("#c8bf9d");
-  mat.emissiveColor = Color3.FromHexString("#9f7a4b");
+  mat.albedoColor = Color3.White();
+  mat.emissiveColor = Color3.Black();
+  // A continuous world-space sky gradient avoids a screen-space backdrop or
+  // an additional sky texture. It remains stable as the visitor turns in VR.
+  const positions = sky.getVerticesData(VertexBuffer.PositionKind)!;
+  const colors: number[] = [];
+  const horizon = Color3.FromHexString("#bdcfd8").toLinearSpace();
+  const zenith = Color3.FromHexString("#507ca5").toLinearSpace();
+  for (let index = 0; index < positions.length; index += 3) {
+    const altitude = Math.max(0, positions[index + 1] / 110);
+    const color = Color3.Lerp(horizon, zenith, Math.pow(altitude, .45));
+    colors.push(color.r, color.g, color.b, 1);
+  }
+  sky.setVerticesData(VertexBuffer.ColorKind, colors);
   mat.backFaceCulling = false;
   sky.material = mat;
   sky.isPickable = false;

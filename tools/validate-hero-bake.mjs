@@ -25,6 +25,10 @@ for (const asset of manifest.assets) {
   glbBytes += bytes.length;
   const gltf = JSON.parse(bytes.subarray(20, 20 + bytes.readUInt32LE(12)).toString());
   const sourceGltf = JSON.parse(original.subarray(20, 20 + original.readUInt32LE(12)).toString());
+  const materialKey = name => name.replace(/\.\d+$/, "");
+  const retiredSheets = new Set(sourceGltf.materials.filter(material =>
+    material.alphaMode === "BLEND" && (material.pbrMetallicRoughness?.baseColorFactor?.[3] ?? 1) < .99
+  ).map(material => materialKey(material.name)));
   const transforms = document => document.nodes.filter(node => node.mesh !== undefined).map(node => ({
     translation: node.translation ?? [0, 0, 0], rotation: node.rotation ?? [0, 0, 0, 1], scale: node.scale ?? [1, 1, 1], matrix: node.matrix ?? null
   }));
@@ -33,6 +37,7 @@ for (const asset of manifest.assets) {
     assert.notEqual(primitive.attributes.TEXCOORD_0, undefined, "Missing surface UVs");
     assert.notEqual(primitive.attributes.TEXCOORD_1, undefined, "Missing lightmap UVs");
     const material = gltf.materials[primitive.material];
+    assert.ok(!retiredSheets.has(materialKey(material.name)), `Opaque legacy decal survived bake: ${material.name}`);
     assert.ok(Object.hasOwn(manifest.materials, material.name), `Unbound material: ${material.name}`);
   }
   const png = await readFile(path.join(dir, asset.irradiance));
@@ -44,6 +49,7 @@ for (const asset of manifest.assets) {
     for(const mesh of low.meshes) for(const primitive of mesh.primitives) {
       assert.notEqual(primitive.attributes.TEXCOORD_1,undefined,'LOD lost its lightmap UVs');
       assert.ok(Object.hasOwn(manifest.materials,low.materials[primitive.material].name),'Unbound LOD material');
+      assert.ok(!retiredSheets.has(materialKey(low.materials[primitive.material].name)), 'Opaque legacy decal survived in LOD');
       triangles+=low.accessors[primitive.indices].count/3;
     }
     assert.equal(triangles,lod.triangles,'LOD statistics stale');
