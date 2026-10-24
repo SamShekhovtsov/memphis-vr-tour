@@ -36,11 +36,11 @@ export function createHeroMaterialBinder(scene: Scene, manifest: HeroBakeManifes
       const mat = source.clone(`${source.name}-authored`)!;
       const surface = manifest.materials[source.name] ?? "original";
       const refined = manifest.id === "hero-street-authored-v2";
-      if ((refined ? ["dust", "plaster", "linen", "pottery", "wood"] : ["dust", "plaster"]).includes(surface)) {
+      if ((refined ? ["dust", "plaster", "linen", "pottery", "wood", "hero-plaster", "hero-linen"] : ["dust", "plaster"]).includes(surface)) {
         mat.albedoColor = Color3.White();
         mat.albedoTexture = getMap(`${surface}-albedo.png`, true);
         mat.bumpTexture = getMap(`${surface}-normal.png`, false);
-        mat.bumpTexture.level = surface === "dust" ? .18 : surface === "plaster" ? .1 : .2;
+        mat.bumpTexture.level = surface === "dust" ? .18 : surface === "plaster" ? .1 : surface === "hero-plaster" ? .24 : surface === "hero-linen" ? .14 : .2;
         mat.invertNormalMapX = !scene.useRightHandedSystem;
         mat.invertNormalMapY = scene.useRightHandedSystem;
         mat.metallicTexture = getMap(`${surface}-orm.png`, false);
@@ -69,7 +69,7 @@ export function createHeroMaterialBinder(scene: Scene, manifest: HeroBakeManifes
       mat.environmentIntensity = 0;
       mat.emissiveColor = Color3.Black();
       mat.lightmapTexture = null;
-      if (surface === "linen") {
+      if (surface === "linen" || surface === "hero-linen") {
         mat.subSurface.isTranslucencyEnabled = true;
         mat.subSurface.translucencyIntensity = daylight.linenTranslucency;
         mat.subSurface.useAlbedoToTintTranslucency = true;
@@ -88,5 +88,7 @@ export function createHeroMaterialBinder(scene: Scene, manifest: HeroBakeManifes
       if (multi?.subMaterials) multi.subMaterials = multi.subMaterials.map(bind);
     }
     mesh.receiveShadows = true;
+    // Finish colours carry surface wear only, never transparency.
+    mesh.hasVertexAlpha = false;
   };
 }

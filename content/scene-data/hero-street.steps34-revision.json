@@ -1,0 +1,42 @@
+{
+  "date": "2026-10-24",
+  "scope": "Authorized steps 3–4, existing visual mesh finish only; original source meshes and all placement/camera/path/collision locks retained",
+  "files": {
+    "apps/web-tour/public/assets/authored/hero-street/hero_street_corridor_near.glb": {
+      "before": "5da0e951b5f1f4a9547fcbbc33159f2e729be68ecba56d0f45525f59bc0ca24e",
+      "after": "2f65220bcc2acd89958325f9a93538c733081cf966fbe83470cf2dfe40f58e17"
+    },
+    "apps/web-tour/public/assets/authored/hero-street/hero_street_corridor_near.lod1.glb": {
+      "before": "cd6bd1d0027909ebbefc3d964eae02921180c11d681797fa2e8406470fcba7fd",
+      "after": "20650cd7f82eab664eb8350003951475b2724a695fa9f2be5b42785ce94db46d"
+    },
+    "apps/web-tour/public/assets/authored/hero-street/hero_street_corridor_near.lod2.glb": {
+      "before": "c0523f7a397e8556c0b83b8e446f9fceb7af7c0af1cc1a364d63ec7bd85ce88e",
+      "after": "d3276b4fe1101ecadd6d9a862fe0c1a3a5a246c2f78e2b2d00271851d3f00084"
+    },
+    "apps/web-tour/public/assets/authored/hero-street/hero_street_corridor_mid.glb": {
+      "before": "f160b85ea085d66a377bc680f9d7d606bf33387e71c105e9607f9e406d01391b",
+      "after": "71658db69c03ad836943976bd759f745ad0b37bf7cd2e1dad995aab6fb327e00"
+    },
+    "apps/web-tour/public/assets/authored/hero-street/hero_street_corridor_mid.lod1.glb": {
+      "before": "243ec45aaaece13e29c6eeb313832b236273cfc9f1fec38410689746e7e59206",
+      "after": "0ab0025ab8ae2139a1f11a2ad264bbe2323c279d54b44a0b9052e3ad1c2d39ba"
+    },
+    "apps/web-tour/public/assets/authored/hero-street/hero_street_corridor_mid.lod2.glb": {
+      "before": "819160a1dc4bb8b195228ed33a1236391652d45acbb678a81638ba38d13f80bd",
+      "after": "63fa82e0416dd5bf0f2b252fc8ac143f9f43ae457cf583853bb88a3c11b7c215"
+    },
+    "apps/web-tour/public/assets/authored/hero-street/hero_street_corridor_far.glb": {
+      "before": "9632dab8d0f51fa40e05f5a4dddf4f607e9f33c57b207d2faf453cfbec0aefc5",
+      "after": "785418f3af6209d7f62fb157b9b0796347861785762d3b8d520dbd7d28fda81b"
+    },
+    "apps/web-tour/public/assets/authored/hero-street/hero_street_corridor_far.lod1.glb": {
+      "before": "ed1369d17c776c097795a64c7bad9bd9b392ac3f47aeda173b73ba4a11d7ccb6",
+      "after": "9c072cb224c98e650a427ed005f3da974c9783f24e21a8b7c30937851e1ddc1f"
+    },
+    "apps/web-tour/public/assets/authored/hero-street/hero_street_corridor_far.lod2.glb": {
+      "before": "41146ad8bb2dba95d4c3e2810d9639af5141809b2790bd97052b7bd15edc6d6d",
+      "after": "b9aa53b4e112f3b2cb82fbd6cb9e4e751bad13638b856f3f605ae7125f0dc25c"
+    }
+  }
+}

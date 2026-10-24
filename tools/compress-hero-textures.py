@@ -7,7 +7,7 @@ import time
 root=Path(__file__).resolve().parents[1]/'apps/web-tour/public/assets/authored/hero-street'
 manifest=json.loads((root/'manifest.json').read_text())
 names={a['irradiance'] for a in manifest['assets']}
-names.update(f'{surface}-{channel}.png' for surface in ('dust','plaster','linen','pottery','wood') for channel in ('albedo','normal','orm'))
+names.update(f'{surface}-{channel}.png' for surface in manifest.get('surfaceFamilies', ('dust','plaster','linen','pottery','wood')) for channel in ('albedo','normal','orm'))
 variants={}; before=after=0
 for name in sorted(names):
     source=root/name; output=source.with_suffix('.webp')

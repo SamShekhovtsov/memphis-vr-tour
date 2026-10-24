@@ -6,6 +6,7 @@ UV1 generation so the irradiance follows the final geometry.
 import bmesh
 import math
 from mathutils import Vector
+from refine_hero_foreground import finish_foreground, foreground
 
 
 def islands(bm, ids, kind):
@@ -45,8 +46,18 @@ def refine_surfaces(obj, material_id):
              and all(ids[f.material_index] == 'plaster' for f in e.link_faces)
              and e.calc_face_angle() > math.radians(38)]
     if edges:
-        bmesh.ops.bevel(bm, geom=edges, offset=.018, segments=3,
-                        affect='EDGES', clamp_overlap=True)
+        front = [e for e in edges if foreground(obj.matrix_world @ ((e.verts[0].co+e.verts[1].co)*.5))]
+        front_set = set(front)
+        other = [e for e in edges if e not in front_set]
+        if other:
+            bmesh.ops.bevel(bm, geom=other, offset=.018, segments=3,
+                            affect='EDGES', clamp_overlap=True)
+        # Existing foreground wall masses, jambs and roof trim retain their
+        # bounding envelope but catch a broader, worn highlight at the edges.
+        front = [e for e in front if e.is_valid]
+        if front:
+            bmesh.ops.bevel(bm, geom=front, offset=.035, segments=4,
+                            affect='EDGES', clamp_overlap=True)
     # Keep support endpoints fixed while breaking the ruler-straight silhouette.
     for verts in islands(bm, ids, 'wood'):
         lo, hi, span = bounds(verts)
@@ -80,12 +91,27 @@ def refine_surfaces(obj, material_id):
                     w = (v.co[b]-lo[b])/span[b]
                     # Zero at panel corners; centimetre-scale hanging folds.
                     envelope = math.sin(math.pi*u)*(.35+.65*math.sin(math.pi*w))
-                    v.co[normal_axis] += envelope*(.028*math.sin(u*math.pi*8+w*2) + .012*math.sin(w*math.pi*5))
-                    if normal_axis == 2:
-                        v.co.z -= .18*math.sin(math.pi*u)*math.sin(math.pi*w)
+                    front = foreground(obj.matrix_world @ ((lo+hi)*.5))
+                    if front:
+                        # Broad hanging belly plus folds radiating from the
+                        # four fixed supports; tension relaxes into the centre.
+                        belly = math.sin(math.pi*u)*math.sin(math.pi*w)
+                        corner = min(math.hypot(u,w), math.hypot(1-u,w),
+                                     math.hypot(u,1-w), math.hypot(1-u,1-w))
+                        folds = .018*math.sin(corner*math.pi*15)*math.exp(-corner*4)
+                        v.co[normal_axis] += envelope*(folds + .009*math.sin(u*math.pi*3+w*4))
+                        if normal_axis == 2:
+                            v.co.z -= (.24 if span[b] > 2 else .12)*belly
+                    else:
+                        v.co[normal_axis] += envelope*(.028*math.sin(u*math.pi*8+w*2) + .012*math.sin(w*math.pi*5))
+                        if normal_axis == 2:
+                            v.co.z -= .18*math.sin(math.pi*u)*math.sin(math.pi*w)
                     # Raised stitched hems stay inside the existing cloth panel.
                     edge = min(u, 1-u)
                     v.co[normal_axis] += .004*math.exp(-(edge/.035)**2)*math.sin(math.pi*w)
+                    if front:
+                        edge_w = min(w,1-w)
+                        v.co[normal_axis] += .004*math.exp(-(edge_w/.035)**2)*math.sin(math.pi*u)
                 for v in verts:
                     for f in v.link_faces: f.smooth = True
             else:
@@ -114,7 +140,35 @@ def refine_surfaces(obj, material_id):
     bm.normal_update()
     rims = [e for e in bm.edges if e.is_manifold and all(ids[f.material_index]=='pottery' for f in e.link_faces)
             and e.calc_face_angle() > math.radians(45) and e.calc_length() > .015]
-    if rims: bmesh.ops.bevel(bm, geom=rims, offset=.004, segments=2, affect='EDGES', clamp_overlap=True)
+    front_rims = [e for e in rims if foreground(obj.matrix_world @ ((e.verts[0].co+e.verts[1].co)*.5))]
+    front_set = set(front_rims)
+    other_rims = [e for e in rims if e not in front_set]
+    if other_rims: bmesh.ops.bevel(bm, geom=other_rims, offset=.004, segments=2, affect='EDGES', clamp_overlap=True)
+    front_rims = [e for e in front_rims if e.is_valid]
+    if front_rims: bmesh.ops.bevel(bm, geom=front_rims, offset=.007, segments=3, affect='EDGES', clamp_overlap=True)
+    bm.normal_update()
+    timber_edges = [e for e in bm.edges if e.is_manifold and e.calc_length()>.04
+                    and all(ids[f.material_index]=='wood' for f in e.link_faces)
+                    and foreground(obj.matrix_world @ ((e.verts[0].co+e.verts[1].co)*.5))
+                    and e.calc_face_angle()>math.radians(45)]
+    if timber_edges: bmesh.ops.bevel(bm, geom=timber_edges, offset=.003, segments=2, affect='EDGES', clamp_overlap=True)
+    finish_foreground(bm, obj, ids)
+    # Reuse all original material slots outside the bounded finish pass.
+    variants = {}
+    for face in bm.faces:
+        p = obj.matrix_world @ face.calc_center_median()
+        sid = ids[face.material_index]
+        selected = foreground(p) and (sid == 'linen' or (sid == 'plaster'
+                   and abs(face.normal.x) > .90 and
+                   (-15.1 < p.x < -14.2 or -6.4 < p.x < -5.4)))
+        if not selected: continue
+        original_index = face.material_index
+        if original_index not in variants:
+            mat = obj.data.materials[original_index].copy()
+            mat.name = 'hero-finish-' + sid + '-' + mat.name
+            obj.data.materials.append(mat)
+            variants[original_index] = len(obj.data.materials)-1
+        face.material_index = variants[original_index]
     bm.normal_update()
     bm.to_mesh(obj.data)
     bm.free()

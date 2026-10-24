@@ -193,7 +193,7 @@ const totalSize = async files => (await Promise.all(files.map(file=>stat(file)))
 const highBytes = await totalSize(street.assets.map(a=>path.join(authoredRoot,"hero-street",a.fileName)));
 const lodBytes = await totalSize(street.assets.flatMap(a=>(a.lods??[]).map(l=>path.join(authoredRoot,"hero-street",l.fileName))));
 const peopleBytes = await totalSize(people.assets.map(a=>path.join(authoredRoot,"people",a.fileName)));
-const textureNames = [...street.assets.map(a=>a.irradiance),...['dust','plaster','linen','pottery','wood'].flatMap(s=>['albedo','normal','orm'].map(c=>`${s}-${c}.png`))];
+const textureNames = [...street.assets.map(a=>a.irradiance),...(street.surfaceFamilies ?? ['dust','plaster','linen','pottery','wood']).flatMap(s=>['albedo','normal','orm'].map(c=>`${s}-${c}.png`))];
 const authoredTextureBytes = await totalSize(textureNames.map(n=>path.join(authoredRoot,"hero-street",street.textureVariants?.[n]??n)));
 const groundSection = await readJson(path.join(authoredRoot,"hero-ground/manifest.json"));
 const groundSectionBytes = await totalSize(Object.keys(groundSection.runtime).map(file=>path.join(authoredRoot,"hero-ground",file)));

@@ -1,0 +1,24 @@
+{
+  "id": "hero-street-steps-3-4-acceptance-v1",
+  "date": "2026-10-24",
+  "scope": "Existing foreground facade finishes, canopy and nearby wood/pottery; no new props or changed placement, routes, cameras, lights or collisions",
+  "budgets": {
+    "additionalTextureMiB": 40,
+    "additionalDrawCalls": 12,
+    "highGeometryBytes": 14000000,
+    "lodGeometryBytes": 16000000,
+    "streetDeliveryTextureBytes": 12000000,
+    "maximumMedianFrameRegression": 0.1,
+    "maximumP95FrameRegression": 0.1
+  },
+  "capture": {"width":1280,"height":720,"quality":"balanced","frozenSeconds":2},
+  "visualChecks": [
+    "Plaster reads as a continuous hand-applied earthen finish with restrained patch variation",
+    "Original openings, footprints and roof outlines remain fixed",
+    "Canopy corners stay at their original attachments; folds relax away from supports",
+    "Existing pottery and timber retain their locations and gain restrained surface variation",
+    "Finish colours remain opaque through every real LOD",
+    "Ptah floors and both approach crossings pass live collision checks"
+  ],
+  "signoff": "Inspect all three matched views and route previews; performance and automated checks do not certify cinematic quality"
+}

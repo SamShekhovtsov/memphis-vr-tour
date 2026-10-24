@@ -217,3 +217,11 @@ Matched before/after views now freeze exactly 300 simulated steps with unchanged
 root paths and cameras. Contact continuity checks were added to the solver test.
 
 Existing hero actors now use browser world-space stance contacts and a two-bone leg solve after their unchanged paths. Source GLBs, district and cameras remain locked. See [implementation, measured drift and matched screenshots](docs/design/hero-street-ground-contact-2026-10-22.md). The captured browser sequence reduced cumulative stance drift by 93.4%; extreme reach and sharp turns remain limited by fixed roots. Disable with ?ik=0. Run node tools/test-ground-contact-ik.mjs for solver checks.
+
+## Foreground finish follow-up (2026-10-24)
+
+Steps 3–4 refine the existing foreground plaster, wall/roof/jamb edges, canopy folds/hems and nearby timber/pottery. See [matched views, scope and performance](docs/design/hero-finish-steps-3-4-2026-10-24.md). The cinematic reference standard remains unmet; this is a bounded asset-quality milestone.
+
+Keep the original section lock. Authorized authored-GLB revisions are recorded separately in `content/scene-data/hero-street.steps34-revision.json`; source anchors, construction extents, cameras, routes, actor motion and collision functions remain protected. New finish materials use opaque linear vertex colours (`COLOR_0`) and external PBR maps. The baker explicitly selects the colour layer, merges equivalent finish slots and packs normalized RGBA8 before export. Future engine materials must preserve vertex-colour multiplication and UV1 irradiance.
+
+Use `tools/benchmark-hero-finish.mjs` only with the archived baseline available. It temporarily swaps visual assets between fresh browser runs and restores final files in `finally`; never run it concurrently with an asset build or another capture. Performance comparisons must use the final asset version with all builders idle.

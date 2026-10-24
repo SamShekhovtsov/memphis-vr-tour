@@ -39,6 +39,20 @@ for (const asset of manifest.assets) {
     const material = gltf.materials[primitive.material];
     assert.ok(!retiredSheets.has(materialKey(material.name)), `Opaque legacy decal survived bake: ${material.name}`);
     assert.ok(Object.hasOwn(manifest.materials, material.name), `Unbound material: ${material.name}`);
+    if (manifest.foregroundFinish) {
+      assert.notEqual(primitive.attributes.COLOR_0,undefined,'Foreground finish colours were lost during export');
+      const accessor = gltf.accessors[primitive.attributes.COLOR_0];
+      assert.equal(accessor.type,'VEC4');
+      const view = gltf.bufferViews[accessor.bufferView];
+      const start = 20 + bytes.readUInt32LE(12) + 8 + (view.byteOffset ?? 0) + (accessor.byteOffset ?? 0);
+      const width = accessor.componentType === 5126 ? 4 : accessor.componentType === 5123 ? 2 : 1;
+      const stride = view.byteStride ?? width*4;
+      for (let i=0;i<accessor.count;i++) {
+        const offset = start+i*stride+width*3;
+        const alpha = width===4 ? bytes.readFloatLE(offset) : width===2 ? bytes.readUInt16LE(offset)/65535 : bytes.readUInt8(offset)/255;
+        assert.equal(alpha,1,'Finish colour must never make a surface transparent');
+      }
+    }
   }
   const png = await readFile(path.join(dir, asset.irradiance));
   let previousTriangles = asset.triangles;
@@ -48,6 +62,7 @@ for (const asset of manifest.assets) {
     let triangles=0;
     for(const mesh of low.meshes) for(const primitive of mesh.primitives) {
       assert.notEqual(primitive.attributes.TEXCOORD_1,undefined,'LOD lost its lightmap UVs');
+      if (manifest.foregroundFinish) assert.notEqual(primitive.attributes.COLOR_0,undefined,'LOD lost finish colours');
       assert.ok(Object.hasOwn(manifest.materials,low.materials[primitive.material].name),'Unbound LOD material');
       assert.ok(!retiredSheets.has(materialKey(low.materials[primitive.material].name)), 'Opaque legacy decal survived in LOD');
       triangles+=low.accessors[primitive.indices].count/3;
@@ -60,7 +75,7 @@ for (const asset of manifest.assets) {
   assert.equal(png.readUInt32BE(20), manifest.bake.resolution);
   textureBytes += png.length;
 }
-const surfaces = manifest.id === "hero-street-authored-v2" ? ["dust", "plaster", "linen", "pottery", "wood"] : ["dust", "plaster"];
+const surfaces = manifest.surfaceFamilies ?? (manifest.id === "hero-street-authored-v2" ? ["dust", "plaster", "linen", "pottery", "wood"] : ["dust", "plaster"]);
 for (const surface of surfaces) for (const channel of ["albedo", "normal", "orm"]) {
   textureBytes += (await stat(path.join(dir, `${surface}-${channel}.png`))).size;
 }

@@ -1,0 +1,144 @@
+{
+  "date": "2026-10-24",
+  "completedDate": "2026-10-25",
+  "pairs": {
+    "hero-street-main": {
+      "camera": [
+        -6.08,
+        1.52,
+        -16.4
+      ],
+      "drawCalls": {
+        "before": 321,
+        "after": 329
+      },
+      "textureMiB": {
+        "before": 348.35148111979186,
+        "after": 380.35148111979174
+      },
+      "activeIndices": {
+        "before": 1705906,
+        "after": 1778170
+      }
+    },
+    "hero-street-material": {
+      "camera": [
+        -8.9,
+        1.35,
+        -17.6
+      ],
+      "drawCalls": {
+        "before": 350,
+        "after": 358
+      },
+      "textureMiB": {
+        "before": 348.35148111979186,
+        "after": 380.35148111979174
+      },
+      "activeIndices": {
+        "before": 1684638,
+        "after": 1756902
+      }
+    },
+    "street-entry": {
+      "camera": [
+        -7,
+        1.7,
+        -28
+      ],
+      "drawCalls": {
+        "before": 437,
+        "after": 445
+      },
+      "textureMiB": {
+        "before": 348.35148111979186,
+        "after": 380.35148111979174
+      },
+      "activeIndices": {
+        "before": 1616494,
+        "after": 1688758
+      }
+    }
+  },
+  "performance": {
+    "before": {
+      "gpu": {
+        "vendor": "Google Inc. (Intel)",
+        "renderer": "ANGLE (Intel, Intel(R) HD Graphics 4600 (0x00000416) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+        "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+      },
+      "renderSize": [
+        1280,
+        720
+      ],
+      "p50": 31.899999976158142,
+      "p95": 78.79999995231628,
+      "runs": [
+        {
+          "samples": 169,
+          "p50": 28.299999952316284,
+          "p95": 68.10000002384186,
+          "max": 120.10000002384186
+        },
+        {
+          "samples": 169,
+          "p50": 31.899999976158142,
+          "p95": 78.79999995231628,
+          "max": 136.40000009536743
+        },
+        {
+          "samples": 169,
+          "p50": 33.800000071525574,
+          "p95": 81.60000002384186,
+          "max": 160.10000002384186
+        }
+      ]
+    },
+    "after": {
+      "gpu": {
+        "vendor": "Google Inc. (Intel)",
+        "renderer": "ANGLE (Intel, Intel(R) HD Graphics 4600 (0x00000416) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+        "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+      },
+      "renderSize": [
+        1280,
+        720
+      ],
+      "p50": 27.199999928474426,
+      "p95": 74.70000004768372,
+      "runs": [
+        {
+          "samples": 169,
+          "p50": 30.59999990463257,
+          "p95": 74.70000004768372,
+          "max": 154.5
+        },
+        {
+          "samples": 169,
+          "p50": 27.199999928474426,
+          "p95": 69.70000004768372,
+          "max": 154.89999997615814
+        },
+        {
+          "samples": 169,
+          "p50": 24.799999952316284,
+          "p95": 75,
+          "max": 128.5
+        }
+      ]
+    },
+    "p50Change": -0.14733542480239703,
+    "p95Change": -0.052030455674030085,
+    "budgetPassed": true
+  },
+  "triangles": {
+    "before": 171682,
+    "after": 183726
+  },
+  "deliveryBytes": {
+    "before": 8492500,
+    "after": 10076028
+  },
+  "collisionChecks": 26,
+  "method": "Three alternating archived-before/final-after accelerated route comparisons, each 180 rendered frames and 169 timed intervals, balanced 1280×720 on the same hardware GPU. Median of run p50 and run p95. Initial load excluded; LOD streaming included. No simultaneous asset builds. Short samples; not sustained performance or headset qualification."
+}

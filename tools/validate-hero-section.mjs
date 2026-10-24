@@ -27,7 +27,14 @@ if (process.argv.includes('--record-code')) {
   fs.writeFileSync(lockFile, JSON.stringify({ date: '2026-10-24', protectedFiles: Object.fromEntries(files.map(file => [file, hash(file)])) }, null, 2)+'\n');
 } else {
   const lock = JSON.parse(fs.readFileSync(lockFile));
-  for (const [file, checksum] of Object.entries(lock.protectedFiles)) assert.equal(hash(file), checksum, `Protected scene data changed: ${file}`);
+  const revisionFile = 'content/scene-data/hero-street.steps34-revision.json';
+  const revision = fs.existsSync(revisionFile) ? JSON.parse(fs.readFileSync(revisionFile)) : { files: {} };
+  for (const [file, change] of Object.entries(revision.files)) {
+    assert.match(file, /^apps\/web-tour\/public\/assets\/authored\/hero-street\/hero_street_corridor_(near|mid|far)(\.lod[12])?\.glb$/,
+      'Only authored visual geometry may be revised in steps 3–4');
+    assert.equal(change.before, lock.protectedFiles[file], 'Revision must retain the original baseline');
+  }
+  for (const [file, checksum] of Object.entries(lock.protectedFiles)) assert.equal(hash(file), revision.files[file]?.after ?? checksum, `Protected scene data changed: ${file}`);
   const scene = fs.readFileSync(sceneFile,'utf8');
   assert.equal(Object.keys(lock.protectedCode).length, protectedFunctions.length);
   for (const [name, checksum] of Object.entries(lock.protectedCode)) assert.equal(functionHash(scene,name),checksum,`Placement/camera/collision function changed: ${name}`);
@@ -42,5 +49,5 @@ if (process.argv.includes('--record-code')) {
   assert.ok(bytes <= budget.additionalRuntimeTextureBytes, 'Ground download exceeds the agreed budget');
   assert.equal(Object.keys(manifest.runtime).length, 3);
   for (const [file, checksum] of Object.entries(manifest.source.sha256)) assert.equal(hash('content/source-assets/ground/polyhaven-brown-mud-dry/'+file), checksum, 'Ground source hash mismatch');
-  console.log(`Hero section passed: ${files.length} protected files and ${protectedFunctions.length} placement/camera/collision functions unchanged; ${bytes} ground texture bytes.`);
+  console.log(`Hero section passed: ${files.length} protected files checked (${Object.keys(revision.files).length} explicit visual-only revisions), ${protectedFunctions.length} placement/camera/collision functions unchanged; ${bytes} ground texture bytes.`);
 }
