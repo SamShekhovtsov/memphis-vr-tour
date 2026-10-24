@@ -195,7 +195,9 @@ const lodBytes = await totalSize(street.assets.flatMap(a=>(a.lods??[]).map(l=>pa
 const peopleBytes = await totalSize(people.assets.map(a=>path.join(authoredRoot,"people",a.fileName)));
 const textureNames = [...street.assets.map(a=>a.irradiance),...['dust','plaster','linen','pottery','wood'].flatMap(s=>['albedo','normal','orm'].map(c=>`${s}-${c}.png`))];
 const authoredTextureBytes = await totalSize(textureNames.map(n=>path.join(authoredRoot,"hero-street",street.textureVariants?.[n]??n)));
-for(const [key,value] of Object.entries({streetHighGlbBytes:highBytes,streetLodGlbBytes:lodBytes,sharedPeopleGlbBytes:peopleBytes,streetTextureDeliveryBytes:authoredTextureBytes})) {
+const groundSection = await readJson(path.join(authoredRoot,"hero-ground/manifest.json"));
+const groundSectionBytes = await totalSize(Object.keys(groundSection.runtime).map(file=>path.join(authoredRoot,"hero-ground",file)));
+for(const [key,value] of Object.entries({streetHighGlbBytes:highBytes,streetLodGlbBytes:lodBytes,sharedPeopleGlbBytes:peopleBytes,streetTextureDeliveryBytes:authoredTextureBytes,groundSectionTextureBytes:groundSectionBytes})) {
   if(!budget.authoredBudgets?.[key] || value>budget.authoredBudgets[key])addError(`Authored budget ${key}: ${value} exceeds ${budget.authoredBudgets?.[key]}`);
 }
 
@@ -210,4 +212,5 @@ if (errors.length > 0) {
     `Browser optimization validation passed: active unique GLBs ${activeBytes} bytes, fallback GLB ${fallbackBytes} bytes, generated textures ${textureBytes} bytes.`
   );
   console.log(`Authored delivery: street high ${highBytes}, streamed LODs ${lodBytes}, shared people ${peopleBytes}, texture delivery ${authoredTextureBytes} bytes.`);
+  console.log(`Ground section texture delivery: ${groundSectionBytes} additional bytes; no added geometry.`);
 }

@@ -1,0 +1,18 @@
+{
+  "id": "hero-street-steps-1-2-acceptance-v1",
+  "date": "2026-10-24",
+  "scope": "Nearest existing street ground section; layouts, mesh bytes, lights, actor paths, cameras and walkable heights locked",
+  "capture": { "width": 1280, "height": 720, "quality": "balanced", "frozenSeconds": 2 },
+  "motion": { "start": [-6, 1.7, -18], "end": [-6, 1.7, -4], "simulationFrames": 300, "simulationFps": 30 },
+  "budgets": { "maximumMedianFrameRegression": 0.1, "maximumP95FrameRegression": 0.1, "additionalRuntimeTextureBytes": 6000000, "additionalTextureMiB": 36, "additionalDrawCalls": 0, "additionalGeometry": 0 },
+  "visualChecks": [
+    "Compacted walking lane and looser sheltered edges read at a plausible physical scale",
+    "Fine aggregate and shallow impressions remain visible from the oblique bookmark",
+    "No obvious tile grid, painted lighting or rectangular patch boundary",
+    "No conspicuous texture shimmer in the matched route recordings",
+    "No recognizable modern footwear, tyre tracks or litter",
+    "Existing contacts, temple floors and approach clearances remain intact"
+  ],
+  "assetChecklist": { "licenseAndHashes": true, "colourSpaceDeclared": true, "normalConventionDeclared": true, "sourceHeightOfflineOnly": true, "editableMasks": true, "lightingSeparateFromAlbedo": true },
+  "signoff": "Automated checks plus visual inspection; passing frame budgets alone does not establish cinematic quality"
+}

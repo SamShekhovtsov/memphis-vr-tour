@@ -1,0 +1,418 @@
+{
+  "date": "2026-10-24",
+  "gpu": {
+    "vendor": "Google Inc. (Intel)",
+    "renderer": "ANGLE (Intel, Intel(R) HD Graphics 4600 (0x00000416) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+    "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+  },
+  "contract": "hero-street-steps-1-2-acceptance-v1",
+  "pairs": {
+    "hero-street-main": {
+      "camera": [
+        -6.08,
+        1.52,
+        -16.4
+      ],
+      "drawCalls": {
+        "before": 321,
+        "after": 321
+      },
+      "additionalTextureMiB": 31.999999999999943,
+      "activeIndices": 1705906
+    },
+    "street-entry": {
+      "camera": [
+        -7,
+        1.7,
+        -28
+      ],
+      "drawCalls": {
+        "before": 437,
+        "after": 437
+      },
+      "additionalTextureMiB": 31.999999999999943,
+      "activeIndices": 1616494
+    },
+    "hero-street-material": {
+      "camera": [
+        -8.9,
+        1.35,
+        -17.6
+      ],
+      "drawCalls": {
+        "before": 350,
+        "after": 350
+      },
+      "additionalTextureMiB": 31.999999999999943,
+      "activeIndices": 1684638
+    }
+  },
+  "runs": {
+    "before": {
+      "p50": 39.60000002384186,
+      "p95": 78,
+      "medianEquivalentFps": 25.25252523732154,
+      "samples": [
+        {
+          "samples": 169,
+          "p50": 40.89999997615814,
+          "p95": 90.10000002384186,
+          "max": 484.1999999284744
+        },
+        {
+          "samples": 169,
+          "p50": 39.60000002384186,
+          "p95": 78,
+          "max": 192
+        },
+        {
+          "samples": 169,
+          "p50": 30.59999990463257,
+          "p95": 72.5,
+          "max": 151.89999997615814
+        }
+      ],
+      "renderSize": [
+        1280,
+        720
+      ]
+    },
+    "after": {
+      "p50": 35.799999952316284,
+      "p95": 77.79999995231628,
+      "medianEquivalentFps": 27.93296093105998,
+      "samples": [
+        {
+          "samples": 169,
+          "p50": 38.800000071525574,
+          "p95": 118.5,
+          "max": 190.39999997615814
+        },
+        {
+          "samples": 169,
+          "p50": 35.799999952316284,
+          "p95": 76.60000002384186,
+          "max": 205.79999995231628
+        },
+        {
+          "samples": 169,
+          "p50": 35.700000047683716,
+          "p95": 77.79999995231628,
+          "max": 151.69999992847443
+        }
+      ],
+      "renderSize": [
+        1280,
+        720
+      ]
+    }
+  },
+  "performance": {
+    "medianRegression": -0.0959595977080232,
+    "p95Regression": -0.0025641031754322086,
+    "passed": true
+  },
+  "clips": {
+    "before": {
+      "simulationSeconds": 10,
+      "state": {
+        "active": true,
+        "frame": 300,
+        "complete": true,
+        "simulationFps": 30,
+        "frames": 300,
+        "start": [
+          -6,
+          1.7,
+          -18
+        ],
+        "end": [
+          -6,
+          1.7,
+          -4
+        ],
+        "progress": 1,
+        "camera": [
+          -6,
+          1.7,
+          -4
+        ],
+        "lastRecordedFrame": 300
+      },
+      "encodedFrames": 97,
+      "frameNumbers": [
+        4,
+        9,
+        12,
+        14,
+        17,
+        20,
+        26,
+        30,
+        33,
+        35,
+        38,
+        42,
+        44,
+        47,
+        53,
+        55,
+        59,
+        62,
+        66,
+        69,
+        71,
+        73,
+        78,
+        81,
+        84,
+        87,
+        89,
+        93,
+        97,
+        99,
+        100,
+        104,
+        106,
+        110,
+        113,
+        115,
+        119,
+        123,
+        125,
+        127,
+        130,
+        134,
+        137,
+        140,
+        142,
+        145,
+        148,
+        151,
+        155,
+        158,
+        161,
+        164,
+        169,
+        172,
+        176,
+        178,
+        182,
+        185,
+        188,
+        191,
+        194,
+        196,
+        201,
+        204,
+        206,
+        208,
+        211,
+        214,
+        219,
+        221,
+        224,
+        226,
+        230,
+        234,
+        236,
+        240,
+        243,
+        246,
+        248,
+        251,
+        255,
+        257,
+        260,
+        263,
+        266,
+        269,
+        274,
+        277,
+        279,
+        282,
+        285,
+        287,
+        290,
+        294,
+        297,
+        299,
+        300
+      ],
+      "note": "Compositor frames assigned to the 300-frame simulation timeline and encoded as a 10-second animated WebP; frames may be dropped. Not a performance measurement."
+    },
+    "after": {
+      "simulationSeconds": 10,
+      "state": {
+        "active": true,
+        "frame": 300,
+        "complete": true,
+        "simulationFps": 30,
+        "frames": 300,
+        "start": [
+          -6,
+          1.7,
+          -18
+        ],
+        "end": [
+          -6,
+          1.7,
+          -4
+        ],
+        "progress": 1,
+        "camera": [
+          -6,
+          1.7,
+          -4
+        ],
+        "lastRecordedFrame": 300
+      },
+      "encodedFrames": 100,
+      "frameNumbers": [
+        3,
+        6,
+        10,
+        14,
+        16,
+        19,
+        23,
+        25,
+        28,
+        31,
+        34,
+        37,
+        41,
+        44,
+        47,
+        50,
+        52,
+        55,
+        59,
+        62,
+        65,
+        67,
+        70,
+        73,
+        77,
+        79,
+        83,
+        86,
+        88,
+        91,
+        95,
+        97,
+        99,
+        103,
+        107,
+        110,
+        113,
+        115,
+        117,
+        121,
+        124,
+        126,
+        131,
+        134,
+        137,
+        140,
+        142,
+        144,
+        148,
+        151,
+        154,
+        158,
+        160,
+        164,
+        167,
+        169,
+        172,
+        176,
+        178,
+        180,
+        183,
+        187,
+        190,
+        195,
+        197,
+        200,
+        202,
+        205,
+        207,
+        211,
+        215,
+        218,
+        221,
+        224,
+        226,
+        230,
+        232,
+        235,
+        239,
+        241,
+        246,
+        248,
+        251,
+        254,
+        258,
+        260,
+        263,
+        266,
+        269,
+        272,
+        274,
+        277,
+        281,
+        284,
+        287,
+        291,
+        293,
+        296,
+        299,
+        300
+      ],
+      "note": "Compositor frames assigned to the 300-frame simulation timeline and encoded as a 10-second animated WebP; frames may be dropped. Not a performance measurement."
+    }
+  },
+  "protectedFiles": 18,
+  "protectedFunctions": 8,
+  "sourceAnchors": 1713,
+  "protectedDoorAndMassExtents": 70,
+  "groundRuntimeBytes": 4394200,
+  "collisionChecks": 26,
+  "channels": {
+    "normalLengthRange": [
+      0.949853777885437,
+      1.0144894123077393
+    ],
+    "minimumRoughness": 0.7294117647058823,
+    "metallic": 0,
+    "physicalChannelCompressionExact": true,
+    "blendAlphaExact": true,
+    "protectedRegions": {
+      "hero-street-main": {
+        "interiorChangedFractionAboveOneCodeValue": 0,
+        "rawChangedFractionAboveOneCodeValue": 0.006421875,
+        "maximumRawCodeValueDifference": 103,
+        "edgeExclusionPixels": 2,
+        "top140Exact": true
+      },
+      "street-entry": {
+        "interiorChangedFractionAboveOneCodeValue": 0,
+        "rawChangedFractionAboveOneCodeValue": 0,
+        "maximumRawCodeValueDifference": 0,
+        "edgeExclusionPixels": 2,
+        "top140Exact": true
+      },
+      "hero-street-material": {
+        "interiorChangedFractionAboveOneCodeValue": 0,
+        "rawChangedFractionAboveOneCodeValue": 0.019384375,
+        "maximumRawCodeValueDifference": 134,
+        "edgeExclusionPixels": 2,
+        "top140Exact": true
+      }
+    },
+    "groundRegionMeanCodeValueDifference": 10.612626075744629,
+    "note": "Channel/region checks do not automatically establish cinematic quality."
+  },
+  "method": "Three alternating before/after accelerated 180-rendered-frame route sweeps, 169 intervals each; report median of the three p50 and p95 results. Same GPU, balanced tier, 1280x720. Initial load excluded; LOD streaming included. No concurrent asset builds or recording. Short desktop tests, not sustained/headset validation."
+}

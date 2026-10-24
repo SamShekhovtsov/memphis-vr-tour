@@ -1,6 +1,7 @@
 import { AbstractMesh, Color3, Material, PBRMaterial, Scene, Texture } from "@babylonjs/core";
 import type { HeroBakeManifest } from "@egyptvr/shared-scene";
 import daylight from "../../../../content/scene-data/hero-street.daylight.json";
+import { createGroundSectionBinder } from "./HeroGroundMaterial";
 export type { HeroBakeManifest } from "@egyptvr/shared-scene";
 
 export const authoredHeroRoot = "/assets/authored/hero-street/";
@@ -17,6 +18,7 @@ function texture(scene: Scene, file: string, color: boolean, uvSet = 0): Texture
 }
 
 export function createHeroMaterialBinder(scene: Scene, manifest: HeroBakeManifest) {
+  const bindGroundSection = createGroundSectionBinder(scene);
   const cache = new Map<string, PBRMaterial>();
   const maps = new Map<string, Texture>();
   const getMap = (file: string, color: boolean, uvSet = 0) => {
@@ -75,6 +77,7 @@ export function createHeroMaterialBinder(scene: Scene, manifest: HeroBakeManifes
         mat.subSurface.maximumThickness = .003;
       }
       mat.backFaceCulling = source.backFaceCulling;
+      if (surface === "dust") bindGroundSection(mat);
       mat.metadata = { surfaceId: surface, bakeId: manifest.id, irradianceUvSet: binding.uvSet };
       cache.set(key, mat);
       return mat;

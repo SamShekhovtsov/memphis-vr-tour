@@ -68,6 +68,7 @@
     "streetLodGlbBytes": 16000000,
     "sharedPeopleGlbBytes": 4000000,
     "streetTextureDeliveryBytes": 12000000,
+    "groundSectionTextureBytes": 6000000,
     "notes": "Includes solid cloth backs and anatomical people. Generated fallback budgets above remain separate. LOD meshes are additional on-demand transfers. WebP reduces delivery bytes, not GPU texture memory."
   }
 }

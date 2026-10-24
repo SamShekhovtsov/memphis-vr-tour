@@ -332,6 +332,10 @@ export async function createMemphisWhiteWallsScene(
   shrineGlow.range = 17;
 
   const routeTrack = createGuidedRouteTrack(manifest);
+  const reviewMode = new URLSearchParams(location.search).has("review");
+  const reviewSegment = routeTrack.segments.find(segment => segment.start.position.z === -18 && segment.end.position.z === -4 && segment.start.position.x === -6);
+  if (reviewMode && !reviewSegment) throw new Error("Locked hero-street review segment is missing.");
+  if (reviewMode) scene.metadata.review = { active: false, frame: 0, complete: false, simulationFps: 30, frames: 300, start: reviewSegment!.start.position.asArray(), end: reviewSegment!.end.position.asArray() };
   const ground = createBaseDistrict(scene, materials);
   createNileEdge(scene, materials, qualityProfile);
   createResidentialStreet(scene, materials);
@@ -396,8 +400,18 @@ export async function createMemphisWhiteWallsScene(
 
   scene.onBeforeRenderObservable.add(() => {
     const deltaSeconds = engine.getDeltaTime() / 1000;
+    const review = scene.metadata.review;
 
-    if (benchmark && scene.metadata.benchmarkReady) {
+    if (review?.active && reviewSegment) {
+      const progress = Math.min(299, review.frame) / 299;
+      review.frame = Math.min(300, review.frame + 1);
+      const sample = sampleGuidedRoute(routeTrack, (reviewSegment.startDistance + progress * reviewSegment.length) / routeTrack.totalLength);
+      camera.position.copyFrom(sample.position); camera.position.y = 1.7;
+      camera.setTarget(sample.lookAt);
+      review.complete = review.frame >= 300;
+      review.progress = progress;
+      review.camera = camera.position.asArray();
+    } else if (benchmark && scene.metadata.benchmarkReady) {
       const progress = Math.min(1, benchmarkFrame++ / 179);
       const sample = sampleGuidedRoute(routeTrack, progress);
       camera.position.copyFrom(sample.position); camera.position.y = 1.7;
@@ -421,7 +435,12 @@ export async function createMemphisWhiteWallsScene(
     for (let substep = 0; substep < (ikAudit ? 5 : 1); substep++) {
     if (ikAudit && auditFrame >= 300) break;
     if (ikAudit && substep > 0) groundContacts.forEach(contact => contact.restore());
-    const time = ikAudit ? 2 + auditFrame / 60 : qaTime ?? performance.now() / 1000;
+    const time = ikAudit ? 2 + auditFrame / 60 : review?.active ? 2 + Math.min(299, review.frame - 1) / 30 : qaTime ?? performance.now() / 1000;
+    if (review?.active) {
+      for (const group of scene.animationGroups.filter(group => group.name.startsWith("glbAnimatedStreetActors"))) {
+        group.goToFrame(group.from + (time * 24) % Math.max(1, group.to - group.from));
+      }
+    }
     if (ikAudit) {
       for (const group of scene.animationGroups.filter(group => group.name.startsWith("glbAnimatedStreetActors"))) {
         group.goToFrame(group.from + (48 + auditFrame) % Math.max(1, group.to - group.from));

@@ -1,4 +1,5 @@
-import { spawn } from "node:child_process";
+import { spawn, spawnSync } from "node:child_process";
+import { existsSync } from "node:fs";
 import { mkdir, rm, writeFile, readFile } from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
@@ -21,7 +22,10 @@ const legacy = process.argv.includes("--legacy");
 const ikAudit = process.argv.includes("--ik-audit");
 const benchmark = process.argv.includes("--benchmark");
 const collisionAudit = process.argv.includes("--collision-audit");
+const motion = process.argv.includes("--motion");
+const legacyGround = process.argv.includes("--legacy-ground");
 const hardware = process.argv.includes("--hardware");
+let debugHttpBase;
 const quality = process.argv.find(arg=>arg.startsWith("--quality="))?.slice(10) ?? "balanced";
 if (!["balanced","cinematic","performance","headset"].includes(quality)) throw new Error("Unknown quality tier");
 
@@ -52,6 +56,8 @@ const chrome = spawn(
   { stdio: ["ignore", "pipe", "pipe"], windowsHide: true }
 );
 chrome.stderr.on("data", (data) => {
+  const endpoint = String(data).match(/DevTools listening on (ws:\/\/\S+)/)?.[1];
+  if (endpoint) debugHttpBase = `http://${new URL(endpoint).host}`;
   if (/DevTools listening|crash server|self-terminating/.test(String(data))) process.stderr.write(data);
 });
 chrome.on("error", (error) => console.error(error));
@@ -61,7 +67,7 @@ try {
 
   for (const shot of shots) {
     const output = path.join(screenshotDir, `${shot}-${label}.png`);
-    await capture(`http://127.0.0.1:${lock.localDevPort}/?shot=${shot}&chrome=0&qa=1&quality=${quality}${legacy ? "&materials=legacy" : ""}${ikAudit ? "&ikAudit=1" : ""}${benchmark ? "&benchmark=1" : ""}${collisionAudit ? "&collisionAudit=1" : ""}`, output);
+    await capture(`http://127.0.0.1:${lock.localDevPort}/?shot=${shot}&chrome=0&qa=1&quality=${quality}${legacy ? "&materials=legacy" : ""}${ikAudit ? "&ikAudit=1" : ""}${benchmark ? "&benchmark=1" : ""}${collisionAudit ? "&collisionAudit=1" : ""}${legacyGround ? "&ground=legacy" : ""}${motion ? "&review=1" : ""}`, output);
     console.log(`Captured ${output}`);
   }
 } finally {
@@ -74,7 +80,7 @@ try {
 }
 
 async function capture(url, outputPath) {
-  const target = await fetchJson(`http://127.0.0.1:${port}/json/new?${encodeURIComponent(url)}`, {
+  const target = await fetchJson(`${debugHttpBase}/json/new?${encodeURIComponent(url)}`, {
     method: "PUT"
   });
   const client = await createCdpClient(target.webSocketDebuggerUrl);
@@ -98,6 +104,42 @@ async function capture(url, outputPath) {
       fromSurface: true
     });
     await writeFile(outputPath, Buffer.from(screenshot.data, "base64"));
+    if (motion) {
+      const framesDir = path.join(rootDir, 'content', 'generated', 'route-reviews', path.basename(outputPath, '.png'));
+      await mkdir(framesDir, {recursive:true});
+      const frames = [], writes = [];
+      const unsubscribe = client.on('Page.screencastFrame', event => {
+        const file = `frame-${String(frames.length).padStart(4,'0')}.jpg`;
+        frames.push({file, timestamp:event.metadata.timestamp});
+        writes.push(writeFile(path.join(framesDir,file),Buffer.from(event.data,'base64')));
+        void client.send('Page.screencastFrameAck',{sessionId:event.sessionId}).catch(()=>{});
+      });
+      await client.send('Page.startScreencast',{format:'jpeg',quality:85,maxWidth:960,maxHeight:540,everyNthFrame:3});
+      await client.send('Runtime.evaluate',{expression:'window.memphisStartReview()'});
+      const deadline = Date.now() + 60000;
+      let state;
+      while (Date.now() < deadline) {
+        await sleep(250);
+        const progress = await client.send('Runtime.evaluate',{expression:'window.memphisQA.review.complete',returnByValue:true});
+        if (progress.result?.value) {
+          state = (await client.send('Runtime.evaluate',{expression:'window.memphisQA.review',returnByValue:true})).result.value;
+          break;
+        }
+      }
+      await client.send('Page.stopScreencast'); unsubscribe(); await Promise.all(writes);
+      if (!state?.complete) throw new Error('Route review did not finish');
+      await client.send('Page.navigate',{url:'about:blank'});
+      const metadataFile = path.join(framesDir,'review.json');
+      const preview = outputPath.replace(/\.png$/,'.motion.webp');
+      await writeFile(metadataFile,JSON.stringify({frames,state,output:preview}));
+      const bundledPython = path.join(os.homedir(),'.cache/codex-runtimes/codex-primary-runtime/dependencies/python/python.exe');
+      const python = process.env.PYTHON_BIN ?? (existsSync(bundledPython) ? bundledPython : 'python');
+      const encoding = spawnSync(python,[path.join(rootDir,'tools/encode-route-review.py'),metadataFile],{stdio:'inherit',windowsHide:true});
+      if (encoding.status !== 0) throw new Error('Route preview encoding failed');
+      const encoded = JSON.parse(await readFile(metadataFile,'utf8'));
+      metrics.motionRecording = { simulationSeconds:10, state:{...state,samples:undefined}, encodedFrames:encoded.encodedFrames, frameNumbers:encoded.frameNumbers,
+        note:'Compositor frames assigned to the 300-frame simulation timeline and encoded as a 10-second animated WebP; frames may be dropped. Not a performance measurement.' };
+    }
     await writeFile(outputPath.replace(/\.png$/, ".json"), JSON.stringify({ url, viewport, renderer: hardware ? "Chrome default GPU selection; inspect gpu field" : "Chrome SwiftShader; not a hardware performance benchmark", ...metrics }, null, 2) + "\n");
     if (collisionAudit && !metrics.collisionAudit?.passed) {
       const failures = metrics.collisionAudit?.checks.filter(check => !check.passed).map(check => check.name) ?? ["audit missing"];
@@ -105,7 +147,7 @@ async function capture(url, outputPath) {
     }
   } finally {
     client.close();
-    await fetch(`http://127.0.0.1:${port}/json/close/${target.id}`);
+    await fetch(`${debugHttpBase}/json/close/${target.id}`);
   }
 }
 
@@ -135,7 +177,8 @@ async function waitForChrome() {
 
   while (Date.now() < deadline) {
     try {
-      await fetchJson(`http://127.0.0.1:${port}/json/version`);
+      if (!debugHttpBase) { await sleep(160); continue; }
+      await fetchJson(`${debugHttpBase}/json/version`);
       return;
     } catch {
       await sleep(160);
@@ -159,6 +202,7 @@ async function createCdpClient(webSocketUrl) {
   const ws = new WebSocket(webSocketUrl);
   const pending = new Map();
   const eventWaiters = new Map();
+  const listeners = new Map();
   let nextId = 1;
 
   await new Promise((resolve, reject) => {
@@ -168,6 +212,7 @@ async function createCdpClient(webSocketUrl) {
 
   ws.addEventListener("message", (event) => {
     const message = JSON.parse(event.data);
+    for (const listener of listeners.get(message.method) ?? []) listener(message.params);
     if (message.method === "Runtime.exceptionThrown") console.error(JSON.stringify(message.params));
     if (message.method === "Runtime.consoleAPICalled" && ["error", "warning"].includes(message.params.type)) console.error(message.params.args.map(arg => arg.value ?? arg.description).join(" "));
 
@@ -190,6 +235,10 @@ async function createCdpClient(webSocketUrl) {
   });
 
   return {
+    on(method, callback) {
+      const callbacks = listeners.get(method) ?? new Set(); callbacks.add(callback); listeners.set(method,callbacks);
+      return () => callbacks.delete(callback);
+    },
     send(method, params = {}) {
       const id = nextId;
       nextId += 1;

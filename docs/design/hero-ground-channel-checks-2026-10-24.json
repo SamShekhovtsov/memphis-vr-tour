@@ -1,0 +1,35 @@
+{
+  "normalLengthRange": [
+    0.949853777885437,
+    1.0144894123077393
+  ],
+  "minimumRoughness": 0.7294117647058823,
+  "metallic": 0,
+  "physicalChannelCompressionExact": true,
+  "blendAlphaExact": true,
+  "protectedRegions": {
+    "hero-street-main": {
+      "interiorChangedFractionAboveOneCodeValue": 0.0,
+      "rawChangedFractionAboveOneCodeValue": 0.006421875,
+      "maximumRawCodeValueDifference": 103,
+      "edgeExclusionPixels": 2,
+      "top140Exact": true
+    },
+    "street-entry": {
+      "interiorChangedFractionAboveOneCodeValue": 0.0,
+      "rawChangedFractionAboveOneCodeValue": 0.0,
+      "maximumRawCodeValueDifference": 0,
+      "edgeExclusionPixels": 2,
+      "top140Exact": true
+    },
+    "hero-street-material": {
+      "interiorChangedFractionAboveOneCodeValue": 0.0,
+      "rawChangedFractionAboveOneCodeValue": 0.019384375,
+      "maximumRawCodeValueDifference": 134,
+      "edgeExclusionPixels": 2,
+      "top140Exact": true
+    }
+  },
+  "groundRegionMeanCodeValueDifference": 10.612626075744629,
+  "note": "Channel/region checks do not automatically establish cinematic quality."
+}

@@ -459,6 +459,9 @@ async function boot(): Promise<void> {
   });
   if (searchParams.has("qa")) {
     await controller.scene.whenReadyAsync();
+    if (searchParams.has("review")) {
+      (window as unknown as { memphisStartReview: () => void }).memphisStartReview = () => { controller.scene.metadata.review.active = true; };
+    }
     const instrumentation = new SceneInstrumentation(controller.scene);
     instrumentation.captureFrameTime = true;
     let frames = 0;
@@ -466,6 +469,11 @@ async function boot(): Promise<void> {
       let previousFrame = performance.now();
       controller.scene.metadata.benchmarkReady = searchParams.has("benchmark");
     controller.scene.onAfterRenderObservable.add(() => {
+        const review = controller.scene.metadata.review;
+        if (review?.active && review.frame > (review.lastRecordedFrame ?? 0)) {
+          (review.samples ??= []).push({frame: review.frame, timestamp: Date.now()/1000, camera: review.camera});
+          review.lastRecordedFrame = review.frame;
+        }
         const now = performance.now();
         if (frames > 10) frameIntervals.push(now-previousFrame);
         previousFrame = now;
@@ -475,6 +483,9 @@ async function boot(): Promise<void> {
       const qa = {
         ready: true,
         collisionAudit: searchParams.has("collisionAudit") ? auditDistrictCollisions(scene) : null,
+        review: scene.metadata.review ?? null,
+        groundSection: scene.metadata.groundSection ?? null,
+        layoutRoots: scene.transformNodes.filter(node => node.metadata?.runtimeAssetId).map(node => ({name: node.name, position: node.position.asArray(), rotation: node.rotation.asArray(), scale: node.scaling.asArray()})),
         heroLoaded: scene.transformNodes.filter((node) => node.name.includes("glbHeroStreet") && node.metadata?.runtimeAssetId).length === 3,
         meshes: scene.meshes.length,
         activeMeshes: scene.getActiveMeshes().length,

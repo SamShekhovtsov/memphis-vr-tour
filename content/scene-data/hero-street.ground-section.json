@@ -1,0 +1,11 @@
+{
+  "id": "hero-ground-section-v1",
+  "evidenceLevel": "inferred",
+  "bounds": { "minX": -10.7, "maxX": -1.55, "minZ": -22, "maxZ": -4 },
+  "fadeMetres": { "x": 0.35, "z": 1.5 },
+  "normalStrength": 0.7,
+  "runtimeRoot": "/assets/authored/hero-ground/",
+  "maps": { "albedo": "ground-albedo.webp", "normal": "ground-normal.webp", "orm": "ground-orm.webp" },
+  "protectedSurfaceHeight": "unchanged; no displacement or additional ground mesh",
+  "source": "Poly Haven brown_mud_dry; CC0; project-authored compaction and edge-deposit masks"
+}

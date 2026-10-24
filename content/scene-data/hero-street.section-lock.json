@@ -1,0 +1,33 @@
+{
+  "date": "2026-10-24",
+  "protectedFiles": {
+    "content/scene-data/hero-street.camera-lock.json": "ad68ca5727db3c7efd640d7d320ca358885df14e919765f2ba831260b0d0761e",
+    "content/scene-data/memphis-white-walls.tour.json": "bb1c0df8e4a7850c72703ffa0e267a3778eb03d958f808709b7147ceeaae930b",
+    "content/scene-data/hero-street.anchors-lock.json": "5c390ca8955e9b83cedb666cd050b5f4097857dcf5303abdac344cdf7c07f0cb",
+    "content/scene-data/hero-actors.motion-lock.json": "e4b6dfffb4d88a6bb2fbf769595ea3ff5388ba727a2eb9cefdf008e88a12818c",
+    "content/scene-data/hero-street.daylight.json": "ef46ea81ead2f423aa264107706d75d81a1294c45d66ce2d4b44e03e828eb576",
+    "apps/web-tour/public/assets/generated/glb/animated_street_actors.glb": "b0e90c58c8f9afc442023f3ff02a11b3a8bcd565011925bd69957664623eeb71",
+    "apps/web-tour/public/assets/generated/glb/hero_street_corridor_near.glb": "6a147fde2debb4fcec69d94b0731244bdcc108c39f8ae1b7810371dbc9eec9e5",
+    "apps/web-tour/public/assets/authored/hero-street/hero_street_corridor_near.glb": "5da0e951b5f1f4a9547fcbbc33159f2e729be68ecba56d0f45525f59bc0ca24e",
+    "apps/web-tour/public/assets/authored/hero-street/hero_street_corridor_near.lod1.glb": "cd6bd1d0027909ebbefc3d964eae02921180c11d681797fa2e8406470fcba7fd",
+    "apps/web-tour/public/assets/authored/hero-street/hero_street_corridor_near.lod2.glb": "c0523f7a397e8556c0b83b8e446f9fceb7af7c0af1cc1a364d63ec7bd85ce88e",
+    "apps/web-tour/public/assets/generated/glb/hero_street_corridor_mid.glb": "6e28934e920e226d87e173d409d6926a6c0cadf4e0c5d36ee5651851e2bd9688",
+    "apps/web-tour/public/assets/authored/hero-street/hero_street_corridor_mid.glb": "f160b85ea085d66a377bc680f9d7d606bf33387e71c105e9607f9e406d01391b",
+    "apps/web-tour/public/assets/authored/hero-street/hero_street_corridor_mid.lod1.glb": "243ec45aaaece13e29c6eeb313832b236273cfc9f1fec38410689746e7e59206",
+    "apps/web-tour/public/assets/authored/hero-street/hero_street_corridor_mid.lod2.glb": "819160a1dc4bb8b195228ed33a1236391652d45acbb678a81638ba38d13f80bd",
+    "apps/web-tour/public/assets/generated/glb/hero_street_corridor_far.glb": "7508bd413aaf4bbd552431173eed71b64d6299530ef43c8fe3d7f479e187e772",
+    "apps/web-tour/public/assets/authored/hero-street/hero_street_corridor_far.glb": "9632dab8d0f51fa40e05f5a4dddf4f607e9f33c57b207d2faf453cfbec0aefc5",
+    "apps/web-tour/public/assets/authored/hero-street/hero_street_corridor_far.lod1.glb": "ed1369d17c776c097795a64c7bad9bd9b392ac3f47aeda173b73ba4a11d7ccb6",
+    "apps/web-tour/public/assets/authored/hero-street/hero_street_corridor_far.lod2.glb": "41146ad8bb2dba95d4c3e2810d9639af5141809b2790bd97052b7bd15edc6d6d"
+  },
+  "protectedCode": {
+    "createModularAssetPlacements": "a0c2dc71a289611a958ba0db24196fd76ea9d8ff3ad52625acfcf32f5af8e9e1",
+    "applyCameraShotBookmark": "5c515e4e542ac022a1448224474aada0f2f392da07e4e9a7dd46a58e3a53bbab",
+    "createTemple": "bfb5303f9fa7f3722bff1672156f8f0a4ce941c67d868610c1c882ccad9776ad",
+    "createBaseDistrict": "6bbc698327dfc8c639acb9ae272c7c13cc13923bdc06bd47577b65f34dd27431",
+    "createResidentialStreet": "c58109ae77a6bee5cdd9fbe856d49ca8ec0c9b22f8c256828ce78b05e1efce50",
+    "createCraftsmenArea": "00e0a75e044b19495142db42c13d04019949968b87af0135e441680756a66d64",
+    "createHeroStreetCollisionGuides": "09819a395dbbe197f4bc01f70d2b08152dd2f8d51089ce290dd2900449711157",
+    "updateGlbActorMotions": "e641e762640ad5c0f565658d296a03bc1b3d8bdc9be57c5ef786f524d678c501"
+  }
+}

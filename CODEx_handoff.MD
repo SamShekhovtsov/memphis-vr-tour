@@ -1,5 +1,16 @@
 # CODEx Handoff: EgyptVRTour
 
+Hero steps 1–2 (2026-10-24): source-object anchors, 18 byte-locked files and eight
+placement/camera/collision functions now protect the ground proof section.
+Run `npm run validate:hero-section` and `npm run validate:hero-anchors`.
+The nearest ground uses CC0 dry-soil detail plus compaction/deposit/disturbance/
+impression masks, with no displacement or new meshes. Rebuild with
+`tools/build-hero-ground.py` using Python/Pillow/NumPy. Editable PNG masks and
+16-bit height live under `content/source-assets/ground/hero-section-generated/`.
+See [matched views, route previews, tests and performance](docs/design/hero-ground-steps-1-2-2026-10-24.md).
+Byte locks are the steps 1–2 baseline; revise affected geometry hashes deliberately
+for later authorized refinements after checking the unchanged construction anchors.
+
 Hero daylight/bake cleanup (2026-10-22): legacy translucent sheets were surviving
 as opaque geometry because imported alpha was linked rather than stored in the
 BSDF default value. The baker now retires these using source glTF alpha factors;

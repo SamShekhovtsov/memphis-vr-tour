@@ -1,0 +1,874 @@
+{
+  "url": "http://127.0.0.1:5573/?shot=hero-street-main&chrome=0&qa=1&quality=balanced&benchmark=1&ground=legacy",
+  "viewport": {
+    "width": 1280,
+    "height": 720,
+    "deviceScaleFactor": 1
+  },
+  "renderer": "Chrome default GPU selection; inspect gpu field",
+  "ready": true,
+  "collisionAudit": null,
+  "review": null,
+  "groundSection": null,
+  "layoutRoots": [
+    {
+      "name": "glbHeroStreetCorridorNear",
+      "position": [
+        -16.5,
+        0,
+        0
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "name": "glbHeroStreetCorridorMid",
+      "position": [
+        -16.5,
+        0,
+        0
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "name": "glbHeroStreetCorridorFar",
+      "position": [
+        -16.5,
+        0,
+        0
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "name": "glbAnimatedStreetActors",
+      "position": [
+        -16.5,
+        0,
+        0
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "name": "glbNileBoatLandingMain",
+      "position": [
+        -47.4,
+        0.16,
+        -51.6
+      ],
+      "rotation": [
+        0,
+        0.06,
+        0
+      ],
+      "scale": [
+        1.12,
+        1.12,
+        1.12
+      ]
+    },
+    {
+      "name": "glbNileBoatMooredNorth",
+      "position": [
+        -51.8,
+        0.13,
+        -24
+      ],
+      "rotation": [
+        0,
+        -0.18,
+        0
+      ],
+      "scale": [
+        0.82,
+        0.82,
+        0.82
+      ]
+    },
+    {
+      "name": "glbNileBoatMooredSouth",
+      "position": [
+        -49.6,
+        0.12,
+        23.5
+      ],
+      "rotation": [
+        0,
+        0.14,
+        0
+      ],
+      "scale": [
+        0.9,
+        0.9,
+        0.9
+      ]
+    },
+    {
+      "name": "glbReedBank-0",
+      "position": [
+        -36.1,
+        0,
+        -63
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        0.82,
+        0.82,
+        0.82
+      ]
+    },
+    {
+      "name": "glbReedBank-1",
+      "position": [
+        -35.6,
+        0,
+        -43
+      ],
+      "rotation": [
+        0,
+        0.38,
+        0
+      ],
+      "scale": [
+        0.8999999999999999,
+        0.8999999999999999,
+        0.8999999999999999
+      ]
+    },
+    {
+      "name": "glbReedBank-2",
+      "position": [
+        -36.1,
+        0,
+        -23
+      ],
+      "rotation": [
+        0,
+        0.76,
+        0
+      ],
+      "scale": [
+        0.98,
+        0.98,
+        0.98
+      ]
+    },
+    {
+      "name": "glbReedBank-3",
+      "position": [
+        -35.6,
+        0,
+        -3
+      ],
+      "rotation": [
+        0,
+        1.1400000000000001,
+        0
+      ],
+      "scale": [
+        0.82,
+        0.82,
+        0.82
+      ]
+    },
+    {
+      "name": "glbReedBank-4",
+      "position": [
+        -36.1,
+        0,
+        17
+      ],
+      "rotation": [
+        0,
+        1.52,
+        0
+      ],
+      "scale": [
+        0.8999999999999999,
+        0.8999999999999999,
+        0.8999999999999999
+      ]
+    },
+    {
+      "name": "glbReedBank-5",
+      "position": [
+        -35.6,
+        0,
+        37
+      ],
+      "rotation": [
+        0,
+        1.9,
+        0
+      ],
+      "scale": [
+        0.98,
+        0.98,
+        0.98
+      ]
+    },
+    {
+      "name": "glbReedBank-6",
+      "position": [
+        -36.1,
+        0,
+        57
+      ],
+      "rotation": [
+        0,
+        2.2800000000000002,
+        0
+      ],
+      "scale": [
+        0.82,
+        0.82,
+        0.82
+      ]
+    }
+  ],
+  "heroLoaded": true,
+  "meshes": 770,
+  "activeMeshes": 52,
+  "activeIndices": 543015,
+  "vertices": 769904,
+  "drawCalls": 104,
+  "meanFrameMs": 40.537777773539226,
+  "gpu": {
+    "vendor": "Google Inc. (Intel)",
+    "renderer": "ANGLE (Intel, Intel(R) HD Graphics 4600 (0x00000416) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+    "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+  },
+  "frameIntervalsMs": {
+    "samples": 169,
+    "p50": 40.89999997615814,
+    "p95": 90.10000002384186,
+    "max": 484.1999999284744
+  },
+  "benchmarkProgress": 1,
+  "streetLods": [
+    {
+      "assetId": "hero-street-corridor-near",
+      "level": 2,
+      "loaded": [
+        0,
+        2,
+        1
+      ],
+      "triangles": 16333,
+      "failed": []
+    },
+    {
+      "assetId": "hero-street-corridor-mid",
+      "level": 1,
+      "loaded": [
+        0,
+        1
+      ],
+      "triangles": 46151,
+      "failed": []
+    },
+    {
+      "assetId": "hero-street-corridor-far",
+      "level": 2,
+      "loaded": [
+        0,
+        1,
+        2
+      ],
+      "triangles": 8242,
+      "failed": []
+    }
+  ],
+  "rendering": {
+    "tier": "balanced",
+    "antialiasing": "FXAA",
+    "toneMapping": "ACES",
+    "exposure": 1.24,
+    "contrast": 1.02,
+    "shadowMapSize": 2048,
+    "shadowFilter": "PCF",
+    "daylightProfile": "hero-street-daylight-v1",
+    "indirectLightGain": 2.3
+  },
+  "heroPeople": 3,
+  "heroPeopleSource": "CC0 MakeHuman-derived anatomy; project-authored linen",
+  "heroInteractions": [
+    {
+      "root": "glbAnimatedStreetActors-actorHeroCarrier",
+      "toolAttached": false,
+      "workBlockRetained": false
+    },
+    {
+      "root": "glbAnimatedStreetActors-actorHeroStoneWorker",
+      "toolAttached": true,
+      "workBlockRetained": true
+    },
+    {
+      "root": "glbAnimatedStreetActors-actorHeroStreetWalker",
+      "toolAttached": false,
+      "workBlockRetained": false
+    }
+  ],
+  "estimatedTextureMiB": 316.3514811197919,
+  "textures": 85,
+  "textureErrors": [],
+  "renderWidth": 1280,
+  "renderHeight": 720,
+  "camera": [
+    0,
+    1.7,
+    84
+  ],
+  "animationSeconds": 2,
+  "groundContacts": [
+    {
+      "name": "heroPerson-Carrier-foot.L",
+      "planted": true,
+      "placement": 18,
+      "error": 0.000002502052291389138,
+      "position": [
+        -6.06683874130249,
+        0.1318671703338623,
+        20.450593948364258
+      ],
+      "animationPosition": [
+        -6.140105724334717,
+        0.10263759642839432,
+        20.479761123657227
+      ],
+      "target": [
+        -6.066839414414977,
+        0.13186776912324188,
+        20.450591614132794
+      ],
+      "ankleRoll": 0.004951412439050543,
+      "soleNormal": [
+        -0.00008641380004936396,
+        0.9999877419509506,
+        0.00495060405346109
+      ],
+      "groundNormal": [
+        0,
+        1,
+        0
+      ]
+    },
+    {
+      "name": "heroPerson-Carrier-foot.R",
+      "planted": false,
+      "placement": 16,
+      "error": 7.674453533653343e-7,
+      "position": [
+        -5.796369552612305,
+        0.14771153032779694,
+        20.306941986083984
+      ],
+      "animationPosition": [
+        -5.795855522155762,
+        0.10263759642839432,
+        20.48577117919922
+      ],
+      "target": [
+        -5.796369067372932,
+        0.14771133394460204,
+        20.306942547286944
+      ],
+      "ankleRoll": 0.11610847871942286,
+      "soleNormal": [
+        -0.00202181784771492,
+        0.9932669800128635,
+        0.1158301285016826
+      ],
+      "groundNormal": [
+        0,
+        1,
+        0
+      ]
+    },
+    {
+      "name": "heroPerson-StoneWorker-foot.L",
+      "planted": true,
+      "placement": 7,
+      "error": 0.0000030563362634236963,
+      "position": [
+        -9.084150314331055,
+        0.12304049730300903,
+        8.891838073730469
+      ],
+      "animationPosition": [
+        -9.084153175354004,
+        0.10711154341697693,
+        8.891837120056152
+      ],
+      "target": [
+        -9.084153175354004,
+        0.1230400010728836,
+        8.891837120056152
+      ],
+      "ankleRoll": 0,
+      "soleNormal": [
+        -2.0289476675812437e-8,
+        0.9999999999999998,
+        -1.2716214217366463e-8
+      ],
+      "groundNormal": [
+        0,
+        1,
+        0
+      ]
+    },
+    {
+      "name": "heroPerson-StoneWorker-foot.R",
+      "planted": true,
+      "placement": 7,
+      "error": 0.000003964228069090981,
+      "position": [
+        -8.99008846282959,
+        0.12304050475358963,
+        8.5145845413208
+      ],
+      "animationPosition": [
+        -8.990092277526855,
+        0.10711151361465454,
+        8.514583587646484
+      ],
+      "target": [
+        -8.990092277526855,
+        0.1230400010728836,
+        8.514583587646484
+      ],
+      "ankleRoll": 0,
+      "soleNormal": [
+        -4.453724298943075e-8,
+        0.9999999999999989,
+        -1.613260253114702e-8
+      ],
+      "groundNormal": [
+        0,
+        1,
+        0
+      ]
+    },
+    {
+      "name": "heroPerson-StreetWalker-foot.L",
+      "planted": true,
+      "placement": 18,
+      "error": 0.0000055781883879175405,
+      "position": [
+        -3.055663824081421,
+        0.13746853172779083,
+        -2.0604708194732666
+      ],
+      "animationPosition": [
+        -2.9682655334472656,
+        0.09849068522453308,
+        -2.155190944671631
+      ],
+      "target": [
+        -3.055664117495173,
+        0.13746921003359938,
+        -2.0604652904593137
+      ],
+      "ankleRoll": 0.12,
+      "soleNormal": [
+        -0.0041778113255679285,
+        0.9928090044982683,
+        -0.11963622561618047
+      ],
+      "groundNormal": [
+        0,
+        1,
+        0
+      ]
+    },
+    {
+      "name": "heroPerson-StreetWalker-foot.R",
+      "planted": false,
+      "placement": 19,
+      "error": 0.00000663175034282769,
+      "position": [
+        -3.268242835998535,
+        0.1465919017791748,
+        -2.1742753982543945
+      ],
+      "animationPosition": [
+        -3.356832504272461,
+        0.0984906554222107,
+        -2.1416220664978027
+      ],
+      "target": [
+        -3.268243468329463,
+        0.14659770343254827,
+        -2.1742722484784753
+      ],
+      "ankleRoll": -0.03945087667686481,
+      "soleNormal": [
+        0.0013763066331867091,
+        0.9992219435220481,
+        0.03941590242621072
+      ],
+      "groundNormal": [
+        0,
+        1,
+        0
+      ]
+    }
+  ],
+  "groundContactAudit": null,
+  "actorJoints": [
+    {
+      "name": "glbAnimatedStreetActors-actorHeroCarrier-leftArm-elbow",
+      "rotation": [
+        -0.5631375787432431,
+        0,
+        0,
+        0.8263631226139241
+      ]
+    },
+    {
+      "name": "glbAnimatedStreetActors-actorHeroCarrier-leftLeg-knee",
+      "rotation": [
+        0.22811205743082114,
+        0,
+        0,
+        0.9736348753231915
+      ]
+    },
+    {
+      "name": "glbAnimatedStreetActors-actorHeroCarrier-rightArm-elbow",
+      "rotation": [
+        -0.5109472157870757,
+        0,
+        0,
+        0.859611999851944
+      ]
+    },
+    {
+      "name": "glbAnimatedStreetActors-actorHeroCarrier-rightLeg-knee",
+      "rotation": [
+        0.04361939057707787,
+        0,
+        0,
+        0.9990482330322266
+      ]
+    },
+    {
+      "name": "glbAnimatedStreetActors-actorHeroStoneWorker-leftArm-elbow",
+      "rotation": [
+        -0.2164396345615387,
+        0,
+        0,
+        0.9762960076332092
+      ]
+    },
+    {
+      "name": "glbAnimatedStreetActors-actorHeroStoneWorker-leftLeg-knee",
+      "rotation": [
+        0.061048563569784164,
+        0,
+        0,
+        0.9981347918510437
+      ]
+    },
+    {
+      "name": "glbAnimatedStreetActors-actorHeroStoneWorker-rightArm-elbow",
+      "rotation": [
+        -0.2979760238936215,
+        0,
+        0,
+        0.9545733589389636
+      ]
+    },
+    {
+      "name": "glbAnimatedStreetActors-actorHeroStoneWorker-rightLeg-knee",
+      "rotation": [
+        0.061048563569784164,
+        0,
+        0,
+        0.9981347918510437
+      ]
+    },
+    {
+      "name": "glbAnimatedStreetActors-actorHeroStreetWalker-leftArm-elbow",
+      "rotation": [
+        -0.15115721765380719,
+        0,
+        0,
+        0.9885097527103128
+      ]
+    },
+    {
+      "name": "glbAnimatedStreetActors-actorHeroStreetWalker-leftLeg-knee",
+      "rotation": [
+        0.04361939057707787,
+        0,
+        0,
+        0.9990482330322266
+      ]
+    },
+    {
+      "name": "glbAnimatedStreetActors-actorHeroStreetWalker-rightArm-elbow",
+      "rotation": [
+        -0.1960489174233403,
+        0,
+        0,
+        0.9805941196564381
+      ]
+    },
+    {
+      "name": "glbAnimatedStreetActors-actorHeroStreetWalker-rightLeg-knee",
+      "rotation": [
+        0.11660936040205228,
+        0,
+        0,
+        0.9931778709508231
+      ]
+    }
+  ],
+  "actorAnimationGroups": [
+    {
+      "name": "glbAnimatedStreetActors-actorHeroCarrierAction",
+      "frame": 48,
+      "speedRatio": 1,
+      "targets": 2
+    },
+    {
+      "name": "glbAnimatedStreetActors-actorHeroCarrier-headJarRootAction",
+      "frame": 48,
+      "speedRatio": 1,
+      "targets": 1
+    },
+    {
+      "name": "glbAnimatedStreetActors-actorHeroCarrier-leftArm-pivotAction",
+      "frame": 48,
+      "speedRatio": 1,
+      "targets": 1
+    },
+    {
+      "name": "glbAnimatedStreetActors-actorHeroCarrier-leftArm-rigAction",
+      "frame": 48,
+      "speedRatio": 1,
+      "targets": 6
+    },
+    {
+      "name": "glbAnimatedStreetActors-actorHeroCarrier-leftLeg-pivotAction",
+      "frame": 48,
+      "speedRatio": 1,
+      "targets": 1
+    },
+    {
+      "name": "glbAnimatedStreetActors-actorHeroCarrier-leftLeg-rigAction",
+      "frame": 48,
+      "speedRatio": 1,
+      "targets": 6
+    },
+    {
+      "name": "glbAnimatedStreetActors-actorHeroCarrier-leftFootAction",
+      "frame": 48,
+      "speedRatio": 1,
+      "targets": 1
+    },
+    {
+      "name": "glbAnimatedStreetActors-actorHeroCarrier-rightArm-pivotAction",
+      "frame": 48,
+      "speedRatio": 1,
+      "targets": 1
+    },
+    {
+      "name": "glbAnimatedStreetActors-actorHeroCarrier-rightArm-rigAction",
+      "frame": 48,
+      "speedRatio": 1,
+      "targets": 6
+    },
+    {
+      "name": "glbAnimatedStreetActors-actorHeroCarrier-rightLeg-pivotAction",
+      "frame": 48,
+      "speedRatio": 1,
+      "targets": 1
+    },
+    {
+      "name": "glbAnimatedStreetActors-actorHeroCarrier-rightLeg-rigAction",
+      "frame": 48,
+      "speedRatio": 1,
+      "targets": 6
+    },
+    {
+      "name": "glbAnimatedStreetActors-actorHeroCarrier-rightFootAction",
+      "frame": 48,
+      "speedRatio": 1,
+      "targets": 1
+    },
+    {
+      "name": "glbAnimatedStreetActors-actorHeroStoneWorkerAction",
+      "frame": 48,
+      "speedRatio": 1,
+      "targets": 1
+    },
+    {
+      "name": "glbAnimatedStreetActors-actorHeroStoneWorker-leftArm-pivotAction",
+      "frame": 48,
+      "speedRatio": 1,
+      "targets": 1
+    },
+    {
+      "name": "glbAnimatedStreetActors-actorHeroStoneWorker-leftArm-rigAction",
+      "frame": 48,
+      "speedRatio": 1,
+      "targets": 6
+    },
+    {
+      "name": "glbAnimatedStreetActors-actorHeroStoneWorker-leftLeg-pivotAction",
+      "frame": 48,
+      "speedRatio": 1,
+      "targets": 1
+    },
+    {
+      "name": "glbAnimatedStreetActors-actorHeroStoneWorker-leftLeg-rigAction",
+      "frame": 48,
+      "speedRatio": 1,
+      "targets": 6
+    },
+    {
+      "name": "glbAnimatedStreetActors-actorHeroStoneWorker-leftFootAction",
+      "frame": 48,
+      "speedRatio": 1,
+      "targets": 1
+    },
+    {
+      "name": "glbAnimatedStreetActors-actorHeroStoneWorker-rightArm-pivotAction",
+      "frame": 48,
+      "speedRatio": 1,
+      "targets": 1
+    },
+    {
+      "name": "glbAnimatedStreetActors-actorHeroStoneWorker-rightArm-rigAction",
+      "frame": 48,
+      "speedRatio": 1,
+      "targets": 6
+    },
+    {
+      "name": "glbAnimatedStreetActors-actorHeroStoneWorker-rightLeg-pivotAction",
+      "frame": 48,
+      "speedRatio": 1,
+      "targets": 1
+    },
+    {
+      "name": "glbAnimatedStreetActors-actorHeroStoneWorker-rightLeg-rigAction",
+      "frame": 48,
+      "speedRatio": 1,
+      "targets": 6
+    },
+    {
+      "name": "glbAnimatedStreetActors-actorHeroStoneWorker-rightFootAction",
+      "frame": 48,
+      "speedRatio": 1,
+      "targets": 1
+    },
+    {
+      "name": "glbAnimatedStreetActors-actorHeroStreetWalkerAction",
+      "frame": 48,
+      "speedRatio": 1,
+      "targets": 2
+    },
+    {
+      "name": "glbAnimatedStreetActors-actorHeroStreetWalker-leftArm-pivotAction",
+      "frame": 48,
+      "speedRatio": 1,
+      "targets": 1
+    },
+    {
+      "name": "glbAnimatedStreetActors-actorHeroStreetWalker-leftArm-rigAction",
+      "frame": 48,
+      "speedRatio": 1,
+      "targets": 6
+    },
+    {
+      "name": "glbAnimatedStreetActors-actorHeroStreetWalker-leftLeg-pivotAction",
+      "frame": 48,
+      "speedRatio": 1,
+      "targets": 1
+    },
+    {
+      "name": "glbAnimatedStreetActors-actorHeroStreetWalker-leftLeg-rigAction",
+      "frame": 48,
+      "speedRatio": 1,
+      "targets": 6
+    },
+    {
+      "name": "glbAnimatedStreetActors-actorHeroStreetWalker-leftFootAction",
+      "frame": 48,
+      "speedRatio": 1,
+      "targets": 1
+    },
+    {
+      "name": "glbAnimatedStreetActors-actorHeroStreetWalker-rightArm-pivotAction",
+      "frame": 48,
+      "speedRatio": 1,
+      "targets": 1
+    },
+    {
+      "name": "glbAnimatedStreetActors-actorHeroStreetWalker-rightArm-rigAction",
+      "frame": 48,
+      "speedRatio": 1,
+      "targets": 6
+    },
+    {
+      "name": "glbAnimatedStreetActors-actorHeroStreetWalker-rightLeg-pivotAction",
+      "frame": 48,
+      "speedRatio": 1,
+      "targets": 1
+    },
+    {
+      "name": "glbAnimatedStreetActors-actorHeroStreetWalker-rightLeg-rigAction",
+      "frame": 48,
+      "speedRatio": 1,
+      "targets": 6
+    },
+    {
+      "name": "glbAnimatedStreetActors-actorHeroStreetWalker-rightFootAction",
+      "frame": 48,
+      "speedRatio": 1,
+      "targets": 1
+    }
+  ],
+  "quality": "balanced",
+  "bakeId": "hero-street-authored-v2"
+}
