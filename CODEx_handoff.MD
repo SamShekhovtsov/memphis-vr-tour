@@ -330,3 +330,41 @@ are temporary and restored with hash verification. Use
 and strict image/pose checks. `tools/report-render-depth.mjs` is the current
 report generator; the older `tools/report-rendering.mjs` describes the rejected
 selection experiment and must not overwrite the accepted result.
+
+## Full-tour balanced/cinematic tests — 25 October 2026
+
+No new production render/asset/layout/path/camera changes in this follow-up.
+`tools/benchmark-rendering.mjs` now forwards --quality to both batch and single
+capture modes. Actual tier/AA/shadow settings are asserted by the report tool.
+It also supports --tour-checkpoints (90,180,360,600 on the existing full route).
+
+Five alternating paired 600-frame full-route sweeps per tier, hardware Intel HD
+4600, 1280x720, normal pacing, GPU queries off. Median-run p50/p95:
+- Balanced: 58.8/110.3 -> 39.1/77.8 ms (-33.5%/-29.5%), all 5 pairs faster.
+- Cinematic: 50.3/105.6 -> 48.7/110.7 ms (-3.2%/+4.8%), only 2/5 pairs faster.
+Cinematic does NOT establish a reliable gain; retain this mixed result. No
+production tier or optimization switch was changed to force an improvement.
+Timings vary substantially; keep all raw runs. Do not compare absolute timings
+across the two separate browser sessions or pool with earlier street-only data.
+
+These are accelerated sweeps of the complete original Nile-to-Ptah route, not
+210-second real-time playback or headset tests. The first 61 frames (~10% of
+route) are timing warm-up, leaving 539 intervals/run and 2,695/variant/tier.
+Cinematic retains MSAA4 + FXAA, 2048 PCSS shadows, 4x anisotropy and original LOD
+ranges. Balanced retains FXAA/2048 PCF. All original assets/materials preserved.
+
+All 11 matched image pairs are pixel-identical: four route checkpoints per tier
+plus three locked cinematic street bookmarks. At each moving checkpoint all
+8,992 character/bird/smoke matrix elements match exactly; all ten paired timing
+endpoints match too. Harness production source buffers restored/hash-verified.
+Renderer integrity (111 protected files), hero section and character locks pass.
+The working tree may show removal of transient benchmark instrumentation from
+a snapshot made while the harness was active; the protected production hashes,
+not an instrumented snapshot, define the required final source state.
+
+See docs/design/render-tour-results-2026-10-25.md and .json, with links to every
+pair. Reproduce timings sequentially with --batch --runs=5 --quality=balanced
+--label=render-tour-balanced, then --quality=cinematic --label=render-tour-cinematic.
+Use node tools/capture-tour-rendering.mjs for all eleven paired shots,
+tools/verify-tour-rendering.py for strict pixels/poses, and
+node tools/report-tour-rendering.mjs for protocol assertions/report generation.

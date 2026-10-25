@@ -1,0 +1,90 @@
+{
+  "balanced-route-90": {
+    "changedPixels": 0,
+    "maxChannelDelta": 0,
+    "poseElements": 8992,
+    "maxPoseDifference": 0,
+    "before": "hero-street-main-render-tour-balanced-quality-checkpoint-90-before",
+    "after": "hero-street-main-render-tour-balanced-quality-checkpoint-90-after"
+  },
+  "balanced-route-180": {
+    "changedPixels": 0,
+    "maxChannelDelta": 0,
+    "poseElements": 8992,
+    "maxPoseDifference": 0,
+    "before": "hero-street-main-render-tour-balanced-quality-checkpoint-180-before",
+    "after": "hero-street-main-render-tour-balanced-quality-checkpoint-180-after"
+  },
+  "balanced-route-360": {
+    "changedPixels": 0,
+    "maxChannelDelta": 0,
+    "poseElements": 8992,
+    "maxPoseDifference": 0,
+    "before": "hero-street-main-render-tour-balanced-quality-checkpoint-360-before",
+    "after": "hero-street-main-render-tour-balanced-quality-checkpoint-360-after"
+  },
+  "balanced-route-600": {
+    "changedPixels": 0,
+    "maxChannelDelta": 0,
+    "poseElements": 8992,
+    "maxPoseDifference": 0,
+    "before": "hero-street-main-render-tour-balanced-quality-checkpoint-600-before",
+    "after": "hero-street-main-render-tour-balanced-quality-checkpoint-600-after"
+  },
+  "cinematic-route-90": {
+    "changedPixels": 0,
+    "maxChannelDelta": 0,
+    "poseElements": 8992,
+    "maxPoseDifference": 0,
+    "before": "hero-street-main-render-tour-cinematic-quality-checkpoint-90-before",
+    "after": "hero-street-main-render-tour-cinematic-quality-checkpoint-90-after"
+  },
+  "cinematic-route-180": {
+    "changedPixels": 0,
+    "maxChannelDelta": 0,
+    "poseElements": 8992,
+    "maxPoseDifference": 0,
+    "before": "hero-street-main-render-tour-cinematic-quality-checkpoint-180-before",
+    "after": "hero-street-main-render-tour-cinematic-quality-checkpoint-180-after"
+  },
+  "cinematic-route-360": {
+    "changedPixels": 0,
+    "maxChannelDelta": 0,
+    "poseElements": 8992,
+    "maxPoseDifference": 0,
+    "before": "hero-street-main-render-tour-cinematic-quality-checkpoint-360-before",
+    "after": "hero-street-main-render-tour-cinematic-quality-checkpoint-360-after"
+  },
+  "cinematic-route-600": {
+    "changedPixels": 0,
+    "maxChannelDelta": 0,
+    "poseElements": 8992,
+    "maxPoseDifference": 0,
+    "before": "hero-street-main-render-tour-cinematic-quality-checkpoint-600-before",
+    "after": "hero-street-main-render-tour-cinematic-quality-checkpoint-600-after"
+  },
+  "cinematic-hero-street-main": {
+    "changedPixels": 0,
+    "maxChannelDelta": 0,
+    "poseElements": 0,
+    "maxPoseDifference": 0,
+    "before": "hero-street-main-render-tour-cinematic-still-before",
+    "after": "hero-street-main-render-tour-cinematic-still-after"
+  },
+  "cinematic-hero-street-material": {
+    "changedPixels": 0,
+    "maxChannelDelta": 0,
+    "poseElements": 0,
+    "maxPoseDifference": 0,
+    "before": "hero-street-material-render-tour-cinematic-still-before",
+    "after": "hero-street-material-render-tour-cinematic-still-after"
+  },
+  "cinematic-street-entry": {
+    "changedPixels": 0,
+    "maxChannelDelta": 0,
+    "poseElements": 0,
+    "maxPoseDifference": 0,
+    "before": "street-entry-render-tour-cinematic-still-before",
+    "after": "street-entry-render-tour-cinematic-still-after"
+  }
+}

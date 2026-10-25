@@ -5,7 +5,7 @@ import json
 p=Path('docs/design/screenshots');checks={}
 pairs=[]
 for tier in ['balanced','cinematic']:
- for n in [180,360,600]:
+ for n in [90,180,360,600]:
   label=f'hero-street-main-render-tour-{tier}-quality-checkpoint-{n}'
   pairs.append((f'{tier}-route-{n}',label+'-before',label+'-after'))
 for shot in ['hero-street-main','hero-street-material','street-entry']:

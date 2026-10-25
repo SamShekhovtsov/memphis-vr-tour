@@ -1,4 +1,4 @@
-import { Engine, SceneInstrumentation, EngineInstrumentation } from "@babylonjs/core";
+import { Engine, SceneInstrumentation } from "@babylonjs/core";
 import "@babylonjs/loaders";
 import { createIcons, icons } from "lucide";
 import type {
@@ -464,15 +464,6 @@ async function boot(): Promise<void> {
     }
     const instrumentation = new SceneInstrumentation(controller.scene);
     instrumentation.captureFrameTime = true;
-    instrumentation.captureActiveMeshesEvaluationTime = true;
-    instrumentation.captureRenderTargetsRenderTime = true;
-    instrumentation.captureRenderTime = true;
-    instrumentation.captureAnimationsTime = true;
-    const gpuInstrumentation = new EngineInstrumentation(engine);
-    gpuInstrumentation.captureShaderCompilationTime = true;
-    gpuInstrumentation.captureGPUFrameTime = false && !!engine.getCaps().timerQuery;
-    const renderSamples: Record<string,number[]> = {frame:[],targets:[],main:[],active:[],animation:[],gpu:[],draws:[],shaderCompiles:[]};
-    const renderStopFrame=Number(searchParams.get("renderFrame")??600);
     let frames = 0;
       const frameIntervals: number[] = [];
       let previousFrame = performance.now();
@@ -484,21 +475,10 @@ async function boot(): Promise<void> {
           review.lastRecordedFrame = review.frame;
         }
         const now = performance.now();
-        if (frames > 60 && frames < renderStopFrame) {
-          frameIntervals.push(now-previousFrame);
-          renderSamples.frame.push(instrumentation.frameTimeCounter.current);
-          renderSamples.targets.push(instrumentation.renderTargetsRenderTimeCounter.current);
-          renderSamples.main.push(instrumentation.renderTimeCounter.current);
-          renderSamples.active.push(instrumentation.activeMeshesEvaluationTimeCounter.current);
-          renderSamples.animation.push(instrumentation.animationsTimeCounter.current);
-          renderSamples.draws.push(instrumentation.drawCallsCounter.current);
-          renderSamples.shaderCompiles.push(gpuInstrumentation.shaderCompilationTimeCounter.count);
-          const gpu=gpuInstrumentation.gpuFrameTimeCounter?.current;
-          if(gpu&&gpu>0)renderSamples.gpu.push(gpu/1e6);
-        }
+        if (frames > 10) frameIntervals.push(now-previousFrame);
         previousFrame = now;
       if (searchParams.has("ikAudit")) document.documentElement.dataset.ikAuditFrames = String(frames + 1);
-        if (++frames !== (searchParams.has("benchmark") ? renderStopFrame : searchParams.has("ikAudit") ? 60 : 30)) return;
+        if (++frames !== (searchParams.has("benchmark") ? 180 : searchParams.has("ikAudit") ? 60 : 30)) return;
       const scene = controller.scene;
       const qa = {
         ready: true,
@@ -533,13 +513,7 @@ async function boot(): Promise<void> {
         textureErrors: scene.textures.filter(texture => texture.loadingError).map(texture => texture.name),
         renderWidth: engine.getRenderWidth(), renderHeight: engine.getRenderHeight(),
         camera: scene.activeCamera?.position.asArray(),
-        animationSeconds: 2 + (renderStopFrame-1)/30,
-          benchmarkProtocol:{frames:renderStopFrame,warmupFrames:61,deterministicActorTime:true,route:"full-tour"},
-          renderProfile:{gpuTimerSupported:!!engine.getCaps().timerQuery,gpuTimerEnabled:false,samples:renderSamples},
-          renderingOptimization:scene.metadata.renderingOptimization??null,
-          activeMeshPoseMatrices:scene.getActiveMeshes().data.slice(0,scene.getActiveMeshes().length).map(mesh=>({name:mesh.name,world:Array.from(mesh.computeWorldMatrix(true).m),material:mesh.material?.name,materialId:mesh.material?.uniqueId})),
-          moverPoseMatrices:[...new Set([...scene.meshes,...scene.transformNodes].filter(node=>/^(incenseSmoke-|distantBird-)/.test(node.name)).flatMap(node=>[node,...node.getChildTransformNodes(false)]))].map(node=>({name:node.name,world:Array.from(node.computeWorldMatrix(true).m)})),
-          peoplePoseMatrices:scene.metadata.heroPeople.flatMap((person:{root:import("@babylonjs/core").TransformNode})=>person.root.getChildTransformNodes(false).filter(node=>node.name.startsWith("heroPerson-")).map(node=>({name:node.name,world:Array.from(node.computeWorldMatrix(true).m)}))),
+        animationSeconds: 2,
         groundContacts: scene.metadata?.groundContacts ?? [],
         groundContactAudit: scene.metadata?.groundContactAudit ?? null,
         actorJoints: scene.transformNodes.filter(node => /-elbow$|-knee$/.test(node.name)).map(node => ({
@@ -551,7 +525,7 @@ async function boot(): Promise<void> {
       };
       document.documentElement.dataset.sceneReady = "true";
       (window as unknown as { memphisQA: typeof qa }).memphisQA = qa;
-      instrumentation.dispose(); gpuInstrumentation.dispose(); engine.stopRenderLoop();
+      instrumentation.dispose();
     });
   }
 }

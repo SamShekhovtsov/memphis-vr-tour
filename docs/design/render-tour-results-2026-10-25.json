@@ -1,0 +1,469 @@
+{
+  "date": "2026-10-25",
+  "method": "Five alternating before/after pairs per tier (AB, BA, AB, BA, AB). One fresh hardware Chrome process per tier; sequential fresh page targets, identical 1280×720 viewport and hardware renderer. Normal/default presentation pacing, GPU timing queries disabled, builders/captures otherwise idle. Each run sweeps the complete existing Nile-to-Ptah guided camera route over 600 rendered frames, with frame-driven character time. First 61 frames excluded from timing: 539 intervals/run, 2,695 per variant/tier. Values are medians of five run percentiles. This is an accelerated route sweep, not the real-time 210-second playback or an XR qualification. Startup excluded; existing LOD streaming retained. Before disables only the new depth pass. Production source edits from the harness are restored and hash-verified.",
+  "results": {
+    "balanced": {
+      "phases": {
+        "before": {
+          "gpu": {
+            "vendor": "Google Inc. (Intel)",
+            "renderer": "ANGLE (Intel, Intel(R) HD Graphics 4600 (0x00000416) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+            "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+          },
+          "renderSize": [
+            1280,
+            720
+          ],
+          "rendering": {
+            "tier": "balanced",
+            "antialiasing": "FXAA",
+            "toneMapping": "ACES",
+            "exposure": 1.24,
+            "contrast": 1.02,
+            "shadowMapSize": 2048,
+            "shadowFilter": "PCF",
+            "daylightProfile": "hero-street-daylight-v1",
+            "indirectLightGain": 2.3
+          },
+          "p50": 58.799999952316284,
+          "p95": 110.30000007152557,
+          "runs": [
+            {
+              "samples": 539,
+              "p50": 34.39999997615814,
+              "p95": 75.69999992847443,
+              "max": 210.39999997615814
+            },
+            {
+              "samples": 539,
+              "p50": 58.799999952316284,
+              "p95": 110.30000007152557,
+              "max": 386.5
+            },
+            {
+              "samples": 539,
+              "p50": 62,
+              "p95": 110.89999997615814,
+              "max": 417.8000000715256
+            },
+            {
+              "samples": 539,
+              "p50": 54.699999928474426,
+              "p95": 99,
+              "max": 319.3000000715256
+            },
+            {
+              "samples": 539,
+              "p50": 66,
+              "p95": 130.20000004768372,
+              "max": 364.1999999284744
+            }
+          ],
+          "stages": {
+            "frame": 28.600000023841858,
+            "targets": 3.399999976158142,
+            "main": 6.699999928474426,
+            "active": 5.100000023841858,
+            "animation": 0.10000002384185791,
+            "draws": 190
+          },
+          "optimization": {
+            "mode": "legacy",
+            "strategy": "authored-occluder-depth",
+            "frames": 0,
+            "depthDraws": 0,
+            "lastDepthDraws": 0,
+            "fallback": false
+          }
+        },
+        "after": {
+          "gpu": {
+            "vendor": "Google Inc. (Intel)",
+            "renderer": "ANGLE (Intel, Intel(R) HD Graphics 4600 (0x00000416) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+            "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+          },
+          "renderSize": [
+            1280,
+            720
+          ],
+          "rendering": {
+            "tier": "balanced",
+            "antialiasing": "FXAA",
+            "toneMapping": "ACES",
+            "exposure": 1.24,
+            "contrast": 1.02,
+            "shadowMapSize": 2048,
+            "shadowFilter": "PCF",
+            "daylightProfile": "hero-street-daylight-v1",
+            "indirectLightGain": 2.3
+          },
+          "p50": 39.09999990463257,
+          "p95": 77.79999995231628,
+          "runs": [
+            {
+              "samples": 539,
+              "p50": 34.10000002384186,
+              "p95": 62.10000002384186,
+              "max": 172.19999992847443
+            },
+            {
+              "samples": 539,
+              "p50": 41.700000047683716,
+              "p95": 82.39999997615814,
+              "max": 277.5
+            },
+            {
+              "samples": 539,
+              "p50": 40.39999997615814,
+              "p95": 99.70000004768372,
+              "max": 175.5
+            },
+            {
+              "samples": 539,
+              "p50": 39.09999990463257,
+              "p95": 77.79999995231628,
+              "max": 173.30000007152557
+            },
+            {
+              "samples": 539,
+              "p50": 29.399999976158142,
+              "p95": 57.89999997615814,
+              "max": 136.60000002384186
+            }
+          ],
+          "stages": {
+            "frame": 25,
+            "targets": 3.600000023841858,
+            "main": 7.5,
+            "active": 4.399999976158142,
+            "animation": 0.10000002384185791,
+            "draws": 191
+          },
+          "optimization": {
+            "mode": "optimized",
+            "strategy": "authored-occluder-depth",
+            "frames": 614,
+            "depthDraws": 3106,
+            "lastDepthDraws": 0,
+            "fallback": false
+          }
+        }
+      },
+      "p50Change": -0.3350340146880847,
+      "p95Change": -0.29465095283893206,
+      "pairedChanges": [
+        -0.008720928852447907,
+        -0.2908163251445539,
+        -0.3483870971587396,
+        -0.2851919569330965,
+        -0.5545454549066948
+      ],
+      "fasterPairs": 5,
+      "verdict": "measured improvement",
+      "endpoints": [
+        {
+          "run": 1,
+          "elements": 8992,
+          "maxDifference": 0
+        },
+        {
+          "run": 2,
+          "elements": 8992,
+          "maxDifference": 0
+        },
+        {
+          "run": 3,
+          "elements": 8992,
+          "maxDifference": 0
+        },
+        {
+          "run": 4,
+          "elements": 8992,
+          "maxDifference": 0
+        },
+        {
+          "run": 5,
+          "elements": 8992,
+          "maxDifference": 0
+        }
+      ]
+    },
+    "cinematic": {
+      "phases": {
+        "before": {
+          "gpu": {
+            "vendor": "Google Inc. (Intel)",
+            "renderer": "ANGLE (Intel, Intel(R) HD Graphics 4600 (0x00000416) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+            "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+          },
+          "renderSize": [
+            1280,
+            720
+          ],
+          "rendering": {
+            "tier": "cinematic",
+            "antialiasing": "MSAA4 + FXAA",
+            "toneMapping": "ACES",
+            "exposure": 1.24,
+            "contrast": 1.02,
+            "shadowMapSize": 2048,
+            "shadowFilter": "PCSS",
+            "daylightProfile": "hero-street-daylight-v1",
+            "indirectLightGain": 2.3
+          },
+          "p50": 50.300000071525574,
+          "p95": 105.60000002384186,
+          "runs": [
+            {
+              "samples": 539,
+              "p50": 50.300000071525574,
+              "p95": 122.20000004768372,
+              "max": 196.59999990463257
+            },
+            {
+              "samples": 539,
+              "p50": 47.200000047683716,
+              "p95": 105.60000002384186,
+              "max": 213.09999990463257
+            },
+            {
+              "samples": 539,
+              "p50": 47.300000071525574,
+              "p95": 97.39999997615814,
+              "max": 174.39999997615814
+            },
+            {
+              "samples": 539,
+              "p50": 55.200000047683716,
+              "p95": 105.20000004768372,
+              "max": 248.29999995231628
+            },
+            {
+              "samples": 539,
+              "p50": 59.10000002384186,
+              "p95": 110.70000004768372,
+              "max": 315.89999997615814
+            }
+          ],
+          "stages": {
+            "frame": 28.300000071525574,
+            "targets": 3.600000023841858,
+            "main": 6.5,
+            "active": 4.799999952316284,
+            "animation": 0.10000002384185791,
+            "draws": 190
+          },
+          "optimization": {
+            "mode": "legacy",
+            "strategy": "authored-occluder-depth",
+            "frames": 0,
+            "depthDraws": 0,
+            "lastDepthDraws": 0,
+            "fallback": false
+          }
+        },
+        "after": {
+          "gpu": {
+            "vendor": "Google Inc. (Intel)",
+            "renderer": "ANGLE (Intel, Intel(R) HD Graphics 4600 (0x00000416) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+            "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+          },
+          "renderSize": [
+            1280,
+            720
+          ],
+          "rendering": {
+            "tier": "cinematic",
+            "antialiasing": "MSAA4 + FXAA",
+            "toneMapping": "ACES",
+            "exposure": 1.24,
+            "contrast": 1.02,
+            "shadowMapSize": 2048,
+            "shadowFilter": "PCSS",
+            "daylightProfile": "hero-street-daylight-v1",
+            "indirectLightGain": 2.3
+          },
+          "p50": 48.699999928474426,
+          "p95": 110.70000004768372,
+          "runs": [
+            {
+              "samples": 539,
+              "p50": 42.89999997615814,
+              "p95": 81.29999995231628,
+              "max": 135.39999997615814
+            },
+            {
+              "samples": 539,
+              "p50": 48.699999928474426,
+              "p95": 110.70000004768372,
+              "max": 181
+            },
+            {
+              "samples": 539,
+              "p50": 44.89999997615814,
+              "p95": 91.89999997615814,
+              "max": 170.20000004768372
+            },
+            {
+              "samples": 539,
+              "p50": 55.60000002384186,
+              "p95": 115.79999995231628,
+              "max": 249.29999995231628
+            },
+            {
+              "samples": 539,
+              "p50": 67.30000007152557,
+              "p95": 140,
+              "max": 284.2000000476837
+            }
+          ],
+          "stages": {
+            "frame": 26.100000023841858,
+            "targets": 3.3000000715255737,
+            "main": 6.899999976158142,
+            "active": 4.200000047683716,
+            "animation": 0.10000002384185791,
+            "draws": 191
+          },
+          "optimization": {
+            "mode": "optimized",
+            "strategy": "authored-occluder-depth",
+            "frames": 611,
+            "depthDraws": 3067,
+            "lastDepthDraws": 0,
+            "fallback": false
+          }
+        }
+      },
+      "p50Change": -0.031809147927951864,
+      "p95Change": 0.04829545476032582,
+      "pairedChanges": [
+        -0.14711729790943906,
+        0.03177965845922337,
+        -0.05073995965619926,
+        0.007246376373416741,
+        0.13874788569163643
+      ],
+      "fasterPairs": 2,
+      "verdict": "no conclusive gain",
+      "endpoints": [
+        {
+          "run": 1,
+          "elements": 8992,
+          "maxDifference": 0
+        },
+        {
+          "run": 2,
+          "elements": 8992,
+          "maxDifference": 0
+        },
+        {
+          "run": 3,
+          "elements": 8992,
+          "maxDifference": 0
+        },
+        {
+          "run": 4,
+          "elements": 8992,
+          "maxDifference": 0
+        },
+        {
+          "run": 5,
+          "elements": 8992,
+          "maxDifference": 0
+        }
+      ]
+    }
+  },
+  "pixelIdentical": true,
+  "images": {
+    "balanced-route-90": {
+      "changedPixels": 0,
+      "maxChannelDelta": 0,
+      "poseElements": 8992,
+      "maxPoseDifference": 0,
+      "before": "hero-street-main-render-tour-balanced-quality-checkpoint-90-before",
+      "after": "hero-street-main-render-tour-balanced-quality-checkpoint-90-after"
+    },
+    "balanced-route-180": {
+      "changedPixels": 0,
+      "maxChannelDelta": 0,
+      "poseElements": 8992,
+      "maxPoseDifference": 0,
+      "before": "hero-street-main-render-tour-balanced-quality-checkpoint-180-before",
+      "after": "hero-street-main-render-tour-balanced-quality-checkpoint-180-after"
+    },
+    "balanced-route-360": {
+      "changedPixels": 0,
+      "maxChannelDelta": 0,
+      "poseElements": 8992,
+      "maxPoseDifference": 0,
+      "before": "hero-street-main-render-tour-balanced-quality-checkpoint-360-before",
+      "after": "hero-street-main-render-tour-balanced-quality-checkpoint-360-after"
+    },
+    "balanced-route-600": {
+      "changedPixels": 0,
+      "maxChannelDelta": 0,
+      "poseElements": 8992,
+      "maxPoseDifference": 0,
+      "before": "hero-street-main-render-tour-balanced-quality-checkpoint-600-before",
+      "after": "hero-street-main-render-tour-balanced-quality-checkpoint-600-after"
+    },
+    "cinematic-route-90": {
+      "changedPixels": 0,
+      "maxChannelDelta": 0,
+      "poseElements": 8992,
+      "maxPoseDifference": 0,
+      "before": "hero-street-main-render-tour-cinematic-quality-checkpoint-90-before",
+      "after": "hero-street-main-render-tour-cinematic-quality-checkpoint-90-after"
+    },
+    "cinematic-route-180": {
+      "changedPixels": 0,
+      "maxChannelDelta": 0,
+      "poseElements": 8992,
+      "maxPoseDifference": 0,
+      "before": "hero-street-main-render-tour-cinematic-quality-checkpoint-180-before",
+      "after": "hero-street-main-render-tour-cinematic-quality-checkpoint-180-after"
+    },
+    "cinematic-route-360": {
+      "changedPixels": 0,
+      "maxChannelDelta": 0,
+      "poseElements": 8992,
+      "maxPoseDifference": 0,
+      "before": "hero-street-main-render-tour-cinematic-quality-checkpoint-360-before",
+      "after": "hero-street-main-render-tour-cinematic-quality-checkpoint-360-after"
+    },
+    "cinematic-route-600": {
+      "changedPixels": 0,
+      "maxChannelDelta": 0,
+      "poseElements": 8992,
+      "maxPoseDifference": 0,
+      "before": "hero-street-main-render-tour-cinematic-quality-checkpoint-600-before",
+      "after": "hero-street-main-render-tour-cinematic-quality-checkpoint-600-after"
+    },
+    "cinematic-hero-street-main": {
+      "changedPixels": 0,
+      "maxChannelDelta": 0,
+      "poseElements": 0,
+      "maxPoseDifference": 0,
+      "before": "hero-street-main-render-tour-cinematic-still-before",
+      "after": "hero-street-main-render-tour-cinematic-still-after"
+    },
+    "cinematic-hero-street-material": {
+      "changedPixels": 0,
+      "maxChannelDelta": 0,
+      "poseElements": 0,
+      "maxPoseDifference": 0,
+      "before": "hero-street-material-render-tour-cinematic-still-before",
+      "after": "hero-street-material-render-tour-cinematic-still-after"
+    },
+    "cinematic-street-entry": {
+      "changedPixels": 0,
+      "maxChannelDelta": 0,
+      "poseElements": 0,
+      "maxPoseDifference": 0,
+      "before": "street-entry-render-tour-cinematic-still-before",
+      "after": "street-entry-render-tour-cinematic-still-after"
+    }
+  }
+}

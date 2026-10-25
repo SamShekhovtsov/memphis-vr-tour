@@ -64,14 +64,14 @@ try{
   if(process.argv.includes('--batch')){
     const jobs=[];
     if(isolateFrame)for(const mode of ['legacy-a','legacy-b','selection','materials','optimized'])jobs.push({label:`${label}-${mode}`,renderMode:mode.startsWith('legacy')?'legacy':mode,renderFrame:isolateFrame});
-    else if(checkpoints)for(const frame of (process.argv.includes("--three-checkpoints")?[180,360,600]:[90,180,270,360,450,540,600]))for(const phase of ['before','after'])jobs.push({label:`${label}-checkpoint-${frame}-${phase}`,legacyRenderPerf:phase==='before',renderFrame:frame});
+    else if(checkpoints)for(const frame of (process.argv.includes("--tour-checkpoints")?[90,180,360,600]:process.argv.includes("--three-checkpoints")?[180,360,600]:[90,180,270,360,450,540,600]))for(const phase of ['before','after'])jobs.push({label:`${label}-checkpoint-${frame}-${phase}`,legacyRenderPerf:phase==='before',renderFrame:frame});
     else if(process.argv.includes('--isolate'))for(const mode of ['legacy','selection','materials','optimized'])jobs.push({label:`${label}-${mode}`,renderMode:mode});
     else for(const [index,order] of orders.entries())for(const phase of order)jobs.push({label:`${label}-${phase}-${index+1}`,legacyRenderPerf:phase==='before'});
     fs.mkdirSync('content/generated',{recursive:true});
     const request=`content/generated/render-batch-${process.pid}.json`;fs.writeFileSync(request,JSON.stringify(jobs));
     execFileSync(process.execPath,['tools/capture-hero-shot.mjs',label,'--hardware','--benchmark',`--quality=${quality}`,`--batch-json=${request}`,...(uncapped?['--uncapped']:[]),...(profile?['--profile']:[])],{stdio:'inherit',env:{...process.env,CDP_PORT:'9530'}});
   }
-  else if(checkpoints){for(const frame of (process.argv.includes("--three-checkpoints")?[180,360,600]:[90,180,270,360,450,540,600]))for(const phase of ['before','after'])capture(`${label}-checkpoint-${frame}-${phase}`,phase,[`--render-frame=${frame}`]);}
+  else if(checkpoints){for(const frame of (process.argv.includes("--tour-checkpoints")?[90,180,360,600]:process.argv.includes("--three-checkpoints")?[180,360,600]:[90,180,270,360,450,540,600]))for(const phase of ['before','after'])capture(`${label}-checkpoint-${frame}-${phase}`,phase,[`--render-frame=${frame}`]);}
   else for(const [index,order] of orders.entries())for(const phase of order)capture(`${label}-${phase}-${index+1}`,phase);
 }finally{
   for(const [file,data] of originals){fs.writeFileSync(file,data);assert.equal(sha(fs.readFileSync(file)),sha(data));}
