@@ -24,7 +24,17 @@ const benchmark = process.argv.includes("--benchmark");
 const collisionAudit = process.argv.includes("--collision-audit");
 const motion = process.argv.includes("--motion");
 const legacyGround = process.argv.includes("--legacy-ground");
+const legacyPeopleMaterials = process.argv.includes("--legacy-people-materials");
+const legacySteps56 = process.argv.includes("--legacy-steps56");
 const hardware = process.argv.includes("--hardware");
+const profile = process.argv.includes("--profile");
+const legacyRenderPerf = process.argv.includes("--legacy-render-perf");
+const renderFrame = process.argv.find(arg=>arg.startsWith("--render-frame="))?.slice(15);
+const uncapped = process.argv.includes("--uncapped");
+const batchFile=process.argv.find(arg=>arg.startsWith("--batch-json="))?.slice(13);
+const jobs=batchFile?JSON.parse(await readFile(batchFile,"utf8")):[{label,legacyRenderPerf,renderFrame}];
+for(const job of jobs){if(!/^[a-z0-9-]+$/i.test(job.label))throw new Error("Invalid batch label");if(job.renderMode&&!['legacy','optimized','selection','materials'].includes(job.renderMode))throw new Error("Invalid render mode");}
+if(renderFrame&&(!/^\d+$/.test(renderFrame)||Number(renderFrame)<62||Number(renderFrame)>600))throw new Error("Render checkpoint must be 62–600");
 let debugHttpBase;
 const quality = process.argv.find(arg=>arg.startsWith("--quality="))?.slice(10) ?? "balanced";
 if (!["balanced","cinematic","performance","headset"].includes(quality)) throw new Error("Unknown quality tier");
@@ -48,6 +58,7 @@ const chrome = spawn(
     "--disable-dev-shm-usage",
     "--ignore-gpu-blocklist",
     "--enable-webgl",
+    ...(uncapped ? ["--disable-frame-rate-limit", "--disable-gpu-vsync"] : []),
     ...(hardware ? [] : ["--use-angle=swiftshader"]),
     `--user-data-dir=${profileDir}`,
     `--window-size=${viewport.width},${viewport.height}`,
@@ -65,9 +76,9 @@ chrome.on("error", (error) => console.error(error));
 try {
   await waitForChrome();
 
-  for (const shot of shots) {
-    const output = path.join(screenshotDir, `${shot}-${label}.png`);
-    await capture(`http://127.0.0.1:${lock.localDevPort}/?shot=${shot}&chrome=0&qa=1&quality=${quality}${legacy ? "&materials=legacy" : ""}${ikAudit ? "&ikAudit=1" : ""}${benchmark ? "&benchmark=1" : ""}${collisionAudit ? "&collisionAudit=1" : ""}${legacyGround ? "&ground=legacy" : ""}${motion ? "&review=1" : ""}`, output);
+  for (const job of jobs) for (const shot of shots) {
+    const output = path.join(screenshotDir, `${shot}-${job.label}.png`);
+    await capture(`http://127.0.0.1:${lock.localDevPort}/?shot=${shot}&chrome=0&qa=1&quality=${quality}${legacy ? "&materials=legacy" : ""}${ikAudit ? "&ikAudit=1" : ""}${benchmark ? "&benchmark=1" : ""}${collisionAudit ? "&collisionAudit=1" : ""}${legacyGround ? "&ground=legacy" : ""}${legacyPeopleMaterials ? "&peopleMaterials=legacy" : ""}${legacySteps56 ? "&steps56=legacy" : ""}${job.renderMode||job.legacyRenderPerf ? `&renderPerf=${job.renderMode??'legacy'}` : ""}${job.renderFrame ? `&renderFrame=${job.renderFrame}` : ""}${motion ? "&review=1" : ""}`, output);
     console.log(`Captured ${output}`);
   }
 } finally {
@@ -92,8 +103,19 @@ async function capture(url, outputPath) {
       ...viewport,
       mobile: false
     });
+    if (profile) {
+      await client.send("Profiler.enable");
+      await client.send("Profiler.setSamplingInterval", { interval: 1000 });
+      await client.send("Profiler.start");
+    }
     await client.send("Page.navigate", { url });
     const metrics = await waitForSceneReady(client);
+    if (profile) {
+      const result = await client.send("Profiler.stop");
+      const folder = path.join(rootDir, "content/generated/performance-profiles");
+      await mkdir(folder, { recursive: true });
+      await writeFile(path.join(folder, path.basename(outputPath, ".png") + ".cpuprofile"), JSON.stringify(result.profile));
+    }
     if (!metrics.heroLoaded) throw new Error("Capture refused: hero GLB chunks did not load.");
     if (metrics.textureErrors?.length) throw new Error(`Capture refused: failed textures ${metrics.textureErrors.join(", ")}`);
     if (!legacy && !metrics.bakeId) throw new Error("Capture refused: authored bake missing. Use --legacy for baseline captures.");
@@ -140,7 +162,7 @@ async function capture(url, outputPath) {
       metrics.motionRecording = { simulationSeconds:10, state:{...state,samples:undefined}, encodedFrames:encoded.encodedFrames, frameNumbers:encoded.frameNumbers,
         note:'Compositor frames assigned to the 300-frame simulation timeline and encoded as a 10-second animated WebP; frames may be dropped. Not a performance measurement.' };
     }
-    await writeFile(outputPath.replace(/\.png$/, ".json"), JSON.stringify({ url, viewport, renderer: hardware ? "Chrome default GPU selection; inspect gpu field" : "Chrome SwiftShader; not a hardware performance benchmark", ...metrics }, null, 2) + "\n");
+    await writeFile(outputPath.replace(/\.png$/, ".json"), JSON.stringify({ url, viewport, browserSession:process.pid,pacing: uncapped ? "uncapped-requested" : "default", renderer: hardware ? "Chrome default GPU selection; inspect gpu field" : "Chrome SwiftShader; not a hardware performance benchmark", ...metrics }, null, 2) + "\n");
     if (collisionAudit && !metrics.collisionAudit?.passed) {
       const failures = metrics.collisionAudit?.checks.filter(check => !check.passed).map(check => check.name) ?? ["audit missing"];
       throw new Error(`District collision audit failed: ${failures.join(", ")}`);

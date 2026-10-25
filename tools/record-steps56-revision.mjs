@@ -1,0 +1,21 @@
+import fs from 'node:fs';
+import assert from 'node:assert/strict';
+import {createHash} from 'node:crypto';
+const hash=file=>createHash('sha256').update(fs.readFileSync(file)).digest('hex');
+const path='content/scene-data/hero-street.steps56-revision.json';
+const revision=JSON.parse(fs.readFileSync(path));
+assert.ok(!Object.keys(revision.files).length || process.argv.includes('--refresh'),'Explicit --refresh required');
+const lock=JSON.parse(fs.readFileSync('content/scene-data/hero-people.material-lock.json'));
+const names=['manifest.json',...['near','mid','far'].flatMap(p=>['png','webp'].map(ext=>`${p}-irradiance.${ext}`))];
+const files=Object.fromEntries(names.map(name=>{
+  const file='apps/web-tour/public/assets/authored/hero-street/'+name;
+  const before=hash('content/generated/steps56-before/hero-street/'+name);
+  assert.equal(before,lock.protectedFiles[file],'Retain the real prior baseline');
+  return [file,{before,after:hash(file)}];
+}));
+const scene='apps/web-tour/src/scene/MemphisWhiteWallsScene.ts';
+const before=hash('content/generated/steps56-before/MemphisWhiteWallsScene.ts');
+assert.equal(before,lock.protectedFiles[scene]);
+files[scene]={before,after:hash(scene)};
+revision.files=files;
+fs.writeFileSync(path,JSON.stringify(revision,null,2)+'\n');

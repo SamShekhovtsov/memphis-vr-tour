@@ -1,0 +1,309 @@
+{
+  "date": "2026-10-25",
+  "performance": {
+    "baseline": {
+      "gpu": {
+        "vendor": "Google Inc. (Intel)",
+        "renderer": "ANGLE (Intel, Intel(R) HD Graphics 4600 (0x00000416) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+        "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+      },
+      "renderSize": [
+        1280,
+        720
+      ],
+      "p50": 34.299999952316284,
+      "p95": 64.29999995231628,
+      "runs": [
+        {
+          "samples": 539,
+          "p50": 33,
+          "p95": 64.29999995231628,
+          "max": 131.60000002384186
+        },
+        {
+          "samples": 539,
+          "p50": 34.60000002384186,
+          "p95": 61.199999928474426,
+          "max": 151.39999997615814
+        },
+        {
+          "samples": 539,
+          "p50": 34.299999952316284,
+          "p95": 64.79999995231628,
+          "max": 130.89999997615814
+        }
+      ]
+    },
+    "before": {
+      "gpu": {
+        "vendor": "Google Inc. (Intel)",
+        "renderer": "ANGLE (Intel, Intel(R) HD Graphics 4600 (0x00000416) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+        "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+      },
+      "renderSize": [
+        1280,
+        720
+      ],
+      "p50": 33.60000002384186,
+      "p95": 64.89999997615814,
+      "runs": [
+        {
+          "samples": 539,
+          "p50": 34.10000002384186,
+          "p95": 60.10000002384186,
+          "max": 143.5
+        },
+        {
+          "samples": 539,
+          "p50": 30.899999976158142,
+          "p95": 64.89999997615814,
+          "max": 121.10000002384186
+        },
+        {
+          "samples": 539,
+          "p50": 33.60000002384186,
+          "p95": 64.89999997615814,
+          "max": 174.90000009536743
+        }
+      ]
+    },
+    "after": {
+      "gpu": {
+        "vendor": "Google Inc. (Intel)",
+        "renderer": "ANGLE (Intel, Intel(R) HD Graphics 4600 (0x00000416) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+        "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+      },
+      "renderSize": [
+        1280,
+        720
+      ],
+      "p50": 34.5,
+      "p95": 69.89999997615814,
+      "runs": [
+        {
+          "samples": 539,
+          "p50": 34.5,
+          "p95": 58.199999928474426,
+          "max": 124
+        },
+        {
+          "samples": 539,
+          "p50": 37.10000002384186,
+          "p95": 73.20000004768372,
+          "max": 163.80000007152557
+        },
+        {
+          "samples": 539,
+          "p50": 33,
+          "p95": 69.89999997615814,
+          "max": 120.30000007152557
+        }
+      ]
+    },
+    "vsRegressed": {
+      "p50": 0.026785713557128554,
+      "p95": 0.07704160249363357
+    },
+    "vsPreSteps56": {
+      "p50": 0.005830905188389357,
+      "p95": 0.0870917578226238
+    },
+    "regressionBudgetPassed": true
+  },
+  "pairs": {
+    "hero-street-main": {
+      "camera": [
+        -6.08,
+        1.52,
+        -16.4
+      ],
+      "drawCalls": 329,
+      "activeIndices": 1778170,
+      "estimatedTextureMiB": 388.35148111979163,
+      "workerInteraction": [
+        {
+          "hand": "hammer",
+          "target": [
+            -9.499132561460137,
+            0.9132900533571378,
+            8.291639319956303
+          ],
+          "actual": [
+            -9.499129295349121,
+            0.9132887721061707,
+            8.291641235351562
+          ],
+          "targetErrorMeters": 0.000003997227064485338,
+          "wristAboveStoneMeters": 0.34301333129405975,
+          "facingStoneDot": 0.6241472398093761
+        },
+        {
+          "hand": "support",
+          "target": [
+            -9.471311534196138,
+            0.5952754408121109,
+            8.180055311322212
+          ],
+          "actual": [
+            -9.471307754516602,
+            0.5952682495117188,
+            8.180052757263184
+          ],
+          "targetErrorMeters": 0.00000851610217462916,
+          "wristAboveStoneMeters": 0.02499280869960785,
+          "facingStoneDot": 0.6241472398093761
+        }
+      ]
+    },
+    "hero-street-material": {
+      "camera": [
+        -8.9,
+        1.35,
+        -17.6
+      ],
+      "drawCalls": 358,
+      "activeIndices": 1756902,
+      "estimatedTextureMiB": 388.35148111979163,
+      "workerInteraction": [
+        {
+          "hand": "hammer",
+          "target": [
+            -9.499132561460137,
+            0.9132900533571378,
+            8.291639319956303
+          ],
+          "actual": [
+            -9.499129295349121,
+            0.9132887721061707,
+            8.291641235351562
+          ],
+          "targetErrorMeters": 0.000003997227064485338,
+          "wristAboveStoneMeters": 0.34301333129405975,
+          "facingStoneDot": 0.6241472398093761
+        },
+        {
+          "hand": "support",
+          "target": [
+            -9.471311534196138,
+            0.5952754408121109,
+            8.180055311322212
+          ],
+          "actual": [
+            -9.471307754516602,
+            0.5952682495117188,
+            8.180052757263184
+          ],
+          "targetErrorMeters": 0.00000851610217462916,
+          "wristAboveStoneMeters": 0.02499280869960785,
+          "facingStoneDot": 0.6241472398093761
+        }
+      ]
+    },
+    "street-entry": {
+      "camera": [
+        -7,
+        1.7,
+        -28
+      ],
+      "drawCalls": 445,
+      "activeIndices": 1688758,
+      "estimatedTextureMiB": 388.35148111979163,
+      "workerInteraction": [
+        {
+          "hand": "hammer",
+          "target": [
+            -9.499132561460137,
+            0.9132900533571378,
+            8.291639319956303
+          ],
+          "actual": [
+            -9.499129295349121,
+            0.9132887721061707,
+            8.291641235351562
+          ],
+          "targetErrorMeters": 0.000003997227064485338,
+          "wristAboveStoneMeters": 0.34301333129405975,
+          "facingStoneDot": 0.6241472398093761
+        },
+        {
+          "hand": "support",
+          "target": [
+            -9.471311534196138,
+            0.5952754408121109,
+            8.180055311322212
+          ],
+          "actual": [
+            -9.471307754516602,
+            0.5952682495117188,
+            8.180052757263184
+          ],
+          "targetErrorMeters": 0.00000851610217462916,
+          "wristAboveStoneMeters": 0.02499280869960785,
+          "facingStoneDot": 0.6241472398093761
+        }
+      ]
+    }
+  },
+  "checks": {
+    "hero-street-main": {
+      "beforeControlIdentical": true,
+      "beforeAfterIdentical": true,
+      "changedPixels": 0,
+      "rgbSha256": "02b7ef29d1e4784fc10fc1126038471ed693772e1f6c8db430af5d8e1d86c9c8"
+    },
+    "hero-street-material": {
+      "beforeControlIdentical": true,
+      "beforeAfterIdentical": true,
+      "changedPixels": 0,
+      "rgbSha256": "8379d939284b911fa935c549a7a0b21b89ff5edfb50f45186ca6dc99603cbf87"
+    },
+    "street-entry": {
+      "beforeControlIdentical": true,
+      "beforeAfterIdentical": true,
+      "changedPixels": 0,
+      "rgbSha256": "1d8b04b6afed04e72a07cde1449ff91f18975b6bf0b035aeab9b445772a048dd"
+    }
+  },
+  "cpuChecks": {
+    "worldMatrixComparisons": 444,
+    "before": {
+      "all": 972,
+      "forced": 744
+    },
+    "after": {
+      "all": 458,
+      "forced": 408
+    },
+    "forcedCallReduction": 0.4516129032258065,
+    "method": "Forced and total TransformNode.computeWorldMatrix calls inside the original and optimized hand finish over the same six repeated/changed-input cases for normal and reflected roots. Includes removed per-frame diagnostic work; excludes test setup and matrix comparisons. A CPU operation-count check, not a browser FPS measurement."
+  },
+  "motionComparisons": [
+    {
+      "run": 1,
+      "elements": 8384,
+      "maxDifference": 0
+    },
+    {
+      "run": 2,
+      "elements": 8384,
+      "maxDifference": 0
+    },
+    {
+      "run": 3,
+      "elements": 8384,
+      "maxDifference": 0
+    }
+  ],
+  "collisionChecks": 26,
+  "workerCacheTest": {
+    "worldMatrixComparisons": 444,
+    "tests": [
+      "repeated inputs",
+      "parent translation",
+      "parent rotation",
+      "target change",
+      "reflected roots"
+    ]
+  },
+  "method": "Three runs per variant, nine fresh hardware Chrome sessions; order rotates baseline/before/after, after/baseline/before, before/after/baseline. Balanced 1280×720, same Intel GPU and existing route. Each run renders 600 frames, excludes 61 warm-up frames and measures 539 frame intervals. Camera progress and character animation use the same deterministic frame timeline for every variant. Report the median of run p50/p95. Builders idle; startup excluded, LOD streaming included. Baseline uses original pre-step-5/6 assets and legacy pose/bias; before uses the completed visual improvements and original update code; after uses identical visual assets with optimized code. All temporary benchmark timing hooks, final source and assets restored and hash-verified. Desktop samples, not sustained or headset qualification."
+}

@@ -225,3 +225,70 @@ Steps 3–4 refine the existing foreground plaster, wall/roof/jamb edges, canopy
 Keep the original section lock. Authorized authored-GLB revisions are recorded separately in `content/scene-data/hero-street.steps34-revision.json`; source anchors, construction extents, cameras, routes, actor motion and collision functions remain protected. New finish materials use opaque linear vertex colours (`COLOR_0`) and external PBR maps. The baker explicitly selects the colour layer, merges equivalent finish slots and packs normalized RGBA8 before export. Future engine materials must preserve vertex-colour multiplication and UV1 irradiance.
 
 Use `tools/benchmark-hero-finish.mjs` only with the archived baseline available. It temporarily swaps visual assets between fresh browser runs and restores final files in `finally`; never run it concurrently with an asset build or another capture. Performance comparisons must use the final asset version with all builders idle.
+
+## Character materials (2026-10-25)
+
+The existing anatomical people now bind shared skin, cropped-hair and linen PBR maps, with bind-pose colour variation and garment UVs. Covered torso/upper-thigh skin uses a binary alpha-test mask to reduce skin poking through the existing kilts. No original positions, indices, weights, rigs, actor paths or camera data were changed. See [matched views, movement and performance](docs/design/hero-people-materials-2026-10-25.md).
+
+Run `npm run validate:people-materials` to verify original GLB binary prefixes, rigs, avatar motion code and the scene-file lock. The checked-in `hero-people.material-lock.json` also lets `tools/build-character-materials.py --from-current` rebuild without ignored baseline archives. Keep `HeroPeople.ts` pose/path code intact; material bindings are isolated in `HeroPeopleMaterials.ts`.
+
+For paired QA, `?peopleMaterials=legacy` disables only the new material and vertex-colour bindings. All three control views match the original baseline pixel for pixel. Use `tools/benchmark-character-materials.mjs` with builders idle. Engine importers must bind the external PBR maps with a white base factor, multiply linear vertex RGB and alpha-clip covered skin, following the portable settings in the people manifest. Other-engine/headset validation remains outstanding, as do facial/hair silhouette and garment fit improvements.
+
+The final balanced timing set misses the 10% regression budget: median run p50 26.5 → 32.6 ms, p95 56.6 → 72.8 ms on Intel HD 4600 at 1280×720. Balanced uses six albedo/normal maps and constant roughness; cinematic retains nine maps plus fibre lobes. No draws or triangles were added. Keep the initial and final timing evidence; prioritize profiling character/shadow passes before more shading features. Do not describe this material pass as a performance improvement.
+
+## Steps 5–6: contacts and existing people (2026-10-25)
+
+See [implementation, matched captures and final paired measurements](docs/design/hero-street-steps-5-6-2026-10-25.md).
+Static short-range AO is bounded to 18% attenuation of existing indirect UV1
+irradiance; moving people are excluded. Closer human caster bias uses the same
+shadow pass; architecture retains its stable original bias. No added runtime
+maps, draws or geometry.
+
+The existing linen wraps have explicit clearance and weight revisions; skin is
+now opaque. The stone worker's upper-body solve bends toward the unchanged
+stone, places the supporting hand and curls the hammer fingers. These are
+intentional pose/garment exceptions recorded in
+`hero-street.steps56-revision.json`; body geometry, rig, root/path tracks,
+district, cameras and contact-leg solver remain protected. The prior material
+report describes a historical alpha-test configuration, superseded here.
+
+Use `npm run validate:people-materials` for the expanded original-stream and
+source reconstruction checks. `?steps56=legacy` restores the old procedural
+pose, coverage and caster bias; repeatable before timing additionally requires
+the archived before GLBs/lightmaps. `tools/benchmark-steps56.mjs` swaps those
+assets and restores final assets in `finally`. Run with builders and other
+captures idle. Timing from the immediate previous material version must not be
+represented as recovery of the older material-pass regression. Other engines,
+cinematic-tier route timing and headsets remain unqualified.
+
+## CPU performance correction (2026-10-25)
+
+See [final source changes, matched captures and all timing sets](docs/design/hero-people-performance-2026-10-25.md).
+Rig lookup indexing, fixed finger poses, an exact-input support-wrist cache,
+on-demand worker diagnostics and reuse of already-refreshed IK ancestor matrices
+remove redundant CPU work. Same-frame cache invalidation is tested. The IK solve
+math, contact targets, paths, root positions, visuals and camera bookmarks remain
+unchanged. All three final still pairs are pixel-identical; moving joint matrices
+match the original update code.
+
+The expanded `hero-people.performance-revision.json` records four source deltas.
+The character validator reverses those deltas to check the previous avatar code
+and original protected IK source hashes. Do not remove the original locks or
+replace them with the optimized hashes. Run `node tools/test-worker-pose-cache.mjs`
+and `node tools/test-ground-contact-ik.mjs` for cache/pose/contact correctness.
+
+Final same-session synchronized 600-frame sweeps (three per variant, Intel HD
+4600, balanced 1280×720) report median-run p50/p95: pre-step baseline 34.3/64.3 ms;
+regressed visual version 33.6/64.9 ms; optimized version 34.5/69.9 ms. The 10%
+budget against the pre-step baseline passes (+0.6% p50, +8.7% p95). CPU operation
+reduction is verified, but these wall-clock measurements do **not** demonstrate
+a speed-up over the same-session regressed control. Keep that distinction and
+the noisy short/intermediate samples; do not claim the earlier timing causes
+have all been isolated or that the separate material-pass regression is fixed.
+
+Use `tools/benchmark-people-performance.mjs --extended` with builders/captures
+idle. It temporarily synchronizes actor time and extends the existing camera
+sweep equally for all variants, then restores and hash-checks source/assets.
+Those benchmark hooks are not production scene changes. The original pre-step
+visual archive is required; old CPU source is reconstructed from the checked-in
+delta. All 26 live floor/approach collision checks pass.

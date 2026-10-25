@@ -270,8 +270,40 @@
   },
   "deliveryCompression": {
     "format": "lossless WebP with PNG fallback",
-    "sourceBytes": 16146854,
-    "deliveryBytes": 10076028,
+    "sourceBytes": 16126274,
+    "deliveryBytes": 10088330,
     "gpuMemoryReduced": false
+  },
+  "contactPolish": {
+    "date": "2026-10-25",
+    "distanceMeters": 0.4,
+    "resolution": 1024,
+    "maxIndirectAttenuation": 0.18,
+    "affects": "existing linear sky/bounce only",
+    "geometryAndUvsChanged": false,
+    "movingActorsBaked": false,
+    "maps": {
+      "near": {
+        "source": "content/generated/steps56-ao/near-contact-ao.png",
+        "sha256": "42b565f78afe50cb6389932973356c6701232bb55b104aaee93d9bcc365a7ee8",
+        "minGain": 0.82,
+        "maxGain": 1.0,
+        "meanGain": 0.869151632421157
+      },
+      "mid": {
+        "source": "content/generated/steps56-ao/mid-contact-ao.png",
+        "sha256": "1ed2c0d2475379d29840797f7a0ab76488fb049df1614548b0da1d74a5dcbaa2",
+        "minGain": 0.82,
+        "maxGain": 1.0,
+        "meanGain": 0.8818046765607946
+      },
+      "far": {
+        "source": "content/generated/steps56-ao/far-contact-ao.png",
+        "sha256": "a24f5c760c369e551eb084c0743aa1168d467e79a587b58b0601900e54b009e1",
+        "minGain": 0.82,
+        "maxGain": 1.0,
+        "meanGain": 0.8964972830379709
+      }
+    }
   }
 }

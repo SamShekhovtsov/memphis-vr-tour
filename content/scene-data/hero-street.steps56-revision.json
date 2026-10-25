@@ -1,0 +1,236 @@
+{
+  "date": "2026-10-25",
+  "scope": "Step 5 static contacts and step 6 existing garment fit and stationary worker upper-body interaction; roots, body geometry, cameras and paths fixed",
+  "files": {
+    "apps/web-tour/public/assets/authored/hero-street/manifest.json": {
+      "before": "fe4860a99033b57a241286c622749c5257e29260f62aea19c52fd66b2adbfc00",
+      "after": "7c5e6fb9834e910a8d85ca32170e85e7de27d0a5ecc2c858f370db5e9fce0ceb"
+    },
+    "apps/web-tour/public/assets/authored/hero-street/near-irradiance.png": {
+      "before": "2e3c5600fedb73b8eeca127a536a87b5aa3147bb413d83521e71dbd5e2a202f5",
+      "after": "42a641fb4855e69b6ac038bd711292d949f7f4243db3a14c47bf54e8bc9225ca"
+    },
+    "apps/web-tour/public/assets/authored/hero-street/near-irradiance.webp": {
+      "before": "46b3e7d0541a4dd4020ff857f5fd34c38dc150829637edb1979dd97bb88b13e9",
+      "after": "6e6e7e3e56828b92dd45458aaa3ceff8c04511b01ec2d145e2c05fbb0d5b61c4"
+    },
+    "apps/web-tour/public/assets/authored/hero-street/mid-irradiance.png": {
+      "before": "8c0d91278c6ef374c1cc6793b65e3a99b7a386884fb2a85e6b6f2b16fe760c16",
+      "after": "56c94c7b5b0a3927338a19c5523624e2ef7702745905ec14dc91a1e00407015a"
+    },
+    "apps/web-tour/public/assets/authored/hero-street/mid-irradiance.webp": {
+      "before": "6109a9a3a9a23697f47780e4d009ee18bc3358277c4c0d34b8c67c68ed71b396",
+      "after": "d43aad6827fa8089219fac30d0c92b5fdd95f8542d41e43db4f766eb1bb747a0"
+    },
+    "apps/web-tour/public/assets/authored/hero-street/far-irradiance.png": {
+      "before": "82cf285922e592b1728c382fcc61fdf2cfe1cc81c6908f1bd7f85974a03aec7f",
+      "after": "06a5cc4fe113cf9a45e3cd3838b3d39d1ddc3da896ca118d701d5f0b6ac89e14"
+    },
+    "apps/web-tour/public/assets/authored/hero-street/far-irradiance.webp": {
+      "before": "3069693d701619d2c2c1a378109d96094b61e6c2e1cf94bc64e3711f38ae5edd",
+      "after": "bda922b9480d58ec09bed88b6138191f4e2c9faaed62f036d751c4c2b380475b"
+    },
+    "apps/web-tour/src/scene/MemphisWhiteWallsScene.ts": {
+      "before": "80342822e08f52192e551cacc1cbf5c112f9580a7e646eb390cca1fd8a8a1053",
+      "after": "951a7d208ebf19bf9e78154e610616101120c5ee2d1258746621ff4e093c1993"
+    }
+  },
+  "avatars": {
+    "male": {
+      "streams": [
+        {
+          "accessor": 18,
+          "semantic": "POSITION",
+          "mesh": 3,
+          "offset": 1673164,
+          "bytes": 14592,
+          "beforeOffset": 0,
+          "afterSha": "21355e3413a454002d9928571977eee20cd45a129fef6421f50cd4127b0666b6",
+          "accessorAfter": {
+            "bufferView": 18,
+            "componentType": 5126,
+            "count": 1216,
+            "max": [
+              0.27679216861724854,
+              1.017977237701416,
+              0.23199999332427979
+            ],
+            "min": [
+              -0.2768033742904663,
+              0.5536367297172546,
+              -0.2153645157814026
+            ],
+            "type": "VEC3"
+          }
+        },
+        {
+          "accessor": 19,
+          "semantic": "NORMAL",
+          "mesh": 3,
+          "offset": 1687756,
+          "bytes": 14592,
+          "beforeOffset": 14592,
+          "afterSha": "771711850d2334b4ff8ef4d5263c1749a3c564b429d9bb0be3ca5daa074acf98",
+          "accessorAfter": {
+            "bufferView": 19,
+            "componentType": 5126,
+            "count": 1216,
+            "type": "VEC3"
+          }
+        },
+        {
+          "accessor": 20,
+          "semantic": "JOINTS_0",
+          "mesh": 3,
+          "offset": 1702348,
+          "bytes": 4864,
+          "beforeOffset": 29184,
+          "afterSha": "e68fe82fc600236976638a62307d2a2c7bfd6d19e09d720a025465018033c0ab",
+          "accessorAfter": {
+            "bufferView": 20,
+            "componentType": 5121,
+            "count": 1216,
+            "type": "VEC4"
+          }
+        },
+        {
+          "accessor": 21,
+          "semantic": "WEIGHTS_0",
+          "mesh": 3,
+          "offset": 1707212,
+          "bytes": 19456,
+          "beforeOffset": 34048,
+          "afterSha": "eb36e84079a86d93ca8c4c4b2fe4dc8793e9330d2c4192159264339fc50dc57b",
+          "accessorAfter": {
+            "bufferView": 21,
+            "componentType": 5126,
+            "count": 1216,
+            "type": "VEC4"
+          }
+        }
+      ],
+      "materialTailSha": "837cb0dd7e9f1c2bc1635cb35e84b84672472bef9c677bf96d3773433e6066a6"
+    },
+    "female": {
+      "streams": [
+        {
+          "accessor": 23,
+          "semantic": "POSITION",
+          "mesh": 4,
+          "offset": 1790472,
+          "bytes": 14592,
+          "beforeOffset": 53504,
+          "afterSha": "ed30e366bbc4c2a78c9d6d507472f957f8697df81a8bdd4182c2687e8e954463",
+          "accessorAfter": {
+            "bufferView": 23,
+            "componentType": 5126,
+            "count": 1216,
+            "max": [
+              0.25771084427833557,
+              1.1144392490386963,
+              0.21700000762939453
+            ],
+            "min": [
+              -0.25720927119255066,
+              0.28657010197639465,
+              -0.20080804824829102
+            ],
+            "type": "VEC3"
+          }
+        },
+        {
+          "accessor": 24,
+          "semantic": "NORMAL",
+          "mesh": 4,
+          "offset": 1805064,
+          "bytes": 14592,
+          "beforeOffset": 68096,
+          "afterSha": "6f5b10077e2697eeb7ee28288d1785f991f9919fdd400981a85116725626277d",
+          "accessorAfter": {
+            "bufferView": 24,
+            "componentType": 5126,
+            "count": 1216,
+            "type": "VEC3"
+          }
+        },
+        {
+          "accessor": 25,
+          "semantic": "JOINTS_0",
+          "mesh": 4,
+          "offset": 1819656,
+          "bytes": 4864,
+          "beforeOffset": 82688,
+          "afterSha": "e2b1ec6cd4f572abcc9eb4bcda556ff0b2dce2eccd42c8c66d2d410da3e343ba",
+          "accessorAfter": {
+            "bufferView": 25,
+            "componentType": 5121,
+            "count": 1216,
+            "type": "VEC4"
+          }
+        },
+        {
+          "accessor": 26,
+          "semantic": "WEIGHTS_0",
+          "mesh": 4,
+          "offset": 1824520,
+          "bytes": 19456,
+          "beforeOffset": 87552,
+          "afterSha": "d2884b8f09ec530c54e209f7e95989d92d1e8b6f90548e752d67ce818dbe1532",
+          "accessorAfter": {
+            "bufferView": 26,
+            "componentType": 5126,
+            "count": 1216,
+            "type": "VEC4"
+          }
+        }
+      ],
+      "materialTailSha": "21d6e3a915dc842d2425b8bca94a1272c1b57405cc1e7efe56d2f73b4611aa45"
+    }
+  },
+  "baselinePayload": {
+    "file": "content/source-assets/characters/hero-fit-baseline.bin",
+    "sha256": "bf48e564e98010a767de033e664741600306f8d4a61c6821d6e838b7a91b28df"
+  },
+  "fitRecipe": {
+    "sideClearanceMaxMeters": 0.036,
+    "frontBackClearanceMaxMeters": 0.07,
+    "upperWrapLegInfluenceMax": 0.78,
+    "kneeHemLegInfluenceMax": 1.0,
+    "waistSpineInfluenceMax": 0.85,
+    "longHem": "smooth upper/lower-leg blend",
+    "verticalPositions": "unchanged",
+    "rootAndRig": "unchanged"
+  },
+  "sourceEdits": [
+    {
+      "before": "import { authoredHeroRoot, createHeroMaterialBinder, type HeroBakeManifest } from \"./HeroStreetMaterials\";",
+      "after": "import { authoredHeroRoot, createHeroMaterialBinder, type HeroBakeManifest } from \"./HeroStreetMaterials\";\nimport { configureHumanContactShadows } from \"./HumanContactShadows\";"
+    },
+    {
+      "before": "shadows.normalBias = .035;",
+      "after": "shadows.normalBias = .035;\n    configureHumanContactShadows(shadows, scene);"
+    }
+  ],
+  "avatarPoseEdits": [
+    {
+      "before": "import { aim, solveContactLeg, type ContactLeg } from \"./GroundContactIK\";",
+      "after": "import { aim, solveContactLeg, type ContactLeg } from \"./GroundContactIK\";\nimport { workerLean, workerDrop, workerSupportHeight, finishWorkerHand } from \"./HeroWorkerPose\";"
+    },
+    {
+      "before": ".normalize().scaleInPlace(.16);",
+      "after": ".normalize().scaleInPlace(workerLean(pelvis.getAbsolutePosition().y, workPoint.y));"
+    },
+    {
+      "before": "new Vector3(0,.04,0)",
+      "after": "new Vector3(0,workerDrop(lean.length()),0)"
+    },
+    {
+      "before": "side===0 ? .35 + .025*Math.sin(time*3) : .22",
+      "after": "side===0 ? .35 + .025*Math.sin(time*3) : workerSupportHeight()"
+    },
+    {
+      "before": "      }\n      if (jar && head) {",
+      "after": "        if (role === \"StoneWorker\" && workPoint) finishWorkerHand(side, arm.foot, workPoint, bone, rest, scene, target);\n      }\n      if (jar && head) {"
+    }
+  ]
+}

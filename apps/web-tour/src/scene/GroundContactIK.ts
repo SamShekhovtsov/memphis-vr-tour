@@ -45,10 +45,13 @@ function position(node: TransformNode): Vector3 {
   return node.getAbsolutePosition().clone();
 }
 
-function setWorldOrientation(node: TransformNode, world: Matrix): void {
-  world.setTranslation(position(node));
+function setWorldOrientation(node: TransformNode, world: Matrix, currentWorld = node.computeWorldMatrix(true)): void {
+  // A forced child update has already refreshed every ancestor. Reuse that
+  // exact snapshot instead of forcing the same chain again for translation
+  // and parent inversion. No transform changes between these reads.
+  world.setTranslation(currentWorld.getTranslation());
   const parent = node.parent as TransformNode | null;
-  const local = parent ? world.multiply(parent.computeWorldMatrix(true).clone().invert()) : world;
+  const local = parent ? world.multiply(parent.getWorldMatrix().clone().invert()) : world;
   const rotation = Quaternion.Identity();
   local.decompose(undefined, rotation);
   node.rotationQuaternion = rotation;
@@ -61,7 +64,8 @@ export function aim(node: TransformNode, from: Vector3, to: Vector3): void {
   Quaternion.FromUnitVectorsToRef(from.normalize(), to.normalize(), delta);
   const rotation = Matrix.Identity();
   delta.toRotationMatrix(rotation);
-  setWorldOrientation(node, node.computeWorldMatrix(true).multiply(rotation));
+  const currentWorld = node.computeWorldMatrix(true);
+  setWorldOrientation(node, currentWorld.multiply(rotation), currentWorld);
 }
 
 /** Analytic two-bone solve in world metres, keeping the hip/root untouched. */

@@ -1,0 +1,13 @@
+{
+  "worldMatrixComparisons": 444,
+  "before": {
+    "all": 972,
+    "forced": 744
+  },
+  "after": {
+    "all": 458,
+    "forced": 408
+  },
+  "forcedCallReduction": 0.4516129032258065,
+  "method": "Forced and total TransformNode.computeWorldMatrix calls inside the original and optimized hand finish over the same six repeated/changed-input cases for normal and reflected roots. Includes removed per-frame diagnostic work; excludes test setup and matrix comparisons. A CPU operation-count check, not a browser FPS measurement."
+}

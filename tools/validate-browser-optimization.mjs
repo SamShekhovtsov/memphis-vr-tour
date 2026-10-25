@@ -193,6 +193,8 @@ const totalSize = async files => (await Promise.all(files.map(file=>stat(file)))
 const highBytes = await totalSize(street.assets.map(a=>path.join(authoredRoot,"hero-street",a.fileName)));
 const lodBytes = await totalSize(street.assets.flatMap(a=>(a.lods??[]).map(l=>path.join(authoredRoot,"hero-street",l.fileName))));
 const peopleBytes = await totalSize(people.assets.map(a=>path.join(authoredRoot,"people",a.fileName)));
+const peopleTextureBytes = await totalSize(Object.keys(people.materialRefinement?.maps ?? {}).map(name=>path.join(authoredRoot,"people",name)));
+if (peopleTextureBytes > (budget.authoredBudgets?.peopleMaterialTextureBytes ?? 0)) addError(`Character material textures exceed budget: ${peopleTextureBytes}`);
 const textureNames = [...street.assets.map(a=>a.irradiance),...(street.surfaceFamilies ?? ['dust','plaster','linen','pottery','wood']).flatMap(s=>['albedo','normal','orm'].map(c=>`${s}-${c}.png`))];
 const authoredTextureBytes = await totalSize(textureNames.map(n=>path.join(authoredRoot,"hero-street",street.textureVariants?.[n]??n)));
 const groundSection = await readJson(path.join(authoredRoot,"hero-ground/manifest.json"));
@@ -213,4 +215,5 @@ if (errors.length > 0) {
   );
   console.log(`Authored delivery: street high ${highBytes}, streamed LODs ${lodBytes}, shared people ${peopleBytes}, texture delivery ${authoredTextureBytes} bytes.`);
   console.log(`Ground section texture delivery: ${groundSectionBytes} additional bytes; no added geometry.`);
+  console.log(`Character material texture delivery: ${peopleTextureBytes} additional bytes.`);
 }

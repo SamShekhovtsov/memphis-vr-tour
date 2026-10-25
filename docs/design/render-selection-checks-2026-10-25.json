@@ -1,0 +1,11 @@
+{
+  "cameraPoses": 32,
+  "visibleCandidateChecks": 3820,
+  "movingAndAnimatedRootsUnfrozen": true,
+  "stableDrawOrder": true,
+  "lateMeshes": true,
+  "enableAndDispose": true,
+  "skipFrustumClippingFallback": true,
+  "waterMaterialUnfrozen": true,
+  "imageProcessingInvalidatesCache": true
+}

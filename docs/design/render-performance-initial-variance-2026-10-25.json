@@ -1,0 +1,8 @@
+{
+  "changedPixels": 4881,
+  "maxChannelDelta": 28,
+  "meanAbsoluteChannelDelta": 0.007129267939814814,
+  "original": "hero-street-main-render-quality-checkpoint-90-before",
+  "unchangedRepeat": "hero-street-main-render-visual-isolate-legacy-a",
+  "note": "The unchanged renderer reproduces the original edge-pixel difference. Two repeated unchanged controls and all isolated optimization modes match each other exactly."
+}

@@ -1,0 +1,285 @@
+{
+  "date": "2026-10-25",
+  "pairs": {
+    "hero-street-main": {
+      "camera": [
+        -6.08,
+        1.52,
+        -16.4
+      ],
+      "drawCalls": 329,
+      "activeIndices": 1778170,
+      "extraTextureMiB": 7.999999999999886,
+      "bindings": [
+        {
+          "family": "skin",
+          "alphaTest": true,
+          "normalStrength": 0.32,
+          "sheen": 0,
+          "anisotropy": 0,
+          "albedoSrgb": true,
+          "normalLinear": true
+        },
+        {
+          "family": "hair",
+          "alphaTest": false,
+          "normalStrength": 0.65,
+          "sheen": 0,
+          "anisotropy": 0,
+          "albedoSrgb": true,
+          "normalLinear": true
+        },
+        {
+          "family": "linen",
+          "alphaTest": false,
+          "normalStrength": 0.35,
+          "sheen": 0,
+          "anisotropy": 0,
+          "albedoSrgb": true,
+          "normalLinear": true
+        },
+        {
+          "family": "skin",
+          "alphaTest": true,
+          "normalStrength": 0.32,
+          "sheen": 0,
+          "anisotropy": 0,
+          "albedoSrgb": true,
+          "normalLinear": true
+        },
+        {
+          "family": "hair",
+          "alphaTest": false,
+          "normalStrength": 0.65,
+          "sheen": 0,
+          "anisotropy": 0,
+          "albedoSrgb": true,
+          "normalLinear": true
+        },
+        {
+          "family": "linen",
+          "alphaTest": false,
+          "normalStrength": 0.35,
+          "sheen": 0,
+          "anisotropy": 0,
+          "albedoSrgb": true,
+          "normalLinear": true
+        }
+      ]
+    },
+    "hero-street-material": {
+      "camera": [
+        -8.9,
+        1.35,
+        -17.6
+      ],
+      "drawCalls": 358,
+      "activeIndices": 1756902,
+      "extraTextureMiB": 7.999999999999886,
+      "bindings": [
+        {
+          "family": "skin",
+          "alphaTest": true,
+          "normalStrength": 0.32,
+          "sheen": 0,
+          "anisotropy": 0,
+          "albedoSrgb": true,
+          "normalLinear": true
+        },
+        {
+          "family": "hair",
+          "alphaTest": false,
+          "normalStrength": 0.65,
+          "sheen": 0,
+          "anisotropy": 0,
+          "albedoSrgb": true,
+          "normalLinear": true
+        },
+        {
+          "family": "linen",
+          "alphaTest": false,
+          "normalStrength": 0.35,
+          "sheen": 0,
+          "anisotropy": 0,
+          "albedoSrgb": true,
+          "normalLinear": true
+        },
+        {
+          "family": "skin",
+          "alphaTest": true,
+          "normalStrength": 0.32,
+          "sheen": 0,
+          "anisotropy": 0,
+          "albedoSrgb": true,
+          "normalLinear": true
+        },
+        {
+          "family": "hair",
+          "alphaTest": false,
+          "normalStrength": 0.65,
+          "sheen": 0,
+          "anisotropy": 0,
+          "albedoSrgb": true,
+          "normalLinear": true
+        },
+        {
+          "family": "linen",
+          "alphaTest": false,
+          "normalStrength": 0.35,
+          "sheen": 0,
+          "anisotropy": 0,
+          "albedoSrgb": true,
+          "normalLinear": true
+        }
+      ]
+    },
+    "street-entry": {
+      "camera": [
+        -7,
+        1.7,
+        -28
+      ],
+      "drawCalls": 445,
+      "activeIndices": 1688758,
+      "extraTextureMiB": 7.999999999999886,
+      "bindings": [
+        {
+          "family": "skin",
+          "alphaTest": true,
+          "normalStrength": 0.32,
+          "sheen": 0,
+          "anisotropy": 0,
+          "albedoSrgb": true,
+          "normalLinear": true
+        },
+        {
+          "family": "hair",
+          "alphaTest": false,
+          "normalStrength": 0.65,
+          "sheen": 0,
+          "anisotropy": 0,
+          "albedoSrgb": true,
+          "normalLinear": true
+        },
+        {
+          "family": "linen",
+          "alphaTest": false,
+          "normalStrength": 0.35,
+          "sheen": 0,
+          "anisotropy": 0,
+          "albedoSrgb": true,
+          "normalLinear": true
+        },
+        {
+          "family": "skin",
+          "alphaTest": true,
+          "normalStrength": 0.32,
+          "sheen": 0,
+          "anisotropy": 0,
+          "albedoSrgb": true,
+          "normalLinear": true
+        },
+        {
+          "family": "hair",
+          "alphaTest": false,
+          "normalStrength": 0.65,
+          "sheen": 0,
+          "anisotropy": 0,
+          "albedoSrgb": true,
+          "normalLinear": true
+        },
+        {
+          "family": "linen",
+          "alphaTest": false,
+          "normalStrength": 0.35,
+          "sheen": 0,
+          "anisotropy": 0,
+          "albedoSrgb": true,
+          "normalLinear": true
+        }
+      ]
+    }
+  },
+  "performance": {
+    "before": {
+      "gpu": {
+        "vendor": "Google Inc. (Intel)",
+        "renderer": "ANGLE (Intel, Intel(R) HD Graphics 4600 (0x00000416) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+        "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+      },
+      "renderSize": [
+        1280,
+        720
+      ],
+      "p50": 26.5,
+      "p95": 56.60000002384186,
+      "runs": [
+        {
+          "samples": 169,
+          "p50": 26.5,
+          "p95": 66.5,
+          "max": 209.60000002384186
+        },
+        {
+          "samples": 169,
+          "p50": 25.299999952316284,
+          "p95": 55.39999997615814,
+          "max": 138.89999997615814
+        },
+        {
+          "samples": 169,
+          "p50": 26.700000047683716,
+          "p95": 56.60000002384186,
+          "max": 128.5
+        }
+      ]
+    },
+    "after": {
+      "gpu": {
+        "vendor": "Google Inc. (Intel)",
+        "renderer": "ANGLE (Intel, Intel(R) HD Graphics 4600 (0x00000416) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+        "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+      },
+      "renderSize": [
+        1280,
+        720
+      ],
+      "p50": 32.60000002384186,
+      "p95": 72.79999995231628,
+      "runs": [
+        {
+          "samples": 169,
+          "p50": 32.60000002384186,
+          "p95": 72.79999995231628,
+          "max": 179.60000002384186
+        },
+        {
+          "samples": 169,
+          "p50": 28.700000047683716,
+          "p95": 62.699999928474426,
+          "max": 125.60000002384186
+        },
+        {
+          "samples": 169,
+          "p50": 32.89999997615814,
+          "p95": 73.10000002384186,
+          "max": 184.29999995231628
+        }
+      ]
+    },
+    "p50Change": 0.23018868014497573,
+    "p95Change": 0.2862190798878168,
+    "regressionBudgetPassed": false
+  },
+  "checks": {
+    "skin": "512x512 RGB; exact lossless delivery, unit normals, nonmetallic roughness",
+    "hair": "512x512 RGB; exact lossless delivery, unit normals, nonmetallic roughness",
+    "linen": "512x512 RGB; exact lossless delivery, unit normals, nonmetallic roughness",
+    "legacyControls": "All three original and control images match pixel for pixel"
+  },
+  "collisionChecks": 26,
+  "peopleGlbBytes": 3989432,
+  "textureBytes": 999138,
+  "balancedTextureBytes": 832204,
+  "method": "Three alternating legacy/new material route sweeps on the same GPU, balanced 1280x720. Each run has 180 rendered frames, 169 timed intervals; report the median run p50/p95. Asset builds idle. Initial load excluded, LOD streaming included. Legacy disables new material/colour bindings on identical geometry; its three control images match the original baseline pixel for pixel. Short desktop samples, not sustained or headset qualification."
+}

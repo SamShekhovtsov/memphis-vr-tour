@@ -1,0 +1,27 @@
+{
+  "near": {
+    "losslessDelivery": true,
+    "boundedIndirectAttenuation": 0.18,
+    "size": [
+      2048,
+      2048
+    ]
+  },
+  "mid": {
+    "losslessDelivery": true,
+    "boundedIndirectAttenuation": 0.18,
+    "size": [
+      2048,
+      2048
+    ]
+  },
+  "far": {
+    "losslessDelivery": true,
+    "boundedIndirectAttenuation": 0.18,
+    "size": [
+      2048,
+      2048
+    ]
+  },
+  "baselineControls": "All three match the original before capture pixel for pixel"
+}

@@ -26,6 +26,7 @@ import { evidenceColors } from "@egyptvr/shared-scene";
 import cameraLockData from "../../../../content/scene-data/hero-street.camera-lock.json";
 import daylight from "../../../../content/scene-data/hero-street.daylight.json";
 import { authoredHeroRoot, createHeroMaterialBinder, type HeroBakeManifest } from "./HeroStreetMaterials";
+import { configureHumanContactShadows } from "./HumanContactShadows";
 import { GroundContactIK } from "./GroundContactIK";
 import { loadHeroPeople, type HeroPerson } from "./HeroPeople";
 import { attachStreetLods } from "./StreetLods";
@@ -350,6 +351,7 @@ export async function createMemphisWhiteWallsScene(
     shadows.filteringQuality = ShadowGenerator.QUALITY_MEDIUM;
     shadows.bias = .0005;
     shadows.normalBias = .035;
+    configureHumanContactShadows(shadows, scene);
     sun.autoCalcShadowZBounds = true;
     for (const root of scene.transformNodes.filter(node => node.metadata?.runtimeAssetId && (node.name.startsWith("glbHeroStreet") || node.name === "glbAnimatedStreetActors"))) {
       for (const mesh of root.getChildMeshes()) {

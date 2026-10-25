@@ -19,3 +19,10 @@ Clothing is restrained artistic reconstruction informed by the Met's discussion
 of Old Kingdom kilts and shoulder-supported linen slips:
 https://resources.metmuseum.org/resources/metpublications/pdf/The_Daily_Life_of_the_Ancient_Egyptians_The_Metropolitan_Museum_of_Art_Bulletin_v_31_no_3_Spring_1973.pdf
 Linen material evidence: https://www.metmuseum.org/art/collection/search/570883
+
+Step 6 (25 October 2026): `hero-fit-baseline.bin` retains the original existing
+wrap POSITION/NORMAL/JOINTS_0/WEIGHTS_0 streams for reversible project-authored
+clearance and garment-weight refinements. It is derived from these same CC0
+adaptations. No additional external character or texture source was introduced.
+The explicit stream hashes and portable fit recipe are recorded in
+`content/scene-data/hero-street.steps56-revision.json`.

@@ -1,0 +1,20 @@
+{
+  "hero-street-main": {
+    "beforeControlIdentical": true,
+    "beforeAfterIdentical": true,
+    "changedPixels": 0,
+    "rgbSha256": "02b7ef29d1e4784fc10fc1126038471ed693772e1f6c8db430af5d8e1d86c9c8"
+  },
+  "hero-street-material": {
+    "beforeControlIdentical": true,
+    "beforeAfterIdentical": true,
+    "changedPixels": 0,
+    "rgbSha256": "8379d939284b911fa935c549a7a0b21b89ff5edfb50f45186ca6dc99603cbf87"
+  },
+  "street-entry": {
+    "beforeControlIdentical": true,
+    "beforeAfterIdentical": true,
+    "changedPixels": 0,
+    "rgbSha256": "1d8b04b6afed04e72a07cde1449ff91f18975b6bf0b035aeab9b445772a048dd"
+  }
+}
