@@ -3,7 +3,7 @@ import { PBRMaterial, Scene, type SubMesh } from "@babylonjs/core";
 type Queue = { data: SubMesh[]; length: number; push(value:SubMesh):void };
 
 /** Camera-only early depth, using Babylon's native depth-pass sequencing.
- * No material flags, shaders, poses, shadow lists or colour ordering change.
+ * Original geometry, colour output/order, poses and shadow lists are retained.
  */
 export function configureRenderWork(scene: Scene) {
   const mode=new URLSearchParams(location.search).get("renderPerf")??"optimized";
@@ -24,6 +24,9 @@ export function configureRenderWork(scene: Scene) {
       if(!(material instanceof PBRMaterial)||!material.metadata?.bakeId)continue;
       if(!["dust","plaster","hero-plaster"].includes(material.metadata.surfaceId))continue;
       if(material.disableDepthWrite||material.disableColorWrite||material.needAlphaBlendingForMesh(mesh)||material.needAlphaTestingForMesh(mesh)||present.has(subMesh))continue;
+      // Match Babylon's needDepthPrePass readiness rule: its DEPTHPREPASS
+      // shader define must be reevaluated between depth and colour draws.
+      material.checkReadyOnEveryCall=true;
       depth.push(subMesh);present.add(subMesh);draws++;
     }
     stats.frames++;stats.depthDraws+=draws;stats.lastDepthDraws=draws;

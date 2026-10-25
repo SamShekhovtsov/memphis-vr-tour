@@ -1,0 +1,10 @@
+{
+  "opaqueOccluders": 3,
+  "excludedSurfaces": 4,
+  "duplicatePrevention": true,
+  "unchangedGeometryTransformsMaterialsAndDepthFlags": true,
+  "shaderReadiness": true,
+  "cameraPassOnly": true,
+  "otherGroupsAndWireframeUnchanged": true,
+  "unsupportedQueueFallback": true
+}
