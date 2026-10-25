@@ -435,3 +435,19 @@ pixel. BC7 pilot mean channel error is 0.025–0.029 byte, p99 1 byte across the
 three cinematic views. All route pose differences are zero. The final scene is
 incrementally improved, not a claim of reference-level cinematic humans or a
 sustained 60 FPS walkthrough on HD 4600.
+
+## District residents, solid houses and grounded observer — 25 October 2026
+
+The latest user request explicitly replaces the former locked NPC paths with spontaneous movement across the connected walkable district. Preserve the static district layout and camera bookmarks; do not re-enable the old sine-loop drivers while DistrictLife owns the people. The old motion data remains an immutable comparison baseline, not the current runtime locomotion controller.
+
+DistrictNavigation builds fourteen full house footprint colliders, disables the obsolete two street rails, and provides shared floor support plus a 1.5 m navigation graph (4,972 nodes). Six new residents share the existing licensed models/materials; eight characters roam and the craftsman works/rests. Production goals use crypto entropy, recent-goal memory, purpose zones, pauses, bounded turns, acceleration and local avoidance with a 65 cm center clearance. QA uses a seed. Revisited streets are natural; never promise mathematically non-repeating travel in a finite district.
+
+GroundedVisitorCamera replaces vertical keyboard walking with projected horizontal travel and safe floor support. Hold F + movement for collision-aware view-directed flight; Space/Ctrl are flight-only modifiers. Release F to land, or return to the last safe support if over roofs/water. Blur clears keys. Unused QA shot cameras remain untouched, including their exact height.
+
+NaturalArmPose avoids the former foot-style world-frame constraint on wrists. Hands inherit forearm orientation, fingers relax, the worker crouches slightly to reach the near block edge, and work/rest poses blend. The block is detached from its animated root and remains at its asset-authored world position. Existing foot IK stays active. Stable hand contacts and transition wrist limits are covered by live tests.
+
+The black end panels came from inward face winding in irregular_end_wall_skin. The generator now takes the correct outward sign for each end. All three authored chunks repair 594 affected faces, bake-only outward receiver shells (4 cm) and their original lightmap charts. No high-mesh vertex positions or lightmap UVs change (195,178 triangles exhaustively checked). All real LODs are re-exported. The focused source, linear arrays, masks and immutable pre-repair inputs are in content/source-assets/lighting/exterior-repair. The editable corrected Blender file restores the normal sky setup. build-street-finish --promote now invokes repair-district-exteriors; Python needs NumPy/Pillow, with PYTHON_BIN/BLENDER_BIN overrides.
+
+The bounded district.interaction-revision layer sits above the existing finish/render/character locks. Keep all original snapshots and hashes. Existing eight placement/camera/collision source functions and route/bookmark JSON remain protected. The interaction validator is part of npm run build. A complete production build passes; the existing Vite large-chunk warning remains.
+
+See docs/design/district-interactions-2026-10-25.md and its JSON for the final evidence. The comparison tool temporarily swaps the archived street visuals and legacy pose/population branch, uses identical absolute cameras, and restores all final bytes. The performance harness now accepts --crowd-warmup: five simulated minutes before a 600-frame full tour. Never run captures/builds concurrently with its temporary source instrumentation; its finally block restores main/scene bytes and verifies hashes. Desktop target remains Intel HD 4600; headset testing is deferred by the user.

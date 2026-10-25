@@ -1,0 +1,26 @@
+{
+  "near": {
+    "selectedPixels": 182469,
+    "oldMean": 0.054076944648526026,
+    "newMean": 0.10071584189231249,
+    "linearMaximum": 0.5044311285018921,
+    "clippedChannels": 0,
+    "unchangedOutsideMask": true
+  },
+  "mid": {
+    "selectedPixels": 86423,
+    "oldMean": 0.03408158337177097,
+    "newMean": 0.06451715414961175,
+    "linearMaximum": 0.4353694021701813,
+    "clippedChannels": 0,
+    "unchangedOutsideMask": true
+  },
+  "far": {
+    "selectedPixels": 263959,
+    "oldMean": 0.04900478825105711,
+    "newMean": 0.03941114146589462,
+    "linearMaximum": 0.47290876507759094,
+    "clippedChannels": 0,
+    "unchangedOutsideMask": true
+  }
+}

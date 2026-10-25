@@ -43,3 +43,11 @@
 **/engines/unity/Builds/
 # Intentional immutable inputs for the finished-street atlas orientation audit.
 !content/source-assets/lighting/steps78-base/*.png
+
+# Immutable exterior repair inputs and requested visual comparisons.
+!content/source-assets/lighting/exterior-repair/baseline/*.png
+!content/source-assets/lighting/exterior-repair/baseline/*.webp
+!docs/design/screenshots/hero-street-main-district-north-before.png
+!docs/design/screenshots/hero-street-main-district-north-after.png
+!docs/design/screenshots/hero-street-main-district-hands-before.png
+!docs/design/screenshots/hero-street-main-district-hands-after.png

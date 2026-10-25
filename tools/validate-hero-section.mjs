@@ -1,3 +1,4 @@
+import {interactionExpected} from './lib/district-interaction-revision.mjs';
 import fs from 'node:fs';
 import assert from 'node:assert/strict';
 import { createHash } from 'node:crypto';
@@ -35,7 +36,7 @@ if (process.argv.includes('--record-code')) {
       'Only authored visual geometry may be revised in steps 3–4');
     assert.equal(change.before, lock.protectedFiles[file], 'Revision must retain the original baseline');
   }
-  for (const [file, checksum] of Object.entries(lock.protectedFiles)) assert.equal(hash(file), finishExpected(file,revision.files[file]?.after ?? checksum), `Protected scene data changed: ${file}`);
+  for (const [file, checksum] of Object.entries(lock.protectedFiles)) assert.equal(hash(file), interactionExpected(file,finishExpected(file,revision.files[file]?.after ?? checksum)), `Protected scene data changed: ${file}`);
   const scene = fs.readFileSync(sceneFile,'utf8');
   assert.equal(Object.keys(lock.protectedCode).length, protectedFunctions.length);
   for (const [name, checksum] of Object.entries(lock.protectedCode)) assert.equal(functionHash(scene,name),checksum,`Placement/camera/collision function changed: ${name}`);

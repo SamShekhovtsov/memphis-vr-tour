@@ -1,0 +1,1598 @@
+{
+  "url": "http://127.0.0.1:5573/?shot=hero-street-main&chrome=0&qa=1&quality=balanced",
+  "viewport": {
+    "width": 1280,
+    "height": 720,
+    "deviceScaleFactor": 1
+  },
+  "browserSession": 20432,
+  "pacing": "default",
+  "renderer": "Chrome default GPU selection; inspect gpu field",
+  "ready": true,
+  "collisionAudit": null,
+  "review": null,
+  "groundSection": {
+    "id": "hero-ground-section-v1",
+    "bounds": {
+      "minX": -10.7,
+      "maxX": -1.55,
+      "minZ": -22,
+      "maxZ": -4
+    },
+    "geometryChanged": false,
+    "maps": [
+      "ground-albedo.webp",
+      "ground-normal.webp",
+      "ground-orm.webp"
+    ]
+  },
+  "layoutRoots": [
+    {
+      "name": "glbHeroStreetCorridorNear",
+      "position": [
+        -16.5,
+        0,
+        0
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "name": "glbHeroStreetCorridorMid",
+      "position": [
+        -16.5,
+        0,
+        0
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "name": "glbHeroStreetCorridorFar",
+      "position": [
+        -16.5,
+        0,
+        0
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "name": "glbAnimatedStreetActors",
+      "position": [
+        -16.5,
+        0,
+        0
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "name": "glbNileBoatLandingMain",
+      "position": [
+        -47.4,
+        0.16,
+        -51.6
+      ],
+      "rotation": [
+        0,
+        0.06,
+        0
+      ],
+      "scale": [
+        1.12,
+        1.12,
+        1.12
+      ]
+    },
+    {
+      "name": "glbNileBoatMooredNorth",
+      "position": [
+        -51.8,
+        0.13,
+        -24
+      ],
+      "rotation": [
+        0,
+        -0.18,
+        0
+      ],
+      "scale": [
+        0.82,
+        0.82,
+        0.82
+      ]
+    },
+    {
+      "name": "glbNileBoatMooredSouth",
+      "position": [
+        -49.6,
+        0.12,
+        23.5
+      ],
+      "rotation": [
+        0,
+        0.14,
+        0
+      ],
+      "scale": [
+        0.9,
+        0.9,
+        0.9
+      ]
+    },
+    {
+      "name": "glbReedBank-0",
+      "position": [
+        -36.1,
+        0,
+        -63
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        0.82,
+        0.82,
+        0.82
+      ]
+    },
+    {
+      "name": "glbReedBank-1",
+      "position": [
+        -35.6,
+        0,
+        -43
+      ],
+      "rotation": [
+        0,
+        0.38,
+        0
+      ],
+      "scale": [
+        0.8999999999999999,
+        0.8999999999999999,
+        0.8999999999999999
+      ]
+    },
+    {
+      "name": "glbReedBank-2",
+      "position": [
+        -36.1,
+        0,
+        -23
+      ],
+      "rotation": [
+        0,
+        0.76,
+        0
+      ],
+      "scale": [
+        0.98,
+        0.98,
+        0.98
+      ]
+    },
+    {
+      "name": "glbReedBank-3",
+      "position": [
+        -35.6,
+        0,
+        -3
+      ],
+      "rotation": [
+        0,
+        1.1400000000000001,
+        0
+      ],
+      "scale": [
+        0.82,
+        0.82,
+        0.82
+      ]
+    },
+    {
+      "name": "glbReedBank-4",
+      "position": [
+        -36.1,
+        0,
+        17
+      ],
+      "rotation": [
+        0,
+        1.52,
+        0
+      ],
+      "scale": [
+        0.8999999999999999,
+        0.8999999999999999,
+        0.8999999999999999
+      ]
+    },
+    {
+      "name": "glbReedBank-5",
+      "position": [
+        -35.6,
+        0,
+        37
+      ],
+      "rotation": [
+        0,
+        1.9,
+        0
+      ],
+      "scale": [
+        0.98,
+        0.98,
+        0.98
+      ]
+    },
+    {
+      "name": "glbReedBank-6",
+      "position": [
+        -36.1,
+        0,
+        57
+      ],
+      "rotation": [
+        0,
+        2.2800000000000002,
+        0
+      ],
+      "scale": [
+        0.82,
+        0.82,
+        0.82
+      ]
+    }
+  ],
+  "heroLoaded": true,
+  "meshes": 758,
+  "activeMeshes": 290,
+  "activeIndices": 2596768,
+  "vertices": 754088,
+  "drawCalls": 359,
+  "meanFrameMs": 65.03666666348775,
+  "gpu": {
+    "vendor": "Google Inc. (Intel)",
+    "renderer": "ANGLE (Intel, Intel(R) HD Graphics 4600 (0x00000416) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+    "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+  },
+  "frameIntervalsMs": {
+    "samples": 19,
+    "p50": 60.5,
+    "p95": 128.79999995231628,
+    "max": 128.79999995231628
+  },
+  "benchmarkProgress": null,
+  "streetLods": [
+    {
+      "assetId": "hero-street-corridor-near",
+      "level": 0,
+      "loaded": [
+        0
+      ],
+      "triangles": 64834,
+      "failed": []
+    },
+    {
+      "assetId": "hero-street-corridor-mid",
+      "level": 0,
+      "loaded": [
+        0
+      ],
+      "triangles": 94882,
+      "failed": []
+    },
+    {
+      "assetId": "hero-street-corridor-far",
+      "level": 0,
+      "loaded": [
+        0
+      ],
+      "triangles": 35462,
+      "failed": []
+    }
+  ],
+  "rendering": {
+    "tier": "balanced",
+    "antialiasing": "FXAA",
+    "toneMapping": "ACES",
+    "exposure": 1.2,
+    "contrast": 1,
+    "shadowMapSize": 2048,
+    "shadowFilter": "PCF",
+    "daylightProfile": "hero-street-daylight-v1",
+    "indirectLightGain": 2.3,
+    "finishLighting": {
+      "profile": "hero-street-finish-lighting-v1",
+      "irradianceRange": 1,
+      "samples": 48,
+      "resolution": 2048,
+      "directSunBaked": false,
+      "albedoBaked": false,
+      "movingActorsBaked": false,
+      "noiseFilter": "3x3 median and 0.12/0.76/0.12 subtexel kernel on linear irradiance only",
+      "audit": {
+        "near": {
+          "unclippedLinearMaximum": 0.5055744647979736,
+          "rawChannelsOverOne": 0,
+          "oldSaturatedChannels": 0,
+          "noiseResidualMedian": 0.0017997387330979109,
+          "noiseResidualP95": 0.026072584092617035,
+          "contactMinimumGain": 0.86,
+          "contactMeanGain": 0.8979378420511881,
+          "newClippedChannels": 0,
+          "rangeScale": 1
+        },
+        "mid": {
+          "unclippedLinearMaximum": 0.5103425979614258,
+          "rawChannelsOverOne": 0,
+          "oldSaturatedChannels": 0,
+          "noiseResidualMedian": 0.002733945846557617,
+          "noiseResidualP95": 0.026929274201393127,
+          "contactMinimumGain": 0.86,
+          "contactMeanGain": 0.908223985746795,
+          "newClippedChannels": 0,
+          "rangeScale": 1
+        },
+        "far": {
+          "unclippedLinearMaximum": 0.5049583911895752,
+          "rawChannelsOverOne": 0,
+          "oldSaturatedChannels": 0,
+          "noiseResidualMedian": 0.0021769553422927856,
+          "noiseResidualP95": 0.021854575723409653,
+          "contactMinimumGain": 0.86,
+          "contactMeanGain": 0.9195161339067945,
+          "newClippedChannels": 0,
+          "rangeScale": 1
+        }
+      }
+    },
+    "textureTrial": {
+      "requested": false,
+      "nativeCompression": true,
+      "maps": []
+    },
+    "population": {
+      "people": 9,
+      "goals": 0,
+      "pauses": 0,
+      "blocked": 0,
+      "minimumFacingDot": 1,
+      "maxTurnPerSecond": 0,
+      "poseRates": "full nearby; 15 Hz beyond 35 m",
+      "states": [
+        {
+          "name": "glbAnimatedStreetActors-actorHeroCarrier",
+          "role": "Carrier",
+          "position": [
+            -5.96746826171875,
+            0.06593511253595352,
+            20.262916564941406
+          ],
+          "speed": 0,
+          "waiting": true,
+          "remainingWaypoints": 0,
+          "travel": 0
+        },
+        {
+          "name": "glbAnimatedStreetActors-actorHeroStoneWorker",
+          "role": "StoneWorker",
+          "position": [
+            -9,
+            0.09700000286102295,
+            7.5
+          ],
+          "speed": 0,
+          "waiting": false,
+          "remainingWaypoints": 0,
+          "travel": 0
+        },
+        {
+          "name": "glbAnimatedStreetActors-actorHeroStreetWalker",
+          "role": "StreetWalker",
+          "position": [
+            -3.16208553314209,
+            0.06245456635951996,
+            5.030416965484619
+          ],
+          "speed": 0,
+          "waiting": true,
+          "remainingWaypoints": 0,
+          "travel": 0
+        },
+        {
+          "name": "districtResident0",
+          "role": "Resident0",
+          "position": [
+            -31.5,
+            0.04500000178813934,
+            -49.5
+          ],
+          "speed": 0,
+          "waiting": true,
+          "remainingWaypoints": 0,
+          "travel": 0
+        },
+        {
+          "name": "districtResident1",
+          "role": "Resident1",
+          "position": [
+            -25.5,
+            0.04500000178813934,
+            -25.5
+          ],
+          "speed": 0,
+          "waiting": true,
+          "remainingWaypoints": 0,
+          "travel": 0
+        },
+        {
+          "name": "districtResident2",
+          "role": "Resident2",
+          "position": [
+            15,
+            0.04500000178813934,
+            -15
+          ],
+          "speed": 0,
+          "waiting": true,
+          "remainingWaypoints": 0,
+          "travel": 0
+        },
+        {
+          "name": "districtResident3",
+          "role": "Resident3",
+          "position": [
+            -18,
+            0.04500000178813934,
+            22.5
+          ],
+          "speed": 0,
+          "waiting": true,
+          "remainingWaypoints": 0,
+          "travel": 0
+        },
+        {
+          "name": "districtResident4",
+          "role": "Resident4",
+          "position": [
+            7.5,
+            0.07500000298023224,
+            55.5
+          ],
+          "speed": 0,
+          "waiting": true,
+          "remainingWaypoints": 0,
+          "travel": 0
+        },
+        {
+          "name": "districtResident5",
+          "role": "Resident5",
+          "position": [
+            -7.5,
+            0.08500000089406967,
+            82.5
+          ],
+          "speed": 0,
+          "waiting": true,
+          "remainingWaypoints": 0,
+          "travel": 0
+        }
+      ]
+    },
+    "navigation": {
+      "houses": 14,
+      "nodes": 4972,
+      "obstacles": 38,
+      "spawns": [
+        [
+          -31,
+          -49
+        ],
+        [
+          -25,
+          -26
+        ],
+        [
+          15,
+          -15
+        ],
+        [
+          -18,
+          23
+        ],
+        [
+          7,
+          55
+        ],
+        [
+          -8,
+          82
+        ]
+      ]
+    },
+    "observer": {
+      "flyKey": "Hold F with movement; release to land",
+      "state": {
+        "position": [
+          -6.08,
+          1.752,
+          -16.4
+        ],
+        "ground": 0.052,
+        "flightHeld": false
+      }
+    }
+  },
+  "peopleMaterials": {
+    "id": "hero-people-materials-v1",
+    "geometryChanged": false,
+    "textureCount": 6,
+    "bindings": [
+      {
+        "family": "skin",
+        "alphaTest": false,
+        "normalStrength": 0.32,
+        "sheen": 0,
+        "anisotropy": 0,
+        "albedoSrgb": true,
+        "normalLinear": true
+      },
+      {
+        "family": "hair",
+        "alphaTest": false,
+        "normalStrength": 0.65,
+        "sheen": 0,
+        "anisotropy": 0,
+        "albedoSrgb": true,
+        "normalLinear": true
+      },
+      {
+        "family": "linen",
+        "alphaTest": false,
+        "normalStrength": 0.35,
+        "sheen": 0,
+        "anisotropy": 0,
+        "albedoSrgb": true,
+        "normalLinear": true
+      },
+      {
+        "family": "skin",
+        "alphaTest": false,
+        "normalStrength": 0.32,
+        "sheen": 0,
+        "anisotropy": 0,
+        "albedoSrgb": true,
+        "normalLinear": true
+      },
+      {
+        "family": "hair",
+        "alphaTest": false,
+        "normalStrength": 0.65,
+        "sheen": 0,
+        "anisotropy": 0,
+        "albedoSrgb": true,
+        "normalLinear": true
+      },
+      {
+        "family": "linen",
+        "alphaTest": false,
+        "normalStrength": 0.35,
+        "sheen": 0,
+        "anisotropy": 0,
+        "albedoSrgb": true,
+        "normalLinear": true
+      }
+    ]
+  },
+  "contactPolish": {
+    "distanceMeters": 0.4,
+    "resolution": 1024,
+    "maxIndirectAttenuation": 0.14,
+    "affects": "existing linear sky/bounce only",
+    "geometryAndUvsChanged": false,
+    "movingActorsBaked": false
+  },
+  "contactShadows": {
+    "mode": "human-contact",
+    "extraPasses": 0,
+    "staticNormalBias": 0.035,
+    "humanNormalBias": 0.012,
+    "humanDepthBias": 0.00025
+  },
+  "workerInteraction": null,
+  "heroPeople": 9,
+  "heroPeopleSource": "CC0 MakeHuman-derived anatomy; project-authored linen",
+  "heroInteractions": [
+    {
+      "root": "glbAnimatedStreetActors-actorHeroCarrier",
+      "toolAttached": false,
+      "workBlockRetained": false
+    },
+    {
+      "root": "glbAnimatedStreetActors-actorHeroStoneWorker",
+      "toolAttached": true,
+      "workBlockRetained": true
+    },
+    {
+      "root": "glbAnimatedStreetActors-actorHeroStreetWalker",
+      "toolAttached": false,
+      "workBlockRetained": false
+    },
+    {
+      "root": "districtResident0",
+      "toolAttached": false,
+      "workBlockRetained": false
+    },
+    {
+      "root": "districtResident1",
+      "toolAttached": false,
+      "workBlockRetained": false
+    },
+    {
+      "root": "districtResident2",
+      "toolAttached": false,
+      "workBlockRetained": false
+    },
+    {
+      "root": "districtResident3",
+      "toolAttached": false,
+      "workBlockRetained": false
+    },
+    {
+      "root": "districtResident4",
+      "toolAttached": false,
+      "workBlockRetained": false
+    },
+    {
+      "root": "districtResident5",
+      "toolAttached": false,
+      "workBlockRetained": false
+    }
+  ],
+  "estimatedTextureMiB": 384.3715006510417,
+  "textures": 103,
+  "textureErrors": [],
+  "renderWidth": 1280,
+  "renderHeight": 720,
+  "camera": [
+    -9.7,
+    1.752,
+    10.3
+  ],
+  "animationSeconds": 2,
+  "groundContacts": [
+    {
+      "name": "heroPerson-Carrier-foot.L",
+      "planted": true,
+      "placement": 1,
+      "error": 0.000002046510560404586,
+      "position": [
+        -6.139620304107666,
+        0.13117925822734833,
+        20.292266845703125
+      ],
+      "animationPosition": [
+        -6.139620304107666,
+        0.10263759642839432,
+        20.292264938354492
+      ],
+      "target": [
+        -6.139620304107666,
+        0.13118,
+        20.292264938354492
+      ],
+      "ankleRoll": 0,
+      "soleNormal": [
+        -3.693705439056317e-9,
+        0.9999999999999998,
+        -1.7897030295317694e-8
+      ],
+      "groundNormal": [
+        0,
+        1,
+        0
+      ]
+    },
+    {
+      "name": "heroPerson-Carrier-foot.R",
+      "planted": true,
+      "placement": 1,
+      "error": 0.000002046510560404586,
+      "position": [
+        -5.795316219329834,
+        0.13117925822734833,
+        20.292266845703125
+      ],
+      "animationPosition": [
+        -5.795316219329834,
+        0.10263759642839432,
+        20.292264938354492
+      ],
+      "target": [
+        -5.795316219329834,
+        0.13118,
+        20.292264938354492
+      ],
+      "ankleRoll": 0,
+      "soleNormal": [
+        8.424767630140858e-10,
+        0.9999999999999989,
+        -4.3243070367404685e-8
+      ],
+      "groundNormal": [
+        0,
+        1,
+        0
+      ]
+    },
+    {
+      "name": "heroPerson-StoneWorker-foot.L",
+      "planted": true,
+      "placement": 1,
+      "error": 0.003997391180312261,
+      "position": [
+        -9.087099075317383,
+        0.1270373910665512,
+        7.438190460205078
+      ],
+      "animationPosition": [
+        -9.17255687713623,
+        0.13303616642951965,
+        7.409487724304199
+      ],
+      "target": [
+        -9.087099075317383,
+        0.12303999999999998,
+        7.4381914138793945
+      ],
+      "ankleRoll": 0,
+      "soleNormal": [
+        9.30318297459193e-9,
+        0.9999999999999998,
+        2.1976247154191466e-8
+      ],
+      "groundNormal": [
+        0,
+        1,
+        0
+      ]
+    },
+    {
+      "name": "heroPerson-StoneWorker-foot.R",
+      "planted": true,
+      "placement": 1,
+      "error": 0.003997451154673168,
+      "position": [
+        -8.905529975891113,
+        0.12703745067119598,
+        7.549822807312012
+      ],
+      "animationPosition": [
+        -8.84134578704834,
+        0.13303613662719727,
+        7.613125324249268
+      ],
+      "target": [
+        -8.905531883239746,
+        0.12303999999999998,
+        7.54982328414917
+      ],
+      "ankleRoll": 0,
+      "soleNormal": [
+        -2.4271775217071263e-9,
+        0.9999999999999999,
+        1.462211705380917e-8
+      ],
+      "groundNormal": [
+        0,
+        1,
+        0
+      ]
+    },
+    {
+      "name": "heroPerson-StreetWalker-foot.L",
+      "planted": true,
+      "placement": 1,
+      "error": 0.0000039387243817370325,
+      "position": [
+        -3.3564882278442383,
+        0.12303796410560608,
+        5.0436930656433105
+      ],
+      "animationPosition": [
+        -3.35648775100708,
+        0.09849068522453308,
+        5.043689727783203
+      ],
+      "target": [
+        -3.35648775100708,
+        0.12303999999999998,
+        5.043689727783203
+      ],
+      "ankleRoll": 0,
+      "soleNormal": [
+        -6.244777807551768e-9,
+        0.9999999999999987,
+        -5.0117142833022814e-8
+      ],
+      "groundNormal": [
+        0,
+        1,
+        0
+      ]
+    },
+    {
+      "name": "heroPerson-StreetWalker-foot.R",
+      "planted": true,
+      "placement": 1,
+      "error": 0.000003945086462668613,
+      "position": [
+        -2.9676835536956787,
+        0.1230378970503807,
+        5.0436930656433105
+      ],
+      "animationPosition": [
+        -2.9676835536956787,
+        0.0984906554222107,
+        5.043689727783203
+      ],
+      "target": [
+        -2.9676835536956787,
+        0.12303999999999998,
+        5.043689727783203
+      ],
+      "ankleRoll": 0,
+      "soleNormal": [
+        3.985582697767327e-9,
+        1,
+        -7.12237764515331e-9
+      ],
+      "groundNormal": [
+        0,
+        1,
+        0
+      ]
+    },
+    {
+      "name": "heroPerson-Resident0-foot.L",
+      "planted": true,
+      "placement": 1,
+      "error": 0.0000010458547065249064,
+      "position": [
+        -31.628583908081055,
+        0.07103994488716125,
+        -49.47770309448242
+      ],
+      "animationPosition": [
+        -31.65445327758789,
+        0.07433124631643295,
+        -49.47366714477539
+      ],
+      "target": [
+        -31.628583714016713,
+        0.07103999999999999,
+        -49.47770206826915
+      ],
+      "ankleRoll": 0,
+      "soleNormal": [
+        -2.4705926648606763e-9,
+        0.9999999999999998,
+        -2.5690123323447935e-8
+      ],
+      "groundNormal": [
+        0,
+        1,
+        0
+      ]
+    },
+    {
+      "name": "heroPerson-Resident0-foot.R",
+      "planted": true,
+      "placement": 1,
+      "error": 0.0000010458547065249064,
+      "position": [
+        -31.371416091918945,
+        0.07103994488716125,
+        -49.47770309448242
+      ],
+      "animationPosition": [
+        -31.34554672241211,
+        0.07433124631643295,
+        -49.47366714477539
+      ],
+      "target": [
+        -31.371416285983287,
+        0.07103999999999999,
+        -49.47770206826915
+      ],
+      "ankleRoll": 0,
+      "soleNormal": [
+        2.4705926648606763e-9,
+        0.9999999999999998,
+        -2.5690123323447935e-8
+      ],
+      "groundNormal": [
+        0,
+        1,
+        0
+      ]
+    },
+    {
+      "name": "heroPerson-Resident1-foot.L",
+      "planted": true,
+      "placement": 1,
+      "error": 0.00399727078437806,
+      "position": [
+        -25.606569290161133,
+        0.07503727078437805,
+        -25.507034301757812
+      ],
+      "animationPosition": [
+        -25.69440269470215,
+        0.08103612065315247,
+        -25.486726760864258
+      ],
+      "target": [
+        -25.606569290161133,
+        0.07103999999999999,
+        -25.507034301757812
+      ],
+      "ankleRoll": 0,
+      "soleNormal": [
+        1.740593460804282e-9,
+        1,
+        1.006845226815502e-9
+      ],
+      "groundNormal": [
+        0,
+        1,
+        0
+      ]
+    },
+    {
+      "name": "heroPerson-Resident1-foot.R",
+      "planted": true,
+      "placement": 1,
+      "error": 0.003997315487861641,
+      "position": [
+        -25.393430709838867,
+        0.07503731548786163,
+        -25.507034301757812
+      ],
+      "animationPosition": [
+        -25.30559730529785,
+        0.08103609085083008,
+        -25.486726760864258
+      ],
+      "target": [
+        -25.393430709838867,
+        0.07103999999999999,
+        -25.507034301757812
+      ],
+      "ankleRoll": 0,
+      "soleNormal": [
+        -5.356132637708707e-9,
+        0.9999999999999997,
+        -2.4216288583441627e-8
+      ],
+      "groundNormal": [
+        0,
+        1,
+        0
+      ]
+    },
+    {
+      "name": "heroPerson-Resident2-foot.L",
+      "planted": true,
+      "placement": 1,
+      "error": 6.116008405978082e-7,
+      "position": [
+        14.871417045593262,
+        0.07103998214006424,
+        -14.977705001831055
+      ],
+      "animationPosition": [
+        14.84554672241211,
+        0.07433124631643295,
+        -14.97367000579834
+      ],
+      "target": [
+        14.871416501441564,
+        0.07103999999999999,
+        -14.977705280462605
+      ],
+      "ankleRoll": 0,
+      "soleNormal": [
+        3.799807841913641e-9,
+        1,
+        -1.7550550276346705e-9
+      ],
+      "groundNormal": [
+        0,
+        1,
+        0
+      ]
+    },
+    {
+      "name": "heroPerson-Resident2-foot.R",
+      "planted": true,
+      "placement": 1,
+      "error": 6.116008405978082e-7,
+      "position": [
+        15.128582954406738,
+        0.07103998214006424,
+        -14.977705001831055
+      ],
+      "animationPosition": [
+        15.15445327758789,
+        0.07433124631643295,
+        -14.97367000579834
+      ],
+      "target": [
+        15.128583498558436,
+        0.07103999999999999,
+        -14.977705280462605
+      ],
+      "ankleRoll": 0,
+      "soleNormal": [
+        -3.799807841913641e-9,
+        1,
+        -1.7550550276346705e-9
+      ],
+      "groundNormal": [
+        0,
+        1,
+        0
+      ]
+    },
+    {
+      "name": "heroPerson-Resident3-foot.L",
+      "planted": true,
+      "placement": 1,
+      "error": 0.00399727078437806,
+      "position": [
+        -18.106569290161133,
+        0.07503727078437805,
+        22.492965698242188
+      ],
+      "animationPosition": [
+        -18.19440269470215,
+        0.08103612065315247,
+        22.513273239135742
+      ],
+      "target": [
+        -18.106569290161133,
+        0.07103999999999999,
+        22.492965698242188
+      ],
+      "ankleRoll": 0,
+      "soleNormal": [
+        1.740593460804282e-9,
+        1,
+        1.006845226815502e-9
+      ],
+      "groundNormal": [
+        0,
+        1,
+        0
+      ]
+    },
+    {
+      "name": "heroPerson-Resident3-foot.R",
+      "planted": true,
+      "placement": 1,
+      "error": 0.003997315487861641,
+      "position": [
+        -17.893430709838867,
+        0.07503731548786163,
+        22.492965698242188
+      ],
+      "animationPosition": [
+        -17.80559730529785,
+        0.08103609085083008,
+        22.513273239135742
+      ],
+      "target": [
+        -17.893430709838867,
+        0.07103999999999999,
+        22.492965698242188
+      ],
+      "ankleRoll": 0,
+      "soleNormal": [
+        -5.356132637708707e-9,
+        0.9999999999999997,
+        -2.4216288583441627e-8
+      ],
+      "groundNormal": [
+        0,
+        1,
+        0
+      ]
+    },
+    {
+      "name": "heroPerson-Resident4-foot.L",
+      "planted": true,
+      "placement": 1,
+      "error": 0.0000026196221551675417,
+      "position": [
+        7.3714141845703125,
+        0.10104016214609146,
+        55.522300720214844
+      ],
+      "animationPosition": [
+        7.345546245574951,
+        0.10433121770620346,
+        55.52633285522461
+      ],
+      "target": [
+        7.371414795038748,
+        0.10103999932944774,
+        55.52229817792468
+      ],
+      "ankleRoll": 0,
+      "soleNormal": [
+        4.571941292491592e-9,
+        1,
+        3.750873445929672e-9
+      ],
+      "groundNormal": [
+        0,
+        1,
+        0
+      ]
+    },
+    {
+      "name": "heroPerson-Resident4-foot.R",
+      "planted": true,
+      "placement": 1,
+      "error": 0.0000026196221551675417,
+      "position": [
+        7.6285858154296875,
+        0.10104016214609146,
+        55.522300720214844
+      ],
+      "animationPosition": [
+        7.654453754425049,
+        0.10433121770620346,
+        55.52633285522461
+      ],
+      "target": [
+        7.628585204961252,
+        0.10103999932944774,
+        55.52229817792468
+      ],
+      "ankleRoll": 0,
+      "soleNormal": [
+        -4.571941292491592e-9,
+        1,
+        3.750873445929672e-9
+      ],
+      "groundNormal": [
+        0,
+        1,
+        0
+      ]
+    },
+    {
+      "name": "heroPerson-Resident5-foot.L",
+      "planted": true,
+      "placement": 1,
+      "error": 0.00399750923139658,
+      "position": [
+        -7.606569766998291,
+        0.11503750830888748,
+        82.49296569824219
+      ],
+      "animationPosition": [
+        -7.69440221786499,
+        0.12103614211082458,
+        82.51326751708984
+      ],
+      "target": [
+        -7.606569290161133,
+        0.11103999910593032,
+        82.49296569824219
+      ],
+      "ankleRoll": 0,
+      "soleNormal": [
+        1.3106151686873173e-9,
+        0.9999999999999983,
+        5.8298828281869857e-8
+      ],
+      "groundNormal": [
+        0,
+        1,
+        0
+      ]
+    },
+    {
+      "name": "heroPerson-Resident5-foot.R",
+      "planted": true,
+      "placement": 1,
+      "error": 0.003997606060504921,
+      "position": [
+        -7.393430709838867,
+        0.11503760516643524,
+        82.49296569824219
+      ],
+      "animationPosition": [
+        -7.305598258972168,
+        0.1210361123085022,
+        82.51326751708984
+      ],
+      "target": [
+        -7.393430709838867,
+        0.11103999910593032,
+        82.49296569824219
+      ],
+      "ankleRoll": 0,
+      "soleNormal": [
+        -5.079300534365181e-10,
+        1,
+        2.2744325704639785e-9
+      ],
+      "groundNormal": [
+        0,
+        1,
+        0
+      ]
+    }
+  ],
+  "groundContactAudit": null,
+  "actorJoints": [
+    {
+      "name": "glbAnimatedStreetActors-actorHeroCarrier-leftArm-elbow",
+      "rotation": [
+        -0.5631375787432431,
+        0,
+        0,
+        0.8263631226139241
+      ]
+    },
+    {
+      "name": "glbAnimatedStreetActors-actorHeroCarrier-leftLeg-knee",
+      "rotation": [
+        0.22811205743082114,
+        0,
+        0,
+        0.9736348753231915
+      ]
+    },
+    {
+      "name": "glbAnimatedStreetActors-actorHeroCarrier-rightArm-elbow",
+      "rotation": [
+        -0.5109472157870757,
+        0,
+        0,
+        0.859611999851944
+      ]
+    },
+    {
+      "name": "glbAnimatedStreetActors-actorHeroCarrier-rightLeg-knee",
+      "rotation": [
+        0.04361939057707787,
+        0,
+        0,
+        0.9990482330322266
+      ]
+    },
+    {
+      "name": "glbAnimatedStreetActors-actorHeroStoneWorker-leftArm-elbow",
+      "rotation": [
+        -0.2164396345615387,
+        0,
+        0,
+        0.9762960076332092
+      ]
+    },
+    {
+      "name": "glbAnimatedStreetActors-actorHeroStoneWorker-leftLeg-knee",
+      "rotation": [
+        0.061048563569784164,
+        0,
+        0,
+        0.9981347918510437
+      ]
+    },
+    {
+      "name": "glbAnimatedStreetActors-actorHeroStoneWorker-rightArm-elbow",
+      "rotation": [
+        -0.2979760238936215,
+        0,
+        0,
+        0.9545733589389636
+      ]
+    },
+    {
+      "name": "glbAnimatedStreetActors-actorHeroStoneWorker-rightLeg-knee",
+      "rotation": [
+        0.061048563569784164,
+        0,
+        0,
+        0.9981347918510437
+      ]
+    },
+    {
+      "name": "glbAnimatedStreetActors-actorHeroStreetWalker-leftArm-elbow",
+      "rotation": [
+        -0.15115721765380719,
+        0,
+        0,
+        0.9885097527103128
+      ]
+    },
+    {
+      "name": "glbAnimatedStreetActors-actorHeroStreetWalker-leftLeg-knee",
+      "rotation": [
+        0.04361939057707787,
+        0,
+        0,
+        0.9990482330322266
+      ]
+    },
+    {
+      "name": "glbAnimatedStreetActors-actorHeroStreetWalker-rightArm-elbow",
+      "rotation": [
+        -0.1960489174233403,
+        0,
+        0,
+        0.9805941196564381
+      ]
+    },
+    {
+      "name": "glbAnimatedStreetActors-actorHeroStreetWalker-rightLeg-knee",
+      "rotation": [
+        0.11660936040205228,
+        0,
+        0,
+        0.9931778709508231
+      ]
+    }
+  ],
+  "actorAnimationGroups": [
+    {
+      "name": "glbAnimatedStreetActors-actorHeroCarrierAction",
+      "frame": 0,
+      "speedRatio": 1,
+      "targets": 2
+    },
+    {
+      "name": "glbAnimatedStreetActors-actorHeroCarrier-headJarRootAction",
+      "frame": 0,
+      "speedRatio": 1,
+      "targets": 1
+    },
+    {
+      "name": "glbAnimatedStreetActors-actorHeroCarrier-leftArm-pivotAction",
+      "frame": 0,
+      "speedRatio": 1,
+      "targets": 1
+    },
+    {
+      "name": "glbAnimatedStreetActors-actorHeroCarrier-leftArm-rigAction",
+      "frame": 0,
+      "speedRatio": 1,
+      "targets": 6
+    },
+    {
+      "name": "glbAnimatedStreetActors-actorHeroCarrier-leftLeg-pivotAction",
+      "frame": 0,
+      "speedRatio": 1,
+      "targets": 1
+    },
+    {
+      "name": "glbAnimatedStreetActors-actorHeroCarrier-leftLeg-rigAction",
+      "frame": 0,
+      "speedRatio": 1,
+      "targets": 6
+    },
+    {
+      "name": "glbAnimatedStreetActors-actorHeroCarrier-leftFootAction",
+      "frame": 0,
+      "speedRatio": 1,
+      "targets": 1
+    },
+    {
+      "name": "glbAnimatedStreetActors-actorHeroCarrier-rightArm-pivotAction",
+      "frame": 0,
+      "speedRatio": 1,
+      "targets": 1
+    },
+    {
+      "name": "glbAnimatedStreetActors-actorHeroCarrier-rightArm-rigAction",
+      "frame": 0,
+      "speedRatio": 1,
+      "targets": 6
+    },
+    {
+      "name": "glbAnimatedStreetActors-actorHeroCarrier-rightLeg-pivotAction",
+      "frame": 0,
+      "speedRatio": 1,
+      "targets": 1
+    },
+    {
+      "name": "glbAnimatedStreetActors-actorHeroCarrier-rightLeg-rigAction",
+      "frame": 0,
+      "speedRatio": 1,
+      "targets": 6
+    },
+    {
+      "name": "glbAnimatedStreetActors-actorHeroCarrier-rightFootAction",
+      "frame": 0,
+      "speedRatio": 1,
+      "targets": 1
+    },
+    {
+      "name": "glbAnimatedStreetActors-actorHeroStoneWorkerAction",
+      "frame": 0,
+      "speedRatio": 1,
+      "targets": 1
+    },
+    {
+      "name": "glbAnimatedStreetActors-actorHeroStoneWorker-leftArm-pivotAction",
+      "frame": 0,
+      "speedRatio": 1,
+      "targets": 1
+    },
+    {
+      "name": "glbAnimatedStreetActors-actorHeroStoneWorker-leftArm-rigAction",
+      "frame": 0,
+      "speedRatio": 1,
+      "targets": 6
+    },
+    {
+      "name": "glbAnimatedStreetActors-actorHeroStoneWorker-leftLeg-pivotAction",
+      "frame": 0,
+      "speedRatio": 1,
+      "targets": 1
+    },
+    {
+      "name": "glbAnimatedStreetActors-actorHeroStoneWorker-leftLeg-rigAction",
+      "frame": 0,
+      "speedRatio": 1,
+      "targets": 6
+    },
+    {
+      "name": "glbAnimatedStreetActors-actorHeroStoneWorker-leftFootAction",
+      "frame": 0,
+      "speedRatio": 1,
+      "targets": 1
+    },
+    {
+      "name": "glbAnimatedStreetActors-actorHeroStoneWorker-rightArm-pivotAction",
+      "frame": 0,
+      "speedRatio": 1,
+      "targets": 1
+    },
+    {
+      "name": "glbAnimatedStreetActors-actorHeroStoneWorker-rightArm-rigAction",
+      "frame": 0,
+      "speedRatio": 1,
+      "targets": 6
+    },
+    {
+      "name": "glbAnimatedStreetActors-actorHeroStoneWorker-rightLeg-pivotAction",
+      "frame": 0,
+      "speedRatio": 1,
+      "targets": 1
+    },
+    {
+      "name": "glbAnimatedStreetActors-actorHeroStoneWorker-rightLeg-rigAction",
+      "frame": 0,
+      "speedRatio": 1,
+      "targets": 6
+    },
+    {
+      "name": "glbAnimatedStreetActors-actorHeroStoneWorker-rightFootAction",
+      "frame": 0,
+      "speedRatio": 1,
+      "targets": 1
+    },
+    {
+      "name": "glbAnimatedStreetActors-actorHeroStreetWalkerAction",
+      "frame": 0,
+      "speedRatio": 1,
+      "targets": 2
+    },
+    {
+      "name": "glbAnimatedStreetActors-actorHeroStreetWalker-leftArm-pivotAction",
+      "frame": 0,
+      "speedRatio": 1,
+      "targets": 1
+    },
+    {
+      "name": "glbAnimatedStreetActors-actorHeroStreetWalker-leftArm-rigAction",
+      "frame": 0,
+      "speedRatio": 1,
+      "targets": 6
+    },
+    {
+      "name": "glbAnimatedStreetActors-actorHeroStreetWalker-leftLeg-pivotAction",
+      "frame": 0,
+      "speedRatio": 1,
+      "targets": 1
+    },
+    {
+      "name": "glbAnimatedStreetActors-actorHeroStreetWalker-leftLeg-rigAction",
+      "frame": 0,
+      "speedRatio": 1,
+      "targets": 6
+    },
+    {
+      "name": "glbAnimatedStreetActors-actorHeroStreetWalker-leftFootAction",
+      "frame": 0,
+      "speedRatio": 1,
+      "targets": 1
+    },
+    {
+      "name": "glbAnimatedStreetActors-actorHeroStreetWalker-rightArm-pivotAction",
+      "frame": 0,
+      "speedRatio": 1,
+      "targets": 1
+    },
+    {
+      "name": "glbAnimatedStreetActors-actorHeroStreetWalker-rightArm-rigAction",
+      "frame": 0,
+      "speedRatio": 1,
+      "targets": 6
+    },
+    {
+      "name": "glbAnimatedStreetActors-actorHeroStreetWalker-rightLeg-pivotAction",
+      "frame": 0,
+      "speedRatio": 1,
+      "targets": 1
+    },
+    {
+      "name": "glbAnimatedStreetActors-actorHeroStreetWalker-rightLeg-rigAction",
+      "frame": 0,
+      "speedRatio": 1,
+      "targets": 6
+    },
+    {
+      "name": "glbAnimatedStreetActors-actorHeroStreetWalker-rightFootAction",
+      "frame": 0,
+      "speedRatio": 1,
+      "targets": 1
+    }
+  ],
+  "quality": "balanced",
+  "bakeId": "hero-street-authored-v2",
+  "districtView": "hands"
+}

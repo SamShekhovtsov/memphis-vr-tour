@@ -1,3 +1,4 @@
+import {interactionExpected} from './lib/district-interaction-revision.mjs';
 import fs from 'node:fs';
 import assert from 'node:assert/strict';
 import {finishExpected} from './lib/street-finish-revision.mjs';
@@ -12,5 +13,5 @@ assert.deepEqual(r.hook.edits,[{before:'',after:'import { configureRenderWork } 
 for(const edit of r.hook.edits){assert.equal(original.split(edit.after).length,2);original=original.replace(edit.after,edit.before);}
 assert.equal(sha(original),r.hook.beforeSha,'Unrecorded shadow behavior change');
 assert.equal(sha(text(r.implementation.file)),r.implementation.sha256);
-for(const [file,record] of Object.entries(r.protectedFiles))assert.equal(sha(record.normalizedText?text(file):fs.readFileSync(file)),finishExpected(file,record.sha256),'Visual/layout/motion/IK source or asset changed: '+file);
+for(const [file,record] of Object.entries(r.protectedFiles))assert.equal(sha(record.normalizedText?text(file):fs.readFileSync(file)),interactionExpected(file,finishExpected(file,record.sha256),record.normalizedText),'Visual/layout/motion/IK source or asset changed: '+file);
 console.log(`Render integrity passed: shadow hook reconstructed; ${Object.keys(r.protectedFiles).length} protected source/data/assets checked, including bounded finish revisions`);

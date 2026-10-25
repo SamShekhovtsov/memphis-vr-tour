@@ -1,0 +1,183 @@
+{
+  "date": "2026-10-25",
+  "authorization": "User requested more residents, spontaneous paths and poses, solid houses, exterior bake repair and grounded observer with held flight key. Prior camera/layout/asset locks remain authoritative.",
+  "files": {
+    "apps/web-tour/src/scene/MemphisWhiteWallsScene.ts": {
+      "baseline": "content/source-assets/interaction-baseline/MemphisWhiteWallsScene.ts",
+      "normalizedText": true,
+      "before": "951a7d208ebf19bf9e78154e610616101120c5ee2d1258746621ff4e093c1993",
+      "after": "e9e5b2244e06bd66942e3d2521eb42706e8492496b3ab5cb8d1b505bcdd71f34",
+      "beforeRaw": "951a7d208ebf19bf9e78154e610616101120c5ee2d1258746621ff4e093c1993",
+      "afterRaw": "e9e5b2244e06bd66942e3d2521eb42706e8492496b3ab5cb8d1b505bcdd71f34"
+    },
+    "apps/web-tour/src/scene/HeroPeople.ts": {
+      "baseline": "content/source-assets/interaction-baseline/HeroPeople.ts",
+      "normalizedText": true,
+      "before": "50efd1ea7969c8034a6425fa89e2f1612772c6fef90d3dfa2ecb7c19eb60675f",
+      "after": "d88129a492295931001e12095f223dac1cc5ccffce5a73b088fe51ba51e1575b",
+      "beforeRaw": "50efd1ea7969c8034a6425fa89e2f1612772c6fef90d3dfa2ecb7c19eb60675f",
+      "afterRaw": "d88129a492295931001e12095f223dac1cc5ccffce5a73b088fe51ba51e1575b"
+    },
+    "tools/blender/generate_memphis_asset_kit.py": {
+      "baseline": "content/source-assets/interaction-baseline/generate_memphis_asset_kit.py",
+      "normalizedText": true,
+      "before": "cabd5d1db6850b16d5cdb1ed6e70d2b9fdb7d6ef2c8c23f9e6043ed3f1119d3c",
+      "after": "71960e4a29c7c52f447402da5695f9d1512d098727b60a5a5edf07101b21a8fa",
+      "beforeRaw": "cabd5d1db6850b16d5cdb1ed6e70d2b9fdb7d6ef2c8c23f9e6043ed3f1119d3c",
+      "afterRaw": "71960e4a29c7c52f447402da5695f9d1512d098727b60a5a5edf07101b21a8fa"
+    },
+    "apps/web-tour/public/assets/authored/hero-street/manifest.json": {
+      "baseline": "content/source-assets/lighting/exterior-repair/baseline/manifest.json",
+      "normalizedText": true,
+      "before": "440e3420ebee4d2278e19267f52c149c01618a35f1c494492bea51c8961e9504",
+      "after": "766c047563504f6756f78034517e5b96d568f9560754cc29c0867dafa2bd5f78",
+      "beforeRaw": "e11e71c72b61fd3eb20f5bdcfb363047591de374b41e08c4b9995e74ca7dafd4",
+      "afterRaw": "766c047563504f6756f78034517e5b96d568f9560754cc29c0867dafa2bd5f78"
+    },
+    "apps/web-tour/public/assets/authored/hero-street/near-irradiance.png": {
+      "baseline": "content/source-assets/lighting/exterior-repair/baseline/near-irradiance.png",
+      "normalizedText": false,
+      "before": "09b0679e04a026c45975b0b54e5addf6f1525d6f592aeee941fd45b322e39d36",
+      "after": "79d153ee9e55eff64a012cdc41e2e2379a1c92c43f245f74e1db7f8b31898e8a",
+      "beforeRaw": "09b0679e04a026c45975b0b54e5addf6f1525d6f592aeee941fd45b322e39d36",
+      "afterRaw": "79d153ee9e55eff64a012cdc41e2e2379a1c92c43f245f74e1db7f8b31898e8a"
+    },
+    "apps/web-tour/public/assets/authored/hero-street/near-irradiance.webp": {
+      "baseline": "content/source-assets/lighting/exterior-repair/baseline/near-irradiance.webp",
+      "normalizedText": false,
+      "before": "0eb561aa1a00ce3fc5dd955f30e0a8c869e6b74ea73f1ac964e3ad1beecac22a",
+      "after": "5466c2bc4cd7389ac6b16d142dcf2cbe0b965e380fc0573f25d71d0b5a8ad44a",
+      "beforeRaw": "0eb561aa1a00ce3fc5dd955f30e0a8c869e6b74ea73f1ac964e3ad1beecac22a",
+      "afterRaw": "5466c2bc4cd7389ac6b16d142dcf2cbe0b965e380fc0573f25d71d0b5a8ad44a"
+    },
+    "apps/web-tour/public/assets/authored/hero-street/hero_street_corridor_near.glb": {
+      "baseline": "content/source-assets/lighting/exterior-repair/baseline/hero_street_corridor_near.glb",
+      "normalizedText": false,
+      "before": "b43a8d6d6e8605437faf0b9f8ac4573f2db92a918cf44cd6ea483daf1ef5d19d",
+      "after": "3c8640171f77cf43639e7616df398264d52247d9947a05bbaea7177a291f22ab",
+      "beforeRaw": "b43a8d6d6e8605437faf0b9f8ac4573f2db92a918cf44cd6ea483daf1ef5d19d",
+      "afterRaw": "3c8640171f77cf43639e7616df398264d52247d9947a05bbaea7177a291f22ab"
+    },
+    "apps/web-tour/public/assets/authored/hero-street/hero_street_corridor_near.lod1.glb": {
+      "baseline": "content/source-assets/lighting/exterior-repair/baseline/hero_street_corridor_near.lod1.glb",
+      "normalizedText": false,
+      "before": "88f2a2022d7cd635225394a8a0376974329499cc47cd3ffa617a0073bccf150f",
+      "after": "50c1aea11f11f3913b5a74149a3b0a63406b0101c033fe08fce22c40d2aaac23",
+      "beforeRaw": "88f2a2022d7cd635225394a8a0376974329499cc47cd3ffa617a0073bccf150f",
+      "afterRaw": "50c1aea11f11f3913b5a74149a3b0a63406b0101c033fe08fce22c40d2aaac23"
+    },
+    "apps/web-tour/public/assets/authored/hero-street/hero_street_corridor_near.lod2.glb": {
+      "baseline": "content/source-assets/lighting/exterior-repair/baseline/hero_street_corridor_near.lod2.glb",
+      "normalizedText": false,
+      "before": "db4b67121768f43fa8442c21bff229fd3420de9ddf694464e5c3d4748083378c",
+      "after": "6714d1804cb9fb2c4dbcbd6be89b0386ea7d6d21444c897a7879311fe04bf095",
+      "beforeRaw": "db4b67121768f43fa8442c21bff229fd3420de9ddf694464e5c3d4748083378c",
+      "afterRaw": "6714d1804cb9fb2c4dbcbd6be89b0386ea7d6d21444c897a7879311fe04bf095"
+    },
+    "apps/web-tour/public/assets/authored/hero-street/mid-irradiance.png": {
+      "baseline": "content/source-assets/lighting/exterior-repair/baseline/mid-irradiance.png",
+      "normalizedText": false,
+      "before": "42707f600dfda7f48cd58250ce81124aebbe826aa16cd0ade635adc66ef9ef42",
+      "after": "06fbd57b6525c83db483dd76727d7325fb1aa0f69a10bc50986c4cdc72b49f70",
+      "beforeRaw": "42707f600dfda7f48cd58250ce81124aebbe826aa16cd0ade635adc66ef9ef42",
+      "afterRaw": "06fbd57b6525c83db483dd76727d7325fb1aa0f69a10bc50986c4cdc72b49f70"
+    },
+    "apps/web-tour/public/assets/authored/hero-street/mid-irradiance.webp": {
+      "baseline": "content/source-assets/lighting/exterior-repair/baseline/mid-irradiance.webp",
+      "normalizedText": false,
+      "before": "f1bdf625330a26f33f63652bd499133933bd8e3d1e2aec5e0414ceb4ecb8c19e",
+      "after": "c61aecb3ab10736a63b3067c0a09a88b7d9e7e869707e843c940cd56703eef26",
+      "beforeRaw": "f1bdf625330a26f33f63652bd499133933bd8e3d1e2aec5e0414ceb4ecb8c19e",
+      "afterRaw": "c61aecb3ab10736a63b3067c0a09a88b7d9e7e869707e843c940cd56703eef26"
+    },
+    "apps/web-tour/public/assets/authored/hero-street/hero_street_corridor_mid.glb": {
+      "baseline": "content/source-assets/lighting/exterior-repair/baseline/hero_street_corridor_mid.glb",
+      "normalizedText": false,
+      "before": "b74ac5f83c0ed4b63131703482e3df72325648fb88066d07ddd7fe8b618a03d8",
+      "after": "ddacbf28de8b830573f575005cd6a0226ce94c51157ceed0891bf97580d38c56",
+      "beforeRaw": "b74ac5f83c0ed4b63131703482e3df72325648fb88066d07ddd7fe8b618a03d8",
+      "afterRaw": "ddacbf28de8b830573f575005cd6a0226ce94c51157ceed0891bf97580d38c56"
+    },
+    "apps/web-tour/public/assets/authored/hero-street/hero_street_corridor_mid.lod1.glb": {
+      "baseline": "content/source-assets/lighting/exterior-repair/baseline/hero_street_corridor_mid.lod1.glb",
+      "normalizedText": false,
+      "before": "e99ec148ce9263dbc0bc6ec3add25999d85b13f00ed7495b0c0dd4ad38f45823",
+      "after": "2a71bf8cdec928c3d02266cde83088afb4276437bb2f7bb357687e85a1a6bb3f",
+      "beforeRaw": "e99ec148ce9263dbc0bc6ec3add25999d85b13f00ed7495b0c0dd4ad38f45823",
+      "afterRaw": "2a71bf8cdec928c3d02266cde83088afb4276437bb2f7bb357687e85a1a6bb3f"
+    },
+    "apps/web-tour/public/assets/authored/hero-street/hero_street_corridor_mid.lod2.glb": {
+      "baseline": "content/source-assets/lighting/exterior-repair/baseline/hero_street_corridor_mid.lod2.glb",
+      "normalizedText": false,
+      "before": "2785d6a7ffcfaba000a6d612b3cc277827d18d1d7a2494daaffbfe7bdd579dff",
+      "after": "4f70d24bf7cc541040a4e91dc350e6cbf2169fa6faf3ebf5b31a899c674154cc",
+      "beforeRaw": "2785d6a7ffcfaba000a6d612b3cc277827d18d1d7a2494daaffbfe7bdd579dff",
+      "afterRaw": "4f70d24bf7cc541040a4e91dc350e6cbf2169fa6faf3ebf5b31a899c674154cc"
+    },
+    "apps/web-tour/public/assets/authored/hero-street/far-irradiance.png": {
+      "baseline": "content/source-assets/lighting/exterior-repair/baseline/far-irradiance.png",
+      "normalizedText": false,
+      "before": "19108b67fdc93770a9e759f0ad29de0761b8ea9c224fc1c93af0ae016d3362b7",
+      "after": "859bd992c083efcc428637b0a66c404745a6f85ed3ea75f29939426804d9c673",
+      "beforeRaw": "19108b67fdc93770a9e759f0ad29de0761b8ea9c224fc1c93af0ae016d3362b7",
+      "afterRaw": "859bd992c083efcc428637b0a66c404745a6f85ed3ea75f29939426804d9c673"
+    },
+    "apps/web-tour/public/assets/authored/hero-street/far-irradiance.webp": {
+      "baseline": "content/source-assets/lighting/exterior-repair/baseline/far-irradiance.webp",
+      "normalizedText": false,
+      "before": "0e842376fc3096bf710f25ae7406120bc48cecdc7e6c998a08c0551abfd23551",
+      "after": "9d2b35f3eb0419477153472ec8e61901bdf1115a243fc4651fb9e0cb7f175915",
+      "beforeRaw": "0e842376fc3096bf710f25ae7406120bc48cecdc7e6c998a08c0551abfd23551",
+      "afterRaw": "9d2b35f3eb0419477153472ec8e61901bdf1115a243fc4651fb9e0cb7f175915"
+    },
+    "apps/web-tour/public/assets/authored/hero-street/hero_street_corridor_far.glb": {
+      "baseline": "content/source-assets/lighting/exterior-repair/baseline/hero_street_corridor_far.glb",
+      "normalizedText": false,
+      "before": "ad2f6f47d0aa9eb191fae2f9c1a1c22f5d40e6c557f08fda40107fb27fe31dd7",
+      "after": "36ccb3b69bff39158fdc8bd4b052a402dff2df19b729f9ba270a551532cbb12a",
+      "beforeRaw": "ad2f6f47d0aa9eb191fae2f9c1a1c22f5d40e6c557f08fda40107fb27fe31dd7",
+      "afterRaw": "36ccb3b69bff39158fdc8bd4b052a402dff2df19b729f9ba270a551532cbb12a"
+    },
+    "apps/web-tour/public/assets/authored/hero-street/hero_street_corridor_far.lod1.glb": {
+      "baseline": "content/source-assets/lighting/exterior-repair/baseline/hero_street_corridor_far.lod1.glb",
+      "normalizedText": false,
+      "before": "a6b91a28d187bb73af0d8fc996a53da7098afc480a8884d674e309836d1295a3",
+      "after": "57d162834f8eb74b8812ab7f9c296907fb8e4cfdc130a23e77f9b34c95416817",
+      "beforeRaw": "a6b91a28d187bb73af0d8fc996a53da7098afc480a8884d674e309836d1295a3",
+      "afterRaw": "57d162834f8eb74b8812ab7f9c296907fb8e4cfdc130a23e77f9b34c95416817"
+    },
+    "apps/web-tour/public/assets/authored/hero-street/hero_street_corridor_far.lod2.glb": {
+      "baseline": "content/source-assets/lighting/exterior-repair/baseline/hero_street_corridor_far.lod2.glb",
+      "normalizedText": false,
+      "before": "9cdb17ff4e4bfcdc79e12ca0a49356767e5c40f5989f3d9dc8820208f5d58218",
+      "after": "3290b4c8532b2956d2c65543c915e86ea8f46d8823897f9008a9b9e609f1705c",
+      "beforeRaw": "9cdb17ff4e4bfcdc79e12ca0a49356767e5c40f5989f3d9dc8820208f5d58218",
+      "afterRaw": "3290b4c8532b2956d2c65543c915e86ea8f46d8823897f9008a9b9e609f1705c"
+    }
+  },
+  "additions": {
+    "apps/web-tour/src/scene/DistrictNavigation.ts": "8c899118dae8986420e627f51a3e90b67384da353d41418be99d818463485dff",
+    "apps/web-tour/src/scene/GroundedVisitorCamera.ts": "3dc550a4494976d02d317cd4fa5e2c6f4b158de2dde6b8ef794bb89d62a0b2db",
+    "apps/web-tour/src/scene/NaturalArmPose.ts": "7f8f0bacbef6526282a321d17fa72921041de2a0eb0c033d7752ed4ead681f4a",
+    "apps/web-tour/src/scene/DistrictLife.ts": "af7cec0c97057c5296f6a48d2d9c56429867c6ba5ff2408ce52e3141aecd9fa4",
+    "content/scene-data/district-navigation.json": "dc49d485d4203d39b76adb4ef01acec5bd17fd51e9c276b99ca8d21702f0e286",
+    "tools/blender/repair_exterior_charts.py": "ca28f37d2c9e3a1fe007a04a6efac9bc3b8a782908ec81e3baa2a7543c983414",
+    "tools/compose-exterior-repair.py": "a92a1a48ca32fae592af0501d0465543f1218dc237cafa234c315a71afaa32c0",
+    "tools/audit-district-interactions.js": "ea1ccee7243eaa37d11157c983efd4fffa0bd3b3e10b3f46b312a07a9ae00c8d",
+    "tools/verify-exterior-repair.py": "d498f7f47a7c158042ef34cd205aff05b70e484405f0607ba4bb902699aaebd5",
+    "tools/repair-district-exteriors.mjs": "41581552b2088dbcd74a94ce7b42dfe943dd7743172f83104350eca1f300b596",
+    "tools/build-street-finish.mjs": "d58db866b0b75005dfe53148d512164fb82a5bd122e50711682e841f29b2a569",
+    "tools/capture-hero-shot.mjs": "ae9f2583136a7c7aeaf87c195655cae55724e176e3fb80105b993ae7d5fa0e8d",
+    "tools/capture-district-comparisons.mjs": "fbbd46c2438ec62e18e3ab2fa76cfebb12c7d786803949b9c14f71368e5ce5c6",
+    "tools/benchmark-rendering.mjs": "817e77c45a723eaef4d8aa48dbb30ce46dcb212ee7843a63db3aba06b65cd479",
+    "tools/report-district-interactions.mjs": "c79275ac08c3c0d18ffd4092e2074c33a1f2a8ee77b03b9694295b322dfc2120",
+    "tools/lib/district-interaction-revision.mjs": "f8e5fcef7e2c0dffa2a9ff1b09917e5ce98d55ce3aa907cb73373f42952d9aa8",
+    "tools/validate-district-interactions.mjs": "0d1aa63c9a8fd1a7b9decb6cd1574a22700e3037ca61d833efb5f7a4eedaaefd",
+    "content/source-assets/lighting/exterior-repair/manifest.json": "deea207da66a34c94e80916dc3c03c8f2c4037aa2c3b7a2847a3f19b55bf8718",
+    "content/source-assets/lighting/exterior-repair/composition-audit.json": "d86a0af94f0d2065069411941f931c9742b2090a51d0fe1cbedd5fbaa3d13cb9",
+    "content/source-assets/lighting/exterior-repair/exterior-corrected.blend": "42e0cf2c1143d211e3ad839b305cb8a8e48c77b028a38228770233f1c8db95b3",
+    "content/source-assets/lighting/exterior-repair/near-repair.npz": "36c5dd022c0adb402c023d2fdee2a92846a56cfea1bd0a0c7b7cf1bfcd9aaea8",
+    "content/source-assets/lighting/exterior-repair/mid-repair.npz": "62f6833a279e1a596a1a2ab2063e6d288c271e0f5caab1ed4d505f06db07759b",
+    "content/source-assets/lighting/exterior-repair/far-repair.npz": "f69aaa61a0626babe8ea897c32cdccbcf537a6392a03e95243c7df727004701b"
+  }
+}

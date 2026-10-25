@@ -930,6 +930,7 @@ def irregular_end_wall_skin(
     height: float,
     material: bpy.types.Material,
     rng: random.Random,
+    outward_sign: int = 1,
 ) -> bpy.types.Object:
     """Wrap visible house ends with the same hand-plastered surface language."""
     columns = 5
@@ -962,7 +963,7 @@ def irregular_end_wall_skin(
             b = a + 1
             c = (row + 1) * (columns + 1) + column
             d = c + 1
-            faces.append((a, c, d, b))
+            faces.append((a, c, d, b) if outward_sign > 0 else (a, b, d, c))
 
     mesh = bpy.data.meshes.new(f"{name}Mesh")
     mesh.from_pydata(verts, [], faces)
@@ -1493,6 +1494,7 @@ def make_facade_house(
             height,
             materials["plaster"],
             rng,
+            outward_sign=-1 if end_index == 0 else 1,
         )
     cube(f"{name}-roofLipFront", (facade_x + side_dir * 0.08, center_y, height + 0.14), (0.26, frontage, 0.28), materials["mud_plaster"], bevel=0.05)
     cube(f"{name}-roofLipBack", (center_x - side_dir * depth * 0.47, center_y, height + 0.14), (0.22, frontage, 0.28), materials["mud_plaster"], bevel=0.035)

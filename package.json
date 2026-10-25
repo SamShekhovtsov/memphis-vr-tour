@@ -9,7 +9,7 @@
   ],
   "scripts": {
     "dev": "npm --workspace @egyptvr/web-tour run dev",
-    "build": "npm run generate:assets && npm run validate:content && npm run validate:history && npm run validate:optimization && npm run validate:hero && npm run validate:hero-section && npm run validate:actors && npm run validate:people && npm run validate:people-materials && npm run validate:render-performance && npm run validate:street-finish && npm run build --workspaces",
+    "build": "npm run generate:assets && npm run validate:content && npm run validate:history && npm run validate:optimization && npm run validate:hero && npm run validate:hero-section && npm run validate:actors && npm run validate:people && npm run validate:people-materials && npm run validate:render-performance && npm run validate:street-finish && npm run validate:district-interactions && npm run build --workspaces",
     "generate:assets": "node tools/generate-runtime-assets.mjs",
     "generate:glb": "node tools/run-blender-asset-kit.mjs",
     "bake:hero": "node tools/run-blender-asset-kit.mjs --hero-bake",
@@ -29,7 +29,10 @@
     "validate:people-materials": "node tools/validate-character-materials.mjs",
     "validate:render-performance": "node tools/validate-render-performance.mjs",
     "validate:street-finish": "node tools/validate-street-finish.mjs",
-    "build:street-finish": "node tools/build-street-finish.mjs"
+    "build:street-finish": "node tools/build-street-finish.mjs",
+    "validate:district-interactions": "node tools/validate-district-interactions.mjs",
+    "qa:district-interactions": "node tools/capture-hero-shot.mjs district-audit --hardware --collision-audit --audit-script=tools/audit-district-interactions.js",
+    "repair:exteriors": "node tools/repair-district-exteriors.mjs"
   },
   "engines": {
     "node": ">=22.0.0"

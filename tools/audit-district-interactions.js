@@ -1,0 +1,24 @@
+(async()=>{
+ const q=window.memphisDistrictQA,{scene,camera:c,navigation:nav,life,people}=q,V=c.position.constructor,checks=[];
+ const check=(name,passed,detail)=>checks.push({name,passed,detail});
+ const move=(p,d)=>{const collider=scene.collisionCoordinator.createCollider();collider._radius=new V(.38,.85,.38);let out;scene.collisionCoordinator.getNewPosition(p,d,collider,3,null,(_,next)=>out=next.clone(),0);if(!out)throw Error('Synchronous collision result missing');return out;};
+ scene.meshes.forEach(m=>m.computeWorldMatrix(true));
+ for(const box of scene.meshes.filter(m=>m.name.startsWith('houseCollision-'))){const b=box.getBoundingInfo().boundingBox,mn=b.minimumWorld,mx=b.maximumWorld;
+  for(const side of ['west','east','north','south']){const x=(mn.x+mx.x)/2,z=(mn.z+mx.z)/2;let p=new V(side==='west'?mn.x-.7:side==='east'?mx.x+.7:x,1,side==='south'?mn.z-.7:side==='north'?mx.z+.7:z);const d=new V(side==='west'?.1:side==='east'?-.1:0,0,side==='south'?.1:side==='north'?-.1:0);for(let i=0;i<20;i++)p=move(p,d);check(box.name+' '+side,side==='west'?p.x<mn.x:side==='east'?p.x>mx.x:side==='south'?p.z<mn.z:p.z>mx.z,p.asArray());}
+ }
+ const key=(code,down)=>window.dispatchEvent(new KeyboardEvent(down?'keydown':'keyup',{code,bubbles:true}));
+ const frames=async(n)=>{for(let i=0;i<n;i++)await new Promise(requestAnimationFrame);};
+ for(const pitch of [20,-20]){c.position.set(-6,1.752,-15);c.setTarget(new V(-6,1.752+pitch,-5));key('KeyW',true);await frames(15);key('KeyW',false);await frames(2);check('Grounded walking looking '+pitch,Math.abs(c.position.y-(nav.height(c.position.x,c.position.z)+1.7))<.005&&c.position.z>-15,c.position.asArray());}
+ c.position.set(-6,1.752,-15);c.setTarget(new V(-6,22,-5));key('KeyF',true);key('KeyW',true);await frames(18);const flight=c.position.clone();key('KeyF',false);key('KeyW',false);await frames(3);check('Held F allows upward flight',flight.y>2.2,flight.asArray());check('Release F lands',Math.abs(c.position.y-nav.height(c.position.x,c.position.z)-1.7)<.005,c.position.asArray());
+ key('KeyF',true);window.dispatchEvent(new Event('blur'));check('Focus loss clears flight',!c.inputs.attached.visitorKeyboard.flying);
+ c.position.set(-6,-20,-15);await frames(2);check('Recover below-ground observer',c.position.y>1.7,c.position.asArray());
+ c.position.set(-6,1.752,-15);c.setTarget(new V(10,1.752,-15));key('KeyD',false);key('KeyW',true);await frames(70);key('KeyW',false);check('Observer remains outside house wall',nav.walkable(c.position.x,c.position.z,.37),c.position.asArray());
+ for(const [x,z]of scene.metadata.districtNavigation.spawns){const goal=nav.nearest(new V(x,0,z));check('Route reaches population zone '+x+','+z,nav.path(new V(-6,0,0),goal).length>0);}
+ const initial=people.map(p=>p.root.getAbsolutePosition().clone());let inside=0,minimumSeparation=Infinity,maxWrist=0,maxHandError=0,handSamples=0,simulationMs=performance.now();
+ for(let i=0;i<=3600;i++){life.update(2+i*.1,i%60===0);for(const p of people){const v=p.root.getAbsolutePosition();if(!nav.walkable(v.x,v.z,.27))inside++;}for(let a=0;a<people.length;a++)for(let b=a+1;b<people.length;b++){const x=people[a].root.getAbsolutePosition(),y=people[b].root.getAbsolutePosition();minimumSeparation=Math.min(minimumSeparation,Math.hypot(x.x-y.x,x.z-y.z));}if(i%60===0)for(const p of people){maxWrist=Math.max(maxWrist,...p.wristAngles());const errors=p.handContactErrors();handSamples+=errors.length;maxHandError=Math.max(maxHandError,...errors);}}
+ // Exercise actual full-rate work/rest transitions separately from the long navigation run.
+ for(let i=1;i<=400;i++){life.update(362+i*.05,true);for(const p of people){maxWrist=Math.max(maxWrist,...p.wristAngles());const errors=p.handContactErrors();handSamples+=errors.length;maxHandError=Math.max(maxHandError,...errors);}}
+ simulationMs=performance.now()-simulationMs;const diagnostics=structuredClone(life.diagnostics);
+ check('Nine people distributed through district',people.length===9,initial.map(p=>p.asArray()));check('No NPC crosses building footprints',inside===0,inside);check('Residents retain personal space',minimumSeparation>.64,minimumSeparation);check('Always travels toward body facing',diagnostics.minimumFacingDot>.99,diagnostics.minimumFacingDot);check('Turns bounded to 1.6 rad/s',diagnostics.maxTurnPerSecond<=1.600001,diagnostics.maxTurnPerSecond);check('Relaxed wrist limits',maxWrist<.7,maxWrist);check('Settled working hand contacts',maxHandError<.025&&handSamples>10,{maxHandError,handSamples});check('Spontaneous goals and pauses',diagnostics.goals>12&&diagnostics.pauses>20,{goals:diagnostics.goals,pauses:diagnostics.pauses});check('Every roaming resident travels',diagnostics.states.filter(s=>s.role!=='StoneWorker').every(s=>s.travel>10),diagnostics.states);
+ return {passed:checks.every(c=>c.passed),checks,simulation:{seconds:360,wallMs:simulationMs,diagnostics}};
+})()

@@ -387,3 +387,5 @@ body.qa-paintover-shot #renderCanvas {
     padding: 12px;
   }
 }
+
+.movement-hint { max-width: 420px; margin: 8px 0; color: #ede7d8; font: 12px/1.5 system-ui; background: rgba(24,24,20,.78); padding: 7px 10px; border-radius: 5px; }

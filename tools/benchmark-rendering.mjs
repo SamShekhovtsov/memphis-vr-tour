@@ -19,6 +19,7 @@ const runs=Number(process.argv.find(a=>a.startsWith('--runs='))?.slice(7)??3);
 const isolateFrame=Number(process.argv.find(a=>a.startsWith('--isolate-frame='))?.slice(16)??0);
 assert.ok(Number.isInteger(runs)&&runs>=1&&runs<=8);
 let main=originals.get(mainFile).toString(),scene=originals.get(sceneFile).toString();
+if(process.argv.includes('--crowd-warmup'))scene=replace(scene,'  const groundContacts = districtLife?.contacts','  if(districtLife)for(let warmup=0;warmup<=3000;warmup++)districtLife.update(-300+warmup/10,false);\n  const groundContacts = districtLife?.contacts');
 scene=replace(scene,'benchmarkFrame++ / 179','benchmarkFrame++ / 599');
 scene=replace(scene,'const time = ikAudit ?','const time = benchmark ? 2 + Math.max(0,benchmarkFrame-1)/30 : ikAudit ?');
 scene=replace(scene,'if (review?.active) {','if (review?.active || benchmark) {');
@@ -49,7 +50,7 @@ main=replace(main,'if (frames > 60) frameIntervals.push(now-previousFrame);',`if
           if(gpu&&gpu>0)renderSamples.gpu.push(gpu/1e6);
         }`);
 main=replace(main,'animationSeconds: 2,',`animationSeconds: 2 + (renderStopFrame-1)/30,
-          benchmarkProtocol:{frames:renderStopFrame,warmupFrames:61,deterministicActorTime:true,route:${JSON.stringify(heroSegment?'hero-street':'full-tour')}},
+          benchmarkProtocol:{frames:renderStopFrame,warmupFrames:61,deterministicActorTime:true,crowdWarmupSeconds:${process.argv.includes('--crowd-warmup')?300:0},route:${JSON.stringify(heroSegment?'hero-street':'full-tour')}},
           renderProfile:{gpuTimerSupported:!!engine.getCaps().timerQuery,gpuTimerEnabled:${gpu},samples:renderSamples},
           renderingOptimization:scene.metadata.renderingOptimization??null,
           activeMeshPoseMatrices:scene.getActiveMeshes().data.slice(0,scene.getActiveMeshes().length).map(mesh=>({name:mesh.name,world:Array.from(mesh.computeWorldMatrix(true).m),material:mesh.material?.name,materialId:mesh.material?.uniqueId})),

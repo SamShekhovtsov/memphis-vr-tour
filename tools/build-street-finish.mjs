@@ -8,5 +8,6 @@ if(process.argv.includes('--promote')){
  const out='content/generated/steps78-build/',target='apps/web-tour/public/assets/authored/hero-street/';
  const names=['manifest.json',...['near','mid','far'].flatMap(p=>[p+'-irradiance.png',p+'-irradiance.webp',...['','.lod1','.lod2'].map(l=>`hero_street_corridor_${p}${l}.glb`)])];
  for(const name of names)fs.copyFileSync(out+name,target+name);
- console.log('Promoted staged existing-surface finish; refresh its bounded revision after review.');
+ execFileSync(process.execPath,['tools/repair-district-exteriors.mjs'],{stdio:'inherit'});
+ console.log('Promoted existing-surface finish and corrected exterior normals; refresh bounded revisions after review.');
 }

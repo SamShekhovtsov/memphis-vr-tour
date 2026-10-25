@@ -30,6 +30,9 @@ import { configureHumanContactShadows } from "./HumanContactShadows";
 import { GroundContactIK } from "./GroundContactIK";
 import { loadHeroPeople, type HeroPerson } from "./HeroPeople";
 import { attachStreetLods } from "./StreetLods";
+import { GroundedVisitorCamera } from "./GroundedVisitorCamera";
+import { DistrictNavigation } from "./DistrictNavigation";
+import { DistrictLife } from "./DistrictLife";
 import { configureRendering } from "./RenderingTiers";
 
 export interface MemphisSceneController {
@@ -301,7 +304,7 @@ export async function createMemphisWhiteWallsScene(
   const materials = createMaterials(scene);
   createSkyDome(scene);
   const firstStop = manifest.stops[0];
-  const camera = new UniversalCamera("visitorCamera", vectorFromTuple(firstStop.position), scene);
+  const camera = new GroundedVisitorCamera("visitorCamera", vectorFromTuple(firstStop.position), scene);
   camera.setTarget(vectorFromTuple(firstStop.lookAt ?? firstStop.position));
   camera.attachControl(canvas, true);
   camera.speed = 0.34;
@@ -377,9 +380,19 @@ export async function createMemphisWhiteWallsScene(
   const heroPeople = await loadHeroPeople(scene).catch(error => {
     console.warn("Anatomical people unavailable; retaining existing actors", error); return [];
   });
-  const groundContacts = createActorGroundContacts(scene);
+  const navigation = new DistrictNavigation(scene,[ground,...templeFloors]);
+  camera.configureGrounding(navigation);
+  const districtLife = !ikAudit&&new URLSearchParams(location.search).get('population')!=='legacy' ? new DistrictLife(scene,navigation,heroPeople) : undefined;
+  scene.metadata.rendering.navigation=scene.metadata.districtNavigation;
+  const observerState={};Object.defineProperties(observerState,{
+    position:{enumerable:true,get:()=>camera.position.asArray()},
+    ground:{enumerable:true,get:()=>navigation.height(camera.position.x,camera.position.z)},
+    flightHeld:{enumerable:true,get:()=>!!(camera as unknown as {input?:{flying:boolean}}).input?.flying}
+  });scene.metadata.rendering.observer={flyKey:'Hold F with movement; release to land',state:observerState};
+  if(new URLSearchParams(location.search).has('qa'))(window as unknown as {memphisDistrictQA:unknown}).memphisDistrictQA={scene,camera,navigation,life:districtLife,people:heroPeople};
+  const groundContacts = districtLife?.contacts ?? createActorGroundContacts(scene);
   scene.onBeforeAnimationsObservable.add(() => {
-    if (!ikAudit || auditFrame < 300) groundContacts.forEach(contact => contact.restore());
+    if (!districtLife && (!ikAudit || auditFrame < 300)) groundContacts.forEach(contact => contact.restore());
   });
 
   const evidenceRoot = createEvidenceMarkers(scene, manifest, materials);
@@ -439,12 +452,12 @@ export async function createMemphisWhiteWallsScene(
     if (ikAudit && substep > 0) groundContacts.forEach(contact => contact.restore());
     const time = ikAudit ? 2 + auditFrame / 60 : review?.active ? 2 + Math.min(299, review.frame - 1) / 30 : qaTime ?? performance.now() / 1000;
     if (review?.active) {
-      for (const group of scene.animationGroups.filter(group => group.name.startsWith("glbAnimatedStreetActors"))) {
+      for (const group of (districtLife?[]:scene.animationGroups.filter(group => group.name.startsWith("glbAnimatedStreetActors")))) {
         group.goToFrame(group.from + (time * 24) % Math.max(1, group.to - group.from));
       }
     }
     if (ikAudit) {
-      for (const group of scene.animationGroups.filter(group => group.name.startsWith("glbAnimatedStreetActors"))) {
+      for (const group of (districtLife?[]:scene.animationGroups.filter(group => group.name.startsWith("glbAnimatedStreetActors")))) {
         group.goToFrame(group.from + (48 + auditFrame) % Math.max(1, group.to - group.from));
       }
       auditFrame++;
@@ -453,9 +466,9 @@ export async function createMemphisWhiteWallsScene(
     updateSmoke(smokeNodes, time);
     updateBirds(birds, time);
     updateCinematicHumans(cinematicHumans, time);
-    updateGlbActorMotions(glbActorMotions, time);
-    heroPeople.forEach(person => person.update(time));
-    groundContacts.forEach(contact => {
+    if(districtLife)districtLife.update(time);
+    else { updateGlbActorMotions(glbActorMotions, time); heroPeople.forEach(person => person.update(time)); }
+    (districtLife?[]:groundContacts).forEach(contact => {
       const rootBefore = ikAudit ? contact.root.position.clone() : undefined;
       contact.update(time);
       if (rootBefore && !rootBefore.equals(contact.root.position)) contactAudit.rootChanges++;

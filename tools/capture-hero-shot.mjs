@@ -30,6 +30,11 @@ const hardware = process.argv.includes("--hardware");
 const profile = process.argv.includes("--profile");
 const legacyRenderPerf = process.argv.includes("--legacy-render-perf");
 const renderFrame = process.argv.find(arg=>arg.startsWith("--render-frame="))?.slice(15);
+const population = process.argv.find(a=>a.startsWith('--population='))?.slice(13);
+const auditScript = process.argv.find(a=>a.startsWith('--audit-script='))?.slice(15);
+const districtView = process.argv.find(a=>a.startsWith('--district-view='))?.slice(16);
+if(population&&!['legacy'].includes(population))throw Error('Unknown population control');
+if(districtView&&!['north','hands'].includes(districtView))throw Error('Unknown district view');
 const uncapped = process.argv.includes("--uncapped");
 const textureTrial = process.argv.find(arg=>arg.startsWith("--texture-trial="))?.slice(16);
 if(textureTrial&&!['1','fail'].includes(textureTrial))throw new Error('Unknown texture trial mode');
@@ -80,7 +85,7 @@ try {
 
   for (const job of jobs) for (const shot of shots) {
     const output = path.join(screenshotDir, `${shot}-${job.label}.png`);
-    await capture(`http://127.0.0.1:${lock.localDevPort}/?shot=${shot}&chrome=0&qa=1&quality=${quality}${legacy ? "&materials=legacy" : ""}${ikAudit ? "&ikAudit=1" : ""}${benchmark ? "&benchmark=1" : ""}${collisionAudit ? "&collisionAudit=1" : ""}${legacyGround ? "&ground=legacy" : ""}${legacyPeopleMaterials ? "&peopleMaterials=legacy" : ""}${legacySteps56 ? "&steps56=legacy" : ""}${job.renderMode||job.legacyRenderPerf ? `&renderPerf=${job.renderMode??'legacy'}` : ""}${job.renderFrame ? `&renderFrame=${job.renderFrame}` : ""}${job.textureTrial ? `&textureTrial=${encodeURIComponent(job.textureTrial)}` : ""}${motion ? "&review=1" : ""}`, output);
+    await capture(`http://127.0.0.1:${lock.localDevPort}/?shot=${shot}&chrome=0&qa=1&quality=${quality}${legacy ? "&materials=legacy" : ""}${ikAudit ? "&ikAudit=1" : ""}${benchmark ? "&benchmark=1" : ""}${collisionAudit ? "&collisionAudit=1" : ""}${legacyGround ? "&ground=legacy" : ""}${legacyPeopleMaterials ? "&peopleMaterials=legacy" : ""}${legacySteps56 ? "&steps56=legacy" : ""}${job.renderMode||job.legacyRenderPerf ? `&renderPerf=${job.renderMode??'legacy'}` : ""}${job.renderFrame ? `&renderFrame=${job.renderFrame}` : ""}${job.textureTrial ? `&textureTrial=${encodeURIComponent(job.textureTrial)}` : ""}${population ? "&population=legacy" : ""}${motion ? "&review=1" : ""}`, output);
     console.log(`Captured ${output}`);
   }
 } finally {
@@ -112,6 +117,15 @@ async function capture(url, outputPath) {
     }
     await client.send("Page.navigate", { url });
     const metrics = await waitForSceneReady(client);
+    if(districtView){
+      const result=await client.send('Runtime.evaluate',{expression:`(async()=>{const q=window.memphisDistrictQA,c=q.camera;if(${JSON.stringify(districtView)}==='north'){c.position.set(-6,1.7,30);c.setTarget(new c.position.constructor(-6,1.5,10));}else{c.position.set(-7.5,1.497,11.5);c.setTarget(new c.position.constructor(-9,.797,7.5));}await new Promise(resolve=>{let n=0;function tick(){if(++n===30)resolve();else requestAnimationFrame(tick);}requestAnimationFrame(tick);});return c.position.asArray();})()`,awaitPromise:true,returnByValue:true});
+      metrics.camera=result.result.value;metrics.districtView=districtView;
+    }
+    if(auditScript){
+      const file=path.resolve(rootDir,auditScript);if(!file.startsWith(rootDir+path.sep))throw Error('Audit script must be inside workspace');
+      const result=await client.send('Runtime.evaluate',{expression:await readFile(file,'utf8'),awaitPromise:true,returnByValue:true});
+      if(result.exceptionDetails)throw Error(JSON.stringify(result.exceptionDetails));metrics.interactionAudit=result.result.value;
+    }
     if (profile) {
       const result = await client.send("Profiler.stop");
       const folder = path.join(rootDir, "content/generated/performance-profiles");

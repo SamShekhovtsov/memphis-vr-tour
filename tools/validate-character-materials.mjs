@@ -1,3 +1,4 @@
+import {interactionExpected,priorInteractionSource} from './lib/district-interaction-revision.mjs';
 import fs from 'node:fs';
 import assert from 'node:assert/strict';
 import {createHash} from 'node:crypto';
@@ -37,10 +38,10 @@ for(const [file,sha] of Object.entries(lock.protectedFiles)){
     assert.equal(file,'apps/web-tour/src/scene/GroundContactIK.ts','Performance exception outside IK matrix helper');
     assert.equal(edit.beforeSha,sha,'Original IK baseline changed');
   }
-  assert.equal(hash(fs.readFileSync(file)),finishExpected(file,edit?.afterSha??revision.files[file]?.after??sha),'Scene/path/lighting changed: '+file);
+  assert.equal(hash(fs.readFileSync(file)),interactionExpected(file,finishExpected(file,edit?.afterSha??revision.files[file]?.after??sha)),'Scene/path/lighting changed: '+file);
 }
 if(revision.sourceEdits) {
-  let original=fs.readFileSync('apps/web-tour/src/scene/MemphisWhiteWallsScene.ts','utf8');
+  let original=priorInteractionSource('apps/web-tour/src/scene/MemphisWhiteWallsScene.ts');
   assert.equal(revision.sourceEdits.length,2);
   for(const edit of revision.sourceEdits) {
     assert.ok(['import { authoredHeroRoot, createHeroMaterialBinder, type HeroBakeManifest } from "./HeroStreetMaterials";','shadows.normalBias = .035;'].includes(edit.before));
@@ -48,11 +49,11 @@ if(revision.sourceEdits) {
   }
   assert.equal(hash(original),lock.protectedFiles['apps/web-tour/src/scene/MemphisWhiteWallsScene.ts'],'More than shadow bias changed');
 }
-let checkedAvatarCode=fs.readFileSync('apps/web-tour/src/scene/HeroPeople.ts','utf8').replaceAll('\r\n','\n');
+let checkedAvatarCode=priorInteractionSource('apps/web-tour/src/scene/HeroPeople.ts').replaceAll('\r\n','\n');
 if(performanceRevision) {
   assert.deepEqual(Object.keys(performanceRevision.files).sort(),['apps/web-tour/src/main.ts','apps/web-tour/src/scene/HeroPeople.ts','apps/web-tour/src/scene/HeroWorkerPose.ts','apps/web-tour/src/scene/GroundContactIK.ts'].sort());
   for(const [file,edit] of Object.entries(performanceRevision.files)) {
-    const code=fs.readFileSync(file,'utf8').replaceAll('\r\n','\n');
+    const code=priorInteractionSource(file).replaceAll('\r\n','\n');
     assert.equal(hash(code),edit.afterSha,'Unrecorded performance source change: '+file);
     assert.equal(code.slice(edit.offset,edit.offset+edit.after.length),edit.after);
     const original=code.slice(0,edit.offset)+edit.before+code.slice(edit.offset+edit.after.length);

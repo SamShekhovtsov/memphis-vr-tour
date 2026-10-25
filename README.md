@@ -28,3 +28,9 @@ The product can be cinematic and beautiful, but every reconstructed element shou
 - speculative
 
 That lets the experience stay immersive while still being honest about where evidence ends and reconstruction begins.
+
+## Desktop movement and residents
+
+WASD or arrows walk on the ground, independently of view pitch. Hold **F** with movement keys for view-directed flight; while F is held, Space rises and Ctrl descends. Release F to land safely. Houses are solid. Nine residents now populate the district, with varied destinations, pauses and turns.
+
+See [interaction fixes, matched screenshots and desktop measurements](docs/design/district-interactions-2026-10-25.md). Run `npm run qa:district-interactions` against the dev server on port 5573 to repeat the live regression checks.
