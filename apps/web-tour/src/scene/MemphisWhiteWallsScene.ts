@@ -414,7 +414,7 @@ export async function createMemphisWhiteWallsScene(
       review.progress = progress;
       review.camera = camera.position.asArray();
     } else if (benchmark && scene.metadata.benchmarkReady) {
-      const progress = Math.min(1, benchmarkFrame++ / 179);
+      const progress = Math.min(1, benchmarkFrame++ / 599);
       const sample = sampleGuidedRoute(routeTrack, progress);
       camera.position.copyFrom(sample.position); camera.position.y = 1.7;
       camera.setTarget(sample.lookAt);
@@ -437,8 +437,8 @@ export async function createMemphisWhiteWallsScene(
     for (let substep = 0; substep < (ikAudit ? 5 : 1); substep++) {
     if (ikAudit && auditFrame >= 300) break;
     if (ikAudit && substep > 0) groundContacts.forEach(contact => contact.restore());
-    const time = ikAudit ? 2 + auditFrame / 60 : review?.active ? 2 + Math.min(299, review.frame - 1) / 30 : qaTime ?? performance.now() / 1000;
-    if (review?.active) {
+    const time = benchmark ? 2 + Math.max(0,benchmarkFrame-1)/30 : ikAudit ? 2 + auditFrame / 60 : review?.active ? 2 + Math.min(299, review.frame - 1) / 30 : qaTime ?? performance.now() / 1000;
+    if (review?.active || benchmark) {
       for (const group of scene.animationGroups.filter(group => group.name.startsWith("glbAnimatedStreetActors"))) {
         group.goToFrame(group.from + (time * 24) % Math.max(1, group.to - group.from));
       }

@@ -1,0 +1,44 @@
+{
+  "hero-street-main": {
+    "changedPixels": 0,
+    "poseElements": 0,
+    "maxPoseDifference": 0,
+    "before": "hero-street-main-render-perf-before",
+    "after": "hero-street-main-render-depth-ready"
+  },
+  "hero-street-material": {
+    "changedPixels": 0,
+    "poseElements": 0,
+    "maxPoseDifference": 0,
+    "before": "hero-street-material-render-perf-before",
+    "after": "hero-street-material-render-depth-ready"
+  },
+  "street-entry": {
+    "changedPixels": 0,
+    "poseElements": 0,
+    "maxPoseDifference": 0,
+    "before": "street-entry-render-perf-before",
+    "after": "street-entry-render-depth-ready"
+  },
+  "route-180": {
+    "changedPixels": 0,
+    "poseElements": 8992,
+    "maxPoseDifference": 0,
+    "before": "hero-street-main-render-depth-quality-checkpoint-180-before",
+    "after": "hero-street-main-render-depth-quality-checkpoint-180-after"
+  },
+  "route-360": {
+    "changedPixels": 0,
+    "poseElements": 8992,
+    "maxPoseDifference": 0,
+    "before": "hero-street-main-render-depth-quality-checkpoint-360-before",
+    "after": "hero-street-main-render-depth-quality-checkpoint-360-after"
+  },
+  "route-600": {
+    "changedPixels": 0,
+    "poseElements": 8992,
+    "maxPoseDifference": 0,
+    "before": "hero-street-main-render-depth-quality-checkpoint-600-before",
+    "after": "hero-street-main-render-depth-quality-checkpoint-600-after"
+  }
+}

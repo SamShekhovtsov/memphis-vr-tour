@@ -1,5 +1,6 @@
 {
   "date": "2026-10-25",
+  "method": "Five alternating pairs (AB, BA, AB, BA, AB) in one hardware Chrome process. Balanced 1280×720, existing hero-street review segment, unchanged camera height/path and deterministic actor time; 600 rendered frames/run, first 61 excluded, 539 measured intervals/run and 2,695 per variant. Normal presentation pacing; GPU queries off; no build running. Median of five run percentiles. Before disables only the new depth pass. Temporary benchmark source edits restored and hash-verified.",
   "phases": {
     "before": {
       "gpu": {
@@ -11,116 +12,55 @@
         1280,
         720
       ],
-      "p50": 26.59999990463257,
-      "p95": 53.40000009536743,
-      "stages": {
-        "frame": 20,
-        "targets": 2.4000000953674316,
-        "main": 4.600000023841858,
-        "active": 3,
-        "animation": 0.10000002384185791,
-        "draws": 190
-      },
+      "p50": 54.39999997615814,
+      "p95": 94.80000007152557,
       "runs": [
         {
-          "interval": {
-            "samples": 539,
-            "p50": 26.59999990463257,
-            "p95": 53.40000009536743,
-            "max": 114.19999992847443
-          },
-          "stageMedians": {
-            "frame": 20,
-            "targets": 2.4000000953674316,
-            "main": 4.600000023841858,
-            "active": 3,
-            "animation": 0.10000002384185791,
-            "draws": 190,
-            "shaderCompiles": 0
-          },
-          "shaderCompilationsAfterWarmup": 0
+          "samples": 539,
+          "p50": 52.60000002384186,
+          "p95": 116.90000009536743,
+          "max": 226.10000002384186
         },
         {
-          "interval": {
-            "samples": 539,
-            "p50": 23.800000071525574,
-            "p95": 48.39999997615814,
-            "max": 112.20000004768372
-          },
-          "stageMedians": {
-            "frame": 15.200000047683716,
-            "targets": 2,
-            "main": 3.299999952316284,
-            "active": 2.4000000953674316,
-            "animation": 0.10000002384185791,
-            "draws": 190,
-            "shaderCompiles": 0
-          },
-          "shaderCompilationsAfterWarmup": 0
+          "samples": 539,
+          "p50": 54.39999997615814,
+          "p95": 94.80000007152557,
+          "max": 162.60000002384186
         },
         {
-          "interval": {
-            "samples": 539,
-            "p50": 27.600000023841858,
-            "p95": 56.799999952316284,
-            "max": 121.69999992847443
-          },
-          "stageMedians": {
-            "frame": 22.40000009536743,
-            "targets": 2.600000023841858,
-            "main": 5.199999928474426,
-            "active": 3.3000000715255737,
-            "animation": 0.10000002384185791,
-            "draws": 190,
-            "shaderCompiles": 0
-          },
-          "shaderCompilationsAfterWarmup": 0
+          "samples": 539,
+          "p50": 55.89999997615814,
+          "p95": 101,
+          "max": 161.70000004768372
         },
         {
-          "interval": {
-            "samples": 539,
-            "p50": 30.899999976158142,
-            "p95": 59.200000047683716,
-            "max": 149.39999997615814
-          },
-          "stageMedians": {
-            "frame": 27.5,
-            "targets": 3.399999976158142,
-            "main": 6,
-            "active": 4.800000071525574,
-            "animation": 0.10000002384185791,
-            "draws": 190,
-            "shaderCompiles": 0
-          },
-          "shaderCompilationsAfterWarmup": 0
+          "samples": 539,
+          "p50": 51.5,
+          "p95": 87.60000002384186,
+          "max": 124.10000002384186
         },
         {
-          "interval": {
-            "samples": 539,
-            "p50": 25,
-            "p95": 52.299999952316284,
-            "max": 130.30000007152557
-          },
-          "stageMedians": {
-            "frame": 17.899999976158142,
-            "targets": 2.100000023841858,
-            "main": 3.8000000715255737,
-            "active": 2.799999952316284,
-            "animation": 0.10000002384185791,
-            "draws": 190,
-            "shaderCompiles": 0
-          },
-          "shaderCompilationsAfterWarmup": 0
+          "samples": 539,
+          "p50": 54.39999997615814,
+          "p95": 92,
+          "max": 145.5
         }
       ],
+      "stages": {
+        "frame": 34.5,
+        "targets": 3.100000023841858,
+        "main": 12.799999952316284,
+        "active": 7.600000023841858,
+        "animation": 0.10000002384185791,
+        "draws": 296
+      },
       "optimization": {
         "mode": "legacy",
-        "staticMeshes": 0,
-        "dynamicMeshes": 0,
-        "candidates": 0,
-        "enabledCandidates": 0,
-        "sceneMeshes": 0,
-        "frozenMaterials": 0
+        "strategy": "authored-occluder-depth",
+        "frames": 0,
+        "depthDraws": 0,
+        "lastDepthDraws": 0,
+        "fallback": false
       }
     },
     "after": {
@@ -133,130 +73,69 @@
         1280,
         720
       ],
-      "p50": 27.799999952316284,
-      "p95": 56.60000002384186,
-      "stages": {
-        "frame": 21.5,
-        "targets": 2.8000000715255737,
-        "main": 5.300000071525574,
-        "active": 3,
-        "animation": 0.10000002384185791,
-        "draws": 190
-      },
+      "p50": 49.09999990463257,
+      "p95": 86.69999992847443,
       "runs": [
         {
-          "interval": {
-            "samples": 539,
-            "p50": 28.700000047683716,
-            "p95": 56.60000002384186,
-            "max": 174.60000002384186
-          },
-          "stageMedians": {
-            "frame": 23.799999952316284,
-            "targets": 3,
-            "main": 5.699999928474426,
-            "active": 3.100000023841858,
-            "animation": 0.10000002384185791,
-            "draws": 190,
-            "shaderCompiles": 0
-          },
-          "shaderCompilationsAfterWarmup": 0
+          "samples": 539,
+          "p50": 49.799999952316284,
+          "p95": 86.20000004768372,
+          "max": 151.70000004768372
         },
         {
-          "interval": {
-            "samples": 539,
-            "p50": 23.699999928474426,
-            "p95": 50.60000002384186,
-            "max": 125.10000002384186
-          },
-          "stageMedians": {
-            "frame": 16.40000009536743,
-            "targets": 2.200000047683716,
-            "main": 4.399999976158142,
-            "active": 2.5,
-            "animation": 0.10000002384185791,
-            "draws": 190,
-            "shaderCompiles": 0
-          },
-          "shaderCompilationsAfterWarmup": 0
+          "samples": 539,
+          "p50": 49.09999990463257,
+          "p95": 90.79999995231628,
+          "max": 138.5
         },
         {
-          "interval": {
-            "samples": 539,
-            "p50": 23.399999976158142,
-            "p95": 46.700000047683716,
-            "max": 124.59999990463257
-          },
-          "stageMedians": {
-            "frame": 14,
-            "targets": 2,
-            "main": 3.5,
-            "active": 2.0999999046325684,
-            "animation": 0.10000002384185791,
-            "draws": 190,
-            "shaderCompiles": 0
-          },
-          "shaderCompilationsAfterWarmup": 0
+          "samples": 539,
+          "p50": 48.699999928474426,
+          "p95": 81.5,
+          "max": 140.89999997615814
         },
         {
-          "interval": {
-            "samples": 539,
-            "p50": 33.800000071525574,
-            "p95": 57,
-            "max": 156.10000002384186
-          },
-          "stageMedians": {
-            "frame": 30.200000047683716,
-            "targets": 4.399999976158142,
-            "main": 6.700000047683716,
-            "active": 4.399999976158142,
-            "animation": 0.10000002384185791,
-            "draws": 190,
-            "shaderCompiles": 0
-          },
-          "shaderCompilationsAfterWarmup": 0
+          "samples": 539,
+          "p50": 49.60000002384186,
+          "p95": 87.29999995231628,
+          "max": 154.90000009536743
         },
         {
-          "interval": {
-            "samples": 539,
-            "p50": 27.799999952316284,
-            "p95": 64.89999997615814,
-            "max": 134
-          },
-          "stageMedians": {
-            "frame": 21.5,
-            "targets": 2.8000000715255737,
-            "main": 5.300000071525574,
-            "active": 3,
-            "animation": 0.10000002384185791,
-            "draws": 190,
-            "shaderCompiles": 0
-          },
-          "shaderCompilationsAfterWarmup": 0
+          "samples": 539,
+          "p50": 47.5,
+          "p95": 86.69999992847443,
+          "max": 120.10000002384186
         }
       ],
+      "stages": {
+        "frame": 35.89999997615814,
+        "targets": 2.8000000715255737,
+        "main": 15.700000047683716,
+        "active": 7.300000071525574,
+        "animation": 0.10000002384185791,
+        "draws": 307
+      },
       "optimization": {
         "mode": "optimized",
-        "staticMeshes": 593,
-        "dynamicMeshes": 121,
-        "candidates": 272,
-        "enabledCandidates": 161,
-        "sceneMeshes": 794,
-        "frozenMaterials": 117
+        "strategy": "authored-occluder-depth",
+        "frames": 609,
+        "depthDraws": 6447,
+        "lastDepthDraws": 8,
+        "fallback": false
       }
     }
   },
-  "p50Change": 0.045112783909248444,
-  "p95Change": 0.05992509218650799,
+  "p50Change": -0.09742647194574272,
+  "p95Change": -0.08544303941919607,
   "pairedChanges": [
-    0.07894737408196084,
-    -0.004201686670194049,
-    -0.15217391463969587,
-    0.09385113584482263,
-    0.11199999809265138
+    -0.05323194049917157,
+    -0.09742647194574272,
+    -0.12880143203496563,
+    -0.03689320342054647,
+    -0.12683823491143753
   ],
-  "fasterPairs": 2,
-  "gate": false,
+  "fasterPairs": 5,
+  "gate": true,
   "motion": [
     {
       "run": 1,
@@ -289,288 +168,53 @@
       "changedPixels": 0,
       "poseElements": 0,
       "maxPoseDifference": 0,
-      "rgbSha256": "02b7ef29d1e4784fc10fc1126038471ed693772e1f6c8db430af5d8e1d86c9c8"
+      "before": "hero-street-main-render-perf-before",
+      "after": "hero-street-main-render-depth-ready"
     },
     "hero-street-material": {
       "changedPixels": 0,
       "poseElements": 0,
       "maxPoseDifference": 0,
-      "rgbSha256": "8379d939284b911fa935c549a7a0b21b89ff5edfb50f45186ca6dc99603cbf87"
+      "before": "hero-street-material-render-perf-before",
+      "after": "hero-street-material-render-depth-ready"
     },
     "street-entry": {
       "changedPixels": 0,
       "poseElements": 0,
       "maxPoseDifference": 0,
-      "rgbSha256": "1d8b04b6afed04e72a07cde1449ff91f18975b6bf0b035aeab9b445772a048dd"
+      "before": "street-entry-render-perf-before",
+      "after": "street-entry-render-depth-ready"
     },
     "route-180": {
       "changedPixels": 0,
       "poseElements": 8992,
       "maxPoseDifference": 0,
-      "rgbSha256": "9b9bcfb059e6cddbd390b415062ed6fafd12c0b940b3a156d1ffc5414059c4fd"
-    },
-    "route-270": {
-      "changedPixels": 0,
-      "poseElements": 8992,
-      "maxPoseDifference": 0,
-      "rgbSha256": "28b39b10ba9aa871256388cc49771926a9cc264667c6dd5e74919324d1a93cf9"
+      "before": "hero-street-main-render-depth-quality-checkpoint-180-before",
+      "after": "hero-street-main-render-depth-quality-checkpoint-180-after"
     },
     "route-360": {
       "changedPixels": 0,
       "poseElements": 8992,
       "maxPoseDifference": 0,
-      "rgbSha256": "1edd67cd1e0280181eccef40b84106b6539ad04c1f427c0fa7e27b5e2da5c421"
-    },
-    "route-450": {
-      "changedPixels": 0,
-      "poseElements": 8992,
-      "maxPoseDifference": 0,
-      "rgbSha256": "66dbcb2534ccd322a50b007d662bb08fc1aa5010318cc8cae67e50087f40a810"
-    },
-    "route-540": {
-      "changedPixels": 0,
-      "poseElements": 8992,
-      "maxPoseDifference": 0,
-      "rgbSha256": "2c7a7362e5c417dafa44db1689d5dd8201be00858e63f662d0d1a78f68d4fb3f"
+      "before": "hero-street-main-render-depth-quality-checkpoint-360-before",
+      "after": "hero-street-main-render-depth-quality-checkpoint-360-after"
     },
     "route-600": {
       "changedPixels": 0,
       "poseElements": 8992,
       "maxPoseDifference": 0,
-      "rgbSha256": "a812db74b5f5ffa545f61977adc69ceb0fb7bdbd43e9aff081bdb3d295a932d7"
-    },
-    "route-90": {
-      "changedPixels": 0,
-      "poseElements": 8992,
-      "maxPoseDifference": 0,
-      "rgbSha256": "2ef051c4a8acad521ad4db20277ae3e5ee8da55cde0711ba01c6e6b3517b5b87"
-    },
-    "route-90-control-legacy-b": {
-      "changedPixels": 0,
-      "poseElements": 8992,
-      "maxPoseDifference": 0,
-      "rgbSha256": "2ef051c4a8acad521ad4db20277ae3e5ee8da55cde0711ba01c6e6b3517b5b87"
-    },
-    "route-90-control-selection": {
-      "changedPixels": 0,
-      "poseElements": 8992,
-      "maxPoseDifference": 0,
-      "rgbSha256": "2ef051c4a8acad521ad4db20277ae3e5ee8da55cde0711ba01c6e6b3517b5b87"
-    },
-    "route-90-control-materials": {
-      "changedPixels": 0,
-      "poseElements": 8992,
-      "maxPoseDifference": 0,
-      "rgbSha256": "2ef051c4a8acad521ad4db20277ae3e5ee8da55cde0711ba01c6e6b3517b5b87"
+      "before": "hero-street-main-render-depth-quality-checkpoint-600-before",
+      "after": "hero-street-main-render-depth-quality-checkpoint-600-after"
     }
   },
-  "selection": {
-    "cameraPoses": 32,
-    "visibleCandidateChecks": 3820,
-    "movingAndAnimatedRootsUnfrozen": true,
-    "stableDrawOrder": true,
-    "lateMeshes": true,
-    "enableAndDispose": true,
-    "skipFrustumClippingFallback": true,
-    "waterMaterialUnfrozen": true,
-    "imageProcessingInvalidatesCache": true
-  },
-  "initialVariance": {
-    "changedPixels": 4881,
-    "maxChannelDelta": 28,
-    "meanAbsoluteChannelDelta": 0.007129267939814814,
-    "original": "hero-street-main-render-quality-checkpoint-90-before",
-    "unchangedRepeat": "hero-street-main-render-visual-isolate-legacy-a",
-    "note": "The unchanged renderer reproduces the original edge-pixel difference. Two repeated unchanged controls and all isolated optimization modes match each other exactly."
-  },
-  "pilots": {
-    "hero-street-main-render-pilot-before-1": {
-      "frameIntervals": {
-        "samples": 539,
-        "p50": 25.600000023841858,
-        "p95": 51.800000071525574,
-        "max": 121.29999995231628
-      },
-      "pacing": "default",
-      "profileGpuTimer": null,
-      "optimization": {
-        "mode": "legacy",
-        "staticMeshes": 0,
-        "dynamicMeshes": 0,
-        "candidates": 0,
-        "enabledCandidates": 0,
-        "sceneMeshes": 0,
-        "frozenMaterials": 0
-      }
-    },
-    "hero-street-main-render-pilot-after-1": {
-      "frameIntervals": {
-        "samples": 539,
-        "p50": 27.09999990463257,
-        "p95": 54.89999997615814,
-        "max": 146.10000002384186
-      },
-      "pacing": "default",
-      "profileGpuTimer": null,
-      "optimization": {
-        "mode": "optimized",
-        "staticMeshes": 76,
-        "dynamicMeshes": 638,
-        "candidates": 718,
-        "enabledCandidates": 595,
-        "sceneMeshes": 794,
-        "frozenMaterials": 123
-      }
-    },
-    "hero-street-main-render-static-pilot-before-1": {
-      "frameIntervals": {
-        "samples": 539,
-        "p50": 33.89999997615814,
-        "p95": 61.799999952316284,
-        "max": 179.79999995231628
-      },
-      "pacing": "default",
-      "profileGpuTimer": null,
-      "optimization": {
-        "mode": "legacy",
-        "staticMeshes": 0,
-        "dynamicMeshes": 0,
-        "candidates": 0,
-        "enabledCandidates": 0,
-        "sceneMeshes": 0,
-        "frozenMaterials": 0
-      }
-    },
-    "hero-street-main-render-static-pilot-after-1": {
-      "frameIntervals": {
-        "samples": 539,
-        "p50": 33.800000071525574,
-        "p95": 82.19999992847443,
-        "max": 178.89999997615814
-      },
-      "pacing": "default",
-      "profileGpuTimer": null,
-      "optimization": {
-        "mode": "optimized",
-        "staticMeshes": 593,
-        "dynamicMeshes": 121,
-        "candidates": 265,
-        "enabledCandidates": 144,
-        "sceneMeshes": 794,
-        "frozenMaterials": 123
-      }
-    },
-    "hero-street-main-render-uncapped-pilot-before-1": {
-      "frameIntervals": {
-        "samples": 539,
-        "p50": 27.600000023841858,
-        "p95": 61.299999952316284,
-        "max": 351.60000002384186
-      },
-      "pacing": "uncapped-requested",
-      "profileGpuTimer": false,
-      "optimization": {
-        "mode": "legacy",
-        "staticMeshes": 0,
-        "dynamicMeshes": 0,
-        "candidates": 0,
-        "enabledCandidates": 0,
-        "sceneMeshes": 0,
-        "frozenMaterials": 0
-      }
-    },
-    "hero-street-main-render-uncapped-pilot-after-1": {
-      "frameIntervals": {
-        "samples": 539,
-        "p50": 43.60000002384186,
-        "p95": 104.69999992847443,
-        "max": 486.10000002384186
-      },
-      "pacing": "uncapped-requested",
-      "profileGpuTimer": false,
-      "optimization": {
-        "mode": "optimized",
-        "staticMeshes": 593,
-        "dynamicMeshes": 121,
-        "candidates": 255,
-        "enabledCandidates": 144,
-        "sceneMeshes": 794,
-        "frozenMaterials": 123
-      }
-    },
-    "hero-street-main-render-isolation-legacy": {
-      "frameIntervals": {
-        "samples": 539,
-        "p50": 39.800000071525574,
-        "p95": 73.19999992847443,
-        "max": 193.29999995231628
-      },
-      "browserSession": 17588,
-      "optimization": {
-        "mode": "legacy",
-        "staticMeshes": 0,
-        "dynamicMeshes": 0,
-        "candidates": 0,
-        "enabledCandidates": 0,
-        "sceneMeshes": 0,
-        "frozenMaterials": 0
-      }
-    },
-    "hero-street-main-render-isolation-selection": {
-      "frameIntervals": {
-        "samples": 539,
-        "p50": 36.10000002384186,
-        "p95": 76,
-        "max": 211.89999997615814
-      },
-      "browserSession": 17588,
-      "optimization": {
-        "mode": "selection",
-        "staticMeshes": 593,
-        "dynamicMeshes": 121,
-        "candidates": 272,
-        "enabledCandidates": 161,
-        "sceneMeshes": 794,
-        "frozenMaterials": 0
-      }
-    },
-    "hero-street-main-render-isolation-materials": {
-      "frameIntervals": {
-        "samples": 539,
-        "p50": 36.700000047683716,
-        "p95": 66.60000002384186,
-        "max": 143.69999992847443
-      },
-      "browserSession": 17588,
-      "optimization": {
-        "mode": "materials",
-        "staticMeshes": 0,
-        "dynamicMeshes": 0,
-        "candidates": 0,
-        "enabledCandidates": 0,
-        "sceneMeshes": 0,
-        "frozenMaterials": 123
-      }
-    },
-    "hero-street-main-render-isolation-optimized": {
-      "frameIntervals": {
-        "samples": 539,
-        "p50": 28.399999976158142,
-        "p95": 56.5,
-        "max": 149.5
-      },
-      "browserSession": 17588,
-      "optimization": {
-        "mode": "optimized",
-        "staticMeshes": 593,
-        "dynamicMeshes": 121,
-        "candidates": 272,
-        "enabledCandidates": 161,
-        "sceneMeshes": 794,
-        "frozenMaterials": 123
-      }
-    }
-  },
-  "collisionChecks": 26,
-  "method": "Five alternating before/after pairs in one hardware Chrome process (AB, BA, AB, BA, AB), normal/default presentation pacing; no uncapped flags. Balanced 1280×720, identical 600-frame camera route and frame-driven actor timeline. First 61 frames excluded; 539 intervals per run, 2,695 per variant. Report the median of five run p50/p95 values. CPU stage instrumentation is identical in both variants; GPU queries are disabled for the final comparison. Builders idle. Startup excluded, existing LOD streaming retained. renderPerf=legacy disables only the new renderer work; assets and previous character/IK optimizations are identical. Temporary timing hooks restored and hash-verified."
+  "unit": {
+    "opaqueOccluders": 3,
+    "excludedSurfaces": 4,
+    "duplicatePrevention": true,
+    "unchangedGeometryTransformsMaterialsAndDepthFlags": true,
+    "shaderReadiness": true,
+    "cameraPassOnly": true,
+    "otherGroupsAndWireframeUnchanged": true,
+    "unsupportedQueueFallback": true
+  }
 }

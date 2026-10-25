@@ -292,3 +292,41 @@ sweep equally for all variants, then restores and hash-checks source/assets.
 Those benchmark hooks are not production scene changes. The original pre-step
 visual archive is required; old CPU source is reconstructed from the checked-in
 delta. All 26 live floor/approach collision checks pass.
+
+## Hero-street depth-pass performance — 25 October 2026
+
+Final implementation: `apps/web-tour/src/scene/RenderWorkOptimization.ts` adds
+existing opaque authored dust/plaster/hero-plaster submeshes to Babylon 7's native
+camera depth-only queue. Original colour order, geometry, textures, lighting,
+shadows, tiers, LOD distances, root positions, paths and cameras remain unchanged.
+Characters/cloth/alpha surfaces and shadow rendering are excluded. Keep
+`checkReadyOnEveryCall=true` on those PBR materials: DEPTHPREPASS must refresh
+between depth and colour draws, otherwise cached depth shaders black out colour.
+The guarded queue adapter falls back to stock rendering if its shape changes.
+
+Five alternating paired hardware Chrome runs, balanced 1280x720, existing hero
+street review segment, 600 frames/run, 539 timed intervals/run, normal pacing,
+GPU queries off: median-run p50 54.4 -> 49.1 ms (-9.7%), p95 94.8 -> 86.7 ms
+(-8.5%). All five paired medians improved. This qualifies only this desktop
+hero-street session, not the full tour, cinematic tier or headset throughput.
+CPU main submission increases 12.8 -> 15.7 ms and draws 296 -> 307; report this
+as a presented frame-time gain, not a CPU submission gain. GPU-busy savings were
+not independently measured in the final set. Raw samples and rejected pilots
+are retained; the earlier selection/material-cache candidate failed its gate.
+
+Three original locked bookmarks plus street route frames 180/360/600 match
+pixel for pixel. Each moving frame checks 8,992 world-matrix elements (max delta
+0); the five paired endpoints match too. No quality settings reduced.
+Depth queue fixture, workspace typechecks, production Vite bundle, character
+integrity, hero section locks and renderer integrity pass. The renderer revision
+protects 111 unchanged source/data/asset files. Public assets were unchanged;
+final rebundle used copyPublicDir:false after their earlier validated build.
+
+See `docs/design/render-performance-results-2026-10-25.md` and its JSON.
+Reproduce with `node tools/benchmark-rendering.mjs --batch --hero-street --runs=5
+--label=render-depth-final` while builders/captures are idle. Harness source edits
+are temporary and restored with hash verification. Use
+`node tools/test-render-depth.mjs` and `tools/verify-render-depth.py` for queue
+and strict image/pose checks. `tools/report-render-depth.mjs` is the current
+report generator; the older `tools/report-rendering.mjs` describes the rejected
+selection experiment and must not overwrite the accepted result.

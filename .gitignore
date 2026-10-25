@@ -14,6 +14,14 @@
 **/*.avi
 **/*.mkv
 
+# Excluding pictures to reduce the size of the repository - as images are auto-generated
+**/*.png
+**/*.jpg
+**/*.jpeg
+**/*.tiff
+**/*.gif
+**/*.webp
+
 # Generated asset workspaces.
 **/content/generated/
 **/content/processed/*

@@ -1,6 +1,6 @@
 {
   "date": "2026-10-25",
-  "scope": "Static transform cache, ordered conservative spatial candidate selection and immutable authored PBR material caching. No geometry, texture, lighting, tier, motion/path/camera or IK changes.",
+  "scope": "Opaque authored-surface camera depth occlusion pass using original shaders/geometry. No geometry, texture, lighting, tier, colour order, motion/path/camera or IK changes.",
   "hook": {
     "file": "apps/web-tour/src/scene/HumanContactShadows.ts",
     "beforeSha": "2d0aa765520c5eba523dd0bc303509ff34e466b9724c63e1de6d3f77f5f7225f",
@@ -18,7 +18,7 @@
   },
   "implementation": {
     "file": "apps/web-tour/src/scene/RenderWorkOptimization.ts",
-    "sha256": "cdd128f4eeb5fa1b05f96ae057b3d211a69cd53298b0f9cc3634a1063900c5de"
+    "sha256": "75df08e1648cd9bb126d3e75b95af66453778f1ff5026288bb39394b6ef48c60"
   },
   "protectedFiles": {
     "apps/web-tour/src/scene/DistrictCollisionAudit.ts": {
