@@ -1,0 +1,309 @@
+{
+  "id": "hero-street-authored-v2",
+  "units": "meters",
+  "format": "glTF 2.0",
+  "source": "Existing locked project-authored street GLBs; no external media",
+  "evidenceLevel": "inferred",
+  "lightingEvidenceLevel": "speculative",
+  "sunDirectionBabylon": [
+    -0.62,
+    -0.74,
+    0.27
+  ],
+  "bake": {
+    "engine": "Cycles",
+    "samples": 48,
+    "resolution": 2048,
+    "passes": [
+      "sky-diffuse-direct",
+      "sky-diffuse-indirect",
+      "sun-diffuse-indirect"
+    ],
+    "includesAlbedo": false,
+    "includesSunDirect": false,
+    "colorSpace": "linear",
+    "uvSet": 1
+  },
+  "surfaceTextureMeters": 2,
+  "normalConvention": "glTF tangent space",
+  "surfaceFamilies": [
+    "dust",
+    "plaster",
+    "linen",
+    "pottery",
+    "wood",
+    "hero-plaster",
+    "hero-linen"
+  ],
+  "foregroundFinish": {
+    "sourceYBounds": [
+      10.5,
+      19.2
+    ],
+    "facadeInwardReliefMaxMeters": 0.007,
+    "originalFacadeVertices": "fixed during relief; corners rounded inward",
+    "clothSupportCorners": "fixed",
+    "additionalProps": 0,
+    "vertexColour": "opaque normalized RGBA8 COLOR_0, white outside finish region",
+    "canopyAdditionalSagMaxMeters": 0.24,
+    "awningAdditionalSagMaxMeters": 0.12,
+    "plasterEdgeBevelMeters": 0.035,
+    "potteryLipBevelMeters": 0.007,
+    "timberEdgeBevelMeters": 0.003,
+    "hemEdges": 4
+  },
+  "surfaceScaleMeters": {
+    "dust": 2,
+    "plaster": 2,
+    "linen": 0.5,
+    "pottery": 0.5,
+    "wood": 0.5,
+    "hero-plaster": 2,
+    "hero-linen": 0.5
+  },
+  "surfaceRefinement": {
+    "plasterBevelMeters": 0.018,
+    "clothFoldMaxMeters": 0.04,
+    "clothSagMaxMeters": 0.18,
+    "clothThicknessMeters": 0.003,
+    "hemHeightMeters": 0.004,
+    "woodBendMaxMeters": 0.006,
+    "potteryLipBevelMeters": 0.004,
+    "potteryBulgeMaxMeters": 0.018,
+    "objectTransforms": "unchanged",
+    "retiredSheets": "source glTF BLEND alpha factors below 0.99"
+  },
+  "packing": {
+    "r": "ambient occlusion",
+    "g": "roughness",
+    "b": "metallic"
+  },
+  "assets": [
+    {
+      "assetId": "hero-street-corridor-near",
+      "fileName": "hero_street_corridor_near.glb",
+      "irradiance": "near-irradiance.png",
+      "uvSet": 1,
+      "triangles": 58334,
+      "lods": [
+        {
+          "fileName": "hero_street_corridor_near.lod1.glb",
+          "triangles": 32083,
+          "ratio": 0.5499880001371413
+        },
+        {
+          "fileName": "hero_street_corridor_near.lod2.glb",
+          "triangles": 16333,
+          "ratio": 0.2799910858161621
+        }
+      ]
+    },
+    {
+      "assetId": "hero-street-corridor-mid",
+      "fileName": "hero_street_corridor_mid.glb",
+      "irradiance": "mid-irradiance.png",
+      "uvSet": 1,
+      "triangles": 91990,
+      "lods": [
+        {
+          "fileName": "hero_street_corridor_mid.lod1.glb",
+          "triangles": 50594,
+          "ratio": 0.5499945646265898
+        },
+        {
+          "fileName": "hero_street_corridor_mid.lod2.glb",
+          "triangles": 25757,
+          "ratio": 0.27999782585063593
+        }
+      ]
+    },
+    {
+      "assetId": "hero-street-corridor-far",
+      "fileName": "hero_street_corridor_far.glb",
+      "irradiance": "far-irradiance.png",
+      "uvSet": 1,
+      "triangles": 33402,
+      "lods": [
+        {
+          "fileName": "hero_street_corridor_far.lod1.glb",
+          "triangles": 18370,
+          "ratio": 0.5499670678402491
+        },
+        {
+          "fileName": "hero_street_corridor_far.lod2.glb",
+          "triangles": 9352,
+          "ratio": 0.2799832345368541
+        }
+      ]
+    }
+  ],
+  "materials": {
+    "weathered Nile mud plaster wall.007": "plaster",
+    "chalky cracked plaster.007": "plaster",
+    "deep doorway shadow.007": "original",
+    "dark acacia wood.007": "wood",
+    "exposed subsurface mud daub.007": "original",
+    "chalky plaster scumble veil.007": "plaster",
+    "worn pale limestone.007": "original",
+    "baked warm contact shadow.007": "original",
+    "dry reed straw.007": "original",
+    "settled dark street dust.007": "original",
+    "transparent wall base grime.007": "original",
+    "eroded plaster edge shade.007": "plaster",
+    "dusty wall corner ambient occlusion.007": "original",
+    "thin plaster water stain.007": "plaster",
+    "sun baked mudbrick.007": "plaster",
+    "sun bleached woven linen.007": "linen",
+    "warm Nile clay pottery.007": "pottery",
+    "baked cool bounced street shadow.007": "original",
+    "baked warm sunlit dust strip.007": "original",
+    "baked deep doorway contact shadow.007": "original",
+    "baked soft awning shadow.007": "original",
+    "dust stained shade cloth.005": "linen",
+    "warm ochre paint.003": "original",
+    "packed sandy street dust.007": "dust",
+    "settled dark street dust scuff.007": "original",
+    "chalky plaster grit grime.007": "plaster",
+    "packed sandy street dust.008": "dust",
+    "weathered Nile mud plaster wall.008": "plaster",
+    "chalky cracked plaster.008": "plaster",
+    "deep doorway shadow.008": "original",
+    "dark acacia wood.008": "wood",
+    "exposed subsurface mud daub.008": "original",
+    "chalky plaster scumble veil.008": "plaster",
+    "worn pale limestone.008": "original",
+    "baked warm contact shadow.008": "original",
+    "dry reed straw.008": "original",
+    "settled dark street dust.008": "original",
+    "transparent wall base grime.008": "original",
+    "eroded plaster edge shade.008": "plaster",
+    "dusty wall corner ambient occlusion.008": "original",
+    "thin plaster water stain.008": "plaster",
+    "sun baked mudbrick.008": "plaster",
+    "sun bleached woven linen.008": "linen",
+    "warm Nile clay pottery.008": "pottery",
+    "baked soft awning shadow.008": "original",
+    "baked cool bounced street shadow.008": "original",
+    "baked warm sunlit dust strip.008": "original",
+    "baked deep doorway contact shadow.008": "original",
+    "dust stained shade cloth.006": "linen",
+    "warm suspended street haze.005": "original",
+    "settled dark street dust scuff.008": "original",
+    "chalky plaster grit grime.008": "plaster",
+    "hero-finish-plaster-weathered Nile mud plaster wall.003": "hero-plaster",
+    "hero-finish-plaster-chalky cracked plaster.003": "hero-plaster",
+    "hero-finish-linen-sun bleached woven linen.003": "hero-linen",
+    "hero-finish-linen-dust stained shade cloth.002": "hero-linen",
+    "chalky cracked plaster.009": "plaster",
+    "weathered Nile mud plaster wall.009": "plaster",
+    "deep doorway shadow.009": "original",
+    "dark acacia wood.009": "wood",
+    "chalky plaster scumble veil.009": "plaster",
+    "exposed subsurface mud daub.009": "original",
+    "settled dark street dust.009": "original",
+    "dusty wall corner ambient occlusion.009": "original",
+    "dry reed straw.009": "original",
+    "worn pale limestone.009": "original",
+    "baked warm contact shadow.009": "original",
+    "transparent wall base grime.009": "original",
+    "eroded plaster edge shade.009": "plaster",
+    "thin plaster water stain.009": "plaster",
+    "sun baked mudbrick.009": "plaster",
+    "sun bleached woven linen.009": "linen",
+    "warm Nile clay pottery.009": "pottery",
+    "baked cool bounced street shadow.009": "original",
+    "baked warm sunlit dust strip.009": "original",
+    "baked deep doorway contact shadow.009": "original",
+    "baked soft awning shadow.009": "original",
+    "warm suspended street haze.006": "original",
+    "packed sandy street dust.009": "dust",
+    "settled dark street dust scuff.009": "original",
+    "chalky plaster grit grime.009": "plaster",
+    "hero-finish-plaster-weathered Nile mud plaster wall.005": "hero-plaster",
+    "hero-finish-linen-sun bleached woven linen.005": "hero-linen",
+    "hero-finish-plaster-chalky cracked plaster.005": "hero-plaster"
+  },
+  "lockedInputs": {
+    "content/scene-data/hero-street.camera-lock.json": "ad68ca5727db3c7efd640d7d320ca358885df14e919765f2ba831260b0d0761e",
+    "content/scene-data/memphis-white-walls.tour.json": "bb1c0df8e4a7850c72703ffa0e267a3778eb03d958f808709b7147ceeaae930b"
+  },
+  "sourceHashes": {
+    "hero_street_corridor_near.glb": "6a147fde2debb4fcec69d94b0731244bdcc108c39f8ae1b7810371dbc9eec9e5",
+    "hero_street_corridor_mid.glb": "6e28934e920e226d87e173d409d6926a6c0cadf4e0c5d36ee5651851e2bd9688",
+    "hero_street_corridor_far.glb": "7508bd413aaf4bbd552431173eed71b64d6299530ef43c8fe3d7f479e187e772"
+  },
+  "irradianceRefinement": {
+    "method": "3x3 median then 0.8-pixel Gaussian on linear RGB irradiance only",
+    "rawDirectory": "content/generated/hero-street-irradiance-raw",
+    "rawSha256": {
+      "near-irradiance.png": "70d7aa56babc14bd022349644bfed8731ff4bd3b4a524b2cb476a0ccc5ab3af0",
+      "mid-irradiance.png": "0596efc6b05bca91e6ab2fc1ddf5942b7c22711a786a619e0f00f26729e4c223",
+      "far-irradiance.png": "7626e1a1a59164245aea3f87f742261e850645070ab011d54ed4c757d186cf02"
+    },
+    "geometryChanged": false
+  },
+  "textureVariants": {
+    "dust-albedo.png": "dust-albedo.webp",
+    "dust-normal.png": "dust-normal.webp",
+    "dust-orm.png": "dust-orm.webp",
+    "far-irradiance.png": "far-irradiance.webp",
+    "hero-linen-albedo.png": "hero-linen-albedo.webp",
+    "hero-linen-normal.png": "hero-linen-normal.webp",
+    "hero-linen-orm.png": "hero-linen-orm.webp",
+    "hero-plaster-albedo.png": "hero-plaster-albedo.webp",
+    "hero-plaster-normal.png": "hero-plaster-normal.webp",
+    "hero-plaster-orm.png": "hero-plaster-orm.webp",
+    "linen-albedo.png": "linen-albedo.webp",
+    "linen-normal.png": "linen-normal.webp",
+    "linen-orm.png": "linen-orm.webp",
+    "mid-irradiance.png": "mid-irradiance.webp",
+    "near-irradiance.png": "near-irradiance.webp",
+    "plaster-albedo.png": "plaster-albedo.webp",
+    "plaster-normal.png": "plaster-normal.webp",
+    "plaster-orm.png": "plaster-orm.webp",
+    "pottery-albedo.png": "pottery-albedo.webp",
+    "pottery-normal.png": "pottery-normal.webp",
+    "pottery-orm.png": "pottery-orm.webp",
+    "wood-albedo.png": "wood-albedo.webp",
+    "wood-normal.png": "wood-normal.webp",
+    "wood-orm.png": "wood-orm.webp"
+  },
+  "deliveryCompression": {
+    "format": "lossless WebP with PNG fallback",
+    "sourceBytes": 16126274,
+    "deliveryBytes": 10088330,
+    "gpuMemoryReduced": false
+  },
+  "contactPolish": {
+    "date": "2026-10-25",
+    "distanceMeters": 0.4,
+    "resolution": 1024,
+    "maxIndirectAttenuation": 0.18,
+    "affects": "existing linear sky/bounce only",
+    "geometryAndUvsChanged": false,
+    "movingActorsBaked": false,
+    "maps": {
+      "near": {
+        "source": "content/generated/steps56-ao/near-contact-ao.png",
+        "sha256": "42b565f78afe50cb6389932973356c6701232bb55b104aaee93d9bcc365a7ee8",
+        "minGain": 0.82,
+        "maxGain": 1.0,
+        "meanGain": 0.869151632421157
+      },
+      "mid": {
+        "source": "content/generated/steps56-ao/mid-contact-ao.png",
+        "sha256": "1ed2c0d2475379d29840797f7a0ab76488fb049df1614548b0da1d74a5dcbaa2",
+        "minGain": 0.82,
+        "maxGain": 1.0,
+        "meanGain": 0.8818046765607946
+      },
+      "far": {
+        "source": "content/generated/steps56-ao/far-contact-ao.png",
+        "sha256": "a24f5c760c369e551eb084c0743aa1168d467e79a587b58b0601900e54b009e1",
+        "minGain": 0.82,
+        "maxGain": 1.0,
+        "meanGain": 0.8964972830379709
+      }
+    }
+  }
+}

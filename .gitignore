@@ -41,3 +41,5 @@
 **/engines/unity/Obj/
 **/engines/unity/Build/
 **/engines/unity/Builds/
+# Intentional immutable inputs for the finished-street atlas orientation audit.
+!content/source-assets/lighting/steps78-base/*.png

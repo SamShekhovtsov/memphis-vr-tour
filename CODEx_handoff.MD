@@ -368,3 +368,70 @@ pair. Reproduce timings sequentially with --batch --runs=5 --quality=balanced
 Use node tools/capture-tour-rendering.mjs for all eleven paired shots,
 tools/verify-tour-rendering.py for strict pixels/poses, and
 node tools/report-tour-rendering.mjs for protocol assertions/report generation.
+
+## User-clarified steps 7–8: finished-street lighting and rollout — 25 October 2026
+
+The user superseded the old step-7/post and step-8/compression-only definitions.
+Actual scope: final lighting after upgraded surfaces/people, then remaining
+existing-surface rollout, reproducible source pipeline and desktop validation.
+Selected hardware: Intel HD 4600; explicitly ignore headset testing for now.
+
+All three chunks rebaked on existing UV1, 2048 square/48 samples, separate sky
+and sun bounce, no albedo/direct sun/moving actors. Linear ZIP-compressed 32-bit
+EXRs and editable base/final Blender files are preserved in source-assets.
+No old/new clipped channels were found. A bottom-up Blender / top-down PNG
+origin defect in a staging preview was fixed; keep the orientation/coverage
+fixture. Accepted pictures use steps78-final; reject the older steps78-after.
+Exposure 1.20, contrast 1.0, fog .0016, sky fill .864; original sun unchanged.
+Static 0.4 m contacts attenuate indirect by at most 14%; live human shadows stay.
+
+Remaining lane-facing plaster has up to 7 mm inward interior relief with
+original boundaries retained. Existing wood/pottery wear and shared plaster/
+linen finish families roll out across all chunks; no new objects or blockers.
+High triangles 183,726 -> 195,178; high GLBs 12.80 -> 13.63 MB; streamed LODs
+15.08 -> 15.99 MB (within unchanged 14/16 MB budgets). Declared runtime street
+maps 10.09 -> 9.31 MB. Sharing linen removes 3 redundant textures: observed
+100 -> 97; estimated mapped texture storage 388.35 -> 384.35 MiB.
+
+Three optimized-renderer 600-frame full-route runs/variant/tier, default pacing,
+GPU queries off, 539 measured intervals/run. Baseline/final sessions separated
+by bake work; treat this as a 10% regression-budget test, not a controlled speed-
+up claim. Balanced p50/p95 42.8/83.6 -> 34.7/74.0 ms; cinematic 63.3/147.8 ->
+46.0/97.4 ms. Both budgets pass; stalls remain and sustained 60 FPS is not proven.
+The suffix after in baseline timing names means the existing depth pass is ON;
+legacy-renderer baseline controls are retained but excluded from comparison.
+These are accelerated sweeps, not real-time 210-second playback qualification.
+
+Three before/final bookmarks plus matched route frames 180/360/600 preserve
+cameras/roots/actor state; 8,992 moving matrix elements/checkpoint match exactly.
+All 26 live floor/approach checks pass. Sparse compositor movies were rejected;
+use exact-frame route captures instead. Restored-before still reproduces the
+original baseline pixel for pixel; final asset/source buffers restore by hash.
+
+Optional ?textureTrial=1 uses three plaster UASTC quality-4/Zstd-18 KTX2 maps.
+Native BC7 format 36492 verified on Intel; full mipchains imply ~4 MiB vs 16 MiB
+RGBA8 storage for these maps. Default remains lossless WebP. Round-trip albedo
+58.3 dB, normal p95 .63 degrees; rendered mean channel error ~.03 byte, p99 1 byte.
+Deliberate failures recover to pixel-identical WebP without lingering errors.
+Decoder assets, encoder pin and third-party notices are local/hash protected.
+No KTX cold-start/FPS, other-GPU or native Unity/Unreal qualification is claimed.
+
+See docs/design/hero-street-finish-steps-7-8-2026-10-25.md and JSON.
+Rebuild: node tools/build-street-finish.mjs [--promote], with Blender 5.1 and
+NumPy/Pillow Python (BLENDER_BIN/PYTHON_BIN overrides). Capture/verify with
+capture-street-finish.mjs, verify-street-finish.py, test-finish-pipeline.py and
+report-street-finish.mjs. Record-street-finish retains original protected hashes;
+its dual normalized/raw hashes handle Windows JSON line endings. The explicit
+steps78 revision permits only two material/render source files, visual GLBs,
+lightmaps and manifest; actor/path/camera/collision source remains protected.
+Do not refresh old locks to erase the baseline. Full build includes the finish
+validator alongside history/content/budget/actor/character/section/render checks.
+
+Final sign-off: full npm run build passed (including content/history/optimization,
+hero/section/actor/people/material/renderer/finish checks and both workspace
+builds). Vite retains the existing large-chunk warning. Final exact-frame image
+checks pass; default controls and intentional WebP fallbacks match pixel for
+pixel. BC7 pilot mean channel error is 0.025–0.029 byte, p99 1 byte across the
+three cinematic views. All route pose differences are zero. The final scene is
+incrementally improved, not a claim of reference-level cinematic humans or a
+sustained 60 FPS walkthrough on HD 4600.

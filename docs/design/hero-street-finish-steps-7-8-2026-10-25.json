@@ -1,0 +1,542 @@
+{
+  "date": "2026-10-25",
+  "performance": {
+    "balanced": {
+      "phases": {
+        "baseline": {
+          "p50": 42.799999952316284,
+          "p95": 83.60000002384186,
+          "runs": [
+            {
+              "samples": 539,
+              "p50": 42.799999952316284,
+              "p95": 83.60000002384186,
+              "max": 288
+            },
+            {
+              "samples": 539,
+              "p50": 44.300000071525574,
+              "p95": 83.89999997615814,
+              "max": 242.69999992847443
+            },
+            {
+              "samples": 539,
+              "p50": 42.300000071525574,
+              "p95": 82.40000009536743,
+              "max": 234.5
+            }
+          ],
+          "gpu": {
+            "vendor": "Google Inc. (Intel)",
+            "renderer": "ANGLE (Intel, Intel(R) HD Graphics 4600 (0x00000416) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+            "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+          },
+          "session": 31464,
+          "textureMiB": 388.35148111979163,
+          "textures": 100,
+          "drawCallsSnapshot": 108,
+          "lods": [
+            {
+              "assetId": "hero-street-corridor-near",
+              "level": 2,
+              "loaded": [
+                0,
+                2,
+                1
+              ],
+              "triangles": 16333,
+              "failed": []
+            },
+            {
+              "assetId": "hero-street-corridor-mid",
+              "level": 2,
+              "loaded": [
+                0,
+                1,
+                2
+              ],
+              "triangles": 25757,
+              "failed": []
+            },
+            {
+              "assetId": "hero-street-corridor-far",
+              "level": 2,
+              "loaded": [
+                0,
+                1,
+                2
+              ],
+              "triangles": 9352,
+              "failed": []
+            }
+          ]
+        },
+        "final": {
+          "p50": 34.700000047683716,
+          "p95": 74,
+          "runs": [
+            {
+              "samples": 539,
+              "p50": 37.700000047683716,
+              "p95": 81.30000007152557,
+              "max": 177.60000002384186
+            },
+            {
+              "samples": 539,
+              "p50": 34.300000071525574,
+              "p95": 71.20000004768372,
+              "max": 159.40000009536743
+            },
+            {
+              "samples": 539,
+              "p50": 34.700000047683716,
+              "p95": 74,
+              "max": 178.29999995231628
+            }
+          ],
+          "gpu": {
+            "vendor": "Google Inc. (Intel)",
+            "renderer": "ANGLE (Intel, Intel(R) HD Graphics 4600 (0x00000416) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+            "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+          },
+          "session": 16444,
+          "textureMiB": 384.3514811197916,
+          "textures": 97,
+          "drawCallsSnapshot": 105,
+          "lods": [
+            {
+              "assetId": "hero-street-corridor-near",
+              "level": 2,
+              "loaded": [
+                0,
+                2,
+                1
+              ],
+              "triangles": 18152,
+              "failed": []
+            },
+            {
+              "assetId": "hero-street-corridor-mid",
+              "level": 2,
+              "loaded": [
+                0,
+                1,
+                2
+              ],
+              "triangles": 26566,
+              "failed": []
+            },
+            {
+              "assetId": "hero-street-corridor-far",
+              "level": 2,
+              "loaded": [
+                0,
+                1,
+                2
+              ],
+              "triangles": 9929,
+              "failed": []
+            }
+          ]
+        }
+      },
+      "p50Change": -0.18925233443123413,
+      "p95Change": -0.11483253613760813,
+      "budgetPass": true,
+      "poses": [
+        {
+          "run": 1,
+          "elements": 8992,
+          "maxDifference": 0
+        },
+        {
+          "run": 2,
+          "elements": 8992,
+          "maxDifference": 0
+        },
+        {
+          "run": 3,
+          "elements": 8992,
+          "maxDifference": 0
+        }
+      ]
+    },
+    "cinematic": {
+      "phases": {
+        "baseline": {
+          "p50": 63.299999952316284,
+          "p95": 147.79999995231628,
+          "runs": [
+            {
+              "samples": 539,
+              "p50": 51.699999928474426,
+              "p95": 92.39999997615814,
+              "max": 239
+            },
+            {
+              "samples": 539,
+              "p50": 63.299999952316284,
+              "p95": 147.79999995231628,
+              "max": 245.10000002384186
+            },
+            {
+              "samples": 539,
+              "p50": 66.69999992847443,
+              "p95": 150,
+              "max": 226.10000002384186
+            }
+          ],
+          "gpu": {
+            "vendor": "Google Inc. (Intel)",
+            "renderer": "ANGLE (Intel, Intel(R) HD Graphics 4600 (0x00000416) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+            "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+          },
+          "session": 6932,
+          "textureMiB": 392.3514811197916,
+          "textures": 103,
+          "drawCallsSnapshot": 108,
+          "lods": [
+            {
+              "assetId": "hero-street-corridor-near",
+              "level": 2,
+              "loaded": [
+                0,
+                1,
+                2
+              ],
+              "triangles": 16333,
+              "failed": []
+            },
+            {
+              "assetId": "hero-street-corridor-mid",
+              "level": 1,
+              "loaded": [
+                0,
+                1
+              ],
+              "triangles": 50594,
+              "failed": []
+            },
+            {
+              "assetId": "hero-street-corridor-far",
+              "level": 2,
+              "loaded": [
+                0,
+                1,
+                2
+              ],
+              "triangles": 9352,
+              "failed": []
+            }
+          ]
+        },
+        "final": {
+          "p50": 46,
+          "p95": 97.39999997615814,
+          "runs": [
+            {
+              "samples": 539,
+              "p50": 62.40000009536743,
+              "p95": 128.19999992847443,
+              "max": 208.5
+            },
+            {
+              "samples": 539,
+              "p50": 46,
+              "p95": 97.39999997615814,
+              "max": 143.19999992847443
+            },
+            {
+              "samples": 539,
+              "p50": 45.199999928474426,
+              "p95": 88.5,
+              "max": 212.60000002384186
+            }
+          ],
+          "gpu": {
+            "vendor": "Google Inc. (Intel)",
+            "renderer": "ANGLE (Intel, Intel(R) HD Graphics 4600 (0x00000416) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+            "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+          },
+          "session": 8876,
+          "textureMiB": 388.3514811197915,
+          "textures": 100,
+          "drawCallsSnapshot": 105,
+          "lods": [
+            {
+              "assetId": "hero-street-corridor-near",
+              "level": 2,
+              "loaded": [
+                0,
+                1,
+                2
+              ],
+              "triangles": 18152,
+              "failed": []
+            },
+            {
+              "assetId": "hero-street-corridor-mid",
+              "level": 1,
+              "loaded": [
+                0,
+                1
+              ],
+              "triangles": 52185,
+              "failed": []
+            },
+            {
+              "assetId": "hero-street-corridor-far",
+              "level": 2,
+              "loaded": [
+                0,
+                1,
+                2
+              ],
+              "triangles": 9929,
+              "failed": []
+            }
+          ]
+        }
+      },
+      "p50Change": -0.2733017372092943,
+      "p95Change": -0.3410013531286763,
+      "budgetPass": true,
+      "poses": [
+        {
+          "run": 1,
+          "elements": 8992,
+          "maxDifference": 0
+        },
+        {
+          "run": 2,
+          "elements": 8992,
+          "maxDifference": 0
+        },
+        {
+          "run": 3,
+          "elements": 8992,
+          "maxDifference": 0
+        }
+      ]
+    }
+  },
+  "geometry": {
+    "before": {
+      "triangles": 183726,
+      "highBytes": 12804864,
+      "lodBytes": 15080772,
+      "runtimeMapBytes": 10088330
+    },
+    "after": {
+      "triangles": 195178,
+      "highBytes": 13634132,
+      "lodBytes": 15988988,
+      "runtimeMapBytes": 9308384
+    }
+  },
+  "lighting": {
+    "scale": 1,
+    "maps": {
+      "near": {
+        "unclippedLinearMaximum": 0.5055744647979736,
+        "rawChannelsOverOne": 0,
+        "oldSaturatedChannels": 0,
+        "noiseResidualMedian": 0.0017997387330979109,
+        "noiseResidualP95": 0.026072584092617035,
+        "contactMinimumGain": 0.86,
+        "contactMeanGain": 0.8979378420511881,
+        "newClippedChannels": 0,
+        "rangeScale": 1
+      },
+      "mid": {
+        "unclippedLinearMaximum": 0.5103425979614258,
+        "rawChannelsOverOne": 0,
+        "oldSaturatedChannels": 0,
+        "noiseResidualMedian": 0.002733945846557617,
+        "noiseResidualP95": 0.026929274201393127,
+        "contactMinimumGain": 0.86,
+        "contactMeanGain": 0.908223985746795,
+        "newClippedChannels": 0,
+        "rangeScale": 1
+      },
+      "far": {
+        "unclippedLinearMaximum": 0.5049583911895752,
+        "rawChannelsOverOne": 0,
+        "oldSaturatedChannels": 0,
+        "noiseResidualMedian": 0.0021769553422927856,
+        "noiseResidualP95": 0.021854575723409653,
+        "contactMinimumGain": 0.86,
+        "contactMeanGain": 0.9195161339067945,
+        "newClippedChannels": 0,
+        "rangeScale": 1
+      }
+    }
+  },
+  "pipeline": {
+    "near": {
+      "coverageIoU": 0.9351496231329522,
+      "flippedCoverageIoU": 0.20444784175887237
+    },
+    "mid": {
+      "coverageIoU": 0.9386462662004867,
+      "flippedCoverageIoU": 0.2835296490762362
+    },
+    "far": {
+      "coverageIoU": 0.9569065238477876,
+      "flippedCoverageIoU": 0.417675305957919
+    },
+    "colourPack": {
+      "float32AndNormalized16ToRGBA8": true,
+      "otherAttributesByteIdentical": true
+    }
+  },
+  "textureTrial": {
+    "nativeFormat": 36492,
+    "mipLevels": 11,
+    "rgbaBytes": 16777212,
+    "bc7Bytes": 4194384,
+    "deliveryBytes": 1910624,
+    "adoption": "Opt-in only; WebP remains the production default",
+    "quality": {
+      "albedo": {
+        "rmsByteError": 0.30888668272967174,
+        "maxByteError": 2,
+        "p99ByteError": 1,
+        "psnrDb": 58.334819916052005
+      },
+      "normal": {
+        "rmsByteError": 0.39955013727293875,
+        "maxByteError": 4,
+        "p99ByteError": 1,
+        "psnrDb": 56.099377924427394,
+        "p95Degrees": 0.6347789928686677,
+        "maximumDegrees": 1.905321971921627
+      },
+      "orm": {
+        "rmsByteError": 0.294980613804272,
+        "maxByteError": 3,
+        "p99ByteError": 1,
+        "psnrDb": 58.734934109080825
+      }
+    }
+  },
+  "images": {
+    "hero-street-main": {
+      "beforeAfter": {
+        "changedPixels": 901163,
+        "meanChannelError": 3.372757884837963,
+        "p99ChannelError": 18,
+        "maximumChannelError": 58,
+        "psnrDb": 34.08865602639997
+      },
+      "compression": {
+        "changedPixels": 55745,
+        "meanChannelError": 0.026414930555555556,
+        "p99ChannelError": 1,
+        "maximumChannelError": 25,
+        "psnrDb": 62.88039305008836
+      },
+      "compressionThresholdPass": true,
+      "fallback": {
+        "changedPixels": 0,
+        "meanChannelError": 0,
+        "p99ChannelError": 0,
+        "maximumChannelError": 0,
+        "psnrDb": null
+      },
+      "displayChannelsAt255": 0
+    },
+    "hero-street-material": {
+      "beforeAfter": {
+        "changedPixels": 902870,
+        "meanChannelError": 2.9424605758101854,
+        "p99ChannelError": 15,
+        "maximumChannelError": 53,
+        "psnrDb": 35.46692829065341
+      },
+      "compression": {
+        "changedPixels": 53452,
+        "meanChannelError": 0.025482132523148147,
+        "p99ChannelError": 1,
+        "maximumChannelError": 20,
+        "psnrDb": 63.00168740693717
+      },
+      "compressionThresholdPass": true,
+      "fallback": {
+        "changedPixels": 0,
+        "meanChannelError": 0,
+        "p99ChannelError": 0,
+        "maximumChannelError": 0,
+        "psnrDb": null
+      },
+      "displayChannelsAt255": 0
+    },
+    "street-entry": {
+      "beforeAfter": {
+        "changedPixels": 908536,
+        "meanChannelError": 3.416178023726852,
+        "p99ChannelError": 18,
+        "maximumChannelError": 55,
+        "psnrDb": 34.1126063784113
+      },
+      "compression": {
+        "changedPixels": 61373,
+        "meanChannelError": 0.02874240451388889,
+        "p99ChannelError": 1,
+        "maximumChannelError": 20,
+        "psnrDb": 62.60924430422121
+      },
+      "compressionThresholdPass": true,
+      "fallback": {
+        "changedPixels": 0,
+        "meanChannelError": 0,
+        "p99ChannelError": 0,
+        "maximumChannelError": 0,
+        "psnrDb": null
+      },
+      "displayChannelsAt255": 0
+    },
+    "route-180": {
+      "maxPoseDifference": 0,
+      "matrixElements": 8992,
+      "difference": {
+        "changedPixels": 904724,
+        "meanChannelError": 3.5700264033564815,
+        "p99ChannelError": 19,
+        "maximumChannelError": 64,
+        "psnrDb": 33.64532541691265
+      }
+    },
+    "route-360": {
+      "maxPoseDifference": 0,
+      "matrixElements": 8992,
+      "difference": {
+        "changedPixels": 901633,
+        "meanChannelError": 3.3358051215277778,
+        "p99ChannelError": 19,
+        "maximumChannelError": 78,
+        "psnrDb": 33.859941795240104
+      }
+    },
+    "route-600": {
+      "maxPoseDifference": 0,
+      "matrixElements": 8992,
+      "difference": {
+        "changedPixels": 897379,
+        "meanChannelError": 2.8496864149305554,
+        "p99ChannelError": 15,
+        "maximumChannelError": 73,
+        "psnrDb": 35.49789106065644
+      }
+    },
+    "baselineReproduction": {
+      "changedPixels": 0,
+      "meanChannelError": 0,
+      "p99ChannelError": 0,
+      "maximumChannelError": 0,
+      "psnrDb": null
+    }
+  },
+  "collisionChecks": 26,
+  "method": "Three optimized-renderer runs per variant/tier, hardware Intel HD 4600 at 1280x720, default presentation pacing. Same 600-frame accelerated full-route sweep and deterministic actor timeline; first 61 frames excluded, 539 intervals/run and 1,617 per variant/tier. GPU queries off; builders idle during timings. Before/final sets ran in separate sessions around the offline bake, so this is a regression-budget comparison, not an interleaved causal speed-up experiment. Baseline filename suffix after means the existing depth optimization was enabled; extra legacy-renderer controls are retained but excluded. Startup and the first approximately 10% of route are excluded from timing. Real-time 210-second playback, sustained 60 FPS and headset qualification are outside this test; headset testing was explicitly excluded by the user."
+}

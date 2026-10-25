@@ -1,0 +1,169 @@
+{
+  "date": "2026-10-25",
+  "scope": "Authorized finished-street lighting rebake and existing-surface rollout. No roots, paths, camera, people, collision or source placement changes.",
+  "files": {
+    "apps/web-tour/public/assets/authored/hero-street/manifest.json": {
+      "before": "4b9973344cff6f26d8ffa52f48e90ca2fcb00b89f0d62d003423dbe53fe75058",
+      "after": "440e3420ebee4d2278e19267f52c149c01618a35f1c494492bea51c8961e9504",
+      "beforeRaw": "7c5e6fb9834e910a8d85ca32170e85e7de27d0a5ecc2c858f370db5e9fce0ceb",
+      "afterRaw": "e11e71c72b61fd3eb20f5bdcfb363047591de374b41e08c4b9995e74ca7dafd4",
+      "normalizedText": true
+    },
+    "apps/web-tour/public/assets/authored/hero-street/near-irradiance.png": {
+      "before": "42a641fb4855e69b6ac038bd711292d949f7f4243db3a14c47bf54e8bc9225ca",
+      "after": "09b0679e04a026c45975b0b54e5addf6f1525d6f592aeee941fd45b322e39d36",
+      "beforeRaw": "42a641fb4855e69b6ac038bd711292d949f7f4243db3a14c47bf54e8bc9225ca",
+      "afterRaw": "09b0679e04a026c45975b0b54e5addf6f1525d6f592aeee941fd45b322e39d36",
+      "normalizedText": false
+    },
+    "apps/web-tour/public/assets/authored/hero-street/near-irradiance.webp": {
+      "before": "6e6e7e3e56828b92dd45458aaa3ceff8c04511b01ec2d145e2c05fbb0d5b61c4",
+      "after": "0eb561aa1a00ce3fc5dd955f30e0a8c869e6b74ea73f1ac964e3ad1beecac22a",
+      "beforeRaw": "6e6e7e3e56828b92dd45458aaa3ceff8c04511b01ec2d145e2c05fbb0d5b61c4",
+      "afterRaw": "0eb561aa1a00ce3fc5dd955f30e0a8c869e6b74ea73f1ac964e3ad1beecac22a",
+      "normalizedText": false
+    },
+    "apps/web-tour/public/assets/authored/hero-street/hero_street_corridor_near.glb": {
+      "before": "2f65220bcc2acd89958325f9a93538c733081cf966fbe83470cf2dfe40f58e17",
+      "after": "b43a8d6d6e8605437faf0b9f8ac4573f2db92a918cf44cd6ea483daf1ef5d19d",
+      "beforeRaw": "2f65220bcc2acd89958325f9a93538c733081cf966fbe83470cf2dfe40f58e17",
+      "afterRaw": "b43a8d6d6e8605437faf0b9f8ac4573f2db92a918cf44cd6ea483daf1ef5d19d",
+      "normalizedText": false
+    },
+    "apps/web-tour/public/assets/authored/hero-street/hero_street_corridor_near.lod1.glb": {
+      "before": "20650cd7f82eab664eb8350003951475b2724a695fa9f2be5b42785ce94db46d",
+      "after": "88f2a2022d7cd635225394a8a0376974329499cc47cd3ffa617a0073bccf150f",
+      "beforeRaw": "20650cd7f82eab664eb8350003951475b2724a695fa9f2be5b42785ce94db46d",
+      "afterRaw": "88f2a2022d7cd635225394a8a0376974329499cc47cd3ffa617a0073bccf150f",
+      "normalizedText": false
+    },
+    "apps/web-tour/public/assets/authored/hero-street/hero_street_corridor_near.lod2.glb": {
+      "before": "d3276b4fe1101ecadd6d9a862fe0c1a3a5a246c2f78e2b2d00271851d3f00084",
+      "after": "db4b67121768f43fa8442c21bff229fd3420de9ddf694464e5c3d4748083378c",
+      "beforeRaw": "d3276b4fe1101ecadd6d9a862fe0c1a3a5a246c2f78e2b2d00271851d3f00084",
+      "afterRaw": "db4b67121768f43fa8442c21bff229fd3420de9ddf694464e5c3d4748083378c",
+      "normalizedText": false
+    },
+    "apps/web-tour/public/assets/authored/hero-street/mid-irradiance.png": {
+      "before": "56c94c7b5b0a3927338a19c5523624e2ef7702745905ec14dc91a1e00407015a",
+      "after": "42707f600dfda7f48cd58250ce81124aebbe826aa16cd0ade635adc66ef9ef42",
+      "beforeRaw": "56c94c7b5b0a3927338a19c5523624e2ef7702745905ec14dc91a1e00407015a",
+      "afterRaw": "42707f600dfda7f48cd58250ce81124aebbe826aa16cd0ade635adc66ef9ef42",
+      "normalizedText": false
+    },
+    "apps/web-tour/public/assets/authored/hero-street/mid-irradiance.webp": {
+      "before": "d43aad6827fa8089219fac30d0c92b5fdd95f8542d41e43db4f766eb1bb747a0",
+      "after": "f1bdf625330a26f33f63652bd499133933bd8e3d1e2aec5e0414ceb4ecb8c19e",
+      "beforeRaw": "d43aad6827fa8089219fac30d0c92b5fdd95f8542d41e43db4f766eb1bb747a0",
+      "afterRaw": "f1bdf625330a26f33f63652bd499133933bd8e3d1e2aec5e0414ceb4ecb8c19e",
+      "normalizedText": false
+    },
+    "apps/web-tour/public/assets/authored/hero-street/hero_street_corridor_mid.glb": {
+      "before": "71658db69c03ad836943976bd759f745ad0b37bf7cd2e1dad995aab6fb327e00",
+      "after": "b74ac5f83c0ed4b63131703482e3df72325648fb88066d07ddd7fe8b618a03d8",
+      "beforeRaw": "71658db69c03ad836943976bd759f745ad0b37bf7cd2e1dad995aab6fb327e00",
+      "afterRaw": "b74ac5f83c0ed4b63131703482e3df72325648fb88066d07ddd7fe8b618a03d8",
+      "normalizedText": false
+    },
+    "apps/web-tour/public/assets/authored/hero-street/hero_street_corridor_mid.lod1.glb": {
+      "before": "0ab0025ab8ae2139a1f11a2ad264bbe2323c279d54b44a0b9052e3ad1c2d39ba",
+      "after": "e99ec148ce9263dbc0bc6ec3add25999d85b13f00ed7495b0c0dd4ad38f45823",
+      "beforeRaw": "0ab0025ab8ae2139a1f11a2ad264bbe2323c279d54b44a0b9052e3ad1c2d39ba",
+      "afterRaw": "e99ec148ce9263dbc0bc6ec3add25999d85b13f00ed7495b0c0dd4ad38f45823",
+      "normalizedText": false
+    },
+    "apps/web-tour/public/assets/authored/hero-street/hero_street_corridor_mid.lod2.glb": {
+      "before": "63fa82e0416dd5bf0f2b252fc8ac143f9f43ae457cf583853bb88a3c11b7c215",
+      "after": "2785d6a7ffcfaba000a6d612b3cc277827d18d1d7a2494daaffbfe7bdd579dff",
+      "beforeRaw": "63fa82e0416dd5bf0f2b252fc8ac143f9f43ae457cf583853bb88a3c11b7c215",
+      "afterRaw": "2785d6a7ffcfaba000a6d612b3cc277827d18d1d7a2494daaffbfe7bdd579dff",
+      "normalizedText": false
+    },
+    "apps/web-tour/public/assets/authored/hero-street/far-irradiance.png": {
+      "before": "06a5cc4fe113cf9a45e3cd3838b3d39d1ddc3da896ca118d701d5f0b6ac89e14",
+      "after": "19108b67fdc93770a9e759f0ad29de0761b8ea9c224fc1c93af0ae016d3362b7",
+      "beforeRaw": "06a5cc4fe113cf9a45e3cd3838b3d39d1ddc3da896ca118d701d5f0b6ac89e14",
+      "afterRaw": "19108b67fdc93770a9e759f0ad29de0761b8ea9c224fc1c93af0ae016d3362b7",
+      "normalizedText": false
+    },
+    "apps/web-tour/public/assets/authored/hero-street/far-irradiance.webp": {
+      "before": "bda922b9480d58ec09bed88b6138191f4e2c9faaed62f036d751c4c2b380475b",
+      "after": "0e842376fc3096bf710f25ae7406120bc48cecdc7e6c998a08c0551abfd23551",
+      "beforeRaw": "bda922b9480d58ec09bed88b6138191f4e2c9faaed62f036d751c4c2b380475b",
+      "afterRaw": "0e842376fc3096bf710f25ae7406120bc48cecdc7e6c998a08c0551abfd23551",
+      "normalizedText": false
+    },
+    "apps/web-tour/public/assets/authored/hero-street/hero_street_corridor_far.glb": {
+      "before": "785418f3af6209d7f62fb157b9b0796347861785762d3b8d520dbd7d28fda81b",
+      "after": "ad2f6f47d0aa9eb191fae2f9c1a1c22f5d40e6c557f08fda40107fb27fe31dd7",
+      "beforeRaw": "785418f3af6209d7f62fb157b9b0796347861785762d3b8d520dbd7d28fda81b",
+      "afterRaw": "ad2f6f47d0aa9eb191fae2f9c1a1c22f5d40e6c557f08fda40107fb27fe31dd7",
+      "normalizedText": false
+    },
+    "apps/web-tour/public/assets/authored/hero-street/hero_street_corridor_far.lod1.glb": {
+      "before": "9c072cb224c98e650a427ed005f3da974c9783f24e21a8b7c30937851e1ddc1f",
+      "after": "a6b91a28d187bb73af0d8fc996a53da7098afc480a8884d674e309836d1295a3",
+      "beforeRaw": "9c072cb224c98e650a427ed005f3da974c9783f24e21a8b7c30937851e1ddc1f",
+      "afterRaw": "a6b91a28d187bb73af0d8fc996a53da7098afc480a8884d674e309836d1295a3",
+      "normalizedText": false
+    },
+    "apps/web-tour/public/assets/authored/hero-street/hero_street_corridor_far.lod2.glb": {
+      "before": "b9aa53b4e112f3b2cb82fbd6cb9e4e751bad13638b856f3f605ae7125f0dc25c",
+      "after": "9cdb17ff4e4bfcdc79e12ca0a49356767e5c40f5989f3d9dc8820208f5d58218",
+      "beforeRaw": "b9aa53b4e112f3b2cb82fbd6cb9e4e751bad13638b856f3f605ae7125f0dc25c",
+      "afterRaw": "9cdb17ff4e4bfcdc79e12ca0a49356767e5c40f5989f3d9dc8820208f5d58218",
+      "normalizedText": false
+    },
+    "apps/web-tour/src/scene/RenderingTiers.ts": {
+      "before": "d2411c8a05a391a59740ab6903bea9178687cc5970fcd389fab1d67ec62e1846",
+      "after": "7214b6a1bcdb85aa913ff889764cf23c86dc7ebee92f44e1db29ff51e2420c0a",
+      "beforeRaw": "d2411c8a05a391a59740ab6903bea9178687cc5970fcd389fab1d67ec62e1846",
+      "afterRaw": "7214b6a1bcdb85aa913ff889764cf23c86dc7ebee92f44e1db29ff51e2420c0a",
+      "normalizedText": true
+    },
+    "apps/web-tour/src/scene/HeroStreetMaterials.ts": {
+      "before": "4e317bb702d229ae377bf180d8d757c169a6ae10a19653e1d450fa8677cddada",
+      "after": "3ba5e0cbfe897108856c734342d29fe0029fd6cb5d0944099a35a91cd47d97cd",
+      "beforeRaw": "4e317bb702d229ae377bf180d8d757c169a6ae10a19653e1d450fa8677cddada",
+      "afterRaw": "3ba5e0cbfe897108856c734342d29fe0029fd6cb5d0944099a35a91cd47d97cd",
+      "normalizedText": true
+    }
+  },
+  "additions": {
+    "content/source-assets/street-finish/base-manifest.json": "7c5e6fb9834e910a8d85ca32170e85e7de27d0a5ecc2c858f370db5e9fce0ceb",
+    "content/source-assets/street-finish/encoder.json": "50d2e5574b401420c51c171e011213d5bce9ce758e1c4eab08110cdf6dcde2b1",
+    "content/source-assets/street-finish/steps78-base.blend": "cda691455793d82b859a37039aa64501651720281d27865503d120e764aa01e2",
+    "content/source-assets/street-finish/steps78-finished.blend": "b050c4daf8bb450a343711a891683b8025d9e0d7f824016adf6d1a478e826d61",
+    "content/source-assets/lighting/steps78-bake/far-bounce.exr": "ef47775c7f12234e0e77becccca93eadd5210aebc98a66f287b0591de58a44f8",
+    "content/source-assets/lighting/steps78-bake/far-sky.exr": "e6b0adfd831ece3447b6d7da5f29243d9a3479a3bdddacf9d305ceae7b8a37d7",
+    "content/source-assets/lighting/steps78-bake/mid-bounce.exr": "ef3338bce37b8189724cfb9707a6289ee97a14e9092fcda29145bf8a2eb2bfb7",
+    "content/source-assets/lighting/steps78-bake/mid-sky.exr": "584cd233989274902563fee9788cee5971c67a0fb6c932c5361b2a379e7efb9e",
+    "content/source-assets/lighting/steps78-bake/near-bounce.exr": "2b48747c355f88921883a2b5d843944a674c0fd90fe723f30692da9bbec19c20",
+    "content/source-assets/lighting/steps78-bake/near-sky.exr": "49e4f3da113b8fbc66508d3290dcff39ef915206f798e51fb55f4c6313286722",
+    "content/source-assets/lighting/steps78-bake/rollout.json": "81843c4f9b0de68c9b311ab179afe2389ccb7ee3ebde070a308b2038ca35160e",
+    "content/source-assets/lighting/steps78-base/far-irradiance.png": "06a5cc4fe113cf9a45e3cd3838b3d39d1ddc3da896ca118d701d5f0b6ac89e14",
+    "content/source-assets/lighting/steps78-base/mid-irradiance.png": "56c94c7b5b0a3927338a19c5523624e2ef7702745905ec14dc91a1e00407015a",
+    "content/source-assets/lighting/steps78-base/near-irradiance.png": "42a641fb4855e69b6ac038bd711292d949f7f4243db3a14c47bf54e8bc9225ca",
+    "content/scene-data/hero-street.finish-lighting.json": "e6f787266d40d1bcba34000e04012178d63a057323a95a7ff8c5f466ac1ee4d6",
+    "apps/web-tour/src/scene/StreetTextureTrial.ts": "50e05fd656e3cdffabac1fef4856bdad9b68d2040484af6a9605f583d7e83276",
+    "apps/web-tour/public/assets/decoders/ktx2/babylon.ktx2Decoder.js": "13ded50e97d0ab521ef0a7f207f95e19d476f67b9e3eda796d11cdd3f787df90",
+    "apps/web-tour/public/assets/decoders/ktx2/BASIS-LICENSE.txt": "065fcf48d6af21c0b75e23be5ed5753aee75c892e1c2cf178fa6736305614a5c",
+    "apps/web-tour/public/assets/decoders/ktx2/KTX-LICENSE.txt": "0f92b4ce771585dfebc963ede074a30b4431b9e327911db44097d83ccf372128",
+    "apps/web-tour/public/assets/decoders/ktx2/LICENSE.txt": "9362ea9ea17cb221a20cbbd63f404710834cc273d2a9a7b60314fd68ab702cd6",
+    "apps/web-tour/public/assets/decoders/ktx2/manifest.json": "fa7c0bf740bd0c95f753323061a41ae2874af5f2bff69327a33aa368ae599126",
+    "apps/web-tour/public/assets/decoders/ktx2/msc_basis_transcoder.js": "b8906bae7e55606aba070642eb3bce790a2b5aea774874e120e9fd41f7c7d60b",
+    "apps/web-tour/public/assets/decoders/ktx2/msc_basis_transcoder.wasm": "29becbf0eef2ce9f6d72109ad217704ec3799c432da0c26e3893b793ecab6bdc",
+    "apps/web-tour/public/assets/decoders/ktx2/uastc_astc.wasm": "6846c972b4a52d938866f43896fd2b2450052da807cdd1285e898be80614d612",
+    "apps/web-tour/public/assets/decoders/ktx2/uastc_bc7.wasm": "be442ab8c0cbf734ded98e6ad38112aaba23c83bfeecac4213ded54631fc4eef",
+    "apps/web-tour/public/assets/decoders/ktx2/uastc_r8_unorm.wasm": "0467c98b150a630e5a51f7810843e8b7fd9aad22e3888baf70aad255c55d02bc",
+    "apps/web-tour/public/assets/decoders/ktx2/uastc_rg8_unorm.wasm": "fb45a2c103c59cec21c3708a6534d43cd4381669f66d3292dd8a6e4e1956d773",
+    "apps/web-tour/public/assets/decoders/ktx2/uastc_rgba8_srgb_v2.wasm": "1f4d2e8bfef4e31679b23d473e1c410c29f7e485a739e76c5b357628f4190874",
+    "apps/web-tour/public/assets/decoders/ktx2/uastc_rgba8_unorm_v2.wasm": "b7470b26a847994cdeb9226eeba1e3711688e378ee438b7dd941e83cb598b694",
+    "apps/web-tour/public/assets/decoders/ktx2/ZSTD-LICENSE.txt": "7055266497633c9025b777c78eb7235af13922117480ed5c674677adc381c9d8",
+    "apps/web-tour/public/assets/decoders/ktx2/zstddec.wasm": "67d12d34f82ef700ec3a3795a77590252858c70330908a87ed1e73efc268cb4b",
+    "apps/web-tour/public/assets/authored/hero-street/hero-plaster-albedo.ktx2": "f3f9b67c207f568def4aac9d512f4152f91ae7d795ad30fae5007bdbef07facf",
+    "apps/web-tour/public/assets/authored/hero-street/hero-plaster-normal.ktx2": "9a7835ca0c0071f6d2e5fc2af9c4512cb28ac0f50ee2cd8fd2fece72071fec17",
+    "apps/web-tour/public/assets/authored/hero-street/hero-plaster-orm.ktx2": "ca991c4bc9bf821d634f7501df32447b48b7c9e197d37eb0ad07f31dc9932687",
+    "apps/web-tour/public/assets/authored/hero-street/compression-trial.json": "1a1c14e9d150f39b12fcf4298222c089162ef48202c48de83965746c1b5d54be"
+  }
+}

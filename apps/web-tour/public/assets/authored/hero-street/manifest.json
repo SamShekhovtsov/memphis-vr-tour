@@ -84,17 +84,17 @@
       "fileName": "hero_street_corridor_near.glb",
       "irradiance": "near-irradiance.png",
       "uvSet": 1,
-      "triangles": 58334,
+      "triangles": 64834,
       "lods": [
         {
           "fileName": "hero_street_corridor_near.lod1.glb",
-          "triangles": 32083,
-          "ratio": 0.5499880001371413
+          "triangles": 35657,
+          "ratio": 0.5499737791899312
         },
         {
           "fileName": "hero_street_corridor_near.lod2.glb",
-          "triangles": 16333,
-          "ratio": 0.2799910858161621
+          "triangles": 18152,
+          "ratio": 0.2799765555109973
         }
       ]
     },
@@ -103,17 +103,17 @@
       "fileName": "hero_street_corridor_mid.glb",
       "irradiance": "mid-irradiance.png",
       "uvSet": 1,
-      "triangles": 91990,
+      "triangles": 94882,
       "lods": [
         {
           "fileName": "hero_street_corridor_mid.lod1.glb",
-          "triangles": 50594,
-          "ratio": 0.5499945646265898
+          "triangles": 52185,
+          "ratio": 0.5499989460593158
         },
         {
           "fileName": "hero_street_corridor_mid.lod2.glb",
-          "triangles": 25757,
-          "ratio": 0.27999782585063593
+          "triangles": 26566,
+          "ratio": 0.2799898821694315
         }
       ]
     },
@@ -122,17 +122,17 @@
       "fileName": "hero_street_corridor_far.glb",
       "irradiance": "far-irradiance.png",
       "uvSet": 1,
-      "triangles": 33402,
+      "triangles": 35462,
       "lods": [
         {
           "fileName": "hero_street_corridor_far.lod1.glb",
-          "triangles": 18370,
-          "ratio": 0.5499670678402491
+          "triangles": 19504,
+          "ratio": 0.5499971800800857
         },
         {
           "fileName": "hero_street_corridor_far.lod2.glb",
-          "triangles": 9352,
-          "ratio": 0.2799832345368541
+          "triangles": 9929,
+          "ratio": 0.2799898482883086
         }
       ]
     }
@@ -164,6 +164,8 @@
     "packed sandy street dust.007": "dust",
     "settled dark street dust scuff.007": "original",
     "chalky plaster grit grime.007": "plaster",
+    "hero-finish-plaster-rollout.002": "hero-plaster",
+    "hero-finish-linen-rollout.002": "hero-linen",
     "packed sandy street dust.008": "dust",
     "weathered Nile mud plaster wall.008": "plaster",
     "chalky cracked plaster.008": "plaster",
@@ -233,13 +235,8 @@
     "hero_street_corridor_far.glb": "7508bd413aaf4bbd552431173eed71b64d6299530ef43c8fe3d7f479e187e772"
   },
   "irradianceRefinement": {
-    "method": "3x3 median then 0.8-pixel Gaussian on linear RGB irradiance only",
-    "rawDirectory": "content/generated/hero-street-irradiance-raw",
-    "rawSha256": {
-      "near-irradiance.png": "70d7aa56babc14bd022349644bfed8731ff4bd3b4a524b2cb476a0ccc5ab3af0",
-      "mid-irradiance.png": "0596efc6b05bca91e6ab2fc1ddf5942b7c22711a786a619e0f00f26729e4c223",
-      "far-irradiance.png": "7626e1a1a59164245aea3f87f742261e850645070ab011d54ed4c757d186cf02"
-    },
+    "method": "3x3 median and 0.12/0.76/0.12 subtexel kernel on linear irradiance only",
+    "rawDirectory": "content/source-assets/lighting/steps78-bake",
     "geometryChanged": false
   },
   "textureVariants": {
@@ -270,39 +267,84 @@
   },
   "deliveryCompression": {
     "format": "lossless WebP with PNG fallback",
-    "sourceBytes": 16126274,
-    "deliveryBytes": 10088330,
+    "sourceBytes": 14982890,
+    "deliveryBytes": 9308384,
     "gpuMemoryReduced": false
   },
   "contactPolish": {
-    "date": "2026-10-25",
     "distanceMeters": 0.4,
     "resolution": 1024,
-    "maxIndirectAttenuation": 0.18,
+    "maxIndirectAttenuation": 0.14,
     "affects": "existing linear sky/bounce only",
     "geometryAndUvsChanged": false,
-    "movingActorsBaked": false,
-    "maps": {
+    "movingActorsBaked": false
+  },
+  "finishedStreet": {
+    "profile": "hero-street-finish-lighting-v1",
+    "geometry": {
       "near": {
-        "source": "content/generated/steps56-ao/near-contact-ao.png",
-        "sha256": "42b565f78afe50cb6389932973356c6701232bb55b104aaee93d9bcc365a7ee8",
-        "minGain": 0.82,
-        "maxGain": 1.0,
-        "meanGain": 0.869151632421157
+        "newInteriorPlasterVertices": 2922,
+        "upgradedFaces": 18178,
+        "originalBoundariesPreserved": true
       },
       "mid": {
-        "source": "content/generated/steps56-ao/mid-contact-ao.png",
-        "sha256": "1ed2c0d2475379d29840797f7a0ab76488fb049df1614548b0da1d74a5dcbaa2",
-        "minGain": 0.82,
-        "maxGain": 1.0,
-        "meanGain": 0.8818046765607946
+        "newInteriorPlasterVertices": 856,
+        "upgradedFaces": 18393,
+        "originalBoundariesPreserved": true
       },
       "far": {
-        "source": "content/generated/steps56-ao/far-contact-ao.png",
-        "sha256": "a24f5c760c369e551eb084c0743aa1168d467e79a587b58b0601900e54b009e1",
-        "minGain": 0.82,
-        "maxGain": 1.0,
-        "meanGain": 0.8964972830379709
+        "newInteriorPlasterVertices": 897,
+        "upgradedFaces": 9691,
+        "originalBoundariesPreserved": true
+      }
+    },
+    "existingUvChartsPreserved": true,
+    "newObjects": false,
+    "movingPeopleBaked": false,
+    "linearSources": "content/source-assets/lighting/steps78-bake"
+  },
+  "finalLighting": {
+    "profile": "hero-street-finish-lighting-v1",
+    "irradianceRange": 1,
+    "samples": 48,
+    "resolution": 2048,
+    "directSunBaked": false,
+    "albedoBaked": false,
+    "movingActorsBaked": false,
+    "noiseFilter": "3x3 median and 0.12/0.76/0.12 subtexel kernel on linear irradiance only",
+    "audit": {
+      "near": {
+        "unclippedLinearMaximum": 0.5055744647979736,
+        "rawChannelsOverOne": 0,
+        "oldSaturatedChannels": 0,
+        "noiseResidualMedian": 0.0017997387330979109,
+        "noiseResidualP95": 0.026072584092617035,
+        "contactMinimumGain": 0.86,
+        "contactMeanGain": 0.8979378420511881,
+        "newClippedChannels": 0,
+        "rangeScale": 1
+      },
+      "mid": {
+        "unclippedLinearMaximum": 0.5103425979614258,
+        "rawChannelsOverOne": 0,
+        "oldSaturatedChannels": 0,
+        "noiseResidualMedian": 0.002733945846557617,
+        "noiseResidualP95": 0.026929274201393127,
+        "contactMinimumGain": 0.86,
+        "contactMeanGain": 0.908223985746795,
+        "newClippedChannels": 0,
+        "rangeScale": 1
+      },
+      "far": {
+        "unclippedLinearMaximum": 0.5049583911895752,
+        "rawChannelsOverOne": 0,
+        "oldSaturatedChannels": 0,
+        "noiseResidualMedian": 0.0021769553422927856,
+        "noiseResidualP95": 0.021854575723409653,
+        "contactMinimumGain": 0.86,
+        "contactMeanGain": 0.9195161339067945,
+        "newClippedChannels": 0,
+        "rangeScale": 1
       }
     }
   }

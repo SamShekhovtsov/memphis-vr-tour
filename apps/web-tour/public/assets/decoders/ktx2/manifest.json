@@ -1,0 +1,62 @@
+{
+  "date": "2026-10-25",
+  "license": "Apache-2.0 with bundled third-party BSD notices",
+  "source": "Official Babylon standalone KTX2 decoder snapshot; local URLs, pinned SHA-256",
+  "files": {
+    "babylon.ktx2Decoder.js": {
+      "source": "https://cdn.babylonjs.com/babylon.ktx2Decoder.js",
+      "bytes": 24450,
+      "sha256": "13ded50e97d0ab521ef0a7f207f95e19d476f67b9e3eda796d11cdd3f787df90"
+    },
+    "uastc_astc.wasm": {
+      "source": "https://cdn.babylonjs.com/ktx2Transcoders/1/uastc_astc.wasm",
+      "bytes": 12212,
+      "sha256": "6846c972b4a52d938866f43896fd2b2450052da807cdd1285e898be80614d612"
+    },
+    "uastc_bc7.wasm": {
+      "source": "https://cdn.babylonjs.com/ktx2Transcoders/1/uastc_bc7.wasm",
+      "bytes": 14650,
+      "sha256": "be442ab8c0cbf734ded98e6ad38112aaba23c83bfeecac4213ded54631fc4eef"
+    },
+    "uastc_rgba8_unorm_v2.wasm": {
+      "source": "https://cdn.babylonjs.com/ktx2Transcoders/1/uastc_rgba8_unorm_v2.wasm",
+      "bytes": 30121,
+      "sha256": "b7470b26a847994cdeb9226eeba1e3711688e378ee438b7dd941e83cb598b694"
+    },
+    "uastc_rgba8_srgb_v2.wasm": {
+      "source": "https://cdn.babylonjs.com/ktx2Transcoders/1/uastc_rgba8_srgb_v2.wasm",
+      "bytes": 24158,
+      "sha256": "1f4d2e8bfef4e31679b23d473e1c410c29f7e485a739e76c5b357628f4190874"
+    },
+    "uastc_r8_unorm.wasm": {
+      "source": "https://cdn.babylonjs.com/ktx2Transcoders/1/uastc_r8_unorm.wasm",
+      "bytes": 14139,
+      "sha256": "0467c98b150a630e5a51f7810843e8b7fd9aad22e3888baf70aad255c55d02bc"
+    },
+    "uastc_rg8_unorm.wasm": {
+      "source": "https://cdn.babylonjs.com/ktx2Transcoders/1/uastc_rg8_unorm.wasm",
+      "bytes": 17611,
+      "sha256": "fb45a2c103c59cec21c3708a6534d43cd4381669f66d3292dd8a6e4e1956d773"
+    },
+    "msc_basis_transcoder.js": {
+      "source": "https://cdn.babylonjs.com/ktx2Transcoders/1/msc_basis_transcoder.js",
+      "bytes": 63318,
+      "sha256": "b8906bae7e55606aba070642eb3bce790a2b5aea774874e120e9fd41f7c7d60b"
+    },
+    "msc_basis_transcoder.wasm": {
+      "source": "https://cdn.babylonjs.com/ktx2Transcoders/1/msc_basis_transcoder.wasm",
+      "bytes": 455582,
+      "sha256": "29becbf0eef2ce9f6d72109ad217704ec3799c432da0c26e3893b793ecab6bdc"
+    },
+    "zstddec.wasm": {
+      "source": "https://cdn.babylonjs.com/zstddec.wasm",
+      "bytes": 29232,
+      "sha256": "67d12d34f82ef700ec3a3795a77590252858c70330908a87ed1e73efc268cb4b"
+    }
+  },
+  "licenseSources": {
+    "ZSTD-LICENSE.txt": "https://raw.githubusercontent.com/facebook/zstd/v1.5.7/LICENSE",
+    "BASIS-LICENSE.txt": "https://raw.githubusercontent.com/BinomialLLC/basis_universal/master/LICENSE",
+    "KTX-LICENSE.txt": "https://raw.githubusercontent.com/KhronosGroup/KTX-Software/v4.4.2/LICENSE.md"
+  }
+}

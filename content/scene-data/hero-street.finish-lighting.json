@@ -1,0 +1,11 @@
+{
+  "id": "hero-street-finish-lighting-v1",
+  "scope": "Existing finished street; original sun direction, placements, camera paths and collision sources retained",
+  "exposure": 1.2,
+  "contrast": 1.0,
+  "fogDensity": 0.0016,
+  "skyFillIntensity": 0.864,
+  "bake": {"resolution": 2048, "samples": 48, "skyColor": [0.66,0.76,1.0], "skyStrength": 0.5, "sunBounceEnergy": 1.75, "sunColor": [1.0,0.89,0.72], "contactDistance": 0.4, "contactAttenuation": 0.14},
+  "rollout": {"preservedForegroundY": [10.5,19.2], "maximumInwardPlasterMeters": 0.007, "newObjects": false, "movingPeopleBaked": false},
+  "portability": "Linear irradiance and PBR sources; glTF metres/Y-up; engine-specific light calibration required"
+}

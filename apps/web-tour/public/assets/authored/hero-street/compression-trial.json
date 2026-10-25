@@ -1,0 +1,71 @@
+{
+  "encoder": "Khronos KTX-Software 4.4.2",
+  "encoderSource": "https://github.com/KhronosGroup/KTX-Software/releases/tag/v4.4.2",
+  "mode": "UASTC quality 4 + Zstd 18; full mip chain",
+  "adoption": "Opt-in textureTrial=1; WebP defaults retained",
+  "records": {
+    "albedo": {
+      "source": "hero-plaster-albedo.png",
+      "sourceSha256": "f1d1ce1c0e50cf3786378b0596e03a4db78b701637c8cd2565eede32ff95873e",
+      "file": "hero-plaster-albedo.ktx2",
+      "bytes": 578835,
+      "sha256": "f3f9b67c207f568def4aac9d512f4152f91ae7d795ad30fae5007bdbef07facf",
+      "command": [
+        "--t2",
+        "--encode",
+        "uastc",
+        "--uastc_quality",
+        "4",
+        "--zcmp",
+        "18",
+        "--genmipmap",
+        "--assign_oetf",
+        "srgb",
+        "apps/web-tour/public/assets/authored/hero-street/hero-plaster-albedo.ktx2",
+        "apps/web-tour/public/assets/authored/hero-street/hero-plaster-albedo.png"
+      ]
+    },
+    "normal": {
+      "source": "hero-plaster-normal.png",
+      "sourceSha256": "c86e7a26e162d0f67a7bc694705681145688227846115de5fe6b8f27fe8a3e2a",
+      "file": "hero-plaster-normal.ktx2",
+      "bytes": 838970,
+      "sha256": "9a7835ca0c0071f6d2e5fc2af9c4512cb28ac0f50ee2cd8fd2fece72071fec17",
+      "command": [
+        "--t2",
+        "--encode",
+        "uastc",
+        "--uastc_quality",
+        "4",
+        "--zcmp",
+        "18",
+        "--genmipmap",
+        "--assign_oetf",
+        "linear",
+        "apps/web-tour/public/assets/authored/hero-street/hero-plaster-normal.ktx2",
+        "apps/web-tour/public/assets/authored/hero-street/hero-plaster-normal.png"
+      ]
+    },
+    "orm": {
+      "source": "hero-plaster-orm.png",
+      "sourceSha256": "46f818f23b122b767fcd00643eb62bce7239b663b8c226969d6361cd4e7b2b70",
+      "file": "hero-plaster-orm.ktx2",
+      "bytes": 492819,
+      "sha256": "ca991c4bc9bf821d634f7501df32447b48b7c9e197d37eb0ad07f31dc9932687",
+      "command": [
+        "--t2",
+        "--encode",
+        "uastc",
+        "--uastc_quality",
+        "4",
+        "--zcmp",
+        "18",
+        "--genmipmap",
+        "--assign_oetf",
+        "linear",
+        "apps/web-tour/public/assets/authored/hero-street/hero-plaster-orm.ktx2",
+        "apps/web-tour/public/assets/authored/hero-street/hero-plaster-orm.png"
+      ]
+    }
+  }
+}

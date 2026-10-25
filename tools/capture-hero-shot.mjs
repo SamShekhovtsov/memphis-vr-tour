@@ -31,8 +31,10 @@ const profile = process.argv.includes("--profile");
 const legacyRenderPerf = process.argv.includes("--legacy-render-perf");
 const renderFrame = process.argv.find(arg=>arg.startsWith("--render-frame="))?.slice(15);
 const uncapped = process.argv.includes("--uncapped");
+const textureTrial = process.argv.find(arg=>arg.startsWith("--texture-trial="))?.slice(16);
+if(textureTrial&&!['1','fail'].includes(textureTrial))throw new Error('Unknown texture trial mode');
 const batchFile=process.argv.find(arg=>arg.startsWith("--batch-json="))?.slice(13);
-const jobs=batchFile?JSON.parse(await readFile(batchFile,"utf8")):[{label,legacyRenderPerf,renderFrame}];
+const jobs=batchFile?JSON.parse(await readFile(batchFile,"utf8")):[{label,legacyRenderPerf,renderFrame,textureTrial}];
 for(const job of jobs){if(!/^[a-z0-9-]+$/i.test(job.label))throw new Error("Invalid batch label");if(job.renderMode&&!['legacy','optimized','selection','materials'].includes(job.renderMode))throw new Error("Invalid render mode");}
 if(renderFrame&&(!/^\d+$/.test(renderFrame)||Number(renderFrame)<62||Number(renderFrame)>600))throw new Error("Render checkpoint must be 62–600");
 let debugHttpBase;
@@ -78,7 +80,7 @@ try {
 
   for (const job of jobs) for (const shot of shots) {
     const output = path.join(screenshotDir, `${shot}-${job.label}.png`);
-    await capture(`http://127.0.0.1:${lock.localDevPort}/?shot=${shot}&chrome=0&qa=1&quality=${quality}${legacy ? "&materials=legacy" : ""}${ikAudit ? "&ikAudit=1" : ""}${benchmark ? "&benchmark=1" : ""}${collisionAudit ? "&collisionAudit=1" : ""}${legacyGround ? "&ground=legacy" : ""}${legacyPeopleMaterials ? "&peopleMaterials=legacy" : ""}${legacySteps56 ? "&steps56=legacy" : ""}${job.renderMode||job.legacyRenderPerf ? `&renderPerf=${job.renderMode??'legacy'}` : ""}${job.renderFrame ? `&renderFrame=${job.renderFrame}` : ""}${motion ? "&review=1" : ""}`, output);
+    await capture(`http://127.0.0.1:${lock.localDevPort}/?shot=${shot}&chrome=0&qa=1&quality=${quality}${legacy ? "&materials=legacy" : ""}${ikAudit ? "&ikAudit=1" : ""}${benchmark ? "&benchmark=1" : ""}${collisionAudit ? "&collisionAudit=1" : ""}${legacyGround ? "&ground=legacy" : ""}${legacyPeopleMaterials ? "&peopleMaterials=legacy" : ""}${legacySteps56 ? "&steps56=legacy" : ""}${job.renderMode||job.legacyRenderPerf ? `&renderPerf=${job.renderMode??'legacy'}` : ""}${job.renderFrame ? `&renderFrame=${job.renderFrame}` : ""}${job.textureTrial ? `&textureTrial=${encodeURIComponent(job.textureTrial)}` : ""}${motion ? "&review=1" : ""}`, output);
     console.log(`Captured ${output}`);
   }
 } finally {

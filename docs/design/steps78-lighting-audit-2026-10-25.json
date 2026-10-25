@@ -1,0 +1,38 @@
+{
+  "scale": 1,
+  "maps": {
+    "near": {
+      "unclippedLinearMaximum": 0.5055744647979736,
+      "rawChannelsOverOne": 0,
+      "oldSaturatedChannels": 0,
+      "noiseResidualMedian": 0.0017997387330979109,
+      "noiseResidualP95": 0.026072584092617035,
+      "contactMinimumGain": 0.86,
+      "contactMeanGain": 0.8979378420511881,
+      "newClippedChannels": 0,
+      "rangeScale": 1
+    },
+    "mid": {
+      "unclippedLinearMaximum": 0.5103425979614258,
+      "rawChannelsOverOne": 0,
+      "oldSaturatedChannels": 0,
+      "noiseResidualMedian": 0.002733945846557617,
+      "noiseResidualP95": 0.026929274201393127,
+      "contactMinimumGain": 0.86,
+      "contactMeanGain": 0.908223985746795,
+      "newClippedChannels": 0,
+      "rangeScale": 1
+    },
+    "far": {
+      "unclippedLinearMaximum": 0.5049583911895752,
+      "rawChannelsOverOne": 0,
+      "oldSaturatedChannels": 0,
+      "noiseResidualMedian": 0.0021769553422927856,
+      "noiseResidualP95": 0.021854575723409653,
+      "contactMinimumGain": 0.86,
+      "contactMeanGain": 0.9195161339067945,
+      "newClippedChannels": 0,
+      "rangeScale": 1
+    }
+  }
+}

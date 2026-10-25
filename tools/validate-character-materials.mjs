@@ -1,6 +1,7 @@
 import fs from 'node:fs';
 import assert from 'node:assert/strict';
 import {createHash} from 'node:crypto';
+import {finishExpected} from './lib/street-finish-revision.mjs';
 const root='apps/web-tour/public/assets/authored/people/';
 const lockFile='content/scene-data/hero-people.material-lock.json';
 const hash=b=>createHash('sha256').update(b).digest('hex');
@@ -36,7 +37,7 @@ for(const [file,sha] of Object.entries(lock.protectedFiles)){
     assert.equal(file,'apps/web-tour/src/scene/GroundContactIK.ts','Performance exception outside IK matrix helper');
     assert.equal(edit.beforeSha,sha,'Original IK baseline changed');
   }
-  assert.equal(hash(fs.readFileSync(file)),edit?.afterSha??revision.files[file]?.after??sha,'Scene/path/lighting changed: '+file);
+  assert.equal(hash(fs.readFileSync(file)),finishExpected(file,edit?.afterSha??revision.files[file]?.after??sha),'Scene/path/lighting changed: '+file);
 }
 if(revision.sourceEdits) {
   let original=fs.readFileSync('apps/web-tour/src/scene/MemphisWhiteWallsScene.ts','utf8');

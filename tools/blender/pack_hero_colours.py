@@ -18,13 +18,17 @@ def pack_colours(path):
         accessor = doc['accessors'][index]
         if accessor['componentType'] == 5121:
             continue
-        assert accessor['componentType'] == 5126 and accessor['type'] == 'VEC4'
+        assert accessor['componentType'] in (5126,5123) and accessor['type'] == 'VEC4'
         view_index = accessor['bufferView']
         assert sum(a.get('bufferView') == view_index for a in doc['accessors']) == 1
         view = doc['bufferViews'][view_index]
         assert not view.get('byteStride') and not accessor.get('byteOffset')
         start = view.get('byteOffset',0)
-        values = struct.unpack_from('<'+'f'*accessor['count']*4,binary,start)
+        if accessor['componentType'] == 5123:
+            assert accessor.get('normalized'), '16-bit colours must be normalized'
+            values = [v/65535 for v in struct.unpack_from('<'+'H'*accessor['count']*4,binary,start)]
+        else:
+            values = struct.unpack_from('<'+'f'*accessor['count']*4,binary,start)
         # Clamp the finish's tiny highlight variation to glTF colour bounds.
         replacements[view_index] = bytes(round(max(0,min(1,v))*255) for v in values)
         accessor['componentType'], accessor['normalized'] = 5121, True

@@ -1,0 +1,117 @@
+{
+  "hero-street-main": {
+    "beforeAfter": {
+      "changedPixels": 901163,
+      "meanChannelError": 3.372757884837963,
+      "p99ChannelError": 18.0,
+      "maximumChannelError": 58.0,
+      "psnrDb": 34.08865602639997
+    },
+    "compression": {
+      "changedPixels": 55745,
+      "meanChannelError": 0.026414930555555556,
+      "p99ChannelError": 1.0,
+      "maximumChannelError": 25.0,
+      "psnrDb": 62.88039305008836
+    },
+    "compressionThresholdPass": true,
+    "fallback": {
+      "changedPixels": 0,
+      "meanChannelError": 0.0,
+      "p99ChannelError": 0.0,
+      "maximumChannelError": 0.0,
+      "psnrDb": null
+    },
+    "displayChannelsAt255": 0
+  },
+  "hero-street-material": {
+    "beforeAfter": {
+      "changedPixels": 902870,
+      "meanChannelError": 2.9424605758101854,
+      "p99ChannelError": 15.0,
+      "maximumChannelError": 53.0,
+      "psnrDb": 35.46692829065341
+    },
+    "compression": {
+      "changedPixels": 53452,
+      "meanChannelError": 0.025482132523148147,
+      "p99ChannelError": 1.0,
+      "maximumChannelError": 20.0,
+      "psnrDb": 63.00168740693717
+    },
+    "compressionThresholdPass": true,
+    "fallback": {
+      "changedPixels": 0,
+      "meanChannelError": 0.0,
+      "p99ChannelError": 0.0,
+      "maximumChannelError": 0.0,
+      "psnrDb": null
+    },
+    "displayChannelsAt255": 0
+  },
+  "street-entry": {
+    "beforeAfter": {
+      "changedPixels": 908536,
+      "meanChannelError": 3.416178023726852,
+      "p99ChannelError": 18.0,
+      "maximumChannelError": 55.0,
+      "psnrDb": 34.1126063784113
+    },
+    "compression": {
+      "changedPixels": 61373,
+      "meanChannelError": 0.02874240451388889,
+      "p99ChannelError": 1.0,
+      "maximumChannelError": 20.0,
+      "psnrDb": 62.60924430422121
+    },
+    "compressionThresholdPass": true,
+    "fallback": {
+      "changedPixels": 0,
+      "meanChannelError": 0.0,
+      "p99ChannelError": 0.0,
+      "maximumChannelError": 0.0,
+      "psnrDb": null
+    },
+    "displayChannelsAt255": 0
+  },
+  "route-180": {
+    "maxPoseDifference": 0,
+    "matrixElements": 8992,
+    "difference": {
+      "changedPixels": 904724,
+      "meanChannelError": 3.5700264033564815,
+      "p99ChannelError": 19.0,
+      "maximumChannelError": 64.0,
+      "psnrDb": 33.64532541691265
+    }
+  },
+  "route-360": {
+    "maxPoseDifference": 0,
+    "matrixElements": 8992,
+    "difference": {
+      "changedPixels": 901633,
+      "meanChannelError": 3.3358051215277778,
+      "p99ChannelError": 19.0,
+      "maximumChannelError": 78.0,
+      "psnrDb": 33.859941795240104
+    }
+  },
+  "route-600": {
+    "maxPoseDifference": 0,
+    "matrixElements": 8992,
+    "difference": {
+      "changedPixels": 897379,
+      "meanChannelError": 2.8496864149305554,
+      "p99ChannelError": 15.0,
+      "maximumChannelError": 73.0,
+      "psnrDb": 35.49789106065644
+    }
+  },
+  "baselineReproduction": {
+    "changedPixels": 0,
+    "meanChannelError": 0.0,
+    "p99ChannelError": 0.0,
+    "maximumChannelError": 0.0,
+    "psnrDb": null
+  }
+}

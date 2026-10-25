@@ -1,5 +1,6 @@
 import { DefaultRenderingPipeline, ImageProcessingConfiguration, Scene, Camera, ShadowGenerator } from "@babylonjs/core";
 import daylight from "../../../../content/scene-data/hero-street.daylight.json";
+import finish from "../../../../content/scene-data/hero-street.finish-lighting.json";
 
 export function configureRendering(scene: Scene, camera: Camera, tier: string) {
   const pipeline = new DefaultRenderingPipeline("desktop-quality", true, scene, [camera]);
@@ -13,11 +14,13 @@ export function configureRendering(scene: Scene, camera: Camera, tier: string) {
     image.applyByPostProcess = !headset;
     image.toneMappingEnabled = true;
     image.toneMappingType = ImageProcessingConfiguration.TONEMAPPING_ACES;
-    image.exposure = daylight.exposure;
-    image.contrast = daylight.contrast;
+    image.exposure = finish.exposure;
+    image.contrast = finish.contrast;
     image.vignetteEnabled = !headset && tier === "cinematic";
     image.vignetteWeight = .15;
-    scene.fogDensity = daylight.fogDensity;
+    scene.fogDensity = finish.fogDensity;
+    const sky = scene.getLightByName("skyLight");
+    if (sky) sky.intensity = finish.skyFillIntensity;
     const shadowMapSize = headset || tier === "performance" ? 1024 : 2048;
     const shadows = scene.getLightByName("lowGoldSun")?.getShadowGenerator();
     const softShadows = !headset && tier === "cinematic";
@@ -32,7 +35,9 @@ export function configureRendering(scene: Scene, camera: Camera, tier: string) {
       antialiasing: headset ? "XR framebuffer" : pipeline.samples > 1 ? "MSAA4 + FXAA" : "FXAA",
       toneMapping: "ACES", exposure: image.exposure, contrast: image.contrast,
       shadowMapSize, shadowFilter: softShadows ? "PCSS" : "PCF",
-      daylightProfile: daylight.id, indirectLightGain: daylight.indirectLightGain
+      daylightProfile: daylight.id, indirectLightGain: daylight.indirectLightGain,
+      finishLighting: scene.metadata.finalLighting ?? {profile:finish.id},
+      textureTrial: scene.metadata.textureTrial ?? null
     };
   }
   apply(tier === "headset");

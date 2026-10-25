@@ -1,0 +1,22 @@
+{
+  "albedo": {
+    "rmsByteError": 0.30888668272967174,
+    "maxByteError": 2.0,
+    "p99ByteError": 1.0,
+    "psnrDb": 58.334819916052005
+  },
+  "normal": {
+    "rmsByteError": 0.39955013727293875,
+    "maxByteError": 4.0,
+    "p99ByteError": 1.0,
+    "psnrDb": 56.099377924427394,
+    "p95Degrees": 0.6347789928686677,
+    "maximumDegrees": 1.905321971921627
+  },
+  "orm": {
+    "rmsByteError": 0.294980613804272,
+    "maxByteError": 3.0,
+    "p99ByteError": 1.0,
+    "psnrDb": 58.734934109080825
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "near": {
+    "coverageIoU": 0.9351496231329522,
+    "flippedCoverageIoU": 0.20444784175887237
+  },
+  "mid": {
+    "coverageIoU": 0.9386462662004867,
+    "flippedCoverageIoU": 0.2835296490762362
+  },
+  "far": {
+    "coverageIoU": 0.9569065238477876,
+    "flippedCoverageIoU": 0.417675305957919
+  },
+  "colourPack": {
+    "float32AndNormalized16ToRGBA8": true,
+    "otherAttributesByteIdentical": true
+  }
+}

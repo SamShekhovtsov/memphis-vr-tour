@@ -58,22 +58,17 @@ Done when: every object feels grounded without adding more real-time shadow cost
 
 Done when: fewer characters feel more alive than the current placeholder crowd.
 
-## Step 7: Browser-Film Post Pass
+## Step 7: Final Lighting For The Finished Street
 
-- Fine-tune tone mapping, contrast, color grading, vignette, and fog after material/light changes.
-- Add subtle depth layering without obscuring the street.
-- Keep the browser target usable on laptop hardware.
+User clarification, 25 October 2026: rebalance the indirect-light bake, contacts and exposure after the upgraded surfaces and people are present, then bake the whole street. Use one setup across locked views, with readable shade, detailed sunlit plaster and restrained depth. Inspect noise and clipping before increasing sample count or resolution; avoid heavy grading or blur.
 
-Done when: the canonical shot has warm sunlight, cooler shade, readable faces/walls, and cinematic depth without over-fogging.
+## Step 8: Extend The Finish And Validate Desktop Performance
 
-## Step 8: Optimize Only After The Look Holds
+Extend the accepted treatment to remaining existing facades and props with controlled variation. Keep measured near/mid/far LODs, shared materials and bounded texture residency/streaming. Trial GPU texture compression on a small set before broad adoption. Preserve editable Blender sources, linear PBR maps, glTF scale conventions and provenance for later engine calibration.
 
-- Keep near/mid/far GLB chunks.
-- Add verified KTX2 texture compression.
-- Add Draco/Meshopt only after decoder loading is tested in Babylon.
-- Keep a visual regression screenshot before and after compression.
+The selected test target is Intel HD 4600 desktop. Headset testing is excluded for this pass at the user's request. Keep layout, walking paths, camera bookmarks and collision functions locked; record matched screenshots and repeated route measurements.
 
-Done when: performance improves without changing the look.
+Implementation and limits: [finished-street report](hero-street-finish-steps-7-8-2026-10-25.md). Performance gates use the existing 10% regression budget; a passed budget is not a sustained-60-FPS claim.
 
 ## Historical Quality Gate
 

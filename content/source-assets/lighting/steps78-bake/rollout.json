@@ -1,0 +1,17 @@
+{
+  "near": {
+    "newInteriorPlasterVertices": 2922,
+    "upgradedFaces": 18178,
+    "originalBoundariesPreserved": true
+  },
+  "mid": {
+    "newInteriorPlasterVertices": 856,
+    "upgradedFaces": 18393,
+    "originalBoundariesPreserved": true
+  },
+  "far": {
+    "newInteriorPlasterVertices": 897,
+    "upgradedFaces": 9691,
+    "originalBoundariesPreserved": true
+  }
+}

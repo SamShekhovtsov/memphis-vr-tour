@@ -4,6 +4,12 @@ import bmesh
 from pack_hero_colours import pack_colours
 
 def export_chunk(OUT, scene, part, obj):
+    # Blender 5 defaults to material-linked colour, which can put an unrelated
+    # legacy layer in COLOR_0. Select the authored finish explicitly and avoid
+    # exporting redundant float colour streams into every LOD.
+    colour_options = {}
+    if 'export_vertex_color' in bpy.ops.export_scene.gltf.get_rna_type().properties:
+        colour_options = {'export_vertex_color':'NAME', 'export_vertex_color_name':'HeroFinish', 'export_all_vertex_colors':False}
     material_bindings = {}
     bpy.ops.object.select_all(action='DESELECT')
     obj.select_set(True)
@@ -26,7 +32,7 @@ def export_chunk(OUT, scene, part, obj):
             if node.type == 'TEX_IMAGE': slot.material.node_tree.nodes.remove(node)
     obj.data.uv_layers.active_index = 0
     obj.data.uv_layers[0].active_render = True
-    bpy.ops.export_scene.gltf(filepath=str(OUT/f'hero_street_corridor_{part}.glb'), export_format='GLB', use_selection=True, export_yup=True, export_extras=True)
+    bpy.ops.export_scene.gltf(filepath=str(OUT/f'hero_street_corridor_{part}.glb'), export_format='GLB', use_selection=True, export_yup=True, export_extras=True, **colour_options)
     pack_colours(OUT/f'hero_street_corridor_{part}.glb')
     lods = []
     original_triangles = sum(len(p.vertices)-2 for p in obj.data.polygons)
@@ -56,7 +62,7 @@ def export_chunk(OUT, scene, part, obj):
         bpy.ops.object.modifier_apply(modifier=modifier.name)
         triangles = sum(len(p.vertices)-2 for p in low.data.polygons)
         filename = f'hero_street_corridor_{part}.lod{level}.glb'
-        bpy.ops.export_scene.gltf(filepath=str(OUT/filename), export_format='GLB', use_selection=True, export_yup=True, export_extras=True)
+        bpy.ops.export_scene.gltf(filepath=str(OUT/filename), export_format='GLB', use_selection=True, export_yup=True, export_extras=True, **colour_options)
         pack_colours(OUT/filename)
         lods.append({'fileName':filename,'triangles':triangles,'ratio':triangles/original_triangles})
         bpy.data.objects.remove(low, do_unlink=True)

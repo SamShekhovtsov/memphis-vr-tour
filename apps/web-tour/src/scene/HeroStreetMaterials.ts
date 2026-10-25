@@ -2,6 +2,7 @@ import { AbstractMesh, Color3, Material, PBRMaterial, Scene, Texture } from "@ba
 import type { HeroBakeManifest } from "@egyptvr/shared-scene";
 import daylight from "../../../../content/scene-data/hero-street.daylight.json";
 import { createGroundSectionBinder } from "./HeroGroundMaterial";
+import { streetTexture } from "./StreetTextureTrial";
 export type { HeroBakeManifest } from "@egyptvr/shared-scene";
 
 export const authoredHeroRoot = "/assets/authored/hero-street/";
@@ -9,7 +10,7 @@ export const authoredHeroRoot = "/assets/authored/hero-street/";
 /** Explicit channel semantics. Generated fallbacks never overwrite authored maps. */
 function texture(scene: Scene, file: string, color: boolean, uvSet = 0): Texture {
   // glTF UV convention; no Y flip for textures attached to imported GLBs.
-  const map = new Texture(authoredHeroRoot + file, scene, false, false, Texture.TRILINEAR_SAMPLINGMODE);
+  const map = streetTexture(scene, authoredHeroRoot, file, color, uvSet);
   map.gammaSpace = color;
   map.coordinatesIndex = uvSet;
   map.anisotropicFilteringLevel = 4;
@@ -18,6 +19,8 @@ function texture(scene: Scene, file: string, color: boolean, uvSet = 0): Texture
 }
 
 export function createHeroMaterialBinder(scene: Scene, manifest: HeroBakeManifest) {
+  const finalLighting = (manifest as HeroBakeManifest & {finalLighting?:{irradianceRange:number}}).finalLighting;
+  scene.metadata.finalLighting = finalLighting ?? null;
   const bindGroundSection = createGroundSectionBinder(scene);
   const cache = new Map<string, PBRMaterial>();
   const maps = new Map<string, Texture>();
@@ -61,7 +64,7 @@ export function createHeroMaterialBinder(scene: Scene, manifest: HeroBakeManifes
       mat.ambientTexture = getMap(binding.irradiance, false, binding.uvSet);
       // Preserve the baked visibility/contact pattern while balancing the sky
       // contribution against the real-time sun. No flat emissive shadow lift.
-      mat.ambientTexture.level = daylight.indirectLightGain;
+      mat.ambientTexture.level = daylight.indirectLightGain * (finalLighting?.irradianceRange ?? 1);
       mat.ambientTextureStrength = 1;
       mat.useAmbientInGrayScale = false;
       mat.ambientTextureImpactOnAnalyticalLights = 0;

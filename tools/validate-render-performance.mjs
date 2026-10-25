@@ -1,5 +1,6 @@
 import fs from 'node:fs';
 import assert from 'node:assert/strict';
+import {finishExpected} from './lib/street-finish-revision.mjs';
 import {createHash} from 'node:crypto';
 const sha=b=>createHash('sha256').update(b).digest('hex');
 const text=f=>fs.readFileSync(f,'utf8').replaceAll('\r\n','\n');
@@ -11,5 +12,5 @@ assert.deepEqual(r.hook.edits,[{before:'',after:'import { configureRenderWork } 
 for(const edit of r.hook.edits){assert.equal(original.split(edit.after).length,2);original=original.replace(edit.after,edit.before);}
 assert.equal(sha(original),r.hook.beforeSha,'Unrecorded shadow behavior change');
 assert.equal(sha(text(r.implementation.file)),r.implementation.sha256);
-for(const [file,record] of Object.entries(r.protectedFiles))assert.equal(sha(record.normalizedText?text(file):fs.readFileSync(file)),record.sha256,'Visual/layout/motion/IK source or asset changed: '+file);
-console.log(`Render integrity passed: shadow hook reconstructed; ${Object.keys(r.protectedFiles).length} source/data/assets unchanged`);
+for(const [file,record] of Object.entries(r.protectedFiles))assert.equal(sha(record.normalizedText?text(file):fs.readFileSync(file)),finishExpected(file,record.sha256),'Visual/layout/motion/IK source or asset changed: '+file);
+console.log(`Render integrity passed: shadow hook reconstructed; ${Object.keys(r.protectedFiles).length} protected source/data/assets checked, including bounded finish revisions`);
