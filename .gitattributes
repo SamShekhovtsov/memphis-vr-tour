@@ -11,3 +11,5 @@
 # Preserve immutable pre-revision bytes for exact integrity reconstruction.
 /content/source-assets/interaction-baseline/* -text
 /content/source-assets/lighting/exterior-repair/baseline/* -text
+
+/content/source-assets/image-quality-baseline/* -text

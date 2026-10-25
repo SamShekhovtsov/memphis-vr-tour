@@ -1,0 +1,17 @@
+{
+  "apps/web-tour/src/scene/RenderingTiers.ts": "content/source-assets/image-quality-baseline/00-RenderingTiers.ts",
+  "apps/web-tour/src/scene/MemphisWhiteWallsScene.ts": "content/source-assets/image-quality-baseline/01-MemphisWhiteWallsScene.ts",
+  "tools/lib/district-interaction-revision.mjs": "content/source-assets/image-quality-baseline/02-district-interaction-revision.mjs",
+  "tools/validate-district-interactions.mjs": "content/source-assets/image-quality-baseline/03-validate-district-interactions.mjs",
+  "tools/capture-hero-shot.mjs": "content/source-assets/image-quality-baseline/04-capture-hero-shot.mjs",
+  "tools/benchmark-rendering.mjs": "content/source-assets/image-quality-baseline/05-benchmark-rendering.mjs",
+  "tools/repair-district-exteriors.mjs": "content/source-assets/image-quality-baseline/06-repair-district-exteriors.mjs",
+  "tools/verify-exterior-repair.py": "content/source-assets/image-quality-baseline/07-verify-exterior-repair.py",
+  "apps/web-tour/public/assets/authored/hero-street/manifest.json": "content/source-assets/image-quality-baseline/08-manifest.json",
+  "apps/web-tour/public/assets/authored/hero-street/hero_street_corridor_mid.glb": "content/source-assets/image-quality-baseline/09-hero_street_corridor_mid.glb",
+  "apps/web-tour/public/assets/authored/hero-street/hero_street_corridor_mid.lod1.glb": "content/source-assets/image-quality-baseline/10-hero_street_corridor_mid.lod1.glb",
+  "apps/web-tour/public/assets/authored/hero-street/hero_street_corridor_mid.lod2.glb": "content/source-assets/image-quality-baseline/11-hero_street_corridor_mid.lod2.glb",
+  "apps/web-tour/public/assets/authored/hero-street/hero_street_corridor_far.glb": "content/source-assets/image-quality-baseline/12-hero_street_corridor_far.glb",
+  "apps/web-tour/public/assets/authored/hero-street/hero_street_corridor_far.lod1.glb": "content/source-assets/image-quality-baseline/13-hero_street_corridor_far.lod1.glb",
+  "apps/web-tour/public/assets/authored/hero-street/hero_street_corridor_far.lod2.glb": "content/source-assets/image-quality-baseline/14-hero_street_corridor_far.lod2.glb"
+}

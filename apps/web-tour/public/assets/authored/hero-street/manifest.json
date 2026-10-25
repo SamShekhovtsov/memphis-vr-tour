@@ -103,17 +103,17 @@
       "fileName": "hero_street_corridor_mid.glb",
       "irradiance": "mid-irradiance.png",
       "uvSet": 1,
-      "triangles": 94882,
+      "triangles": 93122,
       "lods": [
         {
           "fileName": "hero_street_corridor_mid.lod1.glb",
-          "triangles": 52185,
-          "ratio": 0.5499989460593158
+          "triangles": 51217,
+          "ratio": 0.5499989261399025
         },
         {
           "fileName": "hero_street_corridor_mid.lod2.glb",
-          "triangles": 26566,
-          "ratio": 0.2799898821694315
+          "triangles": 26074,
+          "ratio": 0.279998281823844
         }
       ]
     },
@@ -334,7 +334,33 @@
     "chalky plaster grit grime.012": "plaster",
     "hero-finish-plaster-weathered Nile mud plaster wall.008": "hero-plaster",
     "hero-finish-linen-sun bleached woven linen.008": "hero-linen",
-    "hero-finish-plaster-chalky cracked plaster.008": "hero-plaster"
+    "hero-finish-plaster-chalky cracked plaster.008": "hero-plaster",
+    "packed sandy street dust.001": "dust",
+    "weathered Nile mud plaster wall.001": "plaster",
+    "chalky cracked plaster.001": "plaster",
+    "deep doorway shadow.001": "original",
+    "dark acacia wood.001": "wood",
+    "exposed subsurface mud daub.001": "original",
+    "chalky plaster scumble veil.001": "plaster",
+    "worn pale limestone.001": "original",
+    "baked warm contact shadow.001": "original",
+    "dry reed straw.001": "original",
+    "settled dark street dust.001": "original",
+    "transparent wall base grime.001": "original",
+    "eroded plaster edge shade.001": "plaster",
+    "dusty wall corner ambient occlusion.001": "original",
+    "thin plaster water stain.001": "plaster",
+    "sun baked mudbrick.001": "plaster",
+    "sun bleached woven linen.001": "linen",
+    "warm Nile clay pottery.001": "pottery",
+    "baked soft awning shadow.001": "original",
+    "baked cool bounced street shadow.001": "original",
+    "baked warm sunlit dust strip.001": "original",
+    "baked deep doorway contact shadow.001": "original",
+    "dust stained shade cloth.001": "linen",
+    "warm suspended street haze.002": "original",
+    "settled dark street dust scuff.001": "original",
+    "chalky plaster grit grime.001": "plaster"
   },
   "lockedInputs": {
     "content/scene-data/hero-street.camera-lock.json": "ad68ca5727db3c7efd640d7d320ca358885df14e919765f2ba831260b0d0761e",
@@ -490,6 +516,48 @@
         "linearMaximum": 0.47290876507759094,
         "clippedChannels": 0,
         "unchangedOutsideMask": true
+      }
+    }
+  },
+  "imageQualityGeometry": {
+    "removedDuplicateClothSkins": 2,
+    "buildingsMoved": false,
+    "collisionChanged": false,
+    "existingIndirectBakeRetained": true,
+    "directShadows": "updated from corrected geometry in real time",
+    "parts": {
+      "mid": {
+        "removedVertices": 884,
+        "removedTriangles": 1760,
+        "bounds": [
+          [
+            [
+              -14.670120239257812,
+              -6.172050952911377,
+              2.7431724071502686
+            ],
+            [
+              -6.229950428009033,
+              -0.8278732299804688,
+              3.184511423110962
+            ]
+          ],
+          [
+            [
+              -14.624277114868164,
+              12.349388122558594,
+              2.8283140659332275
+            ],
+            [
+              -6.27584171295166,
+              18.650548934936523,
+              3.374345302581787
+            ]
+          ]
+        ],
+        "retainedVerticesMoved": 0,
+        "retainedUvsChanged": false,
+        "reason": "Retire older upper skins crossing the retained hero cloth panels"
       }
     }
   }

@@ -1,12 +1,13 @@
+import { createImageQualityControls } from "./ImageQuality";
 import { DefaultRenderingPipeline, ImageProcessingConfiguration, Scene, Camera, ShadowGenerator } from "@babylonjs/core";
 import daylight from "../../../../content/scene-data/hero-street.daylight.json";
 import finish from "../../../../content/scene-data/hero-street.finish-lighting.json";
 
 export function configureRendering(scene: Scene, camera: Camera, tier: string) {
   const pipeline = new DefaultRenderingPipeline("desktop-quality", true, scene, [camera]);
+  const imageQuality = createImageQualityControls(scene,camera,pipeline,tier);
   function apply(headset: boolean) {
     pipeline.fxaaEnabled = !headset;
-    pipeline.samples = !headset && tier === "cinematic" ? 4 : 1;
     pipeline.bloomEnabled = false;
     pipeline.depthOfFieldEnabled = false;
     pipeline.imageProcessingEnabled = !headset;
@@ -39,6 +40,7 @@ export function configureRendering(scene: Scene, camera: Camera, tier: string) {
       finishLighting: scene.metadata.finalLighting ?? {profile:finish.id},
       textureTrial: scene.metadata.textureTrial ?? null
     };
+    imageQuality.apply(headset);
   }
   apply(tier === "headset");
   return { setHeadset: apply };

@@ -18,6 +18,9 @@ if (!/^[a-z0-9-]+$/i.test(label)) throw new Error("Use a simple capture label.")
 const selectedShot = process.argv.find(arg => arg.startsWith("--shot="))?.slice(7);
 if (selectedShot && !lock.shots.some(shot => shot.id === selectedShot)) throw new Error("Unknown locked shot.");
 const shots = selectedShot ? [selectedShot] : process.argv.includes("--all") ? lock.shots.map(shot => shot.id) : [lock.activeShotId];
+const imageQualityMode=process.argv.find(a=>a.startsWith('--image-quality='))?.slice(16);
+if(imageQualityMode&&!['legacy','filters','resolve'].includes(imageQualityMode))throw Error('Unknown image quality mode');
+const withUi=process.argv.includes("--with-ui");
 const legacy = process.argv.includes("--legacy");
 const ikAudit = process.argv.includes("--ik-audit");
 const benchmark = process.argv.includes("--benchmark");
@@ -85,7 +88,7 @@ try {
 
   for (const job of jobs) for (const shot of shots) {
     const output = path.join(screenshotDir, `${shot}-${job.label}.png`);
-    await capture(`http://127.0.0.1:${lock.localDevPort}/?shot=${shot}&chrome=0&qa=1&quality=${quality}${legacy ? "&materials=legacy" : ""}${ikAudit ? "&ikAudit=1" : ""}${benchmark ? "&benchmark=1" : ""}${collisionAudit ? "&collisionAudit=1" : ""}${legacyGround ? "&ground=legacy" : ""}${legacyPeopleMaterials ? "&peopleMaterials=legacy" : ""}${legacySteps56 ? "&steps56=legacy" : ""}${job.renderMode||job.legacyRenderPerf ? `&renderPerf=${job.renderMode??'legacy'}` : ""}${job.renderFrame ? `&renderFrame=${job.renderFrame}` : ""}${job.textureTrial ? `&textureTrial=${encodeURIComponent(job.textureTrial)}` : ""}${population ? "&population=legacy" : ""}${motion ? "&review=1" : ""}`, output);
+    await capture(`http://127.0.0.1:${lock.localDevPort}/?shot=${shot}&chrome=${withUi?1:0}&qa=1&quality=${quality}${legacy ? "&materials=legacy" : ""}${ikAudit ? "&ikAudit=1" : ""}${benchmark ? "&benchmark=1" : ""}${collisionAudit ? "&collisionAudit=1" : ""}${legacyGround ? "&ground=legacy" : ""}${legacyPeopleMaterials ? "&peopleMaterials=legacy" : ""}${legacySteps56 ? "&steps56=legacy" : ""}${job.renderMode||job.legacyRenderPerf ? `&renderPerf=${job.renderMode??'legacy'}` : ""}${job.renderFrame ? `&renderFrame=${job.renderFrame}` : ""}${job.textureTrial ? `&textureTrial=${encodeURIComponent(job.textureTrial)}` : ""}${population ? "&population=legacy" : ""}${imageQualityMode ? "&imageQuality="+imageQualityMode : ""}${motion ? "&review=1" : ""}`, output);
     console.log(`Captured ${output}`);
   }
 } finally {
@@ -133,6 +136,7 @@ async function capture(url, outputPath) {
       await writeFile(path.join(folder, path.basename(outputPath, ".png") + ".cpuprofile"), JSON.stringify(result.profile));
     }
     if (!metrics.heroLoaded) throw new Error("Capture refused: hero GLB chunks did not load.");
+    if (metrics.heroPeople === 0) throw new Error("Capture refused: anatomical character loading failed");
     if (metrics.textureErrors?.length) throw new Error(`Capture refused: failed textures ${metrics.textureErrors.join(", ")}`);
     if (!legacy && !metrics.bakeId) throw new Error("Capture refused: authored bake missing. Use --legacy for baseline captures.");
 

@@ -51,3 +51,11 @@
 !docs/design/screenshots/hero-street-main-district-north-after.png
 !docs/design/screenshots/hero-street-main-district-hands-before.png
 !docs/design/screenshots/hero-street-main-district-hands-after.png
+
+# Requested image-quality before/after evidence.
+!docs/design/screenshots/*-image-quality-before.png
+!docs/design/screenshots/*-image-quality-after.png
+
+!docs/design/screenshots/*-image-quality-route-before.png
+!docs/design/screenshots/*-image-quality-route-after.png
+!docs/design/screenshots/street-entry-image-quality-depth-control.png

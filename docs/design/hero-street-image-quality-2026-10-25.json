@@ -1,0 +1,153 @@
+{
+  "date": "2026-10-25",
+  "summary": {
+    "control": {
+      "p50": 48.7,
+      "p95": 79.9
+    },
+    "final": {
+      "p50": 50.8,
+      "p95": 81.5
+    }
+  },
+  "cost": {
+    "p50Percent": 4.3,
+    "p95Percent": 2
+  },
+  "runs": {
+    "control": [
+      {
+        "file": "hero-street-main-quality-accepted-control-1-after-1.json",
+        "session": 23984,
+        "samples": 539,
+        "p50": 43.60000002384186,
+        "p95": 68.5,
+        "max": 232.59999990463257
+      },
+      {
+        "file": "hero-street-main-quality-accepted-control-2-after-1.json",
+        "session": 28460,
+        "samples": 539,
+        "p50": 48.700000047683716,
+        "p95": 87.90000009536743,
+        "max": 196.5
+      },
+      {
+        "file": "hero-street-main-quality-accepted-control-3-after-1.json",
+        "session": 12672,
+        "samples": 539,
+        "p50": 50.699999928474426,
+        "p95": 79.90000009536743,
+        "max": 210.5
+      }
+    ],
+    "final": [
+      {
+        "file": "hero-street-main-quality-accepted-final-1-after-1.json",
+        "session": 18452,
+        "samples": 539,
+        "p50": 46,
+        "p95": 80.70000004768372,
+        "max": 184.09999990463257
+      },
+      {
+        "file": "hero-street-main-quality-accepted-final-2-after-1.json",
+        "session": 29448,
+        "samples": 539,
+        "p50": 51.699999928474426,
+        "p95": 92.5,
+        "max": 317.5
+      },
+      {
+        "file": "hero-street-main-quality-accepted-final-3-after-1.json",
+        "session": 2836,
+        "samples": 539,
+        "p50": 50.799999952316284,
+        "p95": 81.5,
+        "max": 205.10000002384186
+      }
+    ]
+  },
+  "audit": {
+    "matchedCameras": {
+      "hero-street-main": {
+        "camera": [
+          -6.08,
+          1.52,
+          -16.4
+        ],
+        "viewport": {
+          "width": 1280,
+          "height": 720,
+          "deviceScaleFactor": 1
+        },
+        "qualityChecks": 11
+      },
+      "street-entry": {
+        "camera": [
+          -7,
+          1.7,
+          -28
+        ],
+        "viewport": {
+          "width": 1280,
+          "height": 720,
+          "deviceScaleFactor": 1
+        },
+        "qualityChecks": 11
+      },
+      "hero-street-material": {
+        "camera": [
+          -8.9,
+          1.35,
+          -17.6
+        ],
+        "viewport": {
+          "width": 1280,
+          "height": 720,
+          "deviceScaleFactor": 1
+        },
+        "qualityChecks": 11
+      }
+    },
+    "depthOptimizationColorCheck": {
+      "identical": true,
+      "meanChannelDifference": 0,
+      "maxChannelDifference": 0,
+      "changedPixels": 0
+    }
+  },
+  "movement": {
+    "passed": true,
+    "checks": 104
+  },
+  "cinematic": {
+    "samples": 1,
+    "frameIntervals": {
+      "samples": 539,
+      "p50": 57.10000002384186,
+      "p95": 87,
+      "max": 157.5
+    },
+    "rendering": {
+      "mode": "restored",
+      "requestedSamples": 4,
+      "effectiveSamples": 4,
+      "sharpen": 0.2,
+      "resolve": "FXAA with luma-clamped detail in one pass",
+      "extraSharpenPass": false,
+      "flatRegionsBypassDetail": true,
+      "selectiveAuthoredFiltering": true,
+      "shaderActive": true,
+      "surfaceAnisotropy": 8,
+      "normalAnisotropy": 4,
+      "atlasAnisotropy": 2,
+      "mipFiltering": "trilinear",
+      "clipPlanes": [
+        0.1,
+        512
+      ],
+      "supersampling": false
+    }
+  }
+}

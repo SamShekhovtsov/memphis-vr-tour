@@ -1,0 +1,106 @@
+{
+  "date": "2026-10-25",
+  "scope": "User-authorized AA, gentle sharpening, filtered mipmaps and removal of two confirmed crossing duplicate cloth skins. Camera poses, routes, colliders, people and retained geometry/UVs remain unchanged.",
+  "files": {
+    "apps/web-tour/src/scene/RenderingTiers.ts": {
+      "baseline": "content/source-assets/image-quality-baseline/00-RenderingTiers.ts",
+      "normalizedText": true,
+      "beforeRaw": "7214b6a1bcdb85aa913ff889764cf23c86dc7ebee92f44e1db29ff51e2420c0a",
+      "afterRaw": "0d2e78b230d756fc1cd8788cafd31eea92394313bb7eae0b37bba9a48d7cc2c5",
+      "before": "7214b6a1bcdb85aa913ff889764cf23c86dc7ebee92f44e1db29ff51e2420c0a",
+      "after": "0d2e78b230d756fc1cd8788cafd31eea92394313bb7eae0b37bba9a48d7cc2c5"
+    },
+    "apps/web-tour/src/scene/MemphisWhiteWallsScene.ts": {
+      "baseline": "content/source-assets/image-quality-baseline/01-MemphisWhiteWallsScene.ts",
+      "normalizedText": true,
+      "beforeRaw": "e9e5b2244e06bd66942e3d2521eb42706e8492496b3ab5cb8d1b505bcdd71f34",
+      "afterRaw": "57509d85077a7e2d4805bf27c70a19d3f08c299e08c972ab325076833e67cbe5",
+      "before": "e9e5b2244e06bd66942e3d2521eb42706e8492496b3ab5cb8d1b505bcdd71f34",
+      "after": "57509d85077a7e2d4805bf27c70a19d3f08c299e08c972ab325076833e67cbe5"
+    },
+    "tools/lib/district-interaction-revision.mjs": {
+      "baseline": "content/source-assets/image-quality-baseline/02-district-interaction-revision.mjs",
+      "normalizedText": true,
+      "beforeRaw": "f8e5fcef7e2c0dffa2a9ff1b09917e5ce98d55ce3aa907cb73373f42952d9aa8",
+      "afterRaw": "d8d8f9512ee067f9aae1fa4877ba035ec5566eba6f8b8d68a5531e12f5482271",
+      "before": "f8e5fcef7e2c0dffa2a9ff1b09917e5ce98d55ce3aa907cb73373f42952d9aa8",
+      "after": "d8d8f9512ee067f9aae1fa4877ba035ec5566eba6f8b8d68a5531e12f5482271"
+    },
+    "tools/validate-district-interactions.mjs": {
+      "baseline": "content/source-assets/image-quality-baseline/03-validate-district-interactions.mjs",
+      "normalizedText": true,
+      "beforeRaw": "0d1aa63c9a8fd1a7b9decb6cd1574a22700e3037ca61d833efb5f7a4eedaaefd",
+      "afterRaw": "e077e0aa6adcd957c215c3fd578027fcff829fe636100ab01b1366d0adbd5c1f",
+      "before": "0d1aa63c9a8fd1a7b9decb6cd1574a22700e3037ca61d833efb5f7a4eedaaefd",
+      "after": "e077e0aa6adcd957c215c3fd578027fcff829fe636100ab01b1366d0adbd5c1f"
+    },
+    "tools/capture-hero-shot.mjs": {
+      "baseline": "content/source-assets/image-quality-baseline/04-capture-hero-shot.mjs",
+      "normalizedText": true,
+      "beforeRaw": "ae9f2583136a7c7aeaf87c195655cae55724e176e3fb80105b993ae7d5fa0e8d",
+      "afterRaw": "301175488a66829ba2624f6400b5f9dfab56432a953fedb18d00b3bf25a60e51",
+      "before": "ae9f2583136a7c7aeaf87c195655cae55724e176e3fb80105b993ae7d5fa0e8d",
+      "after": "301175488a66829ba2624f6400b5f9dfab56432a953fedb18d00b3bf25a60e51"
+    },
+    "tools/benchmark-rendering.mjs": {
+      "baseline": "content/source-assets/image-quality-baseline/05-benchmark-rendering.mjs",
+      "normalizedText": true,
+      "beforeRaw": "817e77c45a723eaef4d8aa48dbb30ce46dcb212ee7843a63db3aba06b65cd479",
+      "afterRaw": "852350ec41bfd3d22f727eba42a454e026062c3d4a094f2466147b543c411e67",
+      "before": "817e77c45a723eaef4d8aa48dbb30ce46dcb212ee7843a63db3aba06b65cd479",
+      "after": "852350ec41bfd3d22f727eba42a454e026062c3d4a094f2466147b543c411e67"
+    },
+    "tools/repair-district-exteriors.mjs": {
+      "baseline": "content/source-assets/image-quality-baseline/06-repair-district-exteriors.mjs",
+      "normalizedText": true,
+      "beforeRaw": "41581552b2088dbcd74a94ce7b42dfe943dd7743172f83104350eca1f300b596",
+      "afterRaw": "fe9bcaed735020e453d32c95c269494121d4d07ab7b6794b7f7ecb00e7161dae",
+      "before": "41581552b2088dbcd74a94ce7b42dfe943dd7743172f83104350eca1f300b596",
+      "after": "fe9bcaed735020e453d32c95c269494121d4d07ab7b6794b7f7ecb00e7161dae"
+    },
+    "apps/web-tour/public/assets/authored/hero-street/manifest.json": {
+      "baseline": "content/source-assets/image-quality-baseline/08-manifest.json",
+      "normalizedText": true,
+      "beforeRaw": "766c047563504f6756f78034517e5b96d568f9560754cc29c0867dafa2bd5f78",
+      "afterRaw": "26378b85d03ca399c2f3c258193536f65d9667a085bb6990bcaab7d707b292c5",
+      "before": "766c047563504f6756f78034517e5b96d568f9560754cc29c0867dafa2bd5f78",
+      "after": "26378b85d03ca399c2f3c258193536f65d9667a085bb6990bcaab7d707b292c5"
+    },
+    "apps/web-tour/public/assets/authored/hero-street/hero_street_corridor_mid.glb": {
+      "baseline": "content/source-assets/image-quality-baseline/09-hero_street_corridor_mid.glb",
+      "normalizedText": false,
+      "beforeRaw": "ddacbf28de8b830573f575005cd6a0226ce94c51157ceed0891bf97580d38c56",
+      "afterRaw": "8d1d9e898de4fa6c76f3a91782fe08c0ce39238972ad5d6eb962b20b49782029",
+      "before": "ddacbf28de8b830573f575005cd6a0226ce94c51157ceed0891bf97580d38c56",
+      "after": "8d1d9e898de4fa6c76f3a91782fe08c0ce39238972ad5d6eb962b20b49782029"
+    },
+    "apps/web-tour/public/assets/authored/hero-street/hero_street_corridor_mid.lod1.glb": {
+      "baseline": "content/source-assets/image-quality-baseline/10-hero_street_corridor_mid.lod1.glb",
+      "normalizedText": false,
+      "beforeRaw": "2a71bf8cdec928c3d02266cde83088afb4276437bb2f7bb357687e85a1a6bb3f",
+      "afterRaw": "da595c1a01732bdf957955d6a95528177267f1720f521e3b289a984e307deebd",
+      "before": "2a71bf8cdec928c3d02266cde83088afb4276437bb2f7bb357687e85a1a6bb3f",
+      "after": "da595c1a01732bdf957955d6a95528177267f1720f521e3b289a984e307deebd"
+    },
+    "apps/web-tour/public/assets/authored/hero-street/hero_street_corridor_mid.lod2.glb": {
+      "baseline": "content/source-assets/image-quality-baseline/11-hero_street_corridor_mid.lod2.glb",
+      "normalizedText": false,
+      "beforeRaw": "4f70d24bf7cc541040a4e91dc350e6cbf2169fa6faf3ebf5b31a899c674154cc",
+      "afterRaw": "d2bcc0f157473ed002263df58722cf9bbd21a872ccbc6a73042217699efac95c",
+      "before": "4f70d24bf7cc541040a4e91dc350e6cbf2169fa6faf3ebf5b31a899c674154cc",
+      "after": "d2bcc0f157473ed002263df58722cf9bbd21a872ccbc6a73042217699efac95c"
+    }
+  },
+  "vendorFxaaSha": "995acc800c0454249e649577c68981aaf880ba60df2aa4247016fdf7c0955fbb",
+  "additions": {
+    "apps/web-tour/src/scene/ImageQuality.ts": "651191c9b3b52be8278e2c60605175dfdb5786d664b7ea772da9edb8f399d917",
+    "apps/web-tour/src/scene/CrispFxaa.ts": "511f9acec6a915d409178df331c3e2d1a57ed700919dbbb223166cd87ac535ab",
+    "tools/audit-image-quality.js": "8b162c8b3d436e7373ce1f9a66f9892fe6b333f96ec270d7af449e84a011b3db",
+    "tools/lib/image-quality-revision.mjs": "760fcdf20869d189c38ae045a84447be1295accdb28ec0ac21b54ece82baf5ff",
+    "tools/blender/repair_cloth_overlaps.py": "6926ab25d91e364cd16aed06cc8ec2eb7836808cd519b9cd2497e62591684f2b",
+    "tools/promote-cloth-repair.mjs": "6411f76012163b605b7ced1560195727eec889083404ffcdd0b76eb11d69e025",
+    "tools/verify-image-quality-geometry.py": "afdcdc2eb754a06c9495cfc4659e712af2477cbc5bd0a3f6983ff106efcbb5bb",
+    "tools/validate-image-quality.mjs": "95d29e5890f9961fa80fbc8c26fa8989c891215d058e01f09d6781ca0dbd6cbb",
+    "content/source-assets/image-quality/cloth-corrected.blend": "6dcd391edda2fbbb41f11246ab6b63d7d01aa175b6484824878b21e2d0aa3774"
+  }
+}

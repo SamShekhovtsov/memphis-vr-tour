@@ -1,0 +1,49 @@
+{
+  "matchedCameras": {
+    "hero-street-main": {
+      "camera": [
+        -6.08,
+        1.52,
+        -16.4
+      ],
+      "viewport": {
+        "width": 1280,
+        "height": 720,
+        "deviceScaleFactor": 1
+      },
+      "qualityChecks": 11
+    },
+    "street-entry": {
+      "camera": [
+        -7,
+        1.7,
+        -28
+      ],
+      "viewport": {
+        "width": 1280,
+        "height": 720,
+        "deviceScaleFactor": 1
+      },
+      "qualityChecks": 11
+    },
+    "hero-street-material": {
+      "camera": [
+        -8.9,
+        1.35,
+        -17.6
+      ],
+      "viewport": {
+        "width": 1280,
+        "height": 720,
+        "deviceScaleFactor": 1
+      },
+      "qualityChecks": 11
+    }
+  },
+  "depthOptimizationColorCheck": {
+    "identical": true,
+    "meanChannelDifference": 0.0,
+    "maxChannelDifference": 0,
+    "changedPixels": 0
+  }
+}

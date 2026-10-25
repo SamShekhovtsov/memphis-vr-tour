@@ -1,3 +1,4 @@
+import { applyImageTextureQuality } from "./ImageQuality";
 import {
   AbstractMesh,
   Color3,
@@ -891,10 +892,7 @@ function applyRuntimeQualityProfile(engine: Engine, profile: RuntimeQualityProfi
 }
 
 function applyTextureQuality(scene: Scene, profile: RuntimeQualityProfile): void {
-  scene.textures.forEach((texture) => {
-    texture.updateSamplingMode(profile.textureSamplingMode);
-    texture.anisotropicFilteringLevel = profile.anisotropicFilteringLevel;
-  });
+  applyImageTextureQuality(scene, profile.mode);
 }
 
 function retargetImportedMaterialAtlas(mesh: AbstractMesh, materials: SceneMaterials): void {
@@ -2488,7 +2486,7 @@ function createRouteLine(scene: Scene, routePoints: readonly GuidedRoutePoint[])
   });
   const line = MeshBuilder.CreateLines("guidedRouteLine", { points }, scene);
   line.color = Color3.FromHexString("#7f6b45");
-  line.visibility = new URLSearchParams(window.location.search).get("chrome") === "0" ? 0 : 0.16;
+  line.visibility = new URLSearchParams(window.location.search).get("routeGuide") === "1" ? 0.16 : 0;
   line.isPickable = false;
 }
 
