@@ -1,0 +1,10 @@
+{
+  "apps/web-tour/src/scene/HeroPeople.ts": "content/source-assets/crowd-clarity-baseline/0.txt",
+  "apps/web-tour/src/scene/DistrictLife.ts": "content/source-assets/crowd-clarity-baseline/1.txt",
+  "apps/web-tour/src/scene/ImageQuality.ts": "content/source-assets/crowd-clarity-baseline/2.txt",
+  "apps/web-tour/src/scene/CrispFxaa.ts": "content/source-assets/crowd-clarity-baseline/3.txt",
+  "tools/lib/image-quality-revision.mjs": "content/source-assets/crowd-clarity-baseline/4.txt",
+  "tools/validate-image-quality.mjs": "content/source-assets/crowd-clarity-baseline/5.txt",
+  "tools/capture-hero-shot.mjs": "content/source-assets/crowd-clarity-baseline/6.txt",
+  "tools/benchmark-rendering.mjs": "content/source-assets/crowd-clarity-baseline/7.txt"
+}

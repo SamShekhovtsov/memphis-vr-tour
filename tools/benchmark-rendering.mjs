@@ -61,7 +61,7 @@ try{
   fs.writeFileSync(mainFile,main);fs.writeFileSync(sceneFile,scene);
   const orders=process.argv.includes('--optimized-only')?Array.from({length:runs},()=>['after']):process.argv.includes('--after-only')?[['after']]:profile?[[process.argv.includes('--profile-after')?'after':'before']]:process.argv.includes('--pilot')?[['before','after']]:Array.from({length:runs},(_,i)=>i%2?['after','before']:['before','after']);
   let port=9510;
-  const capture=(name,phase,args=[])=>execFileSync(process.execPath,['tools/capture-hero-shot.mjs',name,'--hardware','--benchmark',`--quality=${quality}`,...process.argv.filter(a=>a.startsWith('--image-quality=')),...(phase==='before'?['--legacy-render-perf']:[]),...(profile?['--profile']:[]),...(uncapped?['--uncapped']:[]),...args],{stdio:'inherit',env:{...process.env,CDP_PORT:String(port++)}});
+  const capture=(name,phase,args=[])=>execFileSync(process.execPath,['tools/capture-hero-shot.mjs',name,'--hardware','--benchmark',`--quality=${quality}`,...process.argv.filter(a=>a.startsWith('--image-quality=')||['--small-crowd','--previous-clarity'].includes(a)),...(phase==='before'?['--legacy-render-perf']:[]),...(profile?['--profile']:[]),...(uncapped?['--uncapped']:[]),...args],{stdio:'inherit',env:{...process.env,CDP_PORT:String(port++)}});
   if(process.argv.includes('--batch')){
     const jobs=[];
     if(isolateFrame)for(const mode of ['legacy-a','legacy-b','selection','materials','optimized'])jobs.push({label:`${label}-${mode}`,renderMode:mode.startsWith('legacy')?'legacy':mode,renderFrame:isolateFrame});
@@ -70,7 +70,7 @@ try{
     else for(const [index,order] of orders.entries())for(const phase of order)jobs.push({label:`${label}-${phase}-${index+1}`,legacyRenderPerf:phase==='before'});
     fs.mkdirSync('content/generated',{recursive:true});
     const request=`content/generated/render-batch-${process.pid}.json`;fs.writeFileSync(request,JSON.stringify(jobs));
-    execFileSync(process.execPath,['tools/capture-hero-shot.mjs',label,'--hardware','--benchmark',`--quality=${quality}`,...process.argv.filter(a=>a.startsWith('--image-quality=')),`--batch-json=${request}`,...(uncapped?['--uncapped']:[]),...(profile?['--profile']:[])],{stdio:'inherit',env:{...process.env,CDP_PORT:'9530'}});
+    execFileSync(process.execPath,['tools/capture-hero-shot.mjs',label,'--hardware','--benchmark',`--quality=${quality}`,...process.argv.filter(a=>a.startsWith('--image-quality=')||['--small-crowd','--previous-clarity'].includes(a)),`--batch-json=${request}`,...(uncapped?['--uncapped']:[]),...(profile?['--profile']:[])],{stdio:'inherit',env:{...process.env,CDP_PORT:'9530'}});
   }
   else if(checkpoints){for(const frame of (process.argv.includes("--tour-checkpoints")?[90,180,360,600]:process.argv.includes("--three-checkpoints")?[180,360,600]:[90,180,270,360,450,540,600]))for(const phase of (process.argv.includes('--optimized-only')?['after']:['before','after']))capture(`${label}-checkpoint-${frame}-${phase}`,phase,[`--render-frame=${frame}`]);}
   else for(const [index,order] of orders.entries())for(const phase of order)capture(`${label}-${phase}-${index+1}`,phase);

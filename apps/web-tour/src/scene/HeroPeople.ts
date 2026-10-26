@@ -1,4 +1,5 @@
 import { Quaternion, Scene, SceneLoader, ShadowGenerator, TransformNode, Vector3, AbstractMesh } from "@babylonjs/core";
+import { addInstancedDistrictCrowd } from "./InstancedDistrictCrowd";
 import { aim, solveContactLeg, type ContactLeg } from "./GroundContactIK";
 import { workerLean, workerDrop, workerSupportHeight, finishWorkerHand } from "./HeroWorkerPose";
 import { solveArm } from "./NaturalArmPose";
@@ -201,6 +202,7 @@ export async function loadHeroPeople(scene: Scene): Promise<HeroPerson[]> {
       if (shadows instanceof ShadowGenerator) shadows.addShadowCaster(mesh, false);
     }
   }
+  await addInstancedDistrictCrowd(scene,people);
   scene.metadata.heroPeople = people;
   scene.metadata.heroPeopleSource = "CC0 MakeHuman-derived anatomy; project-authored linen";
   scene.metadata.heroInteractions = people.map(person=>({root:person.root.name,

@@ -1,0 +1,26 @@
+[
+  {
+    "file": "apps/web-tour/public/assets/authored/people/crowd/hero_female_lod1.glb",
+    "bindError": 1.2576580047607422e-05,
+    "triangles": 9746,
+    "attributesPreserved": true
+  },
+  {
+    "file": "apps/web-tour/public/assets/authored/people/crowd/hero_female_lod2.glb",
+    "bindError": 1.2576580047607422e-05,
+    "triangles": 2638,
+    "attributesPreserved": true
+  },
+  {
+    "file": "apps/web-tour/public/assets/authored/people/crowd/hero_male_lod1.glb",
+    "bindError": 4.807114601135254e-05,
+    "triangles": 8971,
+    "attributesPreserved": true
+  },
+  {
+    "file": "apps/web-tour/public/assets/authored/people/crowd/hero_male_lod2.glb",
+    "bindError": 4.807114601135254e-05,
+    "triangles": 2365,
+    "attributesPreserved": true
+  }
+]

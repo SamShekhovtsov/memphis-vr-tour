@@ -59,3 +59,6 @@
 !docs/design/screenshots/*-image-quality-route-before.png
 !docs/design/screenshots/*-image-quality-route-after.png
 !docs/design/screenshots/street-entry-image-quality-depth-control.png
+!docs/design/screenshots/*-crowd-clarity-before.png
+!docs/design/screenshots/*-crowd-clarity-after.png
+!docs/design/screenshots/street-entry-crowd-clarity-quality-only-after.png

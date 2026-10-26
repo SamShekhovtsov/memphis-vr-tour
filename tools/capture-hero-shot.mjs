@@ -20,6 +20,7 @@ if (selectedShot && !lock.shots.some(shot => shot.id === selectedShot)) throw ne
 const shots = selectedShot ? [selectedShot] : process.argv.includes("--all") ? lock.shots.map(shot => shot.id) : [lock.activeShotId];
 const imageQualityMode=process.argv.find(a=>a.startsWith('--image-quality='))?.slice(16);
 if(imageQualityMode&&!['legacy','filters','resolve'].includes(imageQualityMode))throw Error('Unknown image quality mode');
+const smallCrowd=process.argv.includes("--small-crowd"),previousClarity=process.argv.includes("--previous-clarity");
 const withUi=process.argv.includes("--with-ui");
 const legacy = process.argv.includes("--legacy");
 const ikAudit = process.argv.includes("--ik-audit");
@@ -88,7 +89,7 @@ try {
 
   for (const job of jobs) for (const shot of shots) {
     const output = path.join(screenshotDir, `${shot}-${job.label}.png`);
-    await capture(`http://127.0.0.1:${lock.localDevPort}/?shot=${shot}&chrome=${withUi?1:0}&qa=1&quality=${quality}${legacy ? "&materials=legacy" : ""}${ikAudit ? "&ikAudit=1" : ""}${benchmark ? "&benchmark=1" : ""}${collisionAudit ? "&collisionAudit=1" : ""}${legacyGround ? "&ground=legacy" : ""}${legacyPeopleMaterials ? "&peopleMaterials=legacy" : ""}${legacySteps56 ? "&steps56=legacy" : ""}${job.renderMode||job.legacyRenderPerf ? `&renderPerf=${job.renderMode??'legacy'}` : ""}${job.renderFrame ? `&renderFrame=${job.renderFrame}` : ""}${job.textureTrial ? `&textureTrial=${encodeURIComponent(job.textureTrial)}` : ""}${population ? "&population=legacy" : ""}${imageQualityMode ? "&imageQuality="+imageQualityMode : ""}${motion ? "&review=1" : ""}`, output);
+    await capture(`http://127.0.0.1:${lock.localDevPort}/?shot=${shot}&chrome=${withUi?1:0}&qa=1&quality=${quality}${legacy ? "&materials=legacy" : ""}${ikAudit ? "&ikAudit=1" : ""}${benchmark ? "&benchmark=1" : ""}${collisionAudit ? "&collisionAudit=1" : ""}${legacyGround ? "&ground=legacy" : ""}${legacyPeopleMaterials ? "&peopleMaterials=legacy" : ""}${legacySteps56 ? "&steps56=legacy" : ""}${job.renderMode||job.legacyRenderPerf ? `&renderPerf=${job.renderMode??'legacy'}` : ""}${job.renderFrame ? `&renderFrame=${job.renderFrame}` : ""}${job.textureTrial ? `&textureTrial=${encodeURIComponent(job.textureTrial)}` : ""}${population ? "&population=legacy" : ""}${imageQualityMode ? "&imageQuality="+imageQualityMode : ""}${smallCrowd?"&crowd=small":""}${previousClarity?"&clarity=previous":""}${motion ? "&review=1" : ""}`, output);
     console.log(`Captured ${output}`);
   }
 } finally {
@@ -109,6 +110,7 @@ async function capture(url, outputPath) {
   try {
     await client.send("Page.enable");
     await client.send("Runtime.enable");
+    client.on("Runtime.consoleAPICalled",event=>{if(["error","warning"].includes(event.type))console.error("Browser:",event.args.map(a=>a.description??a.value).join(" "));});
     await client.send("Emulation.setDeviceMetricsOverride", {
       ...viewport,
       mobile: false

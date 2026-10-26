@@ -6,19 +6,21 @@ import { fxaaPixelShader } from '@babylonjs/core/Shaders/fxaa.fragment';
  */
 export function installCrispFxaa(pipeline: DefaultRenderingPipeline) {
   let source = fxaaPixelShader.shader;
+  const prior=new URLSearchParams(location.search).get("clarity")==="previous";
   const once = (from: string, to: string) => {
     if (source.split(from).length !== 2) throw new Error('Pinned FXAA shader changed; review image resolve');
     source = source.replace(from, to);
   };
+  once('const float fxaaQualitySubpix=1.0;', `const float fxaaQualitySubpix=${prior?'1.0':'0.50'};`);
   once('float rangeMaxScaled=rangeMax*fxaaQualityEdgeThreshold;', `
 #ifndef MALI
 if(rangeMax-rangeMin<0.008){gl_FragColor=vec4(rgbyM.rgb,rgbyM.a);return;}
 #endif
 float memphisGradientX=abs(lumaE-lumaW),memphisGradientY=abs(lumaN-lumaS);
 bool memphisCoherentEdge=max(memphisGradientX,memphisGradientY)>8.0*min(memphisGradientX,memphisGradientY);
-float rangeMaxScaled=rangeMax*(memphisCoherentEdge?0.125:0.20);`);
+float rangeMaxScaled=rangeMax*(memphisCoherentEdge?${prior?0.125:0.10}:${prior?0.20:0.166});`);
   source = source.replaceAll('gl_FragColor=rgbyM;', `
-float memphisLuma=clamp(lumaM+0.20*(lumaM-(lumaN+lumaS+lumaE+lumaW)*0.25),rangeMin,rangeMax);
+float memphisLuma=clamp(lumaM+${prior?0.20:0.12}*(lumaM-(lumaN+lumaS+lumaE+lumaW)*0.25),rangeMin,rangeMax);
 vec3 memphisClampedDetail=clamp(rgbyM.rgb*(memphisLuma/max(lumaM,0.0001)),0.0,1.0);
 gl_FragColor=vec4(memphisClampedDetail,rgbyM.a);`);
   ShaderStore.ShadersStore.memphisCrispFxaaPixelShader = source;

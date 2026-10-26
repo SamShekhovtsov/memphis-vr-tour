@@ -31,10 +31,12 @@ That lets the experience stay immersive while still being honest about where evi
 
 ## Desktop movement and residents
 
-WASD or arrows walk on the ground, independently of view pitch. Hold **F** with movement keys for view-directed flight; while F is held, Space rises and Ctrl descends. Release F to land safely. Houses are solid. Nine residents now populate the district, with varied destinations, pauses and turns.
+WASD or arrows walk on the ground, independently of view pitch. Hold **F** with movement keys for view-directed flight; while F is held, Space rises and Ctrl descends. Release F to land safely. Houses are solid. 180 residents now populate the district, with varied destinations, pauses and turns. The original nine retain live rigs and IK; 171 added residents share GPU animation and distance-based character LODs.
 
 See [interaction fixes, matched screenshots and desktop measurements](docs/design/district-interactions-2026-10-25.md). Run `npm run qa:district-interactions` against the dev server on port 5573 to repeat the live regression checks.
 
 ## Image clarity
 
-Balanced keeps native resolution and uses a shared-sample FXAA/detail resolve with selective 4x authored colour-map filtering. Cinematic retains 4x MSAA and 8x authored colour filtering. The route overlay is opt-in with `?routeGuide=1`. See [matched quality comparisons and HD 4600 measurements](docs/design/hero-street-image-quality-2026-10-25.md).
+Balanced keeps native resolution and uses a shared-sample FXAA/detail resolve with selective 4x authored colour-map filtering and 8x ground-colour filtering. The line-preserving resolve uses gentler sharpening to limit halos. Cinematic retains 4x MSAA and 8x authored colour filtering. The route overlay is opt-in with `?routeGuide=1`. See [matched quality comparisons and HD 4600 measurements](docs/design/hero-street-image-quality-2026-10-25.md).
+
+See the [180-person crowd and clarity comparison](docs/design/crowd-and-clarity-2026-10-26.md). Diagnostic `?crowd=small` restores nine residents; `&clarity=previous` selects the previous edge resolve and ground filter for comparisons. Added residents use full geometry nearby and real skinned LODs at 8 m and 20 m.

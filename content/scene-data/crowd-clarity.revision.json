@@ -1,0 +1,80 @@
+{
+  "date": "2026-10-26",
+  "scope": "180 residents via shared GPU animation, bounded neighborhood avoidance and per-frame path budget; line-preserving FXAA and gentler sharpening. Original district geometry, cameras, ground and colliders unchanged.",
+  "files": {
+    "apps/web-tour/src/scene/HeroPeople.ts": {
+      "baseline": "content/source-assets/crowd-clarity-baseline/0.txt",
+      "beforeRaw": "d88129a492295931001e12095f223dac1cc5ccffce5a73b088fe51ba51e1575b",
+      "afterRaw": "aec2176b164b44d3274bb35c68033c37085129b0add50012c58cf1eac3f00a2f",
+      "before": "d88129a492295931001e12095f223dac1cc5ccffce5a73b088fe51ba51e1575b",
+      "after": "aec2176b164b44d3274bb35c68033c37085129b0add50012c58cf1eac3f00a2f"
+    },
+    "apps/web-tour/src/scene/DistrictLife.ts": {
+      "baseline": "content/source-assets/crowd-clarity-baseline/1.txt",
+      "beforeRaw": "af7cec0c97057c5296f6a48d2d9c56429867c6ba5ff2408ce52e3141aecd9fa4",
+      "afterRaw": "d1a7029f2670f91408c5cfae104dd6008f60ed43c73769c738b034d0e1630b9c",
+      "before": "af7cec0c97057c5296f6a48d2d9c56429867c6ba5ff2408ce52e3141aecd9fa4",
+      "after": "d1a7029f2670f91408c5cfae104dd6008f60ed43c73769c738b034d0e1630b9c"
+    },
+    "apps/web-tour/src/scene/ImageQuality.ts": {
+      "baseline": "content/source-assets/crowd-clarity-baseline/2.txt",
+      "beforeRaw": "651191c9b3b52be8278e2c60605175dfdb5786d664b7ea772da9edb8f399d917",
+      "afterRaw": "6671040c8b0b16e9265a8c49043cc8bfdf7ab152b2c22523d8a710dba0798ddc",
+      "before": "651191c9b3b52be8278e2c60605175dfdb5786d664b7ea772da9edb8f399d917",
+      "after": "6671040c8b0b16e9265a8c49043cc8bfdf7ab152b2c22523d8a710dba0798ddc"
+    },
+    "apps/web-tour/src/scene/CrispFxaa.ts": {
+      "baseline": "content/source-assets/crowd-clarity-baseline/3.txt",
+      "beforeRaw": "511f9acec6a915d409178df331c3e2d1a57ed700919dbbb223166cd87ac535ab",
+      "afterRaw": "d81ad5bb5193d5f42ca71f6fd3177d06a6c1e6802c59eb4f715d381ff34bf05d",
+      "before": "511f9acec6a915d409178df331c3e2d1a57ed700919dbbb223166cd87ac535ab",
+      "after": "d81ad5bb5193d5f42ca71f6fd3177d06a6c1e6802c59eb4f715d381ff34bf05d"
+    },
+    "tools/lib/image-quality-revision.mjs": {
+      "baseline": "content/source-assets/crowd-clarity-baseline/4.txt",
+      "beforeRaw": "760fcdf20869d189c38ae045a84447be1295accdb28ec0ac21b54ece82baf5ff",
+      "afterRaw": "b4faacf2d727cf3e6edd8d2296d5bb66c1c500f17377adb4ec8f27f7e3c50f0f",
+      "before": "760fcdf20869d189c38ae045a84447be1295accdb28ec0ac21b54ece82baf5ff",
+      "after": "b4faacf2d727cf3e6edd8d2296d5bb66c1c500f17377adb4ec8f27f7e3c50f0f"
+    },
+    "tools/validate-image-quality.mjs": {
+      "baseline": "content/source-assets/crowd-clarity-baseline/5.txt",
+      "beforeRaw": "95d29e5890f9961fa80fbc8c26fa8989c891215d058e01f09d6781ca0dbd6cbb",
+      "afterRaw": "4ff450ccad8c869c1fd759183a07020b2a8f340a31d6e94f22c7269dbca9d97d",
+      "before": "95d29e5890f9961fa80fbc8c26fa8989c891215d058e01f09d6781ca0dbd6cbb",
+      "after": "4ff450ccad8c869c1fd759183a07020b2a8f340a31d6e94f22c7269dbca9d97d"
+    },
+    "tools/capture-hero-shot.mjs": {
+      "baseline": "content/source-assets/crowd-clarity-baseline/6.txt",
+      "beforeRaw": "301175488a66829ba2624f6400b5f9dfab56432a953fedb18d00b3bf25a60e51",
+      "afterRaw": "a3c638fd0ef2cf9ce81498084d87cd334e99f4a46f44d9c2baa07b5ffd674625",
+      "before": "301175488a66829ba2624f6400b5f9dfab56432a953fedb18d00b3bf25a60e51",
+      "after": "a3c638fd0ef2cf9ce81498084d87cd334e99f4a46f44d9c2baa07b5ffd674625"
+    },
+    "tools/benchmark-rendering.mjs": {
+      "baseline": "content/source-assets/crowd-clarity-baseline/7.txt",
+      "beforeRaw": "852350ec41bfd3d22f727eba42a454e026062c3d4a094f2466147b543c411e67",
+      "afterRaw": "f067050cb212a87abe19c1b16803214eadb9c1aa85be24adac84180b0e4075ab",
+      "before": "852350ec41bfd3d22f727eba42a454e026062c3d4a094f2466147b543c411e67",
+      "after": "f067050cb212a87abe19c1b16803214eadb9c1aa85be24adac84180b0e4075ab"
+    }
+  },
+  "additions": {
+    "apps/web-tour/src/scene/InstancedDistrictCrowd.ts": "230a9295f470aa9dbeff10ae8e64310741985371ba2f730f8dd081df50658f05",
+    "tools/lib/crowd-clarity-revision.mjs": "477c001d4cd6a0e9d90da6324fa86560a5987651f1a882002c85185c967ef736",
+    "tools/validate-crowd-clarity.mjs": "5ff48284215afe6d482b6732b453832f8e7ae76ae3d0a725c5a2cdcd65a151fd",
+    "tools/audit-crowd-clarity.js": "a39243ca7ffd8e8dc7dac9fdd2d254eb6ee1927f86a8a6713b724cbce0694701",
+    "tools/blender/build_crowd_lods.py": "f8b19a55069e00f00a5fb33be6057aef6d9bf5b80edd3bcf132bfd159f46bd6e",
+    "tools/blender/crowd_skin_weights.py": "2d5b28d4576f2a2155e263bd2e031761abe613441076d7e3b34d6995fab0ddec",
+    "tools/verify-crowd-lods.py": "69ba4f4721ef87a38518a52dab42cdd17f170c2b3c1c73f55df0738411d8bdc4",
+    "apps/web-tour/public/assets/authored/people/crowd/manifest.json": "3bf167f39e58922413703ac8ba7f6a387997c55993506f5302724798c8467960",
+    "apps/web-tour/public/assets/authored/people/crowd/hero_female_lod1.glb": "feec93005ad8b4d20c9fea6d3ea4c60c1557a69003edda86c5f15af880c4a013",
+    "content/source-assets/characters/crowd-female-lod1.blend": "b4719c9288e3350d5795d62794db10ef20f48481dd6e1488930ab1c2e0edd47e",
+    "apps/web-tour/public/assets/authored/people/crowd/hero_female_lod2.glb": "58a573756ebd6dc9815d814580f5ad7b642e866b836f2b2c4697800ce77c4904",
+    "content/source-assets/characters/crowd-female-lod2.blend": "199d70b16f7aa142c8be958436b58567c74130f09c96ab78145b4a468900c9cc",
+    "apps/web-tour/public/assets/authored/people/crowd/hero_male_lod1.glb": "fba694c245398e8194b5d6a48185960462af7529cf11619e3e05445e99ed8936",
+    "content/source-assets/characters/crowd-male-lod1.blend": "ebe439be0b5d2d6ec79d6a44974e079ba33d058c27b9a9c43c2a9dbe418afa3b",
+    "apps/web-tour/public/assets/authored/people/crowd/hero_male_lod2.glb": "a0f1865d97cf777ffac84efb7e51e28f706107dab9d47987761185b629081ca5",
+    "content/source-assets/characters/crowd-male-lod2.blend": "6ce621188e68e48d60eccdcdb31b737cdece6ed21949be5ceb535da1b7bd9959"
+  }
+}

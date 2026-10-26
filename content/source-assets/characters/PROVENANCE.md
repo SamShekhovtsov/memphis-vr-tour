@@ -26,3 +26,7 @@ clearance and garment-weight refinements. It is derived from these same CC0
 adaptations. No additional external character or texture source was introduced.
 The explicit stream hashes and portable fit recipe are recorded in
 `content/scene-data/hero-street.steps56-revision.json`.
+
+### Crowd LODs — 26 October 2026
+
+The crowd-male/female-lod1/2 Blender files derive from the current hero GLBs, preserving their existing CC0 anatomy and project-authored clothing/material provenance. tools/blender/build_crowd_lods.py preserves skinned joints, UVs and vertex colours. Runtime LOD source hashes, triangle counts and bounded four-weight body-pose errors are recorded in apps/web-tour/public/assets/authored/people/crowd/manifest.json; clothing weights are retained. Original full-detail GLBs are unchanged.

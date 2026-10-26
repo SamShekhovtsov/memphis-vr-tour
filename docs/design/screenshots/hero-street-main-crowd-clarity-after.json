@@ -1,0 +1,4697 @@
+{
+  "url": "http://127.0.0.1:5573/?shot=hero-street-main&chrome=0&qa=1&quality=balanced",
+  "viewport": {
+    "width": 1280,
+    "height": 720,
+    "deviceScaleFactor": 1
+  },
+  "browserSession": 15480,
+  "pacing": "default",
+  "renderer": "Chrome default GPU selection; inspect gpu field",
+  "ready": true,
+  "collisionAudit": null,
+  "review": null,
+  "groundSection": {
+    "id": "hero-ground-section-v1",
+    "bounds": {
+      "minX": -10.7,
+      "maxX": -1.55,
+      "minZ": -22,
+      "maxZ": -4
+    },
+    "geometryChanged": false,
+    "maps": [
+      "ground-albedo.webp",
+      "ground-normal.webp",
+      "ground-orm.webp"
+    ]
+  },
+  "layoutRoots": [
+    {
+      "name": "glbHeroStreetCorridorNear",
+      "position": [
+        -16.5,
+        0,
+        0
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "name": "glbHeroStreetCorridorMid",
+      "position": [
+        -16.5,
+        0,
+        0
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "name": "glbHeroStreetCorridorFar",
+      "position": [
+        -16.5,
+        0,
+        0
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "name": "glbAnimatedStreetActors",
+      "position": [
+        -16.5,
+        0,
+        0
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "name": "glbNileBoatLandingMain",
+      "position": [
+        -47.4,
+        0.16,
+        -51.6
+      ],
+      "rotation": [
+        0,
+        0.06,
+        0
+      ],
+      "scale": [
+        1.12,
+        1.12,
+        1.12
+      ]
+    },
+    {
+      "name": "glbNileBoatMooredNorth",
+      "position": [
+        -51.8,
+        0.13,
+        -24
+      ],
+      "rotation": [
+        0,
+        -0.18,
+        0
+      ],
+      "scale": [
+        0.82,
+        0.82,
+        0.82
+      ]
+    },
+    {
+      "name": "glbNileBoatMooredSouth",
+      "position": [
+        -49.6,
+        0.12,
+        23.5
+      ],
+      "rotation": [
+        0,
+        0.14,
+        0
+      ],
+      "scale": [
+        0.9,
+        0.9,
+        0.9
+      ]
+    },
+    {
+      "name": "glbReedBank-0",
+      "position": [
+        -36.1,
+        0,
+        -63
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        0.82,
+        0.82,
+        0.82
+      ]
+    },
+    {
+      "name": "glbReedBank-1",
+      "position": [
+        -35.6,
+        0,
+        -43
+      ],
+      "rotation": [
+        0,
+        0.38,
+        0
+      ],
+      "scale": [
+        0.8999999999999999,
+        0.8999999999999999,
+        0.8999999999999999
+      ]
+    },
+    {
+      "name": "glbReedBank-2",
+      "position": [
+        -36.1,
+        0,
+        -23
+      ],
+      "rotation": [
+        0,
+        0.76,
+        0
+      ],
+      "scale": [
+        0.98,
+        0.98,
+        0.98
+      ]
+    },
+    {
+      "name": "glbReedBank-3",
+      "position": [
+        -35.6,
+        0,
+        -3
+      ],
+      "rotation": [
+        0,
+        1.1400000000000001,
+        0
+      ],
+      "scale": [
+        0.82,
+        0.82,
+        0.82
+      ]
+    },
+    {
+      "name": "glbReedBank-4",
+      "position": [
+        -36.1,
+        0,
+        17
+      ],
+      "rotation": [
+        0,
+        1.52,
+        0
+      ],
+      "scale": [
+        0.8999999999999999,
+        0.8999999999999999,
+        0.8999999999999999
+      ]
+    },
+    {
+      "name": "glbReedBank-5",
+      "position": [
+        -35.6,
+        0,
+        37
+      ],
+      "rotation": [
+        0,
+        1.9,
+        0
+      ],
+      "scale": [
+        0.98,
+        0.98,
+        0.98
+      ]
+    },
+    {
+      "name": "glbReedBank-6",
+      "position": [
+        -36.1,
+        0,
+        57
+      ],
+      "rotation": [
+        0,
+        2.2800000000000002,
+        0
+      ],
+      "scale": [
+        0.82,
+        0.82,
+        0.82
+      ]
+    }
+  ],
+  "heroLoaded": true,
+  "meshes": 1554,
+  "activeMeshes": 535,
+  "activeIndices": 3021271,
+  "vertices": 6140591,
+  "drawCalls": 377,
+  "meanFrameMs": 55.32999999523163,
+  "gpu": {
+    "vendor": "Google Inc. (Intel)",
+    "renderer": "ANGLE (Intel, Intel(R) HD Graphics 4600 (0x00000416) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+    "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+  },
+  "frameIntervalsMs": {
+    "samples": 19,
+    "p50": 57.699999928474426,
+    "p95": 75.5,
+    "max": 75.5
+  },
+  "benchmarkProgress": null,
+  "streetLods": [
+    {
+      "assetId": "hero-street-corridor-near",
+      "level": 0,
+      "loaded": [
+        0
+      ],
+      "triangles": 64834,
+      "failed": []
+    },
+    {
+      "assetId": "hero-street-corridor-mid",
+      "level": 0,
+      "loaded": [
+        0
+      ],
+      "triangles": 93122,
+      "failed": []
+    },
+    {
+      "assetId": "hero-street-corridor-far",
+      "level": 0,
+      "loaded": [
+        0
+      ],
+      "triangles": 35462,
+      "failed": []
+    }
+  ],
+  "rendering": {
+    "tier": "balanced",
+    "antialiasing": "crisp FXAA",
+    "toneMapping": "ACES",
+    "exposure": 1.2,
+    "contrast": 1,
+    "shadowMapSize": 2048,
+    "shadowFilter": "PCF",
+    "daylightProfile": "hero-street-daylight-v1",
+    "indirectLightGain": 2.3,
+    "finishLighting": {
+      "profile": "hero-street-finish-lighting-v1",
+      "irradianceRange": 1,
+      "samples": 48,
+      "resolution": 2048,
+      "directSunBaked": false,
+      "albedoBaked": false,
+      "movingActorsBaked": false,
+      "noiseFilter": "3x3 median and 0.12/0.76/0.12 subtexel kernel on linear irradiance only",
+      "audit": {
+        "near": {
+          "unclippedLinearMaximum": 0.5055744647979736,
+          "rawChannelsOverOne": 0,
+          "oldSaturatedChannels": 0,
+          "noiseResidualMedian": 0.0017997387330979109,
+          "noiseResidualP95": 0.026072584092617035,
+          "contactMinimumGain": 0.86,
+          "contactMeanGain": 0.8979378420511881,
+          "newClippedChannels": 0,
+          "rangeScale": 1
+        },
+        "mid": {
+          "unclippedLinearMaximum": 0.5103425979614258,
+          "rawChannelsOverOne": 0,
+          "oldSaturatedChannels": 0,
+          "noiseResidualMedian": 0.002733945846557617,
+          "noiseResidualP95": 0.026929274201393127,
+          "contactMinimumGain": 0.86,
+          "contactMeanGain": 0.908223985746795,
+          "newClippedChannels": 0,
+          "rangeScale": 1
+        },
+        "far": {
+          "unclippedLinearMaximum": 0.5049583911895752,
+          "rawChannelsOverOne": 0,
+          "oldSaturatedChannels": 0,
+          "noiseResidualMedian": 0.0021769553422927856,
+          "noiseResidualP95": 0.021854575723409653,
+          "contactMinimumGain": 0.86,
+          "contactMeanGain": 0.9195161339067945,
+          "newClippedChannels": 0,
+          "rangeScale": 1
+        }
+      }
+    },
+    "textureTrial": {
+      "requested": false,
+      "nativeCompression": true,
+      "maps": []
+    },
+    "imageQuality": {
+      "mode": "restored",
+      "requestedSamples": 1,
+      "effectiveSamples": 1,
+      "sharpen": 0.12,
+      "resolve": "FXAA with luma-clamped detail in one pass",
+      "extraSharpenPass": false,
+      "groundColourAnisotropy": 8,
+      "subpixelSmoothing": 0.5,
+      "flatRegionsBypassDetail": true,
+      "selectiveAuthoredFiltering": true,
+      "shaderActive": true,
+      "surfaceAnisotropy": 4,
+      "normalAnisotropy": 2,
+      "atlasAnisotropy": 2,
+      "mipFiltering": "trilinear",
+      "clipPlanes": [
+        0.1,
+        512
+      ],
+      "supersampling": false
+    },
+    "population": {
+      "people": 180,
+      "goals": 0,
+      "pauses": 0,
+      "blocked": 0,
+      "minimumFacingDot": 1,
+      "maxTurnPerSecond": 0,
+      "poseRates": "9 live rigs; 171 GPU residents, spatial neighbors and 4 path requests/frame",
+      "states": [
+        {
+          "name": "glbAnimatedStreetActors-actorHeroCarrier",
+          "role": "Carrier",
+          "position": [
+            -5.96746826171875,
+            0.06593511253595352,
+            20.262916564941406
+          ],
+          "speed": 0,
+          "waiting": true,
+          "remainingWaypoints": 0,
+          "travel": 0
+        },
+        {
+          "name": "glbAnimatedStreetActors-actorHeroStoneWorker",
+          "role": "StoneWorker",
+          "position": [
+            -9,
+            0.09700000286102295,
+            7.5
+          ],
+          "speed": 0,
+          "waiting": false,
+          "remainingWaypoints": 0,
+          "travel": 0
+        },
+        {
+          "name": "glbAnimatedStreetActors-actorHeroStreetWalker",
+          "role": "StreetWalker",
+          "position": [
+            -3.16208553314209,
+            0.06245456635951996,
+            5.030416965484619
+          ],
+          "speed": 0,
+          "waiting": true,
+          "remainingWaypoints": 0,
+          "travel": 0
+        },
+        {
+          "name": "districtResident0",
+          "role": "Resident0",
+          "position": [
+            -31.5,
+            0.04500000178813934,
+            -49.5
+          ],
+          "speed": 0,
+          "waiting": true,
+          "remainingWaypoints": 0,
+          "travel": 0
+        },
+        {
+          "name": "districtResident1",
+          "role": "Resident1",
+          "position": [
+            -25.5,
+            0.04500000178813934,
+            -25.5
+          ],
+          "speed": 0,
+          "waiting": true,
+          "remainingWaypoints": 0,
+          "travel": 0
+        },
+        {
+          "name": "districtResident2",
+          "role": "Resident2",
+          "position": [
+            15,
+            0.04500000178813934,
+            -15
+          ],
+          "speed": 0,
+          "waiting": true,
+          "remainingWaypoints": 0,
+          "travel": 0
+        },
+        {
+          "name": "districtResident3",
+          "role": "Resident3",
+          "position": [
+            -18,
+            0.04500000178813934,
+            22.5
+          ],
+          "speed": 0,
+          "waiting": true,
+          "remainingWaypoints": 0,
+          "travel": 0
+        },
+        {
+          "name": "districtResident4",
+          "role": "Resident4",
+          "position": [
+            7.5,
+            0.07500000298023224,
+            55.5
+          ],
+          "speed": 0,
+          "waiting": true,
+          "remainingWaypoints": 0,
+          "travel": 0
+        },
+        {
+          "name": "districtResident5",
+          "role": "Resident5",
+          "position": [
+            -7.5,
+            0.08500000089406967,
+            82.5
+          ],
+          "speed": 0,
+          "waiting": true,
+          "remainingWaypoints": 0,
+          "travel": 0
+        },
+        {
+          "name": "districtCrowdResident9",
+          "role": "CrowdResident9",
+          "position": [
+            -4.5,
+            0.07500000298023224,
+            64.5
+          ],
+          "speed": 0,
+          "waiting": true,
+          "remainingWaypoints": 0,
+          "travel": 0
+        },
+        {
+          "name": "districtCrowdResident10",
+          "role": "CrowdResident10",
+          "position": [
+            -22.5,
+            0.04500000178813934,
+            40.5
+          ],
+          "speed": 0,
+          "waiting": true,
+          "remainingWaypoints": 0,
+          "travel": 0
+        },
+        {
+          "name": "districtCrowdResident11",
+          "role": "CrowdResident11",
+          "position": [
+            -24,
+            0.04500000178813934,
+            -7.5
+          ],
+          "speed": 0,
+          "waiting": true,
+          "remainingWaypoints": 0,
+          "travel": 0
+        },
+        {
+          "name": "districtCrowdResident12",
+          "role": "CrowdResident12",
+          "position": [
+            -33,
+            0.04500000178813934,
+            43.5
+          ],
+          "speed": 0,
+          "waiting": true,
+          "remainingWaypoints": 0,
+          "travel": 0
+        },
+        {
+          "name": "districtCrowdResident13",
+          "role": "CrowdResident13",
+          "position": [
+            28.5,
+            0.04500000178813934,
+            -19.5
+          ],
+          "speed": 0,
+          "waiting": true,
+          "remainingWaypoints": 0,
+          "travel": 0
+        },
+        {
+          "name": "districtCrowdResident14",
+          "role": "CrowdResident14",
+          "position": [
+            25.5,
+            0.04500000178813934,
+            58.5
+          ],
+          "speed": 0,
+          "waiting": true,
+          "remainingWaypoints": 0,
+          "travel": 0
+        },
+        {
+          "name": "districtCrowdResident15",
+          "role": "CrowdResident15",
+          "position": [
+            24,
+            0.04500000178813934,
+            49.5
+          ],
+          "speed": 0,
+          "waiting": true,
+          "remainingWaypoints": 0,
+          "travel": 0
+        },
+        {
+          "name": "districtCrowdResident16",
+          "role": "CrowdResident16",
+          "position": [
+            -36,
+            0.04500000178813934,
+            -49.5
+          ],
+          "speed": 0,
+          "waiting": true,
+          "remainingWaypoints": 0,
+          "travel": 0
+        },
+        {
+          "name": "districtCrowdResident17",
+          "role": "CrowdResident17",
+          "position": [
+            18,
+            0.04500000178813934,
+            -15
+          ],
+          "speed": 0,
+          "waiting": true,
+          "remainingWaypoints": 0,
+          "travel": 0
+        },
+        {
+          "name": "districtCrowdResident18",
+          "role": "CrowdResident18",
+          "position": [
+            -16.5,
+            0.04500000178813934,
+            61.5
+          ],
+          "speed": 0,
+          "waiting": true,
+          "remainingWaypoints": 0,
+          "travel": 0
+        },
+        {
+          "name": "districtCrowdResident19",
+          "role": "CrowdResident19",
+          "position": [
+            24,
+            0.04500000178813934,
+            45
+          ],
+          "speed": 0,
+          "waiting": true,
+          "remainingWaypoints": 0,
+          "travel": 0
+        },
+        {
+          "name": "districtCrowdResident20",
+          "role": "CrowdResident20",
+          "position": [
+            24,
+            0.04500000178813934,
+            7.5
+          ],
+          "speed": 0,
+          "waiting": true,
+          "remainingWaypoints": 0,
+          "travel": 0
+        },
+        {
+          "name": "districtCrowdResident21",
+          "role": "CrowdResident21",
+          "position": [
+            -10.5,
+            0.04500000178813934,
+            45
+          ],
+          "speed": 0,
+          "waiting": true,
+          "remainingWaypoints": 0,
+          "travel": 0
+        },
+        {
+          "name": "districtCrowdResident22",
+          "role": "CrowdResident22",
+          "position": [
+            4.5,
+            0.04500000178813934,
+            42
+          ],
+          "speed": 0,
+          "waiting": true,
+          "remainingWaypoints": 0,
+          "travel": 0
+        },
+        {
+          "name": "districtCrowdResident23",
+          "role": "CrowdResident23",
+          "position": [
+            -18,
+            0.04500000178813934,
+            9
+          ],
+          "speed": 0,
+          "waiting": true,
+          "remainingWaypoints": 0,
+          "travel": 0
+        },
+        {
+          "name": "districtCrowdResident24",
+          "role": "CrowdResident24",
+          "position": [
+            -13.5,
+            0.04500000178813934,
+            21
+          ],
+          "speed": 0,
+          "waiting": true,
+          "remainingWaypoints": 0,
+          "travel": 0
+        },
+        {
+          "name": "districtCrowdResident25",
+          "role": "CrowdResident25",
+          "position": [
+            40.5,
+            0.04500000178813934,
+            -22.5
+          ],
+          "speed": 0,
+          "waiting": true,
+          "remainingWaypoints": 0,
+          "travel": 0
+        },
+        {
+          "name": "districtCrowdResident26",
+          "role": "CrowdResident26",
+          "position": [
+            39,
+            0.04500000178813934,
+            21
+          ],
+          "speed": 0,
+          "waiting": true,
+          "remainingWaypoints": 0,
+          "travel": 0
+        },
+        {
+          "name": "districtCrowdResident27",
+          "role": "CrowdResident27",
+          "position": [
+            -21,
+            0.04500000178813934,
+            -13.5
+          ],
+          "speed": 0,
+          "waiting": true,
+          "remainingWaypoints": 0,
+          "travel": 0
+        },
+        {
+          "name": "districtCrowdResident28",
+          "role": "CrowdResident28",
+          "position": [
+            -24,
+            0.04500000178813934,
+            42
+          ],
+          "speed": 0,
+          "waiting": true,
+          "remainingWaypoints": 0,
+          "travel": 0
+        },
+        {
+          "name": "districtCrowdResident29",
+          "role": "CrowdResident29",
+          "position": [
+            25.5,
+            0.04500000178813934,
+            -37.5
+          ],
+          "speed": 0,
+          "waiting": true,
+          "remainingWaypoints": 0,
+          "travel": 0
+        },
+        {
+          "name": "districtCrowdResident30",
+          "role": "CrowdResident30",
+          "position": [
+            -33,
+            0.04500000178813934,
+            -18
+          ],
+          "speed": 0,
+          "waiting": true,
+          "remainingWaypoints": 0,
+          "travel": 0
+        },
+        {
+          "name": "districtCrowdResident31",
+          "role": "CrowdResident31",
+          "position": [
+            -27,
+            0.04500000178813934,
+            46.5
+          ],
+          "speed": 0,
+          "waiting": true,
+          "remainingWaypoints": 0,
+          "travel": 0
+        },
+        {
+          "name": "districtCrowdResident32",
+          "role": "CrowdResident32",
+          "position": [
+            -22.5,
+            0.04500000178813934,
+            51
+          ],
+          "speed": 0,
+          "waiting": true,
+          "remainingWaypoints": 0,
+          "travel": 0
+        },
+        {
+          "name": "districtCrowdResident33",
+          "role": "CrowdResident33",
+          "position": [
+            -12,
+            0.04500000178813934,
+            -57
+          ],
+          "speed": 0,
+          "waiting": true,
+          "remainingWaypoints": 0,
+          "travel": 0
+        },
+        {
+          "name": "districtCrowdResident34",
+          "role": "CrowdResident34",
+          "position": [
+            -30,
+            0.04500000178813934,
+            -51
+          ],
+          "speed": 0,
+          "waiting": true,
+          "remainingWaypoints": 0,
+          "travel": 0
+        },
+        {
+          "name": "districtCrowdResident35",
+          "role": "CrowdResident35",
+          "position": [
+            -27,
+            0.04500000178813934,
+            -64.5
+          ],
+          "speed": 0,
+          "waiting": true,
+          "remainingWaypoints": 0,
+          "travel": 0
+        },
+        {
+          "name": "districtCrowdResident36",
+          "role": "CrowdResident36",
+          "position": [
+            28.5,
+            0.04500000178813934,
+            -13.5
+          ],
+          "speed": 0,
+          "waiting": true,
+          "remainingWaypoints": 0,
+          "travel": 0
+        },
+        {
+          "name": "districtCrowdResident37",
+          "role": "CrowdResident37",
+          "position": [
+            -3,
+            0.07500000298023224,
+            61.5
+          ],
+          "speed": 0,
+          "waiting": true,
+          "remainingWaypoints": 0,
+          "travel": 0
+        },
+        {
+          "name": "districtCrowdResident38",
+          "role": "CrowdResident38",
+          "position": [
+            -30,
+            0.04500000178813934,
+            6
+          ],
+          "speed": 0,
+          "waiting": true,
+          "remainingWaypoints": 0,
+          "travel": 0
+        },
+        {
+          "name": "districtCrowdResident39",
+          "role": "CrowdResident39",
+          "position": [
+            -34.5,
+            0.04500000178813934,
+            -19.5
+          ],
+          "speed": 0,
+          "waiting": true,
+          "remainingWaypoints": 0,
+          "travel": 0
+        },
+        {
+          "name": "districtCrowdResident40",
+          "role": "CrowdResident40",
+          "position": [
+            39,
+            0.04500000178813934,
+            16.5
+          ],
+          "speed": 0,
+          "waiting": true,
+          "remainingWaypoints": 0,
+          "travel": 0
+        },
+        {
+          "name": "districtCrowdResident41",
+          "role": "CrowdResident41",
+          "position": [
+            -25.5,
+            0.04500000178813934,
+            -9
+          ],
+          "speed": 0,
+          "waiting": true,
+          "remainingWaypoints": 0,
+          "travel": 0
+        },
+        {
+          "name": "districtCrowdResident42",
+          "role": "CrowdResident42",
+          "position": [
+            36,
+            0.04500000178813934,
+            -22.5
+          ],
+          "speed": 0,
+          "waiting": true,
+          "remainingWaypoints": 0,
+          "travel": 0
+        },
+        {
+          "name": "districtCrowdResident43",
+          "role": "CrowdResident43",
+          "position": [
+            42,
+            0.04500000178813934,
+            -55.5
+          ],
+          "speed": 0,
+          "waiting": true,
+          "remainingWaypoints": 0,
+          "travel": 0
+        },
+        {
+          "name": "districtCrowdResident44",
+          "role": "CrowdResident44",
+          "position": [
+            -15,
+            0.04500000178813934,
+            43.5
+          ],
+          "speed": 0,
+          "waiting": true,
+          "remainingWaypoints": 0,
+          "travel": 0
+        },
+        {
+          "name": "districtCrowdResident45",
+          "role": "CrowdResident45",
+          "position": [
+            -33,
+            0.04500000178813934,
+            34.5
+          ],
+          "speed": 0,
+          "waiting": true,
+          "remainingWaypoints": 0,
+          "travel": 0
+        },
+        {
+          "name": "districtCrowdResident46",
+          "role": "CrowdResident46",
+          "position": [
+            -21,
+            0.04500000178813934,
+            -25.5
+          ],
+          "speed": 0,
+          "waiting": true,
+          "remainingWaypoints": 0,
+          "travel": 0
+        },
+        {
+          "name": "districtCrowdResident47",
+          "role": "CrowdResident47",
+          "position": [
+            -18,
+            0.04500000178813934,
+            -27
+          ],
+          "speed": 0,
+          "waiting": true,
+          "remainingWaypoints": 0,
+          "travel": 0
+        },
+        {
+          "name": "districtCrowdResident48",
+          "role": "CrowdResident48",
+          "position": [
+            -30,
+            0.04500000178813934,
+            -3
+          ],
+          "speed": 0,
+          "waiting": true,
+          "remainingWaypoints": 0,
+          "travel": 0
+        },
+        {
+          "name": "districtCrowdResident49",
+          "role": "CrowdResident49",
+          "position": [
+            -16.5,
+            0.04500000178813934,
+            -54
+          ],
+          "speed": 0,
+          "waiting": true,
+          "remainingWaypoints": 0,
+          "travel": 0
+        },
+        {
+          "name": "districtCrowdResident50",
+          "role": "CrowdResident50",
+          "position": [
+            -24,
+            0.04500000178813934,
+            -24
+          ],
+          "speed": 0,
+          "waiting": true,
+          "remainingWaypoints": 0,
+          "travel": 0
+        },
+        {
+          "name": "districtCrowdResident51",
+          "role": "CrowdResident51",
+          "position": [
+            -4.5,
+            0.09700000286102295,
+            -36
+          ],
+          "speed": 0,
+          "waiting": true,
+          "remainingWaypoints": 0,
+          "travel": 0
+        },
+        {
+          "name": "districtCrowdResident52",
+          "role": "CrowdResident52",
+          "position": [
+            -19.5,
+            0.04500000178813934,
+            1.5
+          ],
+          "speed": 0,
+          "waiting": true,
+          "remainingWaypoints": 0,
+          "travel": 0
+        },
+        {
+          "name": "districtCrowdResident53",
+          "role": "CrowdResident53",
+          "position": [
+            -36,
+            0.04500000178813934,
+            34.5
+          ],
+          "speed": 0,
+          "waiting": true,
+          "remainingWaypoints": 0,
+          "travel": 0
+        },
+        {
+          "name": "districtCrowdResident54",
+          "role": "CrowdResident54",
+          "position": [
+            -33,
+            0.04500000178813934,
+            -30
+          ],
+          "speed": 0,
+          "waiting": true,
+          "remainingWaypoints": 0,
+          "travel": 0
+        },
+        {
+          "name": "districtCrowdResident55",
+          "role": "CrowdResident55",
+          "position": [
+            -30,
+            0.04500000178813934,
+            25.5
+          ],
+          "speed": 0,
+          "waiting": true,
+          "remainingWaypoints": 0,
+          "travel": 0
+        },
+        {
+          "name": "districtCrowdResident56",
+          "role": "CrowdResident56",
+          "position": [
+            43.5,
+            0.04500000178813934,
+            -63
+          ],
+          "speed": 0,
+          "waiting": true,
+          "remainingWaypoints": 0,
+          "travel": 0
+        },
+        {
+          "name": "districtCrowdResident57",
+          "role": "CrowdResident57",
+          "position": [
+            7.5,
+            0.04500000178813934,
+            -25.5
+          ],
+          "speed": 0,
+          "waiting": true,
+          "remainingWaypoints": 0,
+          "travel": 0
+        },
+        {
+          "name": "districtCrowdResident58",
+          "role": "CrowdResident58",
+          "position": [
+            30,
+            0.04500000178813934,
+            66
+          ],
+          "speed": 0,
+          "waiting": true,
+          "remainingWaypoints": 0,
+          "travel": 0
+        },
+        {
+          "name": "districtCrowdResident59",
+          "role": "CrowdResident59",
+          "position": [
+            -36,
+            0.04500000178813934,
+            21
+          ],
+          "speed": 0,
+          "waiting": true,
+          "remainingWaypoints": 0,
+          "travel": 0
+        },
+        {
+          "name": "districtCrowdResident60",
+          "role": "CrowdResident60",
+          "position": [
+            28.5,
+            0.04500000178813934,
+            30
+          ],
+          "speed": 0,
+          "waiting": true,
+          "remainingWaypoints": 0,
+          "travel": 0
+        },
+        {
+          "name": "districtCrowdResident61",
+          "role": "CrowdResident61",
+          "position": [
+            -3,
+            0.08500000089406967,
+            84
+          ],
+          "speed": 0,
+          "waiting": true,
+          "remainingWaypoints": 0,
+          "travel": 0
+        },
+        {
+          "name": "districtCrowdResident62",
+          "role": "CrowdResident62",
+          "position": [
+            33,
+            0.04500000178813934,
+            -33
+          ],
+          "speed": 0,
+          "waiting": true,
+          "remainingWaypoints": 0,
+          "travel": 0
+        },
+        {
+          "name": "districtCrowdResident63",
+          "role": "CrowdResident63",
+          "position": [
+            30,
+            0.04500000178813934,
+            -63
+          ],
+          "speed": 0,
+          "waiting": true,
+          "remainingWaypoints": 0,
+          "travel": 0
+        },
+        {
+          "name": "districtCrowdResident64",
+          "role": "CrowdResident64",
+          "position": [
+            -36,
+            0.04500000178813934,
+            -10.5
+          ],
+          "speed": 0,
+          "waiting": true,
+          "remainingWaypoints": 0,
+          "travel": 0
+        },
+        {
+          "name": "districtCrowdResident65",
+          "role": "CrowdResident65",
+          "position": [
+            -36,
+            0.04500000178813934,
+            -63
+          ],
+          "speed": 0,
+          "waiting": true,
+          "remainingWaypoints": 0,
+          "travel": 0
+        },
+        {
+          "name": "districtCrowdResident66",
+          "role": "CrowdResident66",
+          "position": [
+            36,
+            0.04500000178813934,
+            -54
+          ],
+          "speed": 0,
+          "waiting": true,
+          "remainingWaypoints": 0,
+          "travel": 0
+        },
+        {
+          "name": "districtCrowdResident67",
+          "role": "CrowdResident67",
+          "position": [
+            39,
+            0.04500000178813934,
+            -33
+          ],
+          "speed": 0,
+          "waiting": true,
+          "remainingWaypoints": 0,
+          "travel": 0
+        },
+        {
+          "name": "districtCrowdResident68",
+          "role": "CrowdResident68",
+          "position": [
+            -24,
+            0.04500000178813934,
+            -69
+          ],
+          "speed": 0,
+          "waiting": true,
+          "remainingWaypoints": 0,
+          "travel": 0
+        },
+        {
+          "name": "districtCrowdResident69",
+          "role": "CrowdResident69",
+          "position": [
+            -4.5,
+            0.09700000286102295,
+            -18
+          ],
+          "speed": 0,
+          "waiting": true,
+          "remainingWaypoints": 0,
+          "travel": 0
+        },
+        {
+          "name": "districtCrowdResident70",
+          "role": "CrowdResident70",
+          "position": [
+            -19.5,
+            0.04500000178813934,
+            -43.5
+          ],
+          "speed": 0,
+          "waiting": true,
+          "remainingWaypoints": 0,
+          "travel": 0
+        },
+        {
+          "name": "districtCrowdResident71",
+          "role": "CrowdResident71",
+          "position": [
+            42,
+            0.04500000178813934,
+            -54
+          ],
+          "speed": 0,
+          "waiting": true,
+          "remainingWaypoints": 0,
+          "travel": 0
+        },
+        {
+          "name": "districtCrowdResident72",
+          "role": "CrowdResident72",
+          "position": [
+            15,
+            0.04500000178813934,
+            37.5
+          ],
+          "speed": 0,
+          "waiting": true,
+          "remainingWaypoints": 0,
+          "travel": 0
+        },
+        {
+          "name": "districtCrowdResident73",
+          "role": "CrowdResident73",
+          "position": [
+            34.5,
+            0.04500000178813934,
+            -57
+          ],
+          "speed": 0,
+          "waiting": true,
+          "remainingWaypoints": 0,
+          "travel": 0
+        },
+        {
+          "name": "districtCrowdResident74",
+          "role": "CrowdResident74",
+          "position": [
+            12,
+            0.04500000178813934,
+            -22.5
+          ],
+          "speed": 0,
+          "waiting": true,
+          "remainingWaypoints": 0,
+          "travel": 0
+        },
+        {
+          "name": "districtCrowdResident75",
+          "role": "CrowdResident75",
+          "position": [
+            12,
+            0.07500000298023224,
+            85.5
+          ],
+          "speed": 0,
+          "waiting": true,
+          "remainingWaypoints": 0,
+          "travel": 0
+        },
+        {
+          "name": "districtCrowdResident76",
+          "role": "CrowdResident76",
+          "position": [
+            12,
+            0.04500000178813934,
+            -51
+          ],
+          "speed": 0,
+          "waiting": true,
+          "remainingWaypoints": 0,
+          "travel": 0
+        },
+        {
+          "name": "districtCrowdResident77",
+          "role": "CrowdResident77",
+          "position": [
+            -7.5,
+            0.09700000286102295,
+            -18
+          ],
+          "speed": 0,
+          "waiting": true,
+          "remainingWaypoints": 0,
+          "travel": 0
+        },
+        {
+          "name": "districtCrowdResident78",
+          "role": "CrowdResident78",
+          "position": [
+            -22.5,
+            0.04500000178813934,
+            70.5
+          ],
+          "speed": 0,
+          "waiting": true,
+          "remainingWaypoints": 0,
+          "travel": 0
+        },
+        {
+          "name": "districtCrowdResident79",
+          "role": "CrowdResident79",
+          "position": [
+            3,
+            0.04500000178813934,
+            21
+          ],
+          "speed": 0,
+          "waiting": true,
+          "remainingWaypoints": 0,
+          "travel": 0
+        },
+        {
+          "name": "districtCrowdResident80",
+          "role": "CrowdResident80",
+          "position": [
+            -12,
+            0.04500000178813934,
+            43.5
+          ],
+          "speed": 0,
+          "waiting": true,
+          "remainingWaypoints": 0,
+          "travel": 0
+        },
+        {
+          "name": "districtCrowdResident81",
+          "role": "CrowdResident81",
+          "position": [
+            9,
+            0.04500000178813934,
+            -43.5
+          ],
+          "speed": 0,
+          "waiting": true,
+          "remainingWaypoints": 0,
+          "travel": 0
+        },
+        {
+          "name": "districtCrowdResident82",
+          "role": "CrowdResident82",
+          "position": [
+            39,
+            0.04500000178813934,
+            31.5
+          ],
+          "speed": 0,
+          "waiting": true,
+          "remainingWaypoints": 0,
+          "travel": 0
+        },
+        {
+          "name": "districtCrowdResident83",
+          "role": "CrowdResident83",
+          "position": [
+            0,
+            0.04500000178813934,
+            -25.5
+          ],
+          "speed": 0,
+          "waiting": true,
+          "remainingWaypoints": 0,
+          "travel": 0
+        },
+        {
+          "name": "districtCrowdResident84",
+          "role": "CrowdResident84",
+          "position": [
+            13.5,
+            0.04500000178813934,
+            7.5
+          ],
+          "speed": 0,
+          "waiting": true,
+          "remainingWaypoints": 0,
+          "travel": 0
+        },
+        {
+          "name": "districtCrowdResident85",
+          "role": "CrowdResident85",
+          "position": [
+            -3,
+            0.04500000178813934,
+            -57
+          ],
+          "speed": 0,
+          "waiting": true,
+          "remainingWaypoints": 0,
+          "travel": 0
+        },
+        {
+          "name": "districtCrowdResident86",
+          "role": "CrowdResident86",
+          "position": [
+            22.5,
+            0.04500000178813934,
+            64.5
+          ],
+          "speed": 0,
+          "waiting": true,
+          "remainingWaypoints": 0,
+          "travel": 0
+        },
+        {
+          "name": "districtCrowdResident87",
+          "role": "CrowdResident87",
+          "position": [
+            -24,
+            0.04500000178813934,
+            -30
+          ],
+          "speed": 0,
+          "waiting": true,
+          "remainingWaypoints": 0,
+          "travel": 0
+        },
+        {
+          "name": "districtCrowdResident88",
+          "role": "CrowdResident88",
+          "position": [
+            -30,
+            0.04500000178813934,
+            -6
+          ],
+          "speed": 0,
+          "waiting": true,
+          "remainingWaypoints": 0,
+          "travel": 0
+        },
+        {
+          "name": "districtCrowdResident89",
+          "role": "CrowdResident89",
+          "position": [
+            31.5,
+            0.04500000178813934,
+            -18
+          ],
+          "speed": 0,
+          "waiting": true,
+          "remainingWaypoints": 0,
+          "travel": 0
+        },
+        {
+          "name": "districtCrowdResident90",
+          "role": "CrowdResident90",
+          "position": [
+            7.5,
+            0.07500000298023224,
+            58.5
+          ],
+          "speed": 0,
+          "waiting": true,
+          "remainingWaypoints": 0,
+          "travel": 0
+        },
+        {
+          "name": "districtCrowdResident91",
+          "role": "CrowdResident91",
+          "position": [
+            34.5,
+            0.04500000178813934,
+            73.5
+          ],
+          "speed": 0,
+          "waiting": true,
+          "remainingWaypoints": 0,
+          "travel": 0
+        },
+        {
+          "name": "districtCrowdResident92",
+          "role": "CrowdResident92",
+          "position": [
+            28.5,
+            0.04500000178813934,
+            70.5
+          ],
+          "speed": 0,
+          "waiting": true,
+          "remainingWaypoints": 0,
+          "travel": 0
+        },
+        {
+          "name": "districtCrowdResident93",
+          "role": "CrowdResident93",
+          "position": [
+            25.5,
+            0.04500000178813934,
+            12
+          ],
+          "speed": 0,
+          "waiting": true,
+          "remainingWaypoints": 0,
+          "travel": 0
+        },
+        {
+          "name": "districtCrowdResident94",
+          "role": "CrowdResident94",
+          "position": [
+            -3,
+            0.04500000178813934,
+            -61.5
+          ],
+          "speed": 0,
+          "waiting": true,
+          "remainingWaypoints": 0,
+          "travel": 0
+        },
+        {
+          "name": "districtCrowdResident95",
+          "role": "CrowdResident95",
+          "position": [
+            37.5,
+            0.04500000178813934,
+            -63
+          ],
+          "speed": 0,
+          "waiting": true,
+          "remainingWaypoints": 0,
+          "travel": 0
+        },
+        {
+          "name": "districtCrowdResident96",
+          "role": "CrowdResident96",
+          "position": [
+            -18,
+            0.04500000178813934,
+            4.5
+          ],
+          "speed": 0,
+          "waiting": true,
+          "remainingWaypoints": 0,
+          "travel": 0
+        },
+        {
+          "name": "districtCrowdResident97",
+          "role": "CrowdResident97",
+          "position": [
+            -27,
+            0.04500000178813934,
+            31.5
+          ],
+          "speed": 0,
+          "waiting": true,
+          "remainingWaypoints": 0,
+          "travel": 0
+        },
+        {
+          "name": "districtCrowdResident98",
+          "role": "CrowdResident98",
+          "position": [
+            22.5,
+            0.04500000178813934,
+            -43.5
+          ],
+          "speed": 0,
+          "waiting": true,
+          "remainingWaypoints": 0,
+          "travel": 0
+        },
+        {
+          "name": "districtCrowdResident99",
+          "role": "CrowdResident99",
+          "position": [
+            -30,
+            0.04500000178813934,
+            -31.5
+          ],
+          "speed": 0,
+          "waiting": true,
+          "remainingWaypoints": 0,
+          "travel": 0
+        },
+        {
+          "name": "districtCrowdResident100",
+          "role": "CrowdResident100",
+          "position": [
+            0,
+            0.04500000178813934,
+            -43.5
+          ],
+          "speed": 0,
+          "waiting": true,
+          "remainingWaypoints": 0,
+          "travel": 0
+        },
+        {
+          "name": "districtCrowdResident101",
+          "role": "CrowdResident101",
+          "position": [
+            -19.5,
+            0.04500000178813934,
+            57
+          ],
+          "speed": 0,
+          "waiting": true,
+          "remainingWaypoints": 0,
+          "travel": 0
+        },
+        {
+          "name": "districtCrowdResident102",
+          "role": "CrowdResident102",
+          "position": [
+            -1.5,
+            0.1599999964237213,
+            79.5
+          ],
+          "speed": 0,
+          "waiting": true,
+          "remainingWaypoints": 0,
+          "travel": 0
+        },
+        {
+          "name": "districtCrowdResident103",
+          "role": "CrowdResident103",
+          "position": [
+            -9,
+            0.04500000178813934,
+            40.5
+          ],
+          "speed": 0,
+          "waiting": true,
+          "remainingWaypoints": 0,
+          "travel": 0
+        },
+        {
+          "name": "districtCrowdResident104",
+          "role": "CrowdResident104",
+          "position": [
+            1.5,
+            0.1599999964237213,
+            70.5
+          ],
+          "speed": 0,
+          "waiting": true,
+          "remainingWaypoints": 0,
+          "travel": 0
+        },
+        {
+          "name": "districtCrowdResident105",
+          "role": "CrowdResident105",
+          "position": [
+            19.5,
+            0.04500000178813934,
+            -31.5
+          ],
+          "speed": 0,
+          "waiting": true,
+          "remainingWaypoints": 0,
+          "travel": 0
+        },
+        {
+          "name": "districtCrowdResident106",
+          "role": "CrowdResident106",
+          "position": [
+            43.5,
+            0.04500000178813934,
+            -61.5
+          ],
+          "speed": 0,
+          "waiting": true,
+          "remainingWaypoints": 0,
+          "travel": 0
+        },
+        {
+          "name": "districtCrowdResident107",
+          "role": "CrowdResident107",
+          "position": [
+            -30,
+            0.04500000178813934,
+            48
+          ],
+          "speed": 0,
+          "waiting": true,
+          "remainingWaypoints": 0,
+          "travel": 0
+        },
+        {
+          "name": "districtCrowdResident108",
+          "role": "CrowdResident108",
+          "position": [
+            40.5,
+            0.04500000178813934,
+            -64.5
+          ],
+          "speed": 0,
+          "waiting": true,
+          "remainingWaypoints": 0,
+          "travel": 0
+        },
+        {
+          "name": "districtCrowdResident109",
+          "role": "CrowdResident109",
+          "position": [
+            24,
+            0.04500000178813934,
+            28.5
+          ],
+          "speed": 0,
+          "waiting": true,
+          "remainingWaypoints": 0,
+          "travel": 0
+        },
+        {
+          "name": "districtCrowdResident110",
+          "role": "CrowdResident110",
+          "position": [
+            -30,
+            0.04500000178813934,
+            34.5
+          ],
+          "speed": 0,
+          "waiting": true,
+          "remainingWaypoints": 0,
+          "travel": 0
+        },
+        {
+          "name": "districtCrowdResident111",
+          "role": "CrowdResident111",
+          "position": [
+            -33,
+            0.04500000178813934,
+            13.5
+          ],
+          "speed": 0,
+          "waiting": true,
+          "remainingWaypoints": 0,
+          "travel": 0
+        },
+        {
+          "name": "districtCrowdResident112",
+          "role": "CrowdResident112",
+          "position": [
+            -34.5,
+            0.04500000178813934,
+            36
+          ],
+          "speed": 0,
+          "waiting": true,
+          "remainingWaypoints": 0,
+          "travel": 0
+        },
+        {
+          "name": "districtCrowdResident113",
+          "role": "CrowdResident113",
+          "position": [
+            39,
+            0.04500000178813934,
+            -15
+          ],
+          "speed": 0,
+          "waiting": true,
+          "remainingWaypoints": 0,
+          "travel": 0
+        },
+        {
+          "name": "districtCrowdResident114",
+          "role": "CrowdResident114",
+          "position": [
+            28.5,
+            0.04500000178813934,
+            -24
+          ],
+          "speed": 0,
+          "waiting": true,
+          "remainingWaypoints": 0,
+          "travel": 0
+        },
+        {
+          "name": "districtCrowdResident115",
+          "role": "CrowdResident115",
+          "position": [
+            21,
+            0.04500000178813934,
+            -69
+          ],
+          "speed": 0,
+          "waiting": true,
+          "remainingWaypoints": 0,
+          "travel": 0
+        },
+        {
+          "name": "districtCrowdResident116",
+          "role": "CrowdResident116",
+          "position": [
+            -19.5,
+            0.04500000178813934,
+            -24
+          ],
+          "speed": 0,
+          "waiting": true,
+          "remainingWaypoints": 0,
+          "travel": 0
+        },
+        {
+          "name": "districtCrowdResident117",
+          "role": "CrowdResident117",
+          "position": [
+            -36,
+            0.04500000178813934,
+            36
+          ],
+          "speed": 0,
+          "waiting": true,
+          "remainingWaypoints": 0,
+          "travel": 0
+        },
+        {
+          "name": "districtCrowdResident118",
+          "role": "CrowdResident118",
+          "position": [
+            -9,
+            0.09700000286102295,
+            -34.5
+          ],
+          "speed": 0,
+          "waiting": true,
+          "remainingWaypoints": 0,
+          "travel": 0
+        },
+        {
+          "name": "districtCrowdResident119",
+          "role": "CrowdResident119",
+          "position": [
+            4.5,
+            0.04500000178813934,
+            4.5
+          ],
+          "speed": 0,
+          "waiting": true,
+          "remainingWaypoints": 0,
+          "travel": 0
+        },
+        {
+          "name": "districtCrowdResident120",
+          "role": "CrowdResident120",
+          "position": [
+            -21,
+            0.04500000178813934,
+            -34.5
+          ],
+          "speed": 0,
+          "waiting": true,
+          "remainingWaypoints": 0,
+          "travel": 0
+        },
+        {
+          "name": "districtCrowdResident121",
+          "role": "CrowdResident121",
+          "position": [
+            42,
+            0.04500000178813934,
+            63
+          ],
+          "speed": 0,
+          "waiting": true,
+          "remainingWaypoints": 0,
+          "travel": 0
+        },
+        {
+          "name": "districtCrowdResident122",
+          "role": "CrowdResident122",
+          "position": [
+            -21,
+            0.04500000178813934,
+            -45
+          ],
+          "speed": 0,
+          "waiting": true,
+          "remainingWaypoints": 0,
+          "travel": 0
+        },
+        {
+          "name": "districtCrowdResident123",
+          "role": "CrowdResident123",
+          "position": [
+            39,
+            0.04500000178813934,
+            15
+          ],
+          "speed": 0,
+          "waiting": true,
+          "remainingWaypoints": 0,
+          "travel": 0
+        },
+        {
+          "name": "districtCrowdResident124",
+          "role": "CrowdResident124",
+          "position": [
+            12,
+            0.04500000178813934,
+            3
+          ],
+          "speed": 0,
+          "waiting": true,
+          "remainingWaypoints": 0,
+          "travel": 0
+        },
+        {
+          "name": "districtCrowdResident125",
+          "role": "CrowdResident125",
+          "position": [
+            31.5,
+            0.04500000178813934,
+            -51
+          ],
+          "speed": 0,
+          "waiting": true,
+          "remainingWaypoints": 0,
+          "travel": 0
+        },
+        {
+          "name": "districtCrowdResident126",
+          "role": "CrowdResident126",
+          "position": [
+            24,
+            0.04500000178813934,
+            -57
+          ],
+          "speed": 0,
+          "waiting": true,
+          "remainingWaypoints": 0,
+          "travel": 0
+        },
+        {
+          "name": "districtCrowdResident127",
+          "role": "CrowdResident127",
+          "position": [
+            -24,
+            0.04500000178813934,
+            28.5
+          ],
+          "speed": 0,
+          "waiting": true,
+          "remainingWaypoints": 0,
+          "travel": 0
+        },
+        {
+          "name": "districtCrowdResident128",
+          "role": "CrowdResident128",
+          "position": [
+            -6,
+            0.07500000298023224,
+            60
+          ],
+          "speed": 0,
+          "waiting": true,
+          "remainingWaypoints": 0,
+          "travel": 0
+        },
+        {
+          "name": "districtCrowdResident129",
+          "role": "CrowdResident129",
+          "position": [
+            31.5,
+            0.04500000178813934,
+            -40.5
+          ],
+          "speed": 0,
+          "waiting": true,
+          "remainingWaypoints": 0,
+          "travel": 0
+        },
+        {
+          "name": "districtCrowdResident130",
+          "role": "CrowdResident130",
+          "position": [
+            22.5,
+            0.04500000178813934,
+            73.5
+          ],
+          "speed": 0,
+          "waiting": true,
+          "remainingWaypoints": 0,
+          "travel": 0
+        },
+        {
+          "name": "districtCrowdResident131",
+          "role": "CrowdResident131",
+          "position": [
+            12,
+            0.04500000178813934,
+            -37.5
+          ],
+          "speed": 0,
+          "waiting": true,
+          "remainingWaypoints": 0,
+          "travel": 0
+        },
+        {
+          "name": "districtCrowdResident132",
+          "role": "CrowdResident132",
+          "position": [
+            -27,
+            0.04500000178813934,
+            -57
+          ],
+          "speed": 0,
+          "waiting": true,
+          "remainingWaypoints": 0,
+          "travel": 0
+        },
+        {
+          "name": "districtCrowdResident133",
+          "role": "CrowdResident133",
+          "position": [
+            -4.5,
+            0.08500000089406967,
+            82.5
+          ],
+          "speed": 0,
+          "waiting": true,
+          "remainingWaypoints": 0,
+          "travel": 0
+        },
+        {
+          "name": "districtCrowdResident134",
+          "role": "CrowdResident134",
+          "position": [
+            -24,
+            0.04500000178813934,
+            61.5
+          ],
+          "speed": 0,
+          "waiting": true,
+          "remainingWaypoints": 0,
+          "travel": 0
+        },
+        {
+          "name": "districtCrowdResident135",
+          "role": "CrowdResident135",
+          "position": [
+            -3,
+            0.08500000089406967,
+            85.5
+          ],
+          "speed": 0,
+          "waiting": true,
+          "remainingWaypoints": 0,
+          "travel": 0
+        },
+        {
+          "name": "districtCrowdResident136",
+          "role": "CrowdResident136",
+          "position": [
+            -12,
+            0.04500000178813934,
+            -28.5
+          ],
+          "speed": 0,
+          "waiting": true,
+          "remainingWaypoints": 0,
+          "travel": 0
+        },
+        {
+          "name": "districtCrowdResident137",
+          "role": "CrowdResident137",
+          "position": [
+            -7.5,
+            0.09700000286102295,
+            -30
+          ],
+          "speed": 0,
+          "waiting": true,
+          "remainingWaypoints": 0,
+          "travel": 0
+        },
+        {
+          "name": "districtCrowdResident138",
+          "role": "CrowdResident138",
+          "position": [
+            -3,
+            0.09700000286102295,
+            -4.5
+          ],
+          "speed": 0,
+          "waiting": true,
+          "remainingWaypoints": 0,
+          "travel": 0
+        },
+        {
+          "name": "districtCrowdResident139",
+          "role": "CrowdResident139",
+          "position": [
+            -27,
+            0.04500000178813934,
+            28.5
+          ],
+          "speed": 0,
+          "waiting": true,
+          "remainingWaypoints": 0,
+          "travel": 0
+        },
+        {
+          "name": "districtCrowdResident140",
+          "role": "CrowdResident140",
+          "position": [
+            18,
+            0.04500000178813934,
+            64.5
+          ],
+          "speed": 0,
+          "waiting": true,
+          "remainingWaypoints": 0,
+          "travel": 0
+        },
+        {
+          "name": "districtCrowdResident141",
+          "role": "CrowdResident141",
+          "position": [
+            15,
+            0.04500000178813934,
+            -48
+          ],
+          "speed": 0,
+          "waiting": true,
+          "remainingWaypoints": 0,
+          "travel": 0
+        },
+        {
+          "name": "districtCrowdResident142",
+          "role": "CrowdResident142",
+          "position": [
+            -31.5,
+            0.04500000178813934,
+            36
+          ],
+          "speed": 0,
+          "waiting": true,
+          "remainingWaypoints": 0,
+          "travel": 0
+        },
+        {
+          "name": "districtCrowdResident143",
+          "role": "CrowdResident143",
+          "position": [
+            -28.5,
+            0.04500000178813934,
+            -52.5
+          ],
+          "speed": 0,
+          "waiting": true,
+          "remainingWaypoints": 0,
+          "travel": 0
+        },
+        {
+          "name": "districtCrowdResident144",
+          "role": "CrowdResident144",
+          "position": [
+            -36,
+            0.04500000178813934,
+            19.5
+          ],
+          "speed": 0,
+          "waiting": true,
+          "remainingWaypoints": 0,
+          "travel": 0
+        },
+        {
+          "name": "districtCrowdResident145",
+          "role": "CrowdResident145",
+          "position": [
+            1.5,
+            0.08500000089406967,
+            88.5
+          ],
+          "speed": 0,
+          "waiting": true,
+          "remainingWaypoints": 0,
+          "travel": 0
+        },
+        {
+          "name": "districtCrowdResident146",
+          "role": "CrowdResident146",
+          "position": [
+            -34.5,
+            0.04500000178813934,
+            -10.5
+          ],
+          "speed": 0,
+          "waiting": true,
+          "remainingWaypoints": 0,
+          "travel": 0
+        },
+        {
+          "name": "districtCrowdResident147",
+          "role": "CrowdResident147",
+          "position": [
+            -25.5,
+            0.04500000178813934,
+            -15
+          ],
+          "speed": 0,
+          "waiting": true,
+          "remainingWaypoints": 0,
+          "travel": 0
+        },
+        {
+          "name": "districtCrowdResident148",
+          "role": "CrowdResident148",
+          "position": [
+            21,
+            0.04500000178813934,
+            -34.5
+          ],
+          "speed": 0,
+          "waiting": true,
+          "remainingWaypoints": 0,
+          "travel": 0
+        },
+        {
+          "name": "districtCrowdResident149",
+          "role": "CrowdResident149",
+          "position": [
+            -7.5,
+            0.09700000286102295,
+            -1.5
+          ],
+          "speed": 0,
+          "waiting": true,
+          "remainingWaypoints": 0,
+          "travel": 0
+        },
+        {
+          "name": "districtCrowdResident150",
+          "role": "CrowdResident150",
+          "position": [
+            22.5,
+            0.04500000178813934,
+            -39
+          ],
+          "speed": 0,
+          "waiting": true,
+          "remainingWaypoints": 0,
+          "travel": 0
+        },
+        {
+          "name": "districtCrowdResident151",
+          "role": "CrowdResident151",
+          "position": [
+            -16.5,
+            0.04500000178813934,
+            -19.5
+          ],
+          "speed": 0,
+          "waiting": true,
+          "remainingWaypoints": 0,
+          "travel": 0
+        },
+        {
+          "name": "districtCrowdResident152",
+          "role": "CrowdResident152",
+          "position": [
+            39,
+            0.04500000178813934,
+            -49.5
+          ],
+          "speed": 0,
+          "waiting": true,
+          "remainingWaypoints": 0,
+          "travel": 0
+        },
+        {
+          "name": "districtCrowdResident153",
+          "role": "CrowdResident153",
+          "position": [
+            -15,
+            0.04500000178813934,
+            -42
+          ],
+          "speed": 0,
+          "waiting": true,
+          "remainingWaypoints": 0,
+          "travel": 0
+        },
+        {
+          "name": "districtCrowdResident154",
+          "role": "CrowdResident154",
+          "position": [
+            -12,
+            0.07500000298023224,
+            63
+          ],
+          "speed": 0,
+          "waiting": true,
+          "remainingWaypoints": 0,
+          "travel": 0
+        },
+        {
+          "name": "districtCrowdResident155",
+          "role": "CrowdResident155",
+          "position": [
+            -31.5,
+            0.04500000178813934,
+            42
+          ],
+          "speed": 0,
+          "waiting": true,
+          "remainingWaypoints": 0,
+          "travel": 0
+        },
+        {
+          "name": "districtCrowdResident156",
+          "role": "CrowdResident156",
+          "position": [
+            -19.5,
+            0.04500000178813934,
+            -22.5
+          ],
+          "speed": 0,
+          "waiting": true,
+          "remainingWaypoints": 0,
+          "travel": 0
+        },
+        {
+          "name": "districtCrowdResident157",
+          "role": "CrowdResident157",
+          "position": [
+            39,
+            0.04500000178813934,
+            37.5
+          ],
+          "speed": 0,
+          "waiting": true,
+          "remainingWaypoints": 0,
+          "travel": 0
+        },
+        {
+          "name": "districtCrowdResident158",
+          "role": "CrowdResident158",
+          "position": [
+            27,
+            0.04500000178813934,
+            57
+          ],
+          "speed": 0,
+          "waiting": true,
+          "remainingWaypoints": 0,
+          "travel": 0
+        },
+        {
+          "name": "districtCrowdResident159",
+          "role": "CrowdResident159",
+          "position": [
+            6,
+            0.04500000178813934,
+            45
+          ],
+          "speed": 0,
+          "waiting": true,
+          "remainingWaypoints": 0,
+          "travel": 0
+        },
+        {
+          "name": "districtCrowdResident160",
+          "role": "CrowdResident160",
+          "position": [
+            33,
+            0.04500000178813934,
+            -37.5
+          ],
+          "speed": 0,
+          "waiting": true,
+          "remainingWaypoints": 0,
+          "travel": 0
+        },
+        {
+          "name": "districtCrowdResident161",
+          "role": "CrowdResident161",
+          "position": [
+            -10.5,
+            0.07500000298023224,
+            90
+          ],
+          "speed": 0,
+          "waiting": true,
+          "remainingWaypoints": 0,
+          "travel": 0
+        },
+        {
+          "name": "districtCrowdResident162",
+          "role": "CrowdResident162",
+          "position": [
+            27,
+            0.04500000178813934,
+            4.5
+          ],
+          "speed": 0,
+          "waiting": true,
+          "remainingWaypoints": 0,
+          "travel": 0
+        },
+        {
+          "name": "districtCrowdResident163",
+          "role": "CrowdResident163",
+          "position": [
+            -19.5,
+            0.04500000178813934,
+            -48
+          ],
+          "speed": 0,
+          "waiting": true,
+          "remainingWaypoints": 0,
+          "travel": 0
+        },
+        {
+          "name": "districtCrowdResident164",
+          "role": "CrowdResident164",
+          "position": [
+            18,
+            0.04500000178813934,
+            0
+          ],
+          "speed": 0,
+          "waiting": true,
+          "remainingWaypoints": 0,
+          "travel": 0
+        },
+        {
+          "name": "districtCrowdResident165",
+          "role": "CrowdResident165",
+          "position": [
+            10.5,
+            0.04500000178813934,
+            -24
+          ],
+          "speed": 0,
+          "waiting": true,
+          "remainingWaypoints": 0,
+          "travel": 0
+        },
+        {
+          "name": "districtCrowdResident166",
+          "role": "CrowdResident166",
+          "position": [
+            -33,
+            0.04500000178813934,
+            -21
+          ],
+          "speed": 0,
+          "waiting": true,
+          "remainingWaypoints": 0,
+          "travel": 0
+        },
+        {
+          "name": "districtCrowdResident167",
+          "role": "CrowdResident167",
+          "position": [
+            18,
+            0.04500000178813934,
+            18
+          ],
+          "speed": 0,
+          "waiting": true,
+          "remainingWaypoints": 0,
+          "travel": 0
+        },
+        {
+          "name": "districtCrowdResident168",
+          "role": "CrowdResident168",
+          "position": [
+            39,
+            0.04500000178813934,
+            -43.5
+          ],
+          "speed": 0,
+          "waiting": true,
+          "remainingWaypoints": 0,
+          "travel": 0
+        },
+        {
+          "name": "districtCrowdResident169",
+          "role": "CrowdResident169",
+          "position": [
+            22.5,
+            0.04500000178813934,
+            -58.5
+          ],
+          "speed": 0,
+          "waiting": true,
+          "remainingWaypoints": 0,
+          "travel": 0
+        },
+        {
+          "name": "districtCrowdResident170",
+          "role": "CrowdResident170",
+          "position": [
+            -34.5,
+            0.04500000178813934,
+            -57
+          ],
+          "speed": 0,
+          "waiting": true,
+          "remainingWaypoints": 0,
+          "travel": 0
+        },
+        {
+          "name": "districtCrowdResident171",
+          "role": "CrowdResident171",
+          "position": [
+            10.5,
+            0.04500000178813934,
+            6
+          ],
+          "speed": 0,
+          "waiting": true,
+          "remainingWaypoints": 0,
+          "travel": 0
+        },
+        {
+          "name": "districtCrowdResident172",
+          "role": "CrowdResident172",
+          "position": [
+            36,
+            0.04500000178813934,
+            -30
+          ],
+          "speed": 0,
+          "waiting": true,
+          "remainingWaypoints": 0,
+          "travel": 0
+        },
+        {
+          "name": "districtCrowdResident173",
+          "role": "CrowdResident173",
+          "position": [
+            24,
+            0.04500000178813934,
+            -45
+          ],
+          "speed": 0,
+          "waiting": true,
+          "remainingWaypoints": 0,
+          "travel": 0
+        },
+        {
+          "name": "districtCrowdResident174",
+          "role": "CrowdResident174",
+          "position": [
+            21,
+            0.04500000178813934,
+            -7.5
+          ],
+          "speed": 0,
+          "waiting": true,
+          "remainingWaypoints": 0,
+          "travel": 0
+        },
+        {
+          "name": "districtCrowdResident175",
+          "role": "CrowdResident175",
+          "position": [
+            -9,
+            0.04500000178813934,
+            -52.5
+          ],
+          "speed": 0,
+          "waiting": true,
+          "remainingWaypoints": 0,
+          "travel": 0
+        },
+        {
+          "name": "districtCrowdResident176",
+          "role": "CrowdResident176",
+          "position": [
+            -36,
+            0.04500000178813934,
+            -60
+          ],
+          "speed": 0,
+          "waiting": true,
+          "remainingWaypoints": 0,
+          "travel": 0
+        },
+        {
+          "name": "districtCrowdResident177",
+          "role": "CrowdResident177",
+          "position": [
+            -33,
+            0.04500000178813934,
+            -25.5
+          ],
+          "speed": 0,
+          "waiting": true,
+          "remainingWaypoints": 0,
+          "travel": 0
+        },
+        {
+          "name": "districtCrowdResident178",
+          "role": "CrowdResident178",
+          "position": [
+            19.5,
+            0.04500000178813934,
+            72
+          ],
+          "speed": 0,
+          "waiting": true,
+          "remainingWaypoints": 0,
+          "travel": 0
+        },
+        {
+          "name": "districtCrowdResident179",
+          "role": "CrowdResident179",
+          "position": [
+            16.5,
+            0.04500000178813934,
+            -30
+          ],
+          "speed": 0,
+          "waiting": true,
+          "remainingWaypoints": 0,
+          "travel": 0
+        }
+      ]
+    },
+    "navigation": {
+      "houses": 14,
+      "nodes": 4972,
+      "obstacles": 38,
+      "spawns": [
+        [
+          -31,
+          -49
+        ],
+        [
+          -25,
+          -26
+        ],
+        [
+          15,
+          -15
+        ],
+        [
+          -18,
+          23
+        ],
+        [
+          7,
+          55
+        ],
+        [
+          -8,
+          82
+        ]
+      ]
+    },
+    "observer": {
+      "flyKey": "Hold F with movement; release to land",
+      "state": {
+        "position": [
+          -6.08,
+          1.52,
+          -16.4
+        ],
+        "ground": 0.052,
+        "flightHeld": false
+      }
+    }
+  },
+  "peopleMaterials": {
+    "id": "hero-people-materials-v1",
+    "geometryChanged": false,
+    "textureCount": 6,
+    "bindings": [
+      {
+        "family": "skin",
+        "alphaTest": false,
+        "normalStrength": 0.32,
+        "sheen": 0,
+        "anisotropy": 0,
+        "albedoSrgb": true,
+        "normalLinear": true
+      },
+      {
+        "family": "hair",
+        "alphaTest": false,
+        "normalStrength": 0.65,
+        "sheen": 0,
+        "anisotropy": 0,
+        "albedoSrgb": true,
+        "normalLinear": true
+      },
+      {
+        "family": "linen",
+        "alphaTest": false,
+        "normalStrength": 0.35,
+        "sheen": 0,
+        "anisotropy": 0,
+        "albedoSrgb": true,
+        "normalLinear": true
+      },
+      {
+        "family": "skin",
+        "alphaTest": false,
+        "normalStrength": 0.32,
+        "sheen": 0,
+        "anisotropy": 0,
+        "albedoSrgb": true,
+        "normalLinear": true
+      },
+      {
+        "family": "hair",
+        "alphaTest": false,
+        "normalStrength": 0.65,
+        "sheen": 0,
+        "anisotropy": 0,
+        "albedoSrgb": true,
+        "normalLinear": true
+      },
+      {
+        "family": "linen",
+        "alphaTest": false,
+        "normalStrength": 0.35,
+        "sheen": 0,
+        "anisotropy": 0,
+        "albedoSrgb": true,
+        "normalLinear": true
+      }
+    ]
+  },
+  "contactPolish": {
+    "distanceMeters": 0.4,
+    "resolution": 1024,
+    "maxIndirectAttenuation": 0.14,
+    "affects": "existing linear sky/bounce only",
+    "geometryAndUvsChanged": false,
+    "movingActorsBaked": false
+  },
+  "contactShadows": {
+    "mode": "human-contact",
+    "extraPasses": 0,
+    "staticNormalBias": 0.035,
+    "humanNormalBias": 0.012,
+    "humanDepthBias": 0.00025
+  },
+  "workerInteraction": null,
+  "heroPeople": 180,
+  "heroPeopleSource": "CC0 MakeHuman-derived anatomy; project-authored linen",
+  "heroInteractions": [
+    {
+      "root": "glbAnimatedStreetActors-actorHeroCarrier",
+      "toolAttached": false,
+      "workBlockRetained": false
+    },
+    {
+      "root": "glbAnimatedStreetActors-actorHeroStoneWorker",
+      "toolAttached": true,
+      "workBlockRetained": true
+    },
+    {
+      "root": "glbAnimatedStreetActors-actorHeroStreetWalker",
+      "toolAttached": false,
+      "workBlockRetained": false
+    },
+    {
+      "root": "districtResident0",
+      "toolAttached": false,
+      "workBlockRetained": false
+    },
+    {
+      "root": "districtResident1",
+      "toolAttached": false,
+      "workBlockRetained": false
+    },
+    {
+      "root": "districtResident2",
+      "toolAttached": false,
+      "workBlockRetained": false
+    },
+    {
+      "root": "districtResident3",
+      "toolAttached": false,
+      "workBlockRetained": false
+    },
+    {
+      "root": "districtResident4",
+      "toolAttached": false,
+      "workBlockRetained": false
+    },
+    {
+      "root": "districtResident5",
+      "toolAttached": false,
+      "workBlockRetained": false
+    },
+    {
+      "root": "districtCrowdResident9",
+      "toolAttached": false,
+      "workBlockRetained": false
+    },
+    {
+      "root": "districtCrowdResident10",
+      "toolAttached": false,
+      "workBlockRetained": false
+    },
+    {
+      "root": "districtCrowdResident11",
+      "toolAttached": false,
+      "workBlockRetained": false
+    },
+    {
+      "root": "districtCrowdResident12",
+      "toolAttached": false,
+      "workBlockRetained": false
+    },
+    {
+      "root": "districtCrowdResident13",
+      "toolAttached": false,
+      "workBlockRetained": false
+    },
+    {
+      "root": "districtCrowdResident14",
+      "toolAttached": false,
+      "workBlockRetained": false
+    },
+    {
+      "root": "districtCrowdResident15",
+      "toolAttached": false,
+      "workBlockRetained": false
+    },
+    {
+      "root": "districtCrowdResident16",
+      "toolAttached": false,
+      "workBlockRetained": false
+    },
+    {
+      "root": "districtCrowdResident17",
+      "toolAttached": false,
+      "workBlockRetained": false
+    },
+    {
+      "root": "districtCrowdResident18",
+      "toolAttached": false,
+      "workBlockRetained": false
+    },
+    {
+      "root": "districtCrowdResident19",
+      "toolAttached": false,
+      "workBlockRetained": false
+    },
+    {
+      "root": "districtCrowdResident20",
+      "toolAttached": false,
+      "workBlockRetained": false
+    },
+    {
+      "root": "districtCrowdResident21",
+      "toolAttached": false,
+      "workBlockRetained": false
+    },
+    {
+      "root": "districtCrowdResident22",
+      "toolAttached": false,
+      "workBlockRetained": false
+    },
+    {
+      "root": "districtCrowdResident23",
+      "toolAttached": false,
+      "workBlockRetained": false
+    },
+    {
+      "root": "districtCrowdResident24",
+      "toolAttached": false,
+      "workBlockRetained": false
+    },
+    {
+      "root": "districtCrowdResident25",
+      "toolAttached": false,
+      "workBlockRetained": false
+    },
+    {
+      "root": "districtCrowdResident26",
+      "toolAttached": false,
+      "workBlockRetained": false
+    },
+    {
+      "root": "districtCrowdResident27",
+      "toolAttached": false,
+      "workBlockRetained": false
+    },
+    {
+      "root": "districtCrowdResident28",
+      "toolAttached": false,
+      "workBlockRetained": false
+    },
+    {
+      "root": "districtCrowdResident29",
+      "toolAttached": false,
+      "workBlockRetained": false
+    },
+    {
+      "root": "districtCrowdResident30",
+      "toolAttached": false,
+      "workBlockRetained": false
+    },
+    {
+      "root": "districtCrowdResident31",
+      "toolAttached": false,
+      "workBlockRetained": false
+    },
+    {
+      "root": "districtCrowdResident32",
+      "toolAttached": false,
+      "workBlockRetained": false
+    },
+    {
+      "root": "districtCrowdResident33",
+      "toolAttached": false,
+      "workBlockRetained": false
+    },
+    {
+      "root": "districtCrowdResident34",
+      "toolAttached": false,
+      "workBlockRetained": false
+    },
+    {
+      "root": "districtCrowdResident35",
+      "toolAttached": false,
+      "workBlockRetained": false
+    },
+    {
+      "root": "districtCrowdResident36",
+      "toolAttached": false,
+      "workBlockRetained": false
+    },
+    {
+      "root": "districtCrowdResident37",
+      "toolAttached": false,
+      "workBlockRetained": false
+    },
+    {
+      "root": "districtCrowdResident38",
+      "toolAttached": false,
+      "workBlockRetained": false
+    },
+    {
+      "root": "districtCrowdResident39",
+      "toolAttached": false,
+      "workBlockRetained": false
+    },
+    {
+      "root": "districtCrowdResident40",
+      "toolAttached": false,
+      "workBlockRetained": false
+    },
+    {
+      "root": "districtCrowdResident41",
+      "toolAttached": false,
+      "workBlockRetained": false
+    },
+    {
+      "root": "districtCrowdResident42",
+      "toolAttached": false,
+      "workBlockRetained": false
+    },
+    {
+      "root": "districtCrowdResident43",
+      "toolAttached": false,
+      "workBlockRetained": false
+    },
+    {
+      "root": "districtCrowdResident44",
+      "toolAttached": false,
+      "workBlockRetained": false
+    },
+    {
+      "root": "districtCrowdResident45",
+      "toolAttached": false,
+      "workBlockRetained": false
+    },
+    {
+      "root": "districtCrowdResident46",
+      "toolAttached": false,
+      "workBlockRetained": false
+    },
+    {
+      "root": "districtCrowdResident47",
+      "toolAttached": false,
+      "workBlockRetained": false
+    },
+    {
+      "root": "districtCrowdResident48",
+      "toolAttached": false,
+      "workBlockRetained": false
+    },
+    {
+      "root": "districtCrowdResident49",
+      "toolAttached": false,
+      "workBlockRetained": false
+    },
+    {
+      "root": "districtCrowdResident50",
+      "toolAttached": false,
+      "workBlockRetained": false
+    },
+    {
+      "root": "districtCrowdResident51",
+      "toolAttached": false,
+      "workBlockRetained": false
+    },
+    {
+      "root": "districtCrowdResident52",
+      "toolAttached": false,
+      "workBlockRetained": false
+    },
+    {
+      "root": "districtCrowdResident53",
+      "toolAttached": false,
+      "workBlockRetained": false
+    },
+    {
+      "root": "districtCrowdResident54",
+      "toolAttached": false,
+      "workBlockRetained": false
+    },
+    {
+      "root": "districtCrowdResident55",
+      "toolAttached": false,
+      "workBlockRetained": false
+    },
+    {
+      "root": "districtCrowdResident56",
+      "toolAttached": false,
+      "workBlockRetained": false
+    },
+    {
+      "root": "districtCrowdResident57",
+      "toolAttached": false,
+      "workBlockRetained": false
+    },
+    {
+      "root": "districtCrowdResident58",
+      "toolAttached": false,
+      "workBlockRetained": false
+    },
+    {
+      "root": "districtCrowdResident59",
+      "toolAttached": false,
+      "workBlockRetained": false
+    },
+    {
+      "root": "districtCrowdResident60",
+      "toolAttached": false,
+      "workBlockRetained": false
+    },
+    {
+      "root": "districtCrowdResident61",
+      "toolAttached": false,
+      "workBlockRetained": false
+    },
+    {
+      "root": "districtCrowdResident62",
+      "toolAttached": false,
+      "workBlockRetained": false
+    },
+    {
+      "root": "districtCrowdResident63",
+      "toolAttached": false,
+      "workBlockRetained": false
+    },
+    {
+      "root": "districtCrowdResident64",
+      "toolAttached": false,
+      "workBlockRetained": false
+    },
+    {
+      "root": "districtCrowdResident65",
+      "toolAttached": false,
+      "workBlockRetained": false
+    },
+    {
+      "root": "districtCrowdResident66",
+      "toolAttached": false,
+      "workBlockRetained": false
+    },
+    {
+      "root": "districtCrowdResident67",
+      "toolAttached": false,
+      "workBlockRetained": false
+    },
+    {
+      "root": "districtCrowdResident68",
+      "toolAttached": false,
+      "workBlockRetained": false
+    },
+    {
+      "root": "districtCrowdResident69",
+      "toolAttached": false,
+      "workBlockRetained": false
+    },
+    {
+      "root": "districtCrowdResident70",
+      "toolAttached": false,
+      "workBlockRetained": false
+    },
+    {
+      "root": "districtCrowdResident71",
+      "toolAttached": false,
+      "workBlockRetained": false
+    },
+    {
+      "root": "districtCrowdResident72",
+      "toolAttached": false,
+      "workBlockRetained": false
+    },
+    {
+      "root": "districtCrowdResident73",
+      "toolAttached": false,
+      "workBlockRetained": false
+    },
+    {
+      "root": "districtCrowdResident74",
+      "toolAttached": false,
+      "workBlockRetained": false
+    },
+    {
+      "root": "districtCrowdResident75",
+      "toolAttached": false,
+      "workBlockRetained": false
+    },
+    {
+      "root": "districtCrowdResident76",
+      "toolAttached": false,
+      "workBlockRetained": false
+    },
+    {
+      "root": "districtCrowdResident77",
+      "toolAttached": false,
+      "workBlockRetained": false
+    },
+    {
+      "root": "districtCrowdResident78",
+      "toolAttached": false,
+      "workBlockRetained": false
+    },
+    {
+      "root": "districtCrowdResident79",
+      "toolAttached": false,
+      "workBlockRetained": false
+    },
+    {
+      "root": "districtCrowdResident80",
+      "toolAttached": false,
+      "workBlockRetained": false
+    },
+    {
+      "root": "districtCrowdResident81",
+      "toolAttached": false,
+      "workBlockRetained": false
+    },
+    {
+      "root": "districtCrowdResident82",
+      "toolAttached": false,
+      "workBlockRetained": false
+    },
+    {
+      "root": "districtCrowdResident83",
+      "toolAttached": false,
+      "workBlockRetained": false
+    },
+    {
+      "root": "districtCrowdResident84",
+      "toolAttached": false,
+      "workBlockRetained": false
+    },
+    {
+      "root": "districtCrowdResident85",
+      "toolAttached": false,
+      "workBlockRetained": false
+    },
+    {
+      "root": "districtCrowdResident86",
+      "toolAttached": false,
+      "workBlockRetained": false
+    },
+    {
+      "root": "districtCrowdResident87",
+      "toolAttached": false,
+      "workBlockRetained": false
+    },
+    {
+      "root": "districtCrowdResident88",
+      "toolAttached": false,
+      "workBlockRetained": false
+    },
+    {
+      "root": "districtCrowdResident89",
+      "toolAttached": false,
+      "workBlockRetained": false
+    },
+    {
+      "root": "districtCrowdResident90",
+      "toolAttached": false,
+      "workBlockRetained": false
+    },
+    {
+      "root": "districtCrowdResident91",
+      "toolAttached": false,
+      "workBlockRetained": false
+    },
+    {
+      "root": "districtCrowdResident92",
+      "toolAttached": false,
+      "workBlockRetained": false
+    },
+    {
+      "root": "districtCrowdResident93",
+      "toolAttached": false,
+      "workBlockRetained": false
+    },
+    {
+      "root": "districtCrowdResident94",
+      "toolAttached": false,
+      "workBlockRetained": false
+    },
+    {
+      "root": "districtCrowdResident95",
+      "toolAttached": false,
+      "workBlockRetained": false
+    },
+    {
+      "root": "districtCrowdResident96",
+      "toolAttached": false,
+      "workBlockRetained": false
+    },
+    {
+      "root": "districtCrowdResident97",
+      "toolAttached": false,
+      "workBlockRetained": false
+    },
+    {
+      "root": "districtCrowdResident98",
+      "toolAttached": false,
+      "workBlockRetained": false
+    },
+    {
+      "root": "districtCrowdResident99",
+      "toolAttached": false,
+      "workBlockRetained": false
+    },
+    {
+      "root": "districtCrowdResident100",
+      "toolAttached": false,
+      "workBlockRetained": false
+    },
+    {
+      "root": "districtCrowdResident101",
+      "toolAttached": false,
+      "workBlockRetained": false
+    },
+    {
+      "root": "districtCrowdResident102",
+      "toolAttached": false,
+      "workBlockRetained": false
+    },
+    {
+      "root": "districtCrowdResident103",
+      "toolAttached": false,
+      "workBlockRetained": false
+    },
+    {
+      "root": "districtCrowdResident104",
+      "toolAttached": false,
+      "workBlockRetained": false
+    },
+    {
+      "root": "districtCrowdResident105",
+      "toolAttached": false,
+      "workBlockRetained": false
+    },
+    {
+      "root": "districtCrowdResident106",
+      "toolAttached": false,
+      "workBlockRetained": false
+    },
+    {
+      "root": "districtCrowdResident107",
+      "toolAttached": false,
+      "workBlockRetained": false
+    },
+    {
+      "root": "districtCrowdResident108",
+      "toolAttached": false,
+      "workBlockRetained": false
+    },
+    {
+      "root": "districtCrowdResident109",
+      "toolAttached": false,
+      "workBlockRetained": false
+    },
+    {
+      "root": "districtCrowdResident110",
+      "toolAttached": false,
+      "workBlockRetained": false
+    },
+    {
+      "root": "districtCrowdResident111",
+      "toolAttached": false,
+      "workBlockRetained": false
+    },
+    {
+      "root": "districtCrowdResident112",
+      "toolAttached": false,
+      "workBlockRetained": false
+    },
+    {
+      "root": "districtCrowdResident113",
+      "toolAttached": false,
+      "workBlockRetained": false
+    },
+    {
+      "root": "districtCrowdResident114",
+      "toolAttached": false,
+      "workBlockRetained": false
+    },
+    {
+      "root": "districtCrowdResident115",
+      "toolAttached": false,
+      "workBlockRetained": false
+    },
+    {
+      "root": "districtCrowdResident116",
+      "toolAttached": false,
+      "workBlockRetained": false
+    },
+    {
+      "root": "districtCrowdResident117",
+      "toolAttached": false,
+      "workBlockRetained": false
+    },
+    {
+      "root": "districtCrowdResident118",
+      "toolAttached": false,
+      "workBlockRetained": false
+    },
+    {
+      "root": "districtCrowdResident119",
+      "toolAttached": false,
+      "workBlockRetained": false
+    },
+    {
+      "root": "districtCrowdResident120",
+      "toolAttached": false,
+      "workBlockRetained": false
+    },
+    {
+      "root": "districtCrowdResident121",
+      "toolAttached": false,
+      "workBlockRetained": false
+    },
+    {
+      "root": "districtCrowdResident122",
+      "toolAttached": false,
+      "workBlockRetained": false
+    },
+    {
+      "root": "districtCrowdResident123",
+      "toolAttached": false,
+      "workBlockRetained": false
+    },
+    {
+      "root": "districtCrowdResident124",
+      "toolAttached": false,
+      "workBlockRetained": false
+    },
+    {
+      "root": "districtCrowdResident125",
+      "toolAttached": false,
+      "workBlockRetained": false
+    },
+    {
+      "root": "districtCrowdResident126",
+      "toolAttached": false,
+      "workBlockRetained": false
+    },
+    {
+      "root": "districtCrowdResident127",
+      "toolAttached": false,
+      "workBlockRetained": false
+    },
+    {
+      "root": "districtCrowdResident128",
+      "toolAttached": false,
+      "workBlockRetained": false
+    },
+    {
+      "root": "districtCrowdResident129",
+      "toolAttached": false,
+      "workBlockRetained": false
+    },
+    {
+      "root": "districtCrowdResident130",
+      "toolAttached": false,
+      "workBlockRetained": false
+    },
+    {
+      "root": "districtCrowdResident131",
+      "toolAttached": false,
+      "workBlockRetained": false
+    },
+    {
+      "root": "districtCrowdResident132",
+      "toolAttached": false,
+      "workBlockRetained": false
+    },
+    {
+      "root": "districtCrowdResident133",
+      "toolAttached": false,
+      "workBlockRetained": false
+    },
+    {
+      "root": "districtCrowdResident134",
+      "toolAttached": false,
+      "workBlockRetained": false
+    },
+    {
+      "root": "districtCrowdResident135",
+      "toolAttached": false,
+      "workBlockRetained": false
+    },
+    {
+      "root": "districtCrowdResident136",
+      "toolAttached": false,
+      "workBlockRetained": false
+    },
+    {
+      "root": "districtCrowdResident137",
+      "toolAttached": false,
+      "workBlockRetained": false
+    },
+    {
+      "root": "districtCrowdResident138",
+      "toolAttached": false,
+      "workBlockRetained": false
+    },
+    {
+      "root": "districtCrowdResident139",
+      "toolAttached": false,
+      "workBlockRetained": false
+    },
+    {
+      "root": "districtCrowdResident140",
+      "toolAttached": false,
+      "workBlockRetained": false
+    },
+    {
+      "root": "districtCrowdResident141",
+      "toolAttached": false,
+      "workBlockRetained": false
+    },
+    {
+      "root": "districtCrowdResident142",
+      "toolAttached": false,
+      "workBlockRetained": false
+    },
+    {
+      "root": "districtCrowdResident143",
+      "toolAttached": false,
+      "workBlockRetained": false
+    },
+    {
+      "root": "districtCrowdResident144",
+      "toolAttached": false,
+      "workBlockRetained": false
+    },
+    {
+      "root": "districtCrowdResident145",
+      "toolAttached": false,
+      "workBlockRetained": false
+    },
+    {
+      "root": "districtCrowdResident146",
+      "toolAttached": false,
+      "workBlockRetained": false
+    },
+    {
+      "root": "districtCrowdResident147",
+      "toolAttached": false,
+      "workBlockRetained": false
+    },
+    {
+      "root": "districtCrowdResident148",
+      "toolAttached": false,
+      "workBlockRetained": false
+    },
+    {
+      "root": "districtCrowdResident149",
+      "toolAttached": false,
+      "workBlockRetained": false
+    },
+    {
+      "root": "districtCrowdResident150",
+      "toolAttached": false,
+      "workBlockRetained": false
+    },
+    {
+      "root": "districtCrowdResident151",
+      "toolAttached": false,
+      "workBlockRetained": false
+    },
+    {
+      "root": "districtCrowdResident152",
+      "toolAttached": false,
+      "workBlockRetained": false
+    },
+    {
+      "root": "districtCrowdResident153",
+      "toolAttached": false,
+      "workBlockRetained": false
+    },
+    {
+      "root": "districtCrowdResident154",
+      "toolAttached": false,
+      "workBlockRetained": false
+    },
+    {
+      "root": "districtCrowdResident155",
+      "toolAttached": false,
+      "workBlockRetained": false
+    },
+    {
+      "root": "districtCrowdResident156",
+      "toolAttached": false,
+      "workBlockRetained": false
+    },
+    {
+      "root": "districtCrowdResident157",
+      "toolAttached": false,
+      "workBlockRetained": false
+    },
+    {
+      "root": "districtCrowdResident158",
+      "toolAttached": false,
+      "workBlockRetained": false
+    },
+    {
+      "root": "districtCrowdResident159",
+      "toolAttached": false,
+      "workBlockRetained": false
+    },
+    {
+      "root": "districtCrowdResident160",
+      "toolAttached": false,
+      "workBlockRetained": false
+    },
+    {
+      "root": "districtCrowdResident161",
+      "toolAttached": false,
+      "workBlockRetained": false
+    },
+    {
+      "root": "districtCrowdResident162",
+      "toolAttached": false,
+      "workBlockRetained": false
+    },
+    {
+      "root": "districtCrowdResident163",
+      "toolAttached": false,
+      "workBlockRetained": false
+    },
+    {
+      "root": "districtCrowdResident164",
+      "toolAttached": false,
+      "workBlockRetained": false
+    },
+    {
+      "root": "districtCrowdResident165",
+      "toolAttached": false,
+      "workBlockRetained": false
+    },
+    {
+      "root": "districtCrowdResident166",
+      "toolAttached": false,
+      "workBlockRetained": false
+    },
+    {
+      "root": "districtCrowdResident167",
+      "toolAttached": false,
+      "workBlockRetained": false
+    },
+    {
+      "root": "districtCrowdResident168",
+      "toolAttached": false,
+      "workBlockRetained": false
+    },
+    {
+      "root": "districtCrowdResident169",
+      "toolAttached": false,
+      "workBlockRetained": false
+    },
+    {
+      "root": "districtCrowdResident170",
+      "toolAttached": false,
+      "workBlockRetained": false
+    },
+    {
+      "root": "districtCrowdResident171",
+      "toolAttached": false,
+      "workBlockRetained": false
+    },
+    {
+      "root": "districtCrowdResident172",
+      "toolAttached": false,
+      "workBlockRetained": false
+    },
+    {
+      "root": "districtCrowdResident173",
+      "toolAttached": false,
+      "workBlockRetained": false
+    },
+    {
+      "root": "districtCrowdResident174",
+      "toolAttached": false,
+      "workBlockRetained": false
+    },
+    {
+      "root": "districtCrowdResident175",
+      "toolAttached": false,
+      "workBlockRetained": false
+    },
+    {
+      "root": "districtCrowdResident176",
+      "toolAttached": false,
+      "workBlockRetained": false
+    },
+    {
+      "root": "districtCrowdResident177",
+      "toolAttached": false,
+      "workBlockRetained": false
+    },
+    {
+      "root": "districtCrowdResident178",
+      "toolAttached": false,
+      "workBlockRetained": false
+    },
+    {
+      "root": "districtCrowdResident179",
+      "toolAttached": false,
+      "workBlockRetained": false
+    }
+  ],
+  "estimatedTextureMiB": 386.52026367187506,
+  "textures": 109,
+  "textureErrors": [],
+  "renderWidth": 1280,
+  "renderHeight": 720,
+  "camera": [
+    -6.08,
+    1.52,
+    -16.4
+  ],
+  "animationSeconds": 2,
+  "groundContacts": [
+    {
+      "name": "heroPerson-Carrier-foot.L",
+      "planted": true,
+      "placement": 1,
+      "error": 0.000002046510560404586,
+      "position": [
+        -6.139620304107666,
+        0.13117925822734833,
+        20.292266845703125
+      ],
+      "animationPosition": [
+        -6.139620304107666,
+        0.10263759642839432,
+        20.292264938354492
+      ],
+      "target": [
+        -6.139620304107666,
+        0.13118,
+        20.292264938354492
+      ],
+      "ankleRoll": 0,
+      "soleNormal": [
+        -3.693705439056317e-9,
+        0.9999999999999998,
+        -1.7897030295317694e-8
+      ],
+      "groundNormal": [
+        0,
+        1,
+        0
+      ]
+    },
+    {
+      "name": "heroPerson-Carrier-foot.R",
+      "planted": true,
+      "placement": 1,
+      "error": 0.000002046510560404586,
+      "position": [
+        -5.795316219329834,
+        0.13117925822734833,
+        20.292266845703125
+      ],
+      "animationPosition": [
+        -5.795316219329834,
+        0.10263759642839432,
+        20.292264938354492
+      ],
+      "target": [
+        -5.795316219329834,
+        0.13118,
+        20.292264938354492
+      ],
+      "ankleRoll": 0,
+      "soleNormal": [
+        8.424767630140858e-10,
+        0.9999999999999989,
+        -4.3243070367404685e-8
+      ],
+      "groundNormal": [
+        0,
+        1,
+        0
+      ]
+    },
+    {
+      "name": "heroPerson-StoneWorker-foot.L",
+      "planted": true,
+      "placement": 1,
+      "error": 0.00000772057904393729,
+      "position": [
+        -9.240646362304688,
+        0.12303662300109863,
+        7.520237445831299
+      ],
+      "animationPosition": [
+        -9.240644454956055,
+        -0.01696382649242878,
+        7.520230770111084
+      ],
+      "target": [
+        -9.240644454956055,
+        0.12303999999999998,
+        7.520230770111084
+      ],
+      "ankleRoll": 0,
+      "soleNormal": [
+        -3.8223953596304465e-8,
+        0.9999999999999992,
+        1.1734128634968429e-8
+      ],
+      "groundNormal": [
+        0,
+        1,
+        0
+      ]
+    },
+    {
+      "name": "heroPerson-StoneWorker-foot.R",
+      "planted": true,
+      "placement": 1,
+      "error": 0.000007967618664773508,
+      "position": [
+        -8.909438133239746,
+        0.12303636223077774,
+        7.723873615264893
+      ],
+      "animationPosition": [
+        -8.909433364868164,
+        -0.016963928937911987,
+        7.723868370056152
+      ],
+      "target": [
+        -8.909433364868164,
+        0.12303999999999998,
+        7.723868370056152
+      ],
+      "ankleRoll": 0,
+      "soleNormal": [
+        3.397077945694109e-8,
+        0.9999999999999994,
+        4.4567140519041975e-9
+      ],
+      "groundNormal": [
+        0,
+        1,
+        0
+      ]
+    },
+    {
+      "name": "heroPerson-StreetWalker-foot.L",
+      "planted": true,
+      "placement": 1,
+      "error": 0.0000039387243817370325,
+      "position": [
+        -3.3564882278442383,
+        0.12303796410560608,
+        5.0436930656433105
+      ],
+      "animationPosition": [
+        -3.35648775100708,
+        0.09849068522453308,
+        5.043689727783203
+      ],
+      "target": [
+        -3.35648775100708,
+        0.12303999999999998,
+        5.043689727783203
+      ],
+      "ankleRoll": 0,
+      "soleNormal": [
+        -6.244777807551768e-9,
+        0.9999999999999987,
+        -5.0117142833022814e-8
+      ],
+      "groundNormal": [
+        0,
+        1,
+        0
+      ]
+    },
+    {
+      "name": "heroPerson-StreetWalker-foot.R",
+      "planted": true,
+      "placement": 1,
+      "error": 0.000003945086462668613,
+      "position": [
+        -2.9676835536956787,
+        0.1230378970503807,
+        5.0436930656433105
+      ],
+      "animationPosition": [
+        -2.9676835536956787,
+        0.0984906554222107,
+        5.043689727783203
+      ],
+      "target": [
+        -2.9676835536956787,
+        0.12303999999999998,
+        5.043689727783203
+      ],
+      "ankleRoll": 0,
+      "soleNormal": [
+        3.985582697767327e-9,
+        1,
+        -7.12237764515331e-9
+      ],
+      "groundNormal": [
+        0,
+        1,
+        0
+      ]
+    },
+    {
+      "name": "heroPerson-Resident0-foot.L",
+      "planted": true,
+      "placement": 1,
+      "error": 0.0000010458547065249064,
+      "position": [
+        -31.628583908081055,
+        0.07103994488716125,
+        -49.47770309448242
+      ],
+      "animationPosition": [
+        -31.65445327758789,
+        0.07433124631643295,
+        -49.47366714477539
+      ],
+      "target": [
+        -31.628583714016713,
+        0.07103999999999999,
+        -49.47770206826915
+      ],
+      "ankleRoll": 0,
+      "soleNormal": [
+        -2.4705926648606763e-9,
+        0.9999999999999998,
+        -2.5690123323447935e-8
+      ],
+      "groundNormal": [
+        0,
+        1,
+        0
+      ]
+    },
+    {
+      "name": "heroPerson-Resident0-foot.R",
+      "planted": true,
+      "placement": 1,
+      "error": 0.0000010458547065249064,
+      "position": [
+        -31.371416091918945,
+        0.07103994488716125,
+        -49.47770309448242
+      ],
+      "animationPosition": [
+        -31.34554672241211,
+        0.07433124631643295,
+        -49.47366714477539
+      ],
+      "target": [
+        -31.371416285983287,
+        0.07103999999999999,
+        -49.47770206826915
+      ],
+      "ankleRoll": 0,
+      "soleNormal": [
+        2.4705926648606763e-9,
+        0.9999999999999998,
+        -2.5690123323447935e-8
+      ],
+      "groundNormal": [
+        0,
+        1,
+        0
+      ]
+    },
+    {
+      "name": "heroPerson-Resident1-foot.L",
+      "planted": true,
+      "placement": 1,
+      "error": 0.00399727078437806,
+      "position": [
+        -25.606569290161133,
+        0.07503727078437805,
+        -25.507034301757812
+      ],
+      "animationPosition": [
+        -25.69440269470215,
+        0.08103612065315247,
+        -25.486726760864258
+      ],
+      "target": [
+        -25.606569290161133,
+        0.07103999999999999,
+        -25.507034301757812
+      ],
+      "ankleRoll": 0,
+      "soleNormal": [
+        1.740593460804282e-9,
+        1,
+        1.006845226815502e-9
+      ],
+      "groundNormal": [
+        0,
+        1,
+        0
+      ]
+    },
+    {
+      "name": "heroPerson-Resident1-foot.R",
+      "planted": true,
+      "placement": 1,
+      "error": 0.003997315487861641,
+      "position": [
+        -25.393430709838867,
+        0.07503731548786163,
+        -25.507034301757812
+      ],
+      "animationPosition": [
+        -25.30559730529785,
+        0.08103609085083008,
+        -25.486726760864258
+      ],
+      "target": [
+        -25.393430709838867,
+        0.07103999999999999,
+        -25.507034301757812
+      ],
+      "ankleRoll": 0,
+      "soleNormal": [
+        -5.356132637708707e-9,
+        0.9999999999999997,
+        -2.4216288583441627e-8
+      ],
+      "groundNormal": [
+        0,
+        1,
+        0
+      ]
+    },
+    {
+      "name": "heroPerson-Resident2-foot.L",
+      "planted": true,
+      "placement": 1,
+      "error": 6.116008405978082e-7,
+      "position": [
+        14.871417045593262,
+        0.07103998214006424,
+        -14.977705001831055
+      ],
+      "animationPosition": [
+        14.84554672241211,
+        0.07433124631643295,
+        -14.97367000579834
+      ],
+      "target": [
+        14.871416501441564,
+        0.07103999999999999,
+        -14.977705280462605
+      ],
+      "ankleRoll": 0,
+      "soleNormal": [
+        3.799807841913641e-9,
+        1,
+        -1.7550550276346705e-9
+      ],
+      "groundNormal": [
+        0,
+        1,
+        0
+      ]
+    },
+    {
+      "name": "heroPerson-Resident2-foot.R",
+      "planted": true,
+      "placement": 1,
+      "error": 6.116008405978082e-7,
+      "position": [
+        15.128582954406738,
+        0.07103998214006424,
+        -14.977705001831055
+      ],
+      "animationPosition": [
+        15.15445327758789,
+        0.07433124631643295,
+        -14.97367000579834
+      ],
+      "target": [
+        15.128583498558436,
+        0.07103999999999999,
+        -14.977705280462605
+      ],
+      "ankleRoll": 0,
+      "soleNormal": [
+        -3.799807841913641e-9,
+        1,
+        -1.7550550276346705e-9
+      ],
+      "groundNormal": [
+        0,
+        1,
+        0
+      ]
+    },
+    {
+      "name": "heroPerson-Resident3-foot.L",
+      "planted": true,
+      "placement": 1,
+      "error": 0.00399727078437806,
+      "position": [
+        -18.106569290161133,
+        0.07503727078437805,
+        22.492965698242188
+      ],
+      "animationPosition": [
+        -18.19440269470215,
+        0.08103612065315247,
+        22.513273239135742
+      ],
+      "target": [
+        -18.106569290161133,
+        0.07103999999999999,
+        22.492965698242188
+      ],
+      "ankleRoll": 0,
+      "soleNormal": [
+        1.740593460804282e-9,
+        1,
+        1.006845226815502e-9
+      ],
+      "groundNormal": [
+        0,
+        1,
+        0
+      ]
+    },
+    {
+      "name": "heroPerson-Resident3-foot.R",
+      "planted": true,
+      "placement": 1,
+      "error": 0.003997315487861641,
+      "position": [
+        -17.893430709838867,
+        0.07503731548786163,
+        22.492965698242188
+      ],
+      "animationPosition": [
+        -17.80559730529785,
+        0.08103609085083008,
+        22.513273239135742
+      ],
+      "target": [
+        -17.893430709838867,
+        0.07103999999999999,
+        22.492965698242188
+      ],
+      "ankleRoll": 0,
+      "soleNormal": [
+        -5.356132637708707e-9,
+        0.9999999999999997,
+        -2.4216288583441627e-8
+      ],
+      "groundNormal": [
+        0,
+        1,
+        0
+      ]
+    },
+    {
+      "name": "heroPerson-Resident4-foot.L",
+      "planted": true,
+      "placement": 1,
+      "error": 0.0000026196221551675417,
+      "position": [
+        7.3714141845703125,
+        0.10104016214609146,
+        55.522300720214844
+      ],
+      "animationPosition": [
+        7.345546245574951,
+        0.10433121770620346,
+        55.52633285522461
+      ],
+      "target": [
+        7.371414795038748,
+        0.10103999932944774,
+        55.52229817792468
+      ],
+      "ankleRoll": 0,
+      "soleNormal": [
+        4.571941292491592e-9,
+        1,
+        3.750873445929672e-9
+      ],
+      "groundNormal": [
+        0,
+        1,
+        0
+      ]
+    },
+    {
+      "name": "heroPerson-Resident4-foot.R",
+      "planted": true,
+      "placement": 1,
+      "error": 0.0000026196221551675417,
+      "position": [
+        7.6285858154296875,
+        0.10104016214609146,
+        55.522300720214844
+      ],
+      "animationPosition": [
+        7.654453754425049,
+        0.10433121770620346,
+        55.52633285522461
+      ],
+      "target": [
+        7.628585204961252,
+        0.10103999932944774,
+        55.52229817792468
+      ],
+      "ankleRoll": 0,
+      "soleNormal": [
+        -4.571941292491592e-9,
+        1,
+        3.750873445929672e-9
+      ],
+      "groundNormal": [
+        0,
+        1,
+        0
+      ]
+    },
+    {
+      "name": "heroPerson-Resident5-foot.L",
+      "planted": true,
+      "placement": 1,
+      "error": 0.00399750923139658,
+      "position": [
+        -7.606569766998291,
+        0.11503750830888748,
+        82.49296569824219
+      ],
+      "animationPosition": [
+        -7.69440221786499,
+        0.12103614211082458,
+        82.51326751708984
+      ],
+      "target": [
+        -7.606569290161133,
+        0.11103999910593032,
+        82.49296569824219
+      ],
+      "ankleRoll": 0,
+      "soleNormal": [
+        1.3106151686873173e-9,
+        0.9999999999999983,
+        5.8298828281869857e-8
+      ],
+      "groundNormal": [
+        0,
+        1,
+        0
+      ]
+    },
+    {
+      "name": "heroPerson-Resident5-foot.R",
+      "planted": true,
+      "placement": 1,
+      "error": 0.003997606060504921,
+      "position": [
+        -7.393430709838867,
+        0.11503760516643524,
+        82.49296569824219
+      ],
+      "animationPosition": [
+        -7.305598258972168,
+        0.1210361123085022,
+        82.51326751708984
+      ],
+      "target": [
+        -7.393430709838867,
+        0.11103999910593032,
+        82.49296569824219
+      ],
+      "ankleRoll": 0,
+      "soleNormal": [
+        -5.079300534365181e-10,
+        1,
+        2.2744325704639785e-9
+      ],
+      "groundNormal": [
+        0,
+        1,
+        0
+      ]
+    }
+  ],
+  "groundContactAudit": null,
+  "actorJoints": [
+    {
+      "name": "glbAnimatedStreetActors-actorHeroCarrier-leftArm-elbow",
+      "rotation": [
+        -0.5631375787432431,
+        0,
+        0,
+        0.8263631226139241
+      ]
+    },
+    {
+      "name": "glbAnimatedStreetActors-actorHeroCarrier-leftLeg-knee",
+      "rotation": [
+        0.22811205743082114,
+        0,
+        0,
+        0.9736348753231915
+      ]
+    },
+    {
+      "name": "glbAnimatedStreetActors-actorHeroCarrier-rightArm-elbow",
+      "rotation": [
+        -0.5109472157870757,
+        0,
+        0,
+        0.859611999851944
+      ]
+    },
+    {
+      "name": "glbAnimatedStreetActors-actorHeroCarrier-rightLeg-knee",
+      "rotation": [
+        0.04361939057707787,
+        0,
+        0,
+        0.9990482330322266
+      ]
+    },
+    {
+      "name": "glbAnimatedStreetActors-actorHeroStoneWorker-leftArm-elbow",
+      "rotation": [
+        -0.2164396345615387,
+        0,
+        0,
+        0.9762960076332092
+      ]
+    },
+    {
+      "name": "glbAnimatedStreetActors-actorHeroStoneWorker-leftLeg-knee",
+      "rotation": [
+        0.061048563569784164,
+        0,
+        0,
+        0.9981347918510437
+      ]
+    },
+    {
+      "name": "glbAnimatedStreetActors-actorHeroStoneWorker-rightArm-elbow",
+      "rotation": [
+        -0.2979760238936215,
+        0,
+        0,
+        0.9545733589389636
+      ]
+    },
+    {
+      "name": "glbAnimatedStreetActors-actorHeroStoneWorker-rightLeg-knee",
+      "rotation": [
+        0.061048563569784164,
+        0,
+        0,
+        0.9981347918510437
+      ]
+    },
+    {
+      "name": "glbAnimatedStreetActors-actorHeroStreetWalker-leftArm-elbow",
+      "rotation": [
+        -0.15115721765380719,
+        0,
+        0,
+        0.9885097527103128
+      ]
+    },
+    {
+      "name": "glbAnimatedStreetActors-actorHeroStreetWalker-leftLeg-knee",
+      "rotation": [
+        0.04361939057707787,
+        0,
+        0,
+        0.9990482330322266
+      ]
+    },
+    {
+      "name": "glbAnimatedStreetActors-actorHeroStreetWalker-rightArm-elbow",
+      "rotation": [
+        -0.1960489174233403,
+        0,
+        0,
+        0.9805941196564381
+      ]
+    },
+    {
+      "name": "glbAnimatedStreetActors-actorHeroStreetWalker-rightLeg-knee",
+      "rotation": [
+        0.11660936040205228,
+        0,
+        0,
+        0.9931778709508231
+      ]
+    }
+  ],
+  "actorAnimationGroups": [
+    {
+      "name": "glbAnimatedStreetActors-actorHeroCarrierAction",
+      "frame": 0,
+      "speedRatio": 1,
+      "targets": 2
+    },
+    {
+      "name": "glbAnimatedStreetActors-actorHeroCarrier-headJarRootAction",
+      "frame": 0,
+      "speedRatio": 1,
+      "targets": 1
+    },
+    {
+      "name": "glbAnimatedStreetActors-actorHeroCarrier-leftArm-pivotAction",
+      "frame": 0,
+      "speedRatio": 1,
+      "targets": 1
+    },
+    {
+      "name": "glbAnimatedStreetActors-actorHeroCarrier-leftArm-rigAction",
+      "frame": 0,
+      "speedRatio": 1,
+      "targets": 6
+    },
+    {
+      "name": "glbAnimatedStreetActors-actorHeroCarrier-leftLeg-pivotAction",
+      "frame": 0,
+      "speedRatio": 1,
+      "targets": 1
+    },
+    {
+      "name": "glbAnimatedStreetActors-actorHeroCarrier-leftLeg-rigAction",
+      "frame": 0,
+      "speedRatio": 1,
+      "targets": 6
+    },
+    {
+      "name": "glbAnimatedStreetActors-actorHeroCarrier-leftFootAction",
+      "frame": 0,
+      "speedRatio": 1,
+      "targets": 1
+    },
+    {
+      "name": "glbAnimatedStreetActors-actorHeroCarrier-rightArm-pivotAction",
+      "frame": 0,
+      "speedRatio": 1,
+      "targets": 1
+    },
+    {
+      "name": "glbAnimatedStreetActors-actorHeroCarrier-rightArm-rigAction",
+      "frame": 0,
+      "speedRatio": 1,
+      "targets": 6
+    },
+    {
+      "name": "glbAnimatedStreetActors-actorHeroCarrier-rightLeg-pivotAction",
+      "frame": 0,
+      "speedRatio": 1,
+      "targets": 1
+    },
+    {
+      "name": "glbAnimatedStreetActors-actorHeroCarrier-rightLeg-rigAction",
+      "frame": 0,
+      "speedRatio": 1,
+      "targets": 6
+    },
+    {
+      "name": "glbAnimatedStreetActors-actorHeroCarrier-rightFootAction",
+      "frame": 0,
+      "speedRatio": 1,
+      "targets": 1
+    },
+    {
+      "name": "glbAnimatedStreetActors-actorHeroStoneWorkerAction",
+      "frame": 0,
+      "speedRatio": 1,
+      "targets": 1
+    },
+    {
+      "name": "glbAnimatedStreetActors-actorHeroStoneWorker-leftArm-pivotAction",
+      "frame": 0,
+      "speedRatio": 1,
+      "targets": 1
+    },
+    {
+      "name": "glbAnimatedStreetActors-actorHeroStoneWorker-leftArm-rigAction",
+      "frame": 0,
+      "speedRatio": 1,
+      "targets": 6
+    },
+    {
+      "name": "glbAnimatedStreetActors-actorHeroStoneWorker-leftLeg-pivotAction",
+      "frame": 0,
+      "speedRatio": 1,
+      "targets": 1
+    },
+    {
+      "name": "glbAnimatedStreetActors-actorHeroStoneWorker-leftLeg-rigAction",
+      "frame": 0,
+      "speedRatio": 1,
+      "targets": 6
+    },
+    {
+      "name": "glbAnimatedStreetActors-actorHeroStoneWorker-leftFootAction",
+      "frame": 0,
+      "speedRatio": 1,
+      "targets": 1
+    },
+    {
+      "name": "glbAnimatedStreetActors-actorHeroStoneWorker-rightArm-pivotAction",
+      "frame": 0,
+      "speedRatio": 1,
+      "targets": 1
+    },
+    {
+      "name": "glbAnimatedStreetActors-actorHeroStoneWorker-rightArm-rigAction",
+      "frame": 0,
+      "speedRatio": 1,
+      "targets": 6
+    },
+    {
+      "name": "glbAnimatedStreetActors-actorHeroStoneWorker-rightLeg-pivotAction",
+      "frame": 0,
+      "speedRatio": 1,
+      "targets": 1
+    },
+    {
+      "name": "glbAnimatedStreetActors-actorHeroStoneWorker-rightLeg-rigAction",
+      "frame": 0,
+      "speedRatio": 1,
+      "targets": 6
+    },
+    {
+      "name": "glbAnimatedStreetActors-actorHeroStoneWorker-rightFootAction",
+      "frame": 0,
+      "speedRatio": 1,
+      "targets": 1
+    },
+    {
+      "name": "glbAnimatedStreetActors-actorHeroStreetWalkerAction",
+      "frame": 0,
+      "speedRatio": 1,
+      "targets": 2
+    },
+    {
+      "name": "glbAnimatedStreetActors-actorHeroStreetWalker-leftArm-pivotAction",
+      "frame": 0,
+      "speedRatio": 1,
+      "targets": 1
+    },
+    {
+      "name": "glbAnimatedStreetActors-actorHeroStreetWalker-leftArm-rigAction",
+      "frame": 0,
+      "speedRatio": 1,
+      "targets": 6
+    },
+    {
+      "name": "glbAnimatedStreetActors-actorHeroStreetWalker-leftLeg-pivotAction",
+      "frame": 0,
+      "speedRatio": 1,
+      "targets": 1
+    },
+    {
+      "name": "glbAnimatedStreetActors-actorHeroStreetWalker-leftLeg-rigAction",
+      "frame": 0,
+      "speedRatio": 1,
+      "targets": 6
+    },
+    {
+      "name": "glbAnimatedStreetActors-actorHeroStreetWalker-leftFootAction",
+      "frame": 0,
+      "speedRatio": 1,
+      "targets": 1
+    },
+    {
+      "name": "glbAnimatedStreetActors-actorHeroStreetWalker-rightArm-pivotAction",
+      "frame": 0,
+      "speedRatio": 1,
+      "targets": 1
+    },
+    {
+      "name": "glbAnimatedStreetActors-actorHeroStreetWalker-rightArm-rigAction",
+      "frame": 0,
+      "speedRatio": 1,
+      "targets": 6
+    },
+    {
+      "name": "glbAnimatedStreetActors-actorHeroStreetWalker-rightLeg-pivotAction",
+      "frame": 0,
+      "speedRatio": 1,
+      "targets": 1
+    },
+    {
+      "name": "glbAnimatedStreetActors-actorHeroStreetWalker-rightLeg-rigAction",
+      "frame": 0,
+      "speedRatio": 1,
+      "targets": 6
+    },
+    {
+      "name": "glbAnimatedStreetActors-actorHeroStreetWalker-rightFootAction",
+      "frame": 0,
+      "speedRatio": 1,
+      "targets": 1
+    }
+  ],
+  "quality": "balanced",
+  "bakeId": "hero-street-authored-v2"
+}

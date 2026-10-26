@@ -1,0 +1,105 @@
+{
+  "license": "Derived from existing CC0 anatomy and project-authored surfaces; see characters/PROVENANCE.md",
+  "assets": [
+    {
+      "sex": "female",
+      "level": 1,
+      "ratio": 0.28,
+      "beforeTriangles": 33371,
+      "afterTriangles": 9746,
+      "sourceSha256": "955e4006453dd48a4bd2bca05929a53fa9507457a105399b54395576ec474656",
+      "sha256": "feec93005ad8b4d20c9fea6d3ea4c60c1557a69003edda86c5f15af880c4a013",
+      "file": "apps/web-tour/public/assets/authored/people/crowd/hero_female_lod1.glb",
+      "blend": "content/source-assets/characters/crowd-female-lod1.blend",
+      "skinWeightAudit": [
+        {
+          "mesh": "base",
+          "p99ErrorMetres": 2.4103908385003145e-07,
+          "maxErrorMetres": 0.002990922668321121,
+          "fourInfluences": true
+        },
+        {
+          "mesh": "linen-bodice",
+          "p99ErrorMetres": 0.0001662701307908955,
+          "maxErrorMetres": 0.0031892009935367703,
+          "fourInfluences": false
+        },
+        {
+          "mesh": "wrapped-linen",
+          "p99ErrorMetres": 0.0033146693684332844,
+          "maxErrorMetres": 0.018063820996073465,
+          "fourInfluences": false
+        }
+      ]
+    },
+    {
+      "sex": "female",
+      "level": 2,
+      "ratio": 0.06,
+      "beforeTriangles": 33371,
+      "afterTriangles": 2638,
+      "sourceSha256": "955e4006453dd48a4bd2bca05929a53fa9507457a105399b54395576ec474656",
+      "sha256": "58a573756ebd6dc9815d814580f5ad7b642e866b836f2b2c4697800ce77c4904",
+      "file": "apps/web-tour/public/assets/authored/people/crowd/hero_female_lod2.glb",
+      "blend": "content/source-assets/characters/crowd-female-lod2.blend",
+      "skinWeightAudit": [
+        {
+          "mesh": "base",
+          "p99ErrorMetres": 0.00012626881284790866,
+          "maxErrorMetres": 0.0015369155253222573,
+          "fourInfluences": true
+        },
+        {
+          "mesh": "linen-bodice",
+          "p99ErrorMetres": 0.001104422012513007,
+          "maxErrorMetres": 0.0031892009935367703,
+          "fourInfluences": false
+        },
+        {
+          "mesh": "wrapped-linen",
+          "p99ErrorMetres": 0.006263157198756823,
+          "maxErrorMetres": 0.012224608623538786,
+          "fourInfluences": false
+        }
+      ]
+    },
+    {
+      "sex": "male",
+      "level": 1,
+      "ratio": 0.28,
+      "beforeTriangles": 30594,
+      "afterTriangles": 8971,
+      "sourceSha256": "41850a5e815ca504da76508ade0f88fda683052a8cf54ed34c30056297c36c2a",
+      "sha256": "fba694c245398e8194b5d6a48185960462af7529cf11619e3e05445e99ed8936",
+      "file": "apps/web-tour/public/assets/authored/people/crowd/hero_male_lod1.glb",
+      "blend": "content/source-assets/characters/crowd-male-lod1.blend",
+      "skinWeightAudit": [
+        {
+          "mesh": "base",
+          "p99ErrorMetres": 2.3252873140221522e-07,
+          "maxErrorMetres": 0.0036433833533157773,
+          "fourInfluences": true
+        }
+      ]
+    },
+    {
+      "sex": "male",
+      "level": 2,
+      "ratio": 0.06,
+      "beforeTriangles": 30594,
+      "afterTriangles": 2365,
+      "sourceSha256": "41850a5e815ca504da76508ade0f88fda683052a8cf54ed34c30056297c36c2a",
+      "sha256": "a0f1865d97cf777ffac84efb7e51e28f706107dab9d47987761185b629081ca5",
+      "file": "apps/web-tour/public/assets/authored/people/crowd/hero_male_lod2.glb",
+      "blend": "content/source-assets/characters/crowd-male-lod2.blend",
+      "skinWeightAudit": [
+        {
+          "mesh": "base",
+          "p99ErrorMetres": 0.00014283434163021662,
+          "maxErrorMetres": 0.0033064629621304665,
+          "fourInfluences": true
+        }
+      ]
+    }
+  ]
+}
