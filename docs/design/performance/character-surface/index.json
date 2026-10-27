@@ -1,0 +1,161 @@
+{
+  "format": "gzip; exact original JSON bytes",
+  "files": {
+    "hero-street-main-character-surface-tour-before-1.json": {
+      "archive": "hero-street-main-character-surface-tour-before-1.json.gz",
+      "sha256": "069889bb802b259f200a8dcc61abeec2009893e1c4319f295382683bcd2ee074",
+      "bytes": 996068,
+      "compressedBytes": 198034
+    },
+    "hero-street-main-character-surface-tour-after-1.json": {
+      "archive": "hero-street-main-character-surface-tour-after-1.json.gz",
+      "sha256": "150874f4809cbc4f02f92195240826a75b9bc6516d01ff87e6c2f1486a2d7d46",
+      "bytes": 996545,
+      "compressedBytes": 198106
+    },
+    "hero-street-main-character-surface-tour-before-2.json": {
+      "archive": "hero-street-main-character-surface-tour-before-2.json.gz",
+      "sha256": "314fdeb44f693b373812eb760288f16aece0f13974565041060b370d3b56c901",
+      "bytes": 1000376,
+      "compressedBytes": 198412
+    },
+    "hero-street-main-character-surface-tour-after-2.json": {
+      "archive": "hero-street-main-character-surface-tour-after-2.json.gz",
+      "sha256": "7151f928df2d6e8eebfc4bb038a2c1236040806cb23ad7d88c088beb89538232",
+      "bytes": 998935,
+      "compressedBytes": 198487
+    },
+    "hero-street-main-character-surface-tour-before-3.json": {
+      "archive": "hero-street-main-character-surface-tour-before-3.json.gz",
+      "sha256": "77170483b95b607228d9249d99b143219e08e3e7268a5bd985ec690f69492eeb",
+      "bytes": 997390,
+      "compressedBytes": 198083
+    },
+    "hero-street-main-character-surface-tour-after-3.json": {
+      "archive": "hero-street-main-character-surface-tour-after-3.json.gz",
+      "sha256": "9147cc77de798c35d44b67a0892b42ec53af1e8afa4a3ad6d634499cbe45873b",
+      "bytes": 996762,
+      "compressedBytes": 197949
+    },
+    "hero-street-main-character-surface-cinematic-before-1.json": {
+      "archive": "hero-street-main-character-surface-cinematic-before-1.json.gz",
+      "sha256": "5af218bcad066585842c8788e26f67fdec54516be3d34afd6ca2ae9663167076",
+      "bytes": 996807,
+      "compressedBytes": 198278
+    },
+    "hero-street-main-character-surface-cinematic-after-1.json": {
+      "archive": "hero-street-main-character-surface-cinematic-after-1.json.gz",
+      "sha256": "5861ee2115e0c7af244caea108115e7130aff479391fc79167b7ef2d420be22e",
+      "bytes": 995083,
+      "compressedBytes": 198078
+    },
+    "hero-street-main-character-surface-cinematic-before-2.json": {
+      "archive": "hero-street-main-character-surface-cinematic-before-2.json.gz",
+      "sha256": "431070f54616475cc58b48632e0bfd2f3ae2439ae99eb02d37b49cc504b076d5",
+      "bytes": 995964,
+      "compressedBytes": 198122
+    },
+    "hero-street-main-character-surface-cinematic-after-2.json": {
+      "archive": "hero-street-main-character-surface-cinematic-after-2.json.gz",
+      "sha256": "c4d448ed0b2b137ce42fe8f10e7fb7a90f92e67e32ad829fd92f80d57911046e",
+      "bytes": 995969,
+      "compressedBytes": 198160
+    },
+    "hero-street-main-character-surface-cinematic-before-3.json": {
+      "archive": "hero-street-main-character-surface-cinematic-before-3.json.gz",
+      "sha256": "7a46007f7976ecbdc956575d6b880bbc6fd37c4ebfbbb10193fdf93054191277",
+      "bytes": 995798,
+      "compressedBytes": 198015
+    },
+    "hero-street-main-character-surface-cinematic-after-3.json": {
+      "archive": "hero-street-main-character-surface-cinematic-after-3.json.gz",
+      "sha256": "11fc8ca29fefdb54f0d8d4458e45b160e89eefcc78abbfda6629c704f236375b",
+      "bytes": 996243,
+      "compressedBytes": 198053
+    },
+    "hero-street-main-character-surface-before.json": {
+      "archive": "hero-street-main-character-surface-before.json.gz",
+      "sha256": "7b15e0efc5e5631bee4e876f33531291d505eae2373639ff40774a042f54aba7",
+      "bytes": 88376,
+      "compressedBytes": 7469
+    },
+    "hero-street-main-character-surface-after.json": {
+      "archive": "hero-street-main-character-surface-after.json.gz",
+      "sha256": "5559870c53087a78cedddc3243904f60d0d8a93098db6e7f4a4e95cd59889c5c",
+      "bytes": 88359,
+      "compressedBytes": 7465
+    },
+    "street-entry-character-surface-before.json": {
+      "archive": "street-entry-character-surface-before.json.gz",
+      "sha256": "51bc2d6d3971284a8ac89a1cc54dab66ad79ac4f4da9d78ea913a3ca1d96a079",
+      "bytes": 88372,
+      "compressedBytes": 7468
+    },
+    "street-entry-character-surface-after.json": {
+      "archive": "street-entry-character-surface-after.json.gz",
+      "sha256": "5ace310e5083a3b1adc63fef23218eb0b882ff7939a7531fe1fb4ccf1263004f",
+      "bytes": 88366,
+      "compressedBytes": 7465
+    },
+    "hero-street-material-character-surface-before.json": {
+      "archive": "hero-street-material-character-surface-before.json.gz",
+      "sha256": "ab6531b18042fa59508977dca22c32525b7acbdeff418ee344066a683a977a17",
+      "bytes": 88380,
+      "compressedBytes": 7469
+    },
+    "hero-street-material-character-surface-after.json": {
+      "archive": "hero-street-material-character-surface-after.json.gz",
+      "sha256": "460f4e5e8dd7329af9b843079a6ec733b645ad5988f2bd064264e0eec35601b1",
+      "bytes": 88376,
+      "compressedBytes": 7466
+    },
+    "hero-street-main-character-surface-female-before.json": {
+      "archive": "hero-street-main-character-surface-female-before.json.gz",
+      "sha256": "28bad81f658a95d6e074cf40721f145710f7f543041347b2234f713603249147",
+      "bytes": 88652,
+      "compressedBytes": 7559
+    },
+    "hero-street-main-character-surface-female-after.json": {
+      "archive": "hero-street-main-character-surface-female-after.json.gz",
+      "sha256": "da21288f0f10d8e39b95ddd334327971bbd0bf3ec0ae8f11c5961fb7145bc527",
+      "bytes": 88661,
+      "compressedBytes": 7561
+    },
+    "hero-street-main-character-surface-female-cinematic-before.json": {
+      "archive": "hero-street-main-character-surface-female-cinematic-before.json.gz",
+      "sha256": "ae6f6ddf1048461622a0b814acf9065126ec48fcde96476d51321039b31cfae6",
+      "bytes": 88673,
+      "compressedBytes": 7575
+    },
+    "hero-street-main-character-surface-female-cinematic-after.json": {
+      "archive": "hero-street-main-character-surface-female-cinematic-after.json.gz",
+      "sha256": "cc34c46f8205465b270c3702767b856d02e92c77ff92d115603f1ff3aa2866bd",
+      "bytes": 88671,
+      "compressedBytes": 7577
+    },
+    "hero-street-main-character-surface-male-before.json": {
+      "archive": "hero-street-main-character-surface-male-before.json.gz",
+      "sha256": "12bcbaecb9c2d72fe5855e7735a4d9a228d5f601606737597c16e628f0a56d0d",
+      "bytes": 88776,
+      "compressedBytes": 7588
+    },
+    "hero-street-main-character-surface-male-after.json": {
+      "archive": "hero-street-main-character-surface-male-after.json.gz",
+      "sha256": "179a9f90e6760b1bc3d5aba8bbaa919e11dc5b7cdf8fce7f3e15a8464ac758c7",
+      "bytes": 88758,
+      "compressedBytes": 7587
+    },
+    "hero-street-main-character-surface-male-cinematic-before.json": {
+      "archive": "hero-street-main-character-surface-male-cinematic-before.json.gz",
+      "sha256": "65b17b16c6a182c4b349cb52882eee4ee2dca1982d4e934c66f4e9f1d6ef6880",
+      "bytes": 88800,
+      "compressedBytes": 7613
+    },
+    "hero-street-main-character-surface-male-cinematic-after.json": {
+      "archive": "hero-street-main-character-surface-male-cinematic-after.json.gz",
+      "sha256": "b4437bd9dcbd9989ca52366078d7e74ddcc8e657055093d058e51eabf34753ca",
+      "bytes": 88796,
+      "compressedBytes": 7602
+    }
+  }
+}

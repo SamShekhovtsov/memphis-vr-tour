@@ -54,3 +54,7 @@ Half of the population (63 of 126) now has stable roles and personality traits, 
 ## Character realism steps 1–2 — 27 October 2026
 
 Garment coverage and connected male/female reference anatomy are complete. The corrected Blender 5.1 import merges glTF vertices before reduction, repairing torn faces/body surfaces. Eyes have a separate opaque material; cropped scalp and crowd LODs are rebuilt. `npm run build:people` now uses the corrected character-art pipeline. Population, behavior, placements, navigation and stored cameras are preserved. Full build and 14 pose checks pass. Matched screenshots, performance and remaining art limitations: [character-art report](docs/design/character-art-steps-1-2-2026-10-27.md). HD4600 balanced median/p95: 47.7/81.1 → 39.9/67.3 ms; cinematic: 67.5/123.9 → 57.6/111.4 ms. No deployment.
+
+## Character skin, hair and linen steps 3–4 — 27 October 2026
+
+The accepted character geometry, positions, behavior, district and cameras are locked. The new surface pass adds anatomical skin pigment/roughness, finer cropped-scalp response and quieter linen weave. It uses the same six/nine resident maps by quality tier, with nine-map delivery reduced from 999,138 to 497,216 bytes. Matched balanced/cinematic portraits, street views, performance results and remaining art limits: [steps 3–4 report](docs/design/character-surfaces-steps-3-4-2026-10-27.md). `npm run validate:character-surfaces` checks the current maps and 79 locked files. No deployment.

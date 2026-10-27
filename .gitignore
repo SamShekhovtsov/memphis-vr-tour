@@ -76,3 +76,7 @@
 /docs/design/screenshots/*character-normal-diagnostic*.json
 /docs/design/screenshots/*character-shadow-diagnostic*.json
 /tools/.character-art-benchmark-*.mjs
+
+# Character surface capture JSON is archived losslessly under performance/character-surface.
+/docs/design/screenshots/*character-surface*.json
+/tools/.character-surface-benchmark-*.mjs

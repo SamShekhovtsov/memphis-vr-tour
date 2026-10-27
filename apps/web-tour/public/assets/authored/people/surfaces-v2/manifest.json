@@ -1,0 +1,119 @@
+{
+  "id": "character-surfaces-v2",
+  "source": "Project-authored deterministic PBR; accepted CC0 anatomical UVs",
+  "geometryChanged": false,
+  "atlasSourceSha256": "79ce30aa896aa6a1500c829a213b85d4c7ed109f15e220b62cbd08bff9f41fdc",
+  "maps": {
+    "skin-albedo.webp": {
+      "bytes": 21684,
+      "sha256": "f71c088963c4ef6ec7b56bda54691f8c3e30439e3f752d78d1d2055c3f9c4b20",
+      "width": 512,
+      "height": 512,
+      "colorSpace": "sRGB"
+    },
+    "skin-orm.webp": {
+      "bytes": 4610,
+      "sha256": "49dbc626758e4317f567e131470a6306796b1aa5e19e03463805d3049f229591",
+      "width": 512,
+      "height": 512,
+      "colorSpace": "linear"
+    },
+    "skin-normal.webp": {
+      "bytes": 77832,
+      "sha256": "def74136930ed1afd8d5c184a8951ac0b60cbb94d937a91e546ecff3328b6d51",
+      "width": 512,
+      "height": 512,
+      "colorSpace": "linear"
+    },
+    "hair-albedo.webp": {
+      "bytes": 63390,
+      "sha256": "9b353bf5686f518fa0fbe1a7f51f07df76cfb8473d11501c7a6059579d177043",
+      "width": 512,
+      "height": 512,
+      "colorSpace": "sRGB"
+    },
+    "hair-normal.webp": {
+      "bytes": 73116,
+      "sha256": "ae8171ae908abc82b5e24612f1f2e565a7b0bbe41b96954275cd2c817cc3f45f",
+      "width": 512,
+      "height": 512,
+      "colorSpace": "linear"
+    },
+    "hair-orm.webp": {
+      "bytes": 34878,
+      "sha256": "7139dc4394c45a2baba2f428e8dd4ca0fa492093dabd8c8124f949c5e3815604",
+      "width": 512,
+      "height": 512,
+      "colorSpace": "linear"
+    },
+    "linen-albedo.webp": {
+      "bytes": 59296,
+      "sha256": "203d8ddd1787a652950deef5b9d9881193251b80ecaed94100932b260be79d44",
+      "width": 512,
+      "height": 512,
+      "colorSpace": "sRGB"
+    },
+    "linen-normal.webp": {
+      "bytes": 117288,
+      "sha256": "fa8a5a131d7a717d13f6b375af5f61a0b3f4651b4cb51bbef46bb83794e32c22",
+      "width": 512,
+      "height": 512,
+      "colorSpace": "linear"
+    },
+    "linen-orm.webp": {
+      "bytes": 45122,
+      "sha256": "7bb552a86641876482ee353ca9c0bf6ac8d954d67b40569a6b2047e0c439ecd1",
+      "width": 512,
+      "height": 512,
+      "colorSpace": "linear"
+    }
+  },
+  "uv": {
+    "skinAlbedoOrm": 1,
+    "skinNormal": 16,
+    "hairScale": 0.18,
+    "hairOffset": 0.5,
+    "linen": 1
+  },
+  "packing": {
+    "r": "unused AO white",
+    "g": "linear roughness",
+    "b": "metallic zero"
+  },
+  "normalConvention": "OpenGL/glTF tangent space",
+  "sourceScript": "tools/build-character-surfaces.py",
+  "engineBindings": {
+    "baseColorFactor": [
+      1,
+      1,
+      1,
+      1
+    ],
+    "vertexColor": "existing linear RGB multiply; opaque",
+    "skin": {
+      "normalStrength": 0.22,
+      "balancedRoughness": 0.63,
+      "dielectricF0Factor": 0.72
+    },
+    "hair": {
+      "normalStrength": 0.4,
+      "balancedRoughness": 0.66,
+      "dielectricF0Factor": 0.85,
+      "cinematicAnisotropy": 0.16
+    },
+    "linen": {
+      "normalStrength": 0.22,
+      "balancedRoughness": 0.91,
+      "dielectricF0Factor": 0.85,
+      "cinematicSheen": 0.12,
+      "sheenRoughness": 0.92,
+      "sheenColor": [
+        0.91,
+        0.87,
+        0.78
+      ]
+    },
+    "cinematicRoughness": "ORM green multiplied by1; balanced uses scalar roughness",
+    "normalImport": "Calibrate tangent convention per engine; Babylon flips normalX in left-handed scenes and normalY in right-handed scenes"
+  }
+}

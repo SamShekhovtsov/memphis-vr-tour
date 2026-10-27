@@ -11,17 +11,23 @@ export function createPeopleMaterialBinder(scene: Scene) {
   const map = (family: string, channel: string) => {
     const key = `${family}-${channel}`;
     if (!maps.has(key)) {
-      const texture = new Texture(`/assets/authored/people/${key}.webp`, scene, false, false, Texture.TRILINEAR_SAMPLINGMODE);
+      const texture = new Texture(`/assets/authored/people/surfaces-v2/${key}.webp`, scene, false, false, Texture.TRILINEAR_SAMPLINGMODE);
       texture.gammaSpace = channel === "albedo";
       texture.anisotropicFilteringLevel = 4;
       // Skin retains the licensed body's unwrap. Hair/linen have metre-scaled
       // bind-pose UVs. All detail therefore follows the deforming surface.
-      if (family === "skin") texture.uScale = texture.vScale = 16;
+      // Pigment/roughness follow the anatomical unwrap once. Only pore relief
+      // repeats; repeating the whole atlas would put facial pigment on limbs.
+      if (family === "skin" && channel === "normal") texture.uScale = texture.vScale = 16;
+      if (family === "hair") {
+        texture.uScale = texture.vScale = .18;
+        texture.uOffset = texture.vOffset = .5;
+      }
       maps.set(key, texture);
     }
     return maps.get(key)!;
   };
-  scene.metadata.heroPeopleMaterials = { id: legacy ? "legacy" : "hero-people-materials-v1", geometryChanged: false, textureCount: 0, bindings: [] };
+  scene.metadata.heroPeopleMaterials = { id: legacy ? "legacy" : "character-surfaces-v2", geometryChanged: false, textureCount: 0, bindings: [] };
   return (mesh: AbstractMesh) => {
     mesh.useVertexColors = !legacy;
     mesh.hasVertexAlpha = false;
@@ -35,7 +41,7 @@ export function createPeopleMaterialBinder(scene: Scene) {
       material.albedoColor = Color3.White();
       material.albedoTexture = map(family, "albedo");
       material.bumpTexture = map(family, "normal");
-      material.bumpTexture.level = family === "skin" ? .32 : family === "hair" ? .65 : .35;
+      material.bumpTexture.level = family === "skin" ? .22 : family === "hair" ? .40 : .22;
       material.invertNormalMapX = !scene.useRightHandedSystem;
       material.invertNormalMapY = scene.useRightHandedSystem;
       material.metallicTexture = cinematic ? map(family, "orm") : null;
@@ -43,8 +49,8 @@ export function createPeopleMaterialBinder(scene: Scene) {
       material.useMetallnessFromMetallicTextureBlue = true;
       material.useAmbientOcclusionFromMetallicTextureRed = false;
       material.metallic = 0;
-      material.roughness = cinematic ? 1 : family === "skin" ? .64 : family === "hair" ? .53 : .94;
-      material.metallicF0Factor = family === "skin" ? .75 : .9;
+      material.roughness = cinematic ? 1 : family === "skin" ? .63 : family === "hair" ? .66 : .91;
+      material.metallicF0Factor = family === "skin" ? .72 : .85;
       material.emissiveColor = Color3.Black();
       if (family === "skin") {
         material.transparencyMode = priorFit ? PBRMaterial.PBRMATERIAL_ALPHATEST : PBRMaterial.PBRMATERIAL_OPAQUE;
@@ -59,14 +65,14 @@ export function createPeopleMaterialBinder(scene: Scene) {
       }
       if (family === "hair") {
         material.anisotropy.isEnabled = cinematic;
-        material.anisotropy.intensity = .25;
+        material.anisotropy.intensity = .16;
         material.anisotropy.direction = new Vector2(1, 0);
       }
       if (family === "linen") {
         material.sheen.isEnabled = cinematic;
-        material.sheen.intensity = .18;
-        material.sheen.roughness = .88;
-        material.sheen.color = new Color3(.86, .81, .71);
+        material.sheen.intensity = .12;
+        material.sheen.roughness = .92;
+        material.sheen.color = new Color3(.91, .87, .78);
       }
       material.metadata = { family, source: "project-authored PBR detail", geometryChanged: false };
       materials.set(source.uniqueId, material);

@@ -1,0 +1,44 @@
+[
+  {
+    "label": "character-surface-cinematic-before-1",
+    "phase": "before",
+    "assets": {
+      "apps/web-tour/src/scene/HeroPeopleMaterials.ts": "00e7139ff9751eafc9ce31a4263b8d2511ac256c300d8652675ffce112c5bc4f"
+    }
+  },
+  {
+    "label": "character-surface-cinematic-after-1",
+    "phase": "after",
+    "assets": {
+      "apps/web-tour/src/scene/HeroPeopleMaterials.ts": "ced2305996f68838169b995a4593d542e088d90d02b0d869a8710fa4189e7a0a"
+    }
+  },
+  {
+    "label": "character-surface-cinematic-after-2",
+    "phase": "after",
+    "assets": {
+      "apps/web-tour/src/scene/HeroPeopleMaterials.ts": "ced2305996f68838169b995a4593d542e088d90d02b0d869a8710fa4189e7a0a"
+    }
+  },
+  {
+    "label": "character-surface-cinematic-before-2",
+    "phase": "before",
+    "assets": {
+      "apps/web-tour/src/scene/HeroPeopleMaterials.ts": "00e7139ff9751eafc9ce31a4263b8d2511ac256c300d8652675ffce112c5bc4f"
+    }
+  },
+  {
+    "label": "character-surface-cinematic-before-3",
+    "phase": "before",
+    "assets": {
+      "apps/web-tour/src/scene/HeroPeopleMaterials.ts": "00e7139ff9751eafc9ce31a4263b8d2511ac256c300d8652675ffce112c5bc4f"
+    }
+  },
+  {
+    "label": "character-surface-cinematic-after-3",
+    "phase": "after",
+    "assets": {
+      "apps/web-tour/src/scene/HeroPeopleMaterials.ts": "ced2305996f68838169b995a4593d542e088d90d02b0d869a8710fa4189e7a0a"
+    }
+  }
+]

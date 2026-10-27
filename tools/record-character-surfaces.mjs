@@ -1,0 +1,7 @@
+import fs from 'node:fs';import {createHash} from 'node:crypto';
+const sha=b=>createHash('sha256').update(b).digest('hex'),norm=b=>b.toString().replaceAll('\r\n','\n');
+const index=JSON.parse(fs.readFileSync('content/source-assets/character-surface-baseline/index.json'));
+const files=Object.fromEntries(Object.entries(index).map(([f,baseline])=>{const a=fs.readFileSync(f),b=fs.readFileSync(baseline);return[f,{baseline,beforeRaw:sha(b),afterRaw:sha(a),before:sha(norm(b)),after:sha(norm(a))}];}));
+const artifacts=['content/source-assets/character-surface-baseline/locked.json','content/source-assets/character-surface-baseline/index.json','tools/verify-character-surfaces.py','tools/build-character-surfaces.py','tools/validate-character-surfaces.mjs','tools/lib/character-surface-revision.mjs',...fs.readdirSync('apps/web-tour/public/assets/authored/people/surfaces-v2').map(f=>'apps/web-tour/public/assets/authored/people/surfaces-v2/'+f),...fs.readdirSync('content/source-assets/characters/surfaces-v2').map(f=>'content/source-assets/characters/surfaces-v2/'+f)];
+for(const f of artifacts)if(/\.(json|py|mjs)$/.test(f))fs.writeFileSync(f,fs.readFileSync(f,'utf8').replaceAll('\r\n','\n'));
+fs.writeFileSync('content/scene-data/character-surface.revision.json',JSON.stringify({date:'2026-10-27',scope:'Character skin/hair/linen surfaces only; original geometry, rigs, simulation, placement and cameras locked',files,artifacts:Object.fromEntries(artifacts.map(f=>[f,sha(fs.readFileSync(f))]))},null,2)+'\n');

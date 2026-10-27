@@ -1,0 +1,48 @@
+{
+  "date": "2026-10-27",
+  "scope": "Character skin/hair/linen surfaces only; original geometry, rigs, simulation, placement and cameras locked",
+  "files": {
+    "apps/web-tour/src/scene/HeroPeopleMaterials.ts": {
+      "baseline": "content/source-assets/character-surface-baseline/0.snapshot",
+      "beforeRaw": "00e7139ff9751eafc9ce31a4263b8d2511ac256c300d8652675ffce112c5bc4f",
+      "afterRaw": "ced2305996f68838169b995a4593d542e088d90d02b0d869a8710fa4189e7a0a",
+      "before": "00e7139ff9751eafc9ce31a4263b8d2511ac256c300d8652675ffce112c5bc4f",
+      "after": "ced2305996f68838169b995a4593d542e088d90d02b0d869a8710fa4189e7a0a"
+    },
+    "tools/lib/character-art-revision.mjs": {
+      "baseline": "content/source-assets/character-surface-baseline/1.snapshot",
+      "beforeRaw": "f4db96949ce543f6af4b6ad6c12380d2284b5ccdb6f19be0160e95ae2096266d",
+      "afterRaw": "4a0b3d4bfd5e2517330bc662dddd9347b922c6916dabfdf7037dbb5a40b2df1f",
+      "before": "f4db96949ce543f6af4b6ad6c12380d2284b5ccdb6f19be0160e95ae2096266d",
+      "after": "4a0b3d4bfd5e2517330bc662dddd9347b922c6916dabfdf7037dbb5a40b2df1f"
+    }
+  },
+  "artifacts": {
+    "content/source-assets/character-surface-baseline/locked.json": "7dac2b74e78796f77e194152c7cb252173cf68ed61dc75869839f14a21b8f1bb",
+    "content/source-assets/character-surface-baseline/index.json": "6ac639438559facdf98759878f01f5bc390660c64c5da9b2722545f0caac6c21",
+    "tools/verify-character-surfaces.py": "88d38b5fefc186fa17ce24932a74412079a4121d9369bba99cfb5068dddde75e",
+    "tools/build-character-surfaces.py": "6bfdf6642a56377af33ace8644522639272b7b81e3df50cb5b5520ff3a38bef7",
+    "tools/validate-character-surfaces.mjs": "3b3d37e5ffd0103246fc29987b1c21239960f7b36b6c2e0510f59d7fcf7dd0a8",
+    "tools/lib/character-surface-revision.mjs": "b2c0f0f946d6e65f2758e5252eb3e6217f1a8361a631d17c61de4f07f6b35d06",
+    "apps/web-tour/public/assets/authored/people/surfaces-v2/hair-albedo.webp": "9b353bf5686f518fa0fbe1a7f51f07df76cfb8473d11501c7a6059579d177043",
+    "apps/web-tour/public/assets/authored/people/surfaces-v2/hair-normal.webp": "ae8171ae908abc82b5e24612f1f2e565a7b0bbe41b96954275cd2c817cc3f45f",
+    "apps/web-tour/public/assets/authored/people/surfaces-v2/hair-orm.webp": "7139dc4394c45a2baba2f428e8dd4ca0fa492093dabd8c8124f949c5e3815604",
+    "apps/web-tour/public/assets/authored/people/surfaces-v2/linen-albedo.webp": "203d8ddd1787a652950deef5b9d9881193251b80ecaed94100932b260be79d44",
+    "apps/web-tour/public/assets/authored/people/surfaces-v2/linen-normal.webp": "fa8a5a131d7a717d13f6b375af5f61a0b3f4651b4cb51bbef46bb83794e32c22",
+    "apps/web-tour/public/assets/authored/people/surfaces-v2/linen-orm.webp": "7bb552a86641876482ee353ca9c0bf6ac8d954d67b40569a6b2047e0c439ecd1",
+    "apps/web-tour/public/assets/authored/people/surfaces-v2/manifest.json": "51833818a8771110f532de685c6d667bc4296779ee657e41560222ca68a722cd",
+    "apps/web-tour/public/assets/authored/people/surfaces-v2/skin-albedo.webp": "f71c088963c4ef6ec7b56bda54691f8c3e30439e3f752d78d1d2055c3f9c4b20",
+    "apps/web-tour/public/assets/authored/people/surfaces-v2/skin-normal.webp": "def74136930ed1afd8d5c184a8951ac0b60cbb94d937a91e546ecff3328b6d51",
+    "apps/web-tour/public/assets/authored/people/surfaces-v2/skin-orm.webp": "49dbc626758e4317f567e131470a6306796b1aa5e19e03463805d3049f229591",
+    "content/source-assets/characters/surfaces-v2/channel-audit.json": "f459ac3dff12660641e56055afbaedc5e256b00b28618fff8b19913d76bd7b3c",
+    "content/source-assets/characters/surfaces-v2/hair-albedo.png": "1a06047f91b3d7808feba018655932971aa5afc7e9dc1e91f22b4310fb8f1cc6",
+    "content/source-assets/characters/surfaces-v2/hair-normal.png": "ec016e29da4f304a3dc7451db30dcb94a968e7a274db0dfec09660b79693411c",
+    "content/source-assets/characters/surfaces-v2/hair-orm.png": "2e0965a2c6afe795b5c719fbbc1118e65027b1d64b8695a6b81cf98c033b0396",
+    "content/source-assets/characters/surfaces-v2/linen-albedo.png": "ca399af91eab7b3ea916334b1d6416377c36662b27f912140592b48c8713acc8",
+    "content/source-assets/characters/surfaces-v2/linen-normal.png": "67ad61701d123c6e4e5b505e0add5aeb22f8e8538761ea998df96f382e629b83",
+    "content/source-assets/characters/surfaces-v2/linen-orm.png": "970f100363da7a730a8342aeedc81330642634ce93d176262b70fc766e599666",
+    "content/source-assets/characters/surfaces-v2/skin-albedo.png": "009a4187c25d09110322f60813b86e1015db6f1dc2c2c54e7ec08510b2a652b2",
+    "content/source-assets/characters/surfaces-v2/skin-normal.png": "604027a0e141c47ff2a5334c21ee4c1d760c0cf300f3166ec0b0956acc7bf9fb",
+    "content/source-assets/characters/surfaces-v2/skin-orm.png": "774e1bc03db0e5d534426da1571a8e544a1668ef495b2c596cb91b0b677eda06"
+  }
+}

@@ -9,7 +9,7 @@
   ],
   "scripts": {
     "dev": "npm --workspace @egyptvr/web-tour run dev",
-    "build": "npm run generate:assets && npm run validate:content && npm run validate:history && npm run validate:optimization && npm run validate:hero && npm run validate:hero-section && npm run validate:actors && npm run validate:people && npm run validate:people-materials && npm run validate:render-performance && npm run validate:street-finish && npm run validate:district-interactions && npm run validate:image-quality && npm run validate:crowd-clarity && npm run validate:zones-steps && npm run validate:resident-intelligence && npm run validate:character-art && npm run build --workspaces",
+    "build": "npm run generate:assets && npm run validate:content && npm run validate:history && npm run validate:optimization && npm run validate:hero && npm run validate:hero-section && npm run validate:actors && npm run validate:people && npm run validate:people-materials && npm run validate:render-performance && npm run validate:street-finish && npm run validate:district-interactions && npm run validate:image-quality && npm run validate:crowd-clarity && npm run validate:zones-steps && npm run validate:resident-intelligence && npm run validate:character-art && npm run validate:character-surfaces && npm run build --workspaces",
     "generate:assets": "node tools/generate-runtime-assets.mjs",
     "generate:glb": "node tools/run-blender-asset-kit.mjs",
     "bake:hero": "node tools/run-blender-asset-kit.mjs --hero-bake",
@@ -39,7 +39,8 @@
     "validate:resident-intelligence": "node tools/validate-purposeful-life.mjs && node tools/test-resident-intelligence.mjs",
     "qa:resident-intelligence": "node tools/qa-resident-intelligence.mjs",
     "validate:character-art": "node tools/validate-character-art.mjs",
-    "build:character-art": "node tools/build-character-art.mjs"
+    "build:character-art": "node tools/build-character-art.mjs",
+    "validate:character-surfaces": "node tools/validate-character-surfaces.mjs"
   },
   "engines": {
     "node": ">=22.0.0"
