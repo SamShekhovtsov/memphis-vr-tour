@@ -1,3 +1,4 @@
+import { buildActivityStations } from './ResidentActivities';
 import { profilePopulation } from './ResidentProfiles';
 import { PopulationZones, type PopulationZone } from './PopulationZones';
 import {Scene,ShadowGenerator,Vector3} from '@babylonjs/core';
@@ -6,6 +7,7 @@ import {GroundContactIK} from './GroundContactIK';
 import {DistrictNavigation} from './DistrictNavigation';
 const angle=(v:number)=>Math.atan2(Math.sin(v),Math.cos(v));
 export class DistrictLife {
+ readonly stations:ReturnType<typeof buildActivityStations>;
  readonly profiles:ReturnType<typeof profilePopulation>;
  readonly zones:PopulationZones;readonly contacts:GroundContactIK[];private agents:{person:HeroPerson;heading:number;speed:number;wait:number;path:Vector3[];recent:number[];travel:number;pause:number;nextPose:number;stuck:number;zone:PopulationZone;pool:ReadonlySet<number>;allow:(x:number,z:number)=>boolean}[]=[];
  private shadows=new Map<number,{meshes:ReturnType<HeroPerson['root']['getChildMeshes']>;enabled:boolean}>();
@@ -17,6 +19,8 @@ export class DistrictLife {
   this.zones=new PopulationZones(nav,people);
   this.profiles=profilePopulation(this.zones.assignments,new Set(people.flatMap((p,i)=>p.workPoint?[i]:[])));
   scene.metadata.residentIntelligence={participants:this.profiles.size,total:people.length,profiles:[...this.profiles.values()]};
+  this.stations=buildActivityStations(nav,this.zones);
+  scene.metadata.residentIntelligence.stations=this.stations.map(s=>({...s,point:s.point.asArray(),face:s.face.asArray()}));
   this.contacts=people.map(p=>new GroundContactIK(p.root,p.legs,point=>{const h=nav.height(point.x,point.z);return h===undefined?undefined:{height:h,normal:Vector3.Up()};}));
   for(const [index,person]of people.entries()){
    this.zones.spawn(index,people,this.random);

@@ -1,7 +1,8 @@
 import assert from 'node:assert/strict';
-import {build} from 'esbuild';
-const bundle=await build({stdin:{contents:`export * from './apps/web-tour/src/scene/ResidentProfiles';`,resolveDir:process.cwd()},bundle:true,write:false,platform:'node',format:'esm'});
-const api=await import('data:text/javascript;base64,'+Buffer.from(bundle.outputFiles[0].text).toString('base64'));
+import ts from 'typescript';
+import fs from 'node:fs';
+const source=fs.readFileSync('apps/web-tour/src/scene/ResidentProfiles.ts','utf8');
+const api=await import('data:text/javascript;base64,'+Buffer.from(ts.transpileModule(source,{compilerOptions:{module:ts.ModuleKind.ESNext,target:ts.ScriptTarget.ES2022}}).outputText).toString('base64'));
 const zones=[...Array(51).fill('temple'),...Array(50).fill('street'),...Array(19).fill('route'),...Array(6).fill('free')];
 const profiles=api.profilePopulation(zones,new Set([52]));
 assert.equal(profiles.size,63);assert.equal(new Set([...profiles.values()].map(p=>p.id)).size,63);
