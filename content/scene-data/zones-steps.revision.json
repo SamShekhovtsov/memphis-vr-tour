@@ -1,0 +1,56 @@
+{
+  "date": "2026-10-27",
+  "scope": "126 residents with persistent 40/40/15/5 zone quotas; collision-aware visitor step-up and real quay/ramp support. Static meshes, rendering, camera bookmarks and route data unchanged.",
+  "files": {
+    "apps/web-tour/src/scene/DistrictLife.ts": {
+      "baseline": "content/source-assets/zones-steps-baseline/0.txt",
+      "beforeRaw": "d1a7029f2670f91408c5cfae104dd6008f60ed43c73769c738b034d0e1630b9c",
+      "afterRaw": "c806c9c84da11e16b9fcf0d7f0e1a9a50636993113e7296240f64173557a381d",
+      "before": "d1a7029f2670f91408c5cfae104dd6008f60ed43c73769c738b034d0e1630b9c",
+      "after": "c806c9c84da11e16b9fcf0d7f0e1a9a50636993113e7296240f64173557a381d"
+    },
+    "apps/web-tour/src/scene/DistrictNavigation.ts": {
+      "baseline": "content/source-assets/zones-steps-baseline/1.txt",
+      "beforeRaw": "8c899118dae8986420e627f51a3e90b67384da353d41418be99d818463485dff",
+      "afterRaw": "558f7c738cb297b08de0e71adc199a43bb8f1deae57903f6b82ba9368f3f0ccd",
+      "before": "8c899118dae8986420e627f51a3e90b67384da353d41418be99d818463485dff",
+      "after": "558f7c738cb297b08de0e71adc199a43bb8f1deae57903f6b82ba9368f3f0ccd"
+    },
+    "apps/web-tour/src/scene/GroundedVisitorCamera.ts": {
+      "baseline": "content/source-assets/zones-steps-baseline/2.txt",
+      "beforeRaw": "3dc550a4494976d02d317cd4fa5e2c6f4b158de2dde6b8ef794bb89d62a0b2db",
+      "afterRaw": "bf0c12466c92902b974d05b3052a23b70972b5f8d2df030e1b28776f7b01bf04",
+      "before": "3dc550a4494976d02d317cd4fa5e2c6f4b158de2dde6b8ef794bb89d62a0b2db",
+      "after": "bf0c12466c92902b974d05b3052a23b70972b5f8d2df030e1b28776f7b01bf04"
+    },
+    "apps/web-tour/src/scene/InstancedDistrictCrowd.ts": {
+      "baseline": "content/source-assets/zones-steps-baseline/3.txt",
+      "beforeRaw": "230a9295f470aa9dbeff10ae8e64310741985371ba2f730f8dd081df50658f05",
+      "afterRaw": "081dbdb9fa9706d4ea25989b5e993b5b366edd13f3eb953f47ef22f24253d3bc",
+      "before": "230a9295f470aa9dbeff10ae8e64310741985371ba2f730f8dd081df50658f05",
+      "after": "081dbdb9fa9706d4ea25989b5e993b5b366edd13f3eb953f47ef22f24253d3bc"
+    },
+    "tools/lib/crowd-clarity-revision.mjs": {
+      "baseline": "content/source-assets/zones-steps-baseline/4.txt",
+      "beforeRaw": "477c001d4cd6a0e9d90da6324fa86560a5987651f1a882002c85185c967ef736",
+      "afterRaw": "b9d7e0f28cc1fbee2c4f804810ac82d83c561b9fdca374197fc0ef581747225e",
+      "before": "477c001d4cd6a0e9d90da6324fa86560a5987651f1a882002c85185c967ef736",
+      "after": "b9d7e0f28cc1fbee2c4f804810ac82d83c561b9fdca374197fc0ef581747225e"
+    },
+    "tools/validate-crowd-clarity.mjs": {
+      "baseline": "content/source-assets/zones-steps-baseline/5.txt",
+      "beforeRaw": "5ff48284215afe6d482b6732b453832f8e7ae76ae3d0a725c5a2cdcd65a151fd",
+      "afterRaw": "a6aa2739d560571c76141445b53206f7ab683e793dae0e3ebb474f2890f97c0f",
+      "before": "5ff48284215afe6d482b6732b453832f8e7ae76ae3d0a725c5a2cdcd65a151fd",
+      "after": "a6aa2739d560571c76141445b53206f7ab683e793dae0e3ebb474f2890f97c0f"
+    }
+  },
+  "additions": {
+    "content/scene-data/district-population.json": "056519472c3dc699292b2481f9bca6fc2ad4a277da0deda8ced04904c9526b7b",
+    "apps/web-tour/src/scene/PopulationZones.ts": "acc4885f353475a12ab2209f7d56ec87a7737f6a4f688658c69b66f3fef3b3ed",
+    "apps/web-tour/src/scene/VisitorTraversal.ts": "92e6553900b1a77a31b0740e2d4e6c35a3492a1eeba068cce6629fc506cf7416",
+    "tools/lib/zones-steps-revision.mjs": "a1d0ae4223a173c82eab4d0b6303a7a3b39d8946dcb94b28b3e4dda7f10aa7e6",
+    "tools/validate-zones-steps.mjs": "50cfe04f77b5c1bf1debb187243d45ed27def2578ef1351c85fd27260ac3b86e",
+    "tools/audit-zones-steps.js": "85aed14449b9290220beb78014ec711402a9c59af0039e3b3a4a9a03391e3cdc"
+  }
+}

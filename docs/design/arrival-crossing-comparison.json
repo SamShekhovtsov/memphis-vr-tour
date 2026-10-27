@@ -1,0 +1,35 @@
+{
+  "before": {
+    "start": [
+      -30,
+      1.7,
+      -49.999
+    ],
+    "end": [
+      -31.964861097301238,
+      1.7,
+      -49.92178202271659
+    ],
+    "supportAtQuay": 0,
+    "maxEyeHeight": 1.7,
+    "blockedAtQuay": false,
+    "quayHeight": 0.34
+  },
+  "after": {
+    "start": [
+      -30,
+      1.7,
+      -49.999
+    ],
+    "end": [
+      -36.25547991306586,
+      2.0400000017881394,
+      -50.00004257997433
+    ],
+    "supportAtQuay": 0.3400000017881394,
+    "maxEyeHeight": 2.0400000017881394,
+    "blockedAtQuay": false,
+    "quayHeight": 0.34
+  },
+  "matchedStart": true
+}

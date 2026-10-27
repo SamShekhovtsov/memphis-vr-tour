@@ -1,3 +1,4 @@
+import population from '../../../../content/scene-data/district-population.json';
 import { BakedVertexAnimationManager, BoundingInfo, Mesh, Quaternion, RawTexture, Scene, SceneLoader, Texture, VertexBuffer, TransformNode, Vector3, Vector4 } from '@babylonjs/core';
 import type { HeroPerson } from './HeroPeople';
 import { GroundContactIK } from './GroundContactIK';
@@ -7,7 +8,7 @@ import { GroundContactIK } from './GroundContactIK';
 export async function addInstancedDistrictCrowd(scene: Scene, people: HeroPerson[]) {
   if (people.length !== 9 || new URLSearchParams(location.search).get('crowd') === 'small') return;
   const caps=scene.getEngine().getCaps();
-  if(!caps.instancedArrays||!caps.textureFloat){scene.metadata.gpuCrowd={requested:180,total:people.length,unsupported:true};return;}
+  if(!caps.instancedArrays||!caps.textureFloat){scene.metadata.gpuCrowd={requested:population.total,total:people.length,unsupported:true};return;}
   const lodInputs=await Promise.all(['female','male'].map(async sex=>Promise.all([1,2].map(level=>SceneLoader.LoadAssetContainerAsync('/assets/authored/people/crowd/', 'hero_'+sex+'_lod'+level+'.glb',scene)))));
   const skeletonsBefore=scene.skeletons.length;
   const frames = 64, templates = [people[3], people[4]];
@@ -78,7 +79,7 @@ export async function addInstancedDistrictCrowd(scene: Scene, people: HeroPerson
     });
     return {sources,local,manager,forward:person.facing().clone()};
   });
-  for(let i=9;i<180;i++){
+  for(let i=9;i<population.total;i++){
     const g=groups[i%2],root=new TransformNode('districtCrowdResident'+i,scene);
     root.parent=people[0].root.parent;root.metadata={resident:true,gpuCrowd:true};
     const parts=g.sources.map((source,j)=>{
@@ -106,6 +107,6 @@ export async function addInstancedDistrictCrowd(scene: Scene, people: HeroPerson
       for(const part of parts){const settings=part.instancedBuffers.bakedVertexAnimationSettingsInstanced as Vector4;settings.set(frame,frame,0,0);}
     }});
   }
-  scene.metadata.gpuCrowd={additional:171,total:180,poseAtlases:2,poseFrames:frames,transitionLevels:5,geometry:'original anatomy, shared instanced meshes',lodDistances:[8,20],nearGeometry:'original full detail',liveSkeletons:9,skeletonsBefore,skeletonsAfter:scene.skeletons.length};
+  scene.metadata.gpuCrowd={additional:population.total-9,total:population.total,poseAtlases:2,poseFrames:frames,transitionLevels:5,geometry:'original anatomy, shared instanced meshes',lodDistances:[8,20],nearGeometry:'original full detail',liveSkeletons:9,skeletonsBefore,skeletonsAfter:scene.skeletons.length};
   scene.onDisposeObservable.addOnce(()=>groups.forEach(g=>g.manager.dispose(true)));
 }

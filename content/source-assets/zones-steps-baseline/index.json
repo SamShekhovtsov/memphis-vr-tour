@@ -1,0 +1,8 @@
+{
+  "apps/web-tour/src/scene/DistrictLife.ts": "content/source-assets/zones-steps-baseline/0.txt",
+  "apps/web-tour/src/scene/DistrictNavigation.ts": "content/source-assets/zones-steps-baseline/1.txt",
+  "apps/web-tour/src/scene/GroundedVisitorCamera.ts": "content/source-assets/zones-steps-baseline/2.txt",
+  "apps/web-tour/src/scene/InstancedDistrictCrowd.ts": "content/source-assets/zones-steps-baseline/3.txt",
+  "tools/lib/crowd-clarity-revision.mjs": "content/source-assets/zones-steps-baseline/4.txt",
+  "tools/validate-crowd-clarity.mjs": "content/source-assets/zones-steps-baseline/5.txt"
+}
