@@ -1,3 +1,4 @@
+import { ResidentBrain } from './ResidentBrain';
 import { buildActivityStations } from './ResidentActivities';
 import { profilePopulation } from './ResidentProfiles';
 import { PopulationZones, type PopulationZone } from './PopulationZones';
@@ -7,6 +8,7 @@ import {GroundContactIK} from './GroundContactIK';
 import {DistrictNavigation} from './DistrictNavigation';
 const angle=(v:number)=>Math.atan2(Math.sin(v),Math.cos(v));
 export class DistrictLife {
+ readonly brains=new Map<number,ResidentBrain>();
  readonly stations:ReturnType<typeof buildActivityStations>;
  readonly profiles:ReturnType<typeof profilePopulation>;
  readonly zones:PopulationZones;readonly contacts:GroundContactIK[];private agents:{person:HeroPerson;heading:number;speed:number;wait:number;path:Vector3[];recent:number[];travel:number;pause:number;nextPose:number;stuck:number;zone:PopulationZone;pool:ReadonlySet<number>;allow:(x:number,z:number)=>boolean}[]=[];
@@ -28,6 +30,8 @@ export class DistrictLife {
    if(person.workPoint){const d=person.workPoint().subtract(person.root.getAbsolutePosition());d.y=0;if(d.lengthSquared()>1e-6)person.setFacing(d.normalize());}
    const face=person.facing();this.agents.push({person,heading:Math.atan2(face.x,face.z),speed:0,wait:person.workPoint?0:1+this.random()*4,path:[],recent:[],travel:0,pause:8+this.random()*22,nextPose:0,stuck:0,zone:this.zones.assignments[index],pool:this.zones.pool(index,p),allow:(x,z)=>this.zones.allows(index,x,z)});
   }
+  for(const [i,profile]of this.profiles)this.brains.set(i,new ResidentBrain(profile,this.stations,this.agents[i].pool));
+  if(new URLSearchParams(location.search).get('intelligence')==='legacy')this.brains.clear();
   for(const group of scene.animationGroups.filter(g=>g.name.startsWith('glbAnimatedStreetActors')))group.stop();
   const shadow=scene.getLightByName('lowGoldSun')?.getShadowGenerator();
   if(shadow instanceof ShadowGenerator)for(let i=3;i<people.length;i++){const meshes=people[i].root.getChildMeshes();this.shadows.set(i,{meshes,enabled:true});}
@@ -42,28 +46,39 @@ export class DistrictLife {
   const neighbors=(p:Vector3)=>{const result:typeof this.agents=[];for(let x=-1;x<=1;x++)for(let z=-1;z<=1;z++)result.push(...(buckets.get((Math.floor(p.x/2)+x)+','+(Math.floor(p.z/2)+z))??[]));return result;};
   let pathBudget=4;
   for(const [index,a]of this.agents.entries()){
-   const {person}=a;let p=person.root.getAbsolutePosition().clone();
+   const {person}=a,brain=this.brains.get(index);let p=person.root.getAbsolutePosition().clone();
    person.root.metadata??={};
    const shadow=this.scene.getLightByName('lowGoldSun')?.getShadowGenerator(),cached=this.shadows.get(index);
    if(cached&&shadow instanceof ShadowGenerator){const distance=Vector3.Distance(p,camera),enabled=cached.enabled?distance<30:distance<24;if(enabled!==cached.enabled){for(const mesh of cached.meshes)enabled?shadow.addShadowCaster(mesh,false):shadow.removeShadowCaster(mesh,false);cached.enabled=enabled;}}
    if(person.workPoint&&dt>0){a.wait-=dt;a.pause-=dt;if(a.pause<=0){a.wait=1.5+this.random()*4;a.pause=6+this.random()*8;this.diagnostics.pauses++;}person.root.metadata.workActive=a.wait<=0;}
    if(!person.workPoint&&dt>0){
-    a.wait-=dt;a.pause-=dt;
-    if(a.wait<=0&&a.pause<=0){a.wait=1.5+this.random()*6;a.pause=8+this.random()*25;this.diagnostics.pauses++;person.root.metadata.gazeYaw=(this.random()-.5)*.6;}
+    if(brain){
+     const dot=brain.target?Vector3.Dot(person.facing(),brain.target.face):1;
+     if(this.elapsed>=brain.nextDecision||brain.stage==='align'||brain.stage==='act'){
+      brain.tick(this.elapsed,p,dot);brain.nextDecision=Math.max(brain.nextDecision,this.elapsed+.5+(index%5)*.025);
+     }
+     person.root.metadata.activity=brain.intent;person.root.metadata.activityStage=brain.stage;
+     a.wait=brain.stage==='travel'?0:1;
+     if(brain.stage==='align'||brain.stage==='act'){
+      a.path=[];const direction=brain.target!.face,target=Math.atan2(direction.x,direction.z);a.heading+=Math.max(-1.6*dt,Math.min(1.6*dt,angle(target-a.heading)));
+     }
+    }else{a.wait-=dt;a.pause-=dt;}
+    if(!brain&&a.wait<=0&&a.pause<=0){a.wait=1.5+this.random()*6;a.pause=8+this.random()*25;this.diagnostics.pauses++;person.root.metadata.gazeYaw=(this.random()-.5)*.6;}
     if(a.wait<=0&&!a.path.length&&pathBudget>0){
      pathBudget--;
-     const goals=[...a.pool];
+     if(brain?.target){a.path=this.nav.path(p,brain.target.node,a.pool,a.allow);if(!a.path.length)brain.abort(this.elapsed);else this.diagnostics.goals++;}
+     const goals=brain?[]:[...a.pool];
      for(let attempt=0;attempt<8;attempt++){const goal=goals[Math.floor(this.random()*goals.length)];if(a.recent.includes(goal)||Vector3.Distance(p,this.nav.nodes[goal])<3)continue;const path=this.nav.path(p,goal,a.pool,a.allow);if(path.length){a.path=path;a.recent.push(goal);if(a.recent.length>12)a.recent.shift();this.diagnostics.goals++;break;}}
-     if(!a.path.length)a.wait=2+this.random()*3;
+     if(!a.path.length&&!brain)a.wait=2+this.random()*3;
     }
     let desiredSpeed=0,turning=false;
     if(a.wait<=0&&a.path.length){
      let d=a.path[0].subtract(p);d.y=0;const distance=d.length();
-     if(distance<.18){a.path.shift();if(!a.path.length)a.wait=2+this.random()*5;}
+     if(distance<.18){a.path.shift();if(!a.path.length)a.wait=brain?0:2+this.random()*5;}
      else {
       const target=Math.atan2(d.x,d.z),turn=angle(target-a.heading),step=Math.max(-1.6*dt,Math.min(1.6*dt,turn));a.heading+=step;this.diagnostics.maxTurnPerSecond=Math.max(this.diagnostics.maxTurnPerSecond,Math.abs(step/dt));
       turning=Math.abs(turn)>=.35;
-      if(!turning)desiredSpeed=Math.min(.65+index%3*.12,Math.sqrt(1.5*distance));
+      if(!turning)desiredSpeed=Math.min((brain?.profile.pace??(.65+index%3*.12)),Math.sqrt(1.5*distance));
       const facing=new Vector3(Math.sin(a.heading),0,Math.cos(a.heading));
       for(const other of neighbors(p)){if(other===a)continue;const offset=other.person.root.getAbsolutePosition().subtract(p);offset.y=0;if(offset.length()<1.05&&Vector3.Dot(offset,facing)>.35*offset.length())desiredSpeed=0;}
       const observer=camera.subtract(p);observer.y=0;if(observer.length()<1.15&&Vector3.Dot(observer,facing)>0)desiredSpeed=0;
@@ -92,6 +107,7 @@ export class DistrictLife {
     this.contacts[index].restore();person.update(time);this.contacts[index].update(time);a.nextPose=this.elapsed+(!person.root.metadata?.gpuCrowd&&Vector3.Distance(p,camera)>35?1/15:0);
    }
   }
+  this.scene.metadata.residentIntelligence.tasks=[...this.brains].map(([index,b])=>({index,id:b.profile.id,occupation:b.profile.occupation,stage:b.stage,target:b.target?.id,activity:b.target?.kind,completed:b.completed,failed:b.failed,decisions:b.decisions}));
   this.diagnostics.states=this.agents.map(a=>({name:a.person.root.name,role:a.person.role,zone:a.zone,position:a.person.root.getAbsolutePosition().asArray(),speed:a.speed,waiting:a.wait>0,remainingWaypoints:a.path.length,travel:a.travel}));
  }
 }
