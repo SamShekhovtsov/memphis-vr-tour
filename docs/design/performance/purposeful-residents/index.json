@@ -1,0 +1,125 @@
+{
+  "format": "gzip; exact original UTF-8 JSON bytes",
+  "files": {
+    "hero-street-main-purposeful-cinematic-after-1.json": {
+      "archive": "hero-street-main-purposeful-cinematic-after-1.json.gz",
+      "sha256": "74f33e434d062553f4e377913c4e2785a7440a937b996170fc7798af494a256f",
+      "bytes": 998011,
+      "compressedBytes": 198213
+    },
+    "hero-street-main-purposeful-cinematic-after-2.json": {
+      "archive": "hero-street-main-purposeful-cinematic-after-2.json.gz",
+      "sha256": "04530fb85e2e9251187f78a65212701108bed4a2edd6ba974b5495920604301b",
+      "bytes": 998238,
+      "compressedBytes": 198419
+    },
+    "hero-street-main-purposeful-cinematic-after-3.json": {
+      "archive": "hero-street-main-purposeful-cinematic-after-3.json.gz",
+      "sha256": "ba34c4a857d05e604d7ac25d945d285b4be13f4cf5f9f37342f9eb810ec343cd",
+      "bytes": 996552,
+      "compressedBytes": 198045
+    },
+    "hero-street-main-purposeful-cinematic-before-1.json": {
+      "archive": "hero-street-main-purposeful-cinematic-before-1.json.gz",
+      "sha256": "aa5eb40f7cb43c9f87c9813061931f759f9c2619edef7b74ace3453a2f6f33ea",
+      "bytes": 977040,
+      "compressedBytes": 199659
+    },
+    "hero-street-main-purposeful-cinematic-before-2.json": {
+      "archive": "hero-street-main-purposeful-cinematic-before-2.json.gz",
+      "sha256": "7064d051962e5ecec44c8e48a60026dc252608ad121360fbc5900d10a3e77fde",
+      "bytes": 976581,
+      "compressedBytes": 199571
+    },
+    "hero-street-main-purposeful-cinematic-before-3.json": {
+      "archive": "hero-street-main-purposeful-cinematic-before-3.json.gz",
+      "sha256": "df7822bbd1b46f2b840d46aa5cdc2cff2b501e7044d706324eebf1b720045e9a",
+      "bytes": 976148,
+      "compressedBytes": 199511
+    },
+    "hero-street-main-purposeful-control.json": {
+      "archive": "hero-street-main-purposeful-control.json.gz",
+      "sha256": "408cf97c5d7d0057912866257e189e1ca178da91399ab85106ec1409d1f159af",
+      "bytes": 89390,
+      "compressedBytes": 7828
+    },
+    "hero-street-main-purposeful-final-audit.json": {
+      "archive": "hero-street-main-purposeful-final-audit.json.gz",
+      "sha256": "095bbc0585e1f340b1e3a2b55cbbf1650d53d341dfa8c223856a5dd7724a94a9",
+      "bytes": 218148,
+      "compressedBytes": 14441
+    },
+    "hero-street-main-purposeful-final.json": {
+      "archive": "hero-street-main-purposeful-final.json.gz",
+      "sha256": "31b8d907db5452c048c96b32125bdc2f25d5651291800f3a07f3297b0fc4c196",
+      "bytes": 89400,
+      "compressedBytes": 7822
+    },
+    "hero-street-main-purposeful-tour-after-1.json": {
+      "archive": "hero-street-main-purposeful-tour-after-1.json.gz",
+      "sha256": "904947baec268a8ac59e41007cd063087a9e31c7425192b9ca83266017236107",
+      "bytes": 1001642,
+      "compressedBytes": 198676
+    },
+    "hero-street-main-purposeful-tour-after-2.json": {
+      "archive": "hero-street-main-purposeful-tour-after-2.json.gz",
+      "sha256": "5b5e95eed7c9db53ce2444406cd0daeb475073fb700b81faa916709d15b8366d",
+      "bytes": 999135,
+      "compressedBytes": 198593
+    },
+    "hero-street-main-purposeful-tour-after-3.json": {
+      "archive": "hero-street-main-purposeful-tour-after-3.json.gz",
+      "sha256": "9063e55c3f360404e7333ea148337b2fe3da11ba06e175df8669bfdab1de5725",
+      "bytes": 999804,
+      "compressedBytes": 198465
+    },
+    "hero-street-main-purposeful-tour-before-1.json": {
+      "archive": "hero-street-main-purposeful-tour-before-1.json.gz",
+      "sha256": "2e913f4f5fefd741ad76a27f70e2d214c2c27c80c940a1eaddc9201d34721e8a",
+      "bytes": 976949,
+      "compressedBytes": 199659
+    },
+    "hero-street-main-purposeful-tour-before-2.json": {
+      "archive": "hero-street-main-purposeful-tour-before-2.json.gz",
+      "sha256": "cec67a5d8bb351ff702c9099286bc0c206607b61cb55088f747cb6095cb7e256",
+      "bytes": 976625,
+      "compressedBytes": 199709
+    },
+    "hero-street-main-purposeful-tour-before-3.json": {
+      "archive": "hero-street-main-purposeful-tour-before-3.json.gz",
+      "sha256": "878f431481ed23036f122953eba25e3f3d972246d696a74cdae6f84949bc33a9",
+      "bytes": 976843,
+      "compressedBytes": 199570
+    },
+    "hero-street-main-purposeful-traversal.json": {
+      "archive": "hero-street-main-purposeful-traversal.json.gz",
+      "sha256": "70d2750c9f5bf279303c0bd12b790adfeae0c89c42a2889acb9779e8f2219a2c",
+      "bytes": 96040,
+      "compressedBytes": 9256
+    },
+    "hero-street-material-purposeful-control.json": {
+      "archive": "hero-street-material-purposeful-control.json.gz",
+      "sha256": "c077d9d69da5c3be5eb56f85f8f292bfbe0e8cd7a13a3adfbbd2f2d1d7d0c68f",
+      "bytes": 89418,
+      "compressedBytes": 7842
+    },
+    "hero-street-material-purposeful-final.json": {
+      "archive": "hero-street-material-purposeful-final.json.gz",
+      "sha256": "bef1440e3f5e253acba6b8525e05c5051c472beb2f3999a0ad01fc9c38a2bb4a",
+      "bytes": 89400,
+      "compressedBytes": 7826
+    },
+    "street-entry-purposeful-control.json": {
+      "archive": "street-entry-purposeful-control.json.gz",
+      "sha256": "999aa8420eefc336df3f31fc58320ef70fc88c93d464da5976e5f3c839a04e88",
+      "bytes": 89405,
+      "compressedBytes": 7832
+    },
+    "street-entry-purposeful-final.json": {
+      "archive": "street-entry-purposeful-final.json.gz",
+      "sha256": "e790254b05f172c27eb52cf2483b645a567e8c8aea5b6ea8d8738a165da0571a",
+      "bytes": 89390,
+      "compressedBytes": 7828
+    }
+  }
+}

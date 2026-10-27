@@ -4,10 +4,17 @@ export interface Rect {minX:number;maxX:number;minZ:number;maxZ:number;id?:strin
 export function contains(r:Rect,x:number,z:number,pad=0){return x>r.minX-pad&&x<r.maxX+pad&&z>r.minZ-pad&&z<r.maxZ+pad;}
 export class DistrictNavigation {
  readonly obstacles:Rect[]=[];readonly nodes:Vector3[]=[];readonly adjacency:number[][]=[];readonly step=1.5;
- private cells=new Map<string,number>();private floors:Mesh[];private support: (Rect&{height:number})[]=[];private buckets=new Map<string,Rect[]>();
+ private cells=new Map<string,number>();private floors:Mesh[];private support: (Rect&{height:number;slopeZ?:number;centerZ?:number})[]=[];private buckets=new Map<string,Rect[]>();
  constructor(readonly scene:Scene,floors:Mesh[]){
   this.floors=floors;scene.meshes.forEach(m=>m.computeWorldMatrix(true));
   this.support=floors.map(m=>{const b=m.getBoundingInfo().boundingBox;return {minX:b.minimumWorld.x,maxX:b.maximumWorld.x,minZ:b.minimumWorld.z,maxZ:b.maximumWorld.z,height:b.maximumWorld.y};});
+  // These existing arrival colliders also carry feet. The tilted ramp's AABB top
+  // is not its surface height; use its actual top-face plane.
+  for(const name of ['riverLandingQuay','landingRamp']){
+   const m=scene.getMeshByName(name);if(!m)continue;const b=m.getBoundingInfo().boundingBox;
+   this.support.push({minX:b.minimumWorld.x,maxX:b.maximumWorld.x,minZ:b.minimumWorld.z,maxZ:b.maximumWorld.z,
+    height:name==='landingRamp'?m.position.y+.09/Math.cos(m.rotation.x):b.maximumWorld.y,slopeZ:name==='landingRamp'?-Math.tan(m.rotation.x):0,centerZ:m.position.z});
+  }
   for(const name of ['heroStreetLeftCollisionRail','heroStreetRightCollisionRail']){const old=scene.getMeshByName(name);if(old){old.checkCollisions=false;old.setEnabled(false);}}
   for(const h of data.houses){
    const mesh=MeshBuilder.CreateBox('houseCollision-'+h.id,{width:h.maxX-h.minX,height:h.height,depth:h.maxZ-h.minZ},scene);
@@ -27,24 +34,25 @@ export class DistrictNavigation {
   for(const [key,index] of this.cells){const [x,z]=key.split(',').map(Number);for(const [dx,dz]of [[1,0],[-1,0],[0,1],[0,-1],[1,1],[-1,1],[1,-1],[-1,-1]]){
    const neighbor=this.cells.get((x+dx)+','+(z+dz));if(neighbor===undefined)continue;
    if(dx&&dz&&(!this.cells.has((x+dx)+','+z)||!this.cells.has(x+','+(z+dz))))continue;
-   if(Math.abs(this.nodes[index].y-this.nodes[neighbor].y)<=.3&&this.segment(this.nodes[index],this.nodes[neighbor],.4))this.adjacency[index].push(neighbor);
+   if(Math.abs(this.nodes[index].y-this.nodes[neighbor].y)<=.38&&this.segment(this.nodes[index],this.nodes[neighbor],.4))this.adjacency[index].push(neighbor);
   }}
   scene.metadata.districtNavigation={houses:data.houses.length,nodes:this.nodes.length,obstacles:this.obstacles.length,spawns:data.spawns};
  }
  height(x:number,z:number):number|undefined{
-  let height:number|undefined;for(const r of this.support)if(contains(r,x,z))height=Math.max(height??-Infinity,r.height);
+  let height:number|undefined;for(const r of this.support)if(contains(r,x,z))height=Math.max(height??-Infinity,r.height+(r.slopeZ??0)*(z-(r.centerZ??0)));
   if(height!==undefined&&x>=-10.705&&x<=-1.555&&z>=-37.8&&z<=30)height=Math.max(height,.052);
   return height;
  }
  walkable(x:number,z:number,radius=.32){return x>=-36.3&&x<=47.4&&this.height(x,z)!==undefined&&!(this.buckets.get(Math.floor(x/8)+','+Math.floor(z/8))??[]).some(r=>contains(r,x,z,Math.max(0,radius-.006)));}
- segment(a:Vector3,b:Vector3,radius=.32){const n=Math.ceil(Vector3.Distance(a,b)/.25);for(let i=0;i<=n;i++){const t=n?i/n:0;if(!this.walkable(a.x+(b.x-a.x)*t,a.z+(b.z-a.z)*t,radius))return false;}return true;}
+ segment(a:Vector3,b:Vector3,radius=.32,allowed?:(x:number,z:number)=>boolean){const n=Math.ceil(Vector3.Distance(a,b)/.25);for(let i=0;i<=n;i++){const t=n?i/n:0,x=a.x+(b.x-a.x)*t,z=a.z+(b.z-a.z)*t;if(!this.walkable(x,z,radius)||allowed&&!allowed(x,z))return false;}return true;}
  nearest(p:Vector3){let best=-1,d=Infinity;this.nodes.forEach((n,i)=>{const v=(n.x-p.x)**2+(n.z-p.z)**2;if(v<d){d=v;best=i;}});return best;}
- path(from:Vector3,goal:number):Vector3[]{
-  const start=this.nearest(from);if(start<0||goal<0)return [];
+ path(from:Vector3,goal:number,allowed?:ReadonlySet<number>,allowedPoint?:(x:number,z:number)=>boolean):Vector3[]{
+  let start=this.nearest(from);if(allowed&&!allowed.has(start)){let d=Infinity;start=-1;for(const id of allowed){const v=Vector3.DistanceSquared(from,this.nodes[id]);if(v<d){d=v;start=id;}}}
+  if(start<0||goal<0||allowed&&!allowed.has(goal))return [];
   const open=[start],cost=new Map([[start,0]]),parent=new Map<number,number>();const closed=new Set<number>();
   while(open.length){let pick=0,best=Infinity;for(let k=0;k<open.length;k++){const id=open[k],v=cost.get(id)!+Vector3.Distance(this.nodes[id],this.nodes[goal]);if(v<best){best=v;pick=k;}}
-   const id=open.splice(pick,1)[0];if(id===goal){const ids=[id];while(ids[0]!==start)ids.unshift(parent.get(ids[0])!);const result:Vector3[]=[];let anchor=from;for(let i=1;i<ids.length;i++){const next=this.nodes[ids[i+1]??ids[i]];if(i===ids.length-1||!this.segment(anchor,next,.38)){const p=this.nodes[ids[i]].clone();result.push(p);anchor=p;}}return result;}
-   closed.add(id);for(const next of this.adjacency[id]){if(closed.has(next))continue;const g=cost.get(id)!+Vector3.Distance(this.nodes[id],this.nodes[next]);if(g<(cost.get(next)??Infinity)){cost.set(next,g);parent.set(next,id);if(!open.includes(next))open.push(next);}}
+   const id=open.splice(pick,1)[0];if(id===goal){const ids=[id];while(ids[0]!==start)ids.unshift(parent.get(ids[0])!);const result:Vector3[]=[];let anchor=from;for(let i=1;i<ids.length;i++){const next=this.nodes[ids[i+1]??ids[i]];if(i===ids.length-1||!this.segment(anchor,next,.38,allowedPoint)){const p=this.nodes[ids[i]].clone();result.push(p);anchor=p;}}return result;}
+   closed.add(id);for(const next of this.adjacency[id]){if(closed.has(next)||allowed&&!allowed.has(next))continue;const g=cost.get(id)!+Vector3.Distance(this.nodes[id],this.nodes[next]);if(g<(cost.get(next)??Infinity)){cost.set(next,g);parent.set(next,id);if(!open.includes(next))open.push(next);}}
   }return [];
  }
 }

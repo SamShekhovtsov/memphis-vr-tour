@@ -1,3 +1,4 @@
+const intelligenceComparison=process.argv.includes('--intelligence-comparison');
 import fs from 'node:fs';
 import assert from 'node:assert/strict';
 import {createHash} from 'node:crypto';
@@ -15,6 +16,8 @@ const gpu=profile||process.argv.includes('--gpu-profile');
 const heroSegment=process.argv.includes('--hero-street');
 const quality=process.argv.find(a=>a.startsWith('--quality='))?.slice(10)??'balanced';
 assert.ok(['balanced','cinematic','performance','headset'].includes(quality),'Unknown quality tier');
+const runOffset=Number(process.argv.find(a=>a.startsWith('--run-offset='))?.slice(13)??0);
+assert.ok(Number.isInteger(runOffset)&&runOffset>=0&&runOffset<=6);
 const runs=Number(process.argv.find(a=>a.startsWith('--runs='))?.slice(7)??3);
 const isolateFrame=Number(process.argv.find(a=>a.startsWith('--isolate-frame='))?.slice(16)??0);
 assert.ok(Number.isInteger(runs)&&runs>=1&&runs<=8);
@@ -52,6 +55,7 @@ main=replace(main,'if (frames > 60) frameIntervals.push(now-previousFrame);',`if
 main=replace(main,'animationSeconds: 2,',`animationSeconds: 2 + (renderStopFrame-1)/30,
           benchmarkProtocol:{frames:renderStopFrame,warmupFrames:61,deterministicActorTime:true,crowdWarmupSeconds:${process.argv.includes('--crowd-warmup')?300:0},route:${JSON.stringify(heroSegment?'hero-street':'full-tour')}},
           renderProfile:{gpuTimerSupported:!!engine.getCaps().timerQuery,gpuTimerEnabled:${gpu},samples:renderSamples},
+          residentDecisionTiming:scene.metadata.residentIntelligence?.timing??null,
           renderingOptimization:scene.metadata.renderingOptimization??null,
           activeMeshPoseMatrices:scene.getActiveMeshes().data.slice(0,scene.getActiveMeshes().length).map(mesh=>({name:mesh.name,world:Array.from(mesh.computeWorldMatrix(true).m),material:mesh.material?.name,materialId:mesh.material?.uniqueId})),
           moverPoseMatrices:[...new Set([...scene.meshes,...scene.transformNodes].filter(node=>/^(incenseSmoke-|distantBird-)/.test(node.name)).flatMap(node=>[node,...node.getChildTransformNodes(false)]))].map(node=>({name:node.name,world:Array.from(node.computeWorldMatrix(true).m)})),
@@ -59,21 +63,22 @@ main=replace(main,'animationSeconds: 2,',`animationSeconds: 2 + (renderStopFrame
 main=replace(main,'instrumentation.dispose();','instrumentation.dispose(); gpuInstrumentation.dispose(); engine.stopRenderLoop();');
 try{
   fs.writeFileSync(mainFile,main);fs.writeFileSync(sceneFile,scene);
-  const orders=process.argv.includes('--optimized-only')?Array.from({length:runs},()=>['after']):process.argv.includes('--after-only')?[['after']]:profile?[[process.argv.includes('--profile-after')?'after':'before']]:process.argv.includes('--pilot')?[['before','after']]:Array.from({length:runs},(_,i)=>i%2?['after','before']:['before','after']);
+  const orders=process.argv.includes('--optimized-only')?Array.from({length:runs},()=>['after']):process.argv.includes('--after-only')?[['after']]:profile?[[process.argv.includes('--profile-after')?'after':'before']]:process.argv.includes('--pilot')?[['before','after']]:Array.from({length:runs},(_,i)=>(i+runOffset)%2?['after','before']:['before','after']);
   let port=9510;
-  const capture=(name,phase,args=[])=>execFileSync(process.execPath,['tools/capture-hero-shot.mjs',name,'--hardware','--benchmark',`--quality=${quality}`,...process.argv.filter(a=>a.startsWith('--image-quality=')||['--small-crowd','--previous-clarity'].includes(a)),...(phase==='before'?['--legacy-render-perf']:[]),...(profile?['--profile']:[]),...(uncapped?['--uncapped']:[]),...args],{stdio:'inherit',env:{...process.env,CDP_PORT:String(port++)}});
+  const capture=(name,phase,args=[])=>execFileSync(process.execPath,['tools/capture-hero-shot.mjs',name,'--hardware','--benchmark',`--quality=${quality}`,...process.argv.filter(a=>a.startsWith('--image-quality=')||['--small-crowd','--previous-clarity'].includes(a)),...(phase==='before'?[intelligenceComparison?'--legacy-intelligence':'--legacy-render-perf']:[]),...(profile?['--profile']:[]),...(uncapped?['--uncapped']:[]),...args],{stdio:'inherit',env:{...process.env,CDP_PORT:String(port++)}});
+  if(intelligenceComparison&&process.argv.includes('--batch'))throw Error('Use separate sessions for intelligence comparison');
   if(process.argv.includes('--batch')){
     const jobs=[];
     if(isolateFrame)for(const mode of ['legacy-a','legacy-b','selection','materials','optimized'])jobs.push({label:`${label}-${mode}`,renderMode:mode.startsWith('legacy')?'legacy':mode,renderFrame:isolateFrame});
     else if(checkpoints)for(const frame of (process.argv.includes("--tour-checkpoints")?[90,180,360,600]:process.argv.includes("--three-checkpoints")?[180,360,600]:[90,180,270,360,450,540,600]))for(const phase of (process.argv.includes('--optimized-only')?['after']:['before','after']))jobs.push({label:`${label}-checkpoint-${frame}-${phase}`,legacyRenderPerf:phase==='before',renderFrame:frame});
     else if(process.argv.includes('--isolate'))for(const mode of ['legacy','selection','materials','optimized'])jobs.push({label:`${label}-${mode}`,renderMode:mode});
-    else for(const [index,order] of orders.entries())for(const phase of order)jobs.push({label:`${label}-${phase}-${index+1}`,legacyRenderPerf:phase==='before'});
+    else for(const [index,order] of orders.entries())for(const phase of order)jobs.push({label:`${label}-${phase}-${index+1+runOffset}`,legacyRenderPerf:phase==='before'});
     fs.mkdirSync('content/generated',{recursive:true});
     const request=`content/generated/render-batch-${process.pid}.json`;fs.writeFileSync(request,JSON.stringify(jobs));
     execFileSync(process.execPath,['tools/capture-hero-shot.mjs',label,'--hardware','--benchmark',`--quality=${quality}`,...process.argv.filter(a=>a.startsWith('--image-quality=')||['--small-crowd','--previous-clarity'].includes(a)),`--batch-json=${request}`,...(uncapped?['--uncapped']:[]),...(profile?['--profile']:[])],{stdio:'inherit',env:{...process.env,CDP_PORT:'9530'}});
   }
   else if(checkpoints){for(const frame of (process.argv.includes("--tour-checkpoints")?[90,180,360,600]:process.argv.includes("--three-checkpoints")?[180,360,600]:[90,180,270,360,450,540,600]))for(const phase of (process.argv.includes('--optimized-only')?['after']:['before','after']))capture(`${label}-checkpoint-${frame}-${phase}`,phase,[`--render-frame=${frame}`]);}
-  else for(const [index,order] of orders.entries())for(const phase of order)capture(`${label}-${phase}-${index+1}`,phase);
+  else for(const [index,order] of orders.entries())for(const phase of order)capture(`${label}-${phase}-${index+1+runOffset}`,phase);
 }finally{
   for(const [file,data] of originals){fs.writeFileSync(file,data);assert.equal(sha(fs.readFileSync(file)),sha(data));}
   console.log('Original scene and main restored and hash verified');

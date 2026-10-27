@@ -1,0 +1,10 @@
+{
+  "apps/web-tour/src/scene/DistrictLife.ts": "content/source-assets/purposeful-life-baseline/0.snapshot",
+  "apps/web-tour/src/scene/HeroPeople.ts": "content/source-assets/purposeful-life-baseline/1.snapshot",
+  "apps/web-tour/src/scene/InstancedDistrictCrowd.ts": "content/source-assets/purposeful-life-baseline/2.snapshot",
+  "tools/lib/zones-steps-revision.mjs": "content/source-assets/purposeful-life-baseline/3.snapshot",
+  "tools/validate-zones-steps.mjs": "content/source-assets/purposeful-life-baseline/4.snapshot",
+  "tools/audit-zones-steps.js": "content/source-assets/purposeful-life-baseline/5.snapshot",
+  "tools/capture-hero-shot.mjs": "content/source-assets/purposeful-life-baseline/6.snapshot",
+  "tools/benchmark-rendering.mjs": "content/source-assets/purposeful-life-baseline/7.snapshot"
+}

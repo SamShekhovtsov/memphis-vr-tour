@@ -31,7 +31,7 @@ That lets the experience stay immersive while still being honest about where evi
 
 ## Desktop movement and residents
 
-WASD or arrows walk on the ground, independently of view pitch. Hold **F** with movement keys for view-directed flight; while F is held, Space rises and Ctrl descends. Release F to land safely. Houses are solid. 180 residents now populate the district, with varied destinations, pauses and turns. The original nine retain live rigs and IK; 171 added residents share GPU animation and distance-based character LODs.
+WASD or arrows walk on the ground, independently of view pitch. Hold **F** with movement keys for view-directed flight; while F is held, Space rises and Ctrl descends. Release F to land safely. Houses are solid. 126 residents now populate the district, with varied destinations, pauses and turns. The original nine retain live rigs and IK; 117 added residents share GPU animation and distance-based character LODs.
 
 See [interaction fixes, matched screenshots and desktop measurements](docs/design/district-interactions-2026-10-25.md). Run `npm run qa:district-interactions` against the dev server on port 5573 to repeat the live regression checks.
 
@@ -40,3 +40,13 @@ See [interaction fixes, matched screenshots and desktop measurements](docs/desig
 Balanced keeps native resolution and uses a shared-sample FXAA/detail resolve with selective 4x authored colour-map filtering and 8x ground-colour filtering. The line-preserving resolve uses gentler sharpening to limit halos. Cinematic retains 4x MSAA and 8x authored colour filtering. The route overlay is opt-in with `?routeGuide=1`. See [matched quality comparisons and HD 4600 measurements](docs/design/hero-street-image-quality-2026-10-25.md).
 
 See the [180-person crowd and clarity comparison](docs/design/crowd-and-clarity-2026-10-26.md). Diagnostic `?crowd=small` restores nine residents; `&clarity=previous` selects the previous edge resolve and ground filter for comparisons. Added residents use full geometry nearby and real skinned LODs at 8 m and 20 m.
+
+## Population areas and automatic steps
+
+Current allocation: 51 people inside the Ptah temple, 50 in the hero village lane, 19 on the remaining arrival route, and 6 in open space. This is a 30% cut from 180, with whole-person rounding of 40/40/15/5 percent. Regions and weights are in `content/scene-data/district-population.json`; NPCs wander within those areas. Zone edges are routing rules and add no visitor collision walls.
+
+Walk normally to step up or down low obstacles automatically (maximum rise 38 cm). The arrival quay and tilted ramp provide actual support. Tall walls and low ceilings still block traversal; hold F remains the explicit flight override. See [population, step-up evidence and final views](docs/design/population-zones-and-steps-2026-10-27.md).
+
+## Purposeful resident behavior
+
+Half of the population (63 of 126) now has stable roles and personality traits, committed activities, limited-capacity work/rest places, physical waiting slots, paired conversations and intent-driven shared GPU gestures. The 51/50/19/6 area allocation remains unchanged. No model download, inference server, paid API or added live skeleton is required. See [six-step implementation and measurements](docs/design/purposeful-residents-2026-10-27.md). Diagnostic `?intelligence=legacy` restores random-goal behavior for comparisons; geometry, camera and rendering settings are unchanged.

@@ -1,0 +1,68 @@
+{
+  "date": "2026-10-27",
+  "scope": "63 purposeful residents; no static layout, camera, traversal, material or population changes",
+  "files": {
+    "apps/web-tour/src/scene/DistrictLife.ts": {
+      "baseline": "content/source-assets/purposeful-life-baseline/0.snapshot",
+      "beforeRaw": "c806c9c84da11e16b9fcf0d7f0e1a9a50636993113e7296240f64173557a381d",
+      "afterRaw": "cb2634965e1f52cba0e028ec4496d39cb15622cdc539b8c84ee89f195e829319",
+      "before": "c806c9c84da11e16b9fcf0d7f0e1a9a50636993113e7296240f64173557a381d",
+      "after": "cb2634965e1f52cba0e028ec4496d39cb15622cdc539b8c84ee89f195e829319"
+    },
+    "apps/web-tour/src/scene/HeroPeople.ts": {
+      "baseline": "content/source-assets/purposeful-life-baseline/1.snapshot",
+      "beforeRaw": "aec2176b164b44d3274bb35c68033c37085129b0add50012c58cf1eac3f00a2f",
+      "afterRaw": "76d33083c499425f0d25a9f7c8375c4bb9b93f252e6f4aed443ab764c01a935f",
+      "before": "aec2176b164b44d3274bb35c68033c37085129b0add50012c58cf1eac3f00a2f",
+      "after": "76d33083c499425f0d25a9f7c8375c4bb9b93f252e6f4aed443ab764c01a935f"
+    },
+    "apps/web-tour/src/scene/InstancedDistrictCrowd.ts": {
+      "baseline": "content/source-assets/purposeful-life-baseline/2.snapshot",
+      "beforeRaw": "081dbdb9fa9706d4ea25989b5e993b5b366edd13f3eb953f47ef22f24253d3bc",
+      "afterRaw": "2696a54d97311695d493c38df284f9968bec8842ec6000f3880f1bc23a5f1f08",
+      "before": "081dbdb9fa9706d4ea25989b5e993b5b366edd13f3eb953f47ef22f24253d3bc",
+      "after": "2696a54d97311695d493c38df284f9968bec8842ec6000f3880f1bc23a5f1f08"
+    },
+    "tools/lib/zones-steps-revision.mjs": {
+      "baseline": "content/source-assets/purposeful-life-baseline/3.snapshot",
+      "beforeRaw": "a1d0ae4223a173c82eab4d0b6303a7a3b39d8946dcb94b28b3e4dda7f10aa7e6",
+      "afterRaw": "e0bf1d3164d4643568259c3fa050e724303786670b83a13c6ebe5e701d864ce2",
+      "before": "a1d0ae4223a173c82eab4d0b6303a7a3b39d8946dcb94b28b3e4dda7f10aa7e6",
+      "after": "e0bf1d3164d4643568259c3fa050e724303786670b83a13c6ebe5e701d864ce2"
+    },
+    "tools/validate-zones-steps.mjs": {
+      "baseline": "content/source-assets/purposeful-life-baseline/4.snapshot",
+      "beforeRaw": "50cfe04f77b5c1bf1debb187243d45ed27def2578ef1351c85fd27260ac3b86e",
+      "afterRaw": "a0837564b38f0225d51d19cb75f470ad85ba092b76d5899c0a88e9db954eded1",
+      "before": "50cfe04f77b5c1bf1debb187243d45ed27def2578ef1351c85fd27260ac3b86e",
+      "after": "a0837564b38f0225d51d19cb75f470ad85ba092b76d5899c0a88e9db954eded1"
+    },
+    "tools/audit-zones-steps.js": {
+      "baseline": "content/source-assets/purposeful-life-baseline/5.snapshot",
+      "beforeRaw": "85aed14449b9290220beb78014ec711402a9c59af0039e3b3a4a9a03391e3cdc",
+      "afterRaw": "75a34d7193c30b4785c11fef2c009956d0f206c1e9df717d34a21553f4a96aa1",
+      "before": "85aed14449b9290220beb78014ec711402a9c59af0039e3b3a4a9a03391e3cdc",
+      "after": "75a34d7193c30b4785c11fef2c009956d0f206c1e9df717d34a21553f4a96aa1"
+    },
+    "tools/capture-hero-shot.mjs": {
+      "baseline": "content/source-assets/purposeful-life-baseline/6.snapshot",
+      "beforeRaw": "a3c638fd0ef2cf9ce81498084d87cd334e99f4a46f44d9c2baa07b5ffd674625",
+      "afterRaw": "85cc55859eaa731b87a86a5f5130b85256442ce40973e359950c493b1bcad943",
+      "before": "a3c638fd0ef2cf9ce81498084d87cd334e99f4a46f44d9c2baa07b5ffd674625",
+      "after": "85cc55859eaa731b87a86a5f5130b85256442ce40973e359950c493b1bcad943"
+    },
+    "tools/benchmark-rendering.mjs": {
+      "baseline": "content/source-assets/purposeful-life-baseline/7.snapshot",
+      "beforeRaw": "f067050cb212a87abe19c1b16803214eadb9c1aa85be24adac84180b0e4075ab",
+      "afterRaw": "0960c6bfed4260f4701f5e5cdea0c84f708b8978b6a85ad26d61dae8c60a6a5b",
+      "before": "f067050cb212a87abe19c1b16803214eadb9c1aa85be24adac84180b0e4075ab",
+      "after": "0960c6bfed4260f4701f5e5cdea0c84f708b8978b6a85ad26d61dae8c60a6a5b"
+    }
+  },
+  "additions": {
+    "apps/web-tour/src/scene/ResidentProfiles.ts": "160a5d6e92ecb714c2157cdfa16d9b74729d76add4d7e090e69505dcfb9d8e84",
+    "apps/web-tour/src/scene/ResidentActivities.ts": "47d2e0d33fe4d8ba2e1eb850a25584ce8419b3a1c5a0cc52387eb32273baa526",
+    "apps/web-tour/src/scene/ResidentBrain.ts": "562c7be17ba0f626aea5bd6ecf266fca9b6f723d6751274910b4feca90705039",
+    "apps/web-tour/src/scene/ResidentCoordination.ts": "b057169b23b23d8b33acac4b29889931989e4963ff40988f93806aa895110ba5"
+  }
+}

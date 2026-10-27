@@ -1,3 +1,4 @@
+import population from '../../../../content/scene-data/district-population.json';
 import { BakedVertexAnimationManager, BoundingInfo, Mesh, Quaternion, RawTexture, Scene, SceneLoader, Texture, VertexBuffer, TransformNode, Vector3, Vector4 } from '@babylonjs/core';
 import type { HeroPerson } from './HeroPeople';
 import { GroundContactIK } from './GroundContactIK';
@@ -7,9 +8,10 @@ import { GroundContactIK } from './GroundContactIK';
 export async function addInstancedDistrictCrowd(scene: Scene, people: HeroPerson[]) {
   if (people.length !== 9 || new URLSearchParams(location.search).get('crowd') === 'small') return;
   const caps=scene.getEngine().getCaps();
-  if(!caps.instancedArrays||!caps.textureFloat){scene.metadata.gpuCrowd={requested:180,total:people.length,unsupported:true};return;}
+  if(!caps.instancedArrays||!caps.textureFloat){scene.metadata.gpuCrowd={requested:population.total,total:people.length,unsupported:true};return;}
   const lodInputs=await Promise.all(['female','male'].map(async sex=>Promise.all([1,2].map(level=>SceneLoader.LoadAssetContainerAsync('/assets/authored/people/crowd/', 'hero_'+sex+'_lod'+level+'.glb',scene)))));
   const skeletonsBefore=scene.skeletons.length;
+  const actionFrames=24,actionLevels=3,actions=['inspect','work','rest','socialize'];
   const frames = 64, templates = [people[3], people[4]];
   const groups = templates.map((person, sex) => {
     const root = person.root, position = root.position.clone(), rotation = root.rotationQuaternion?.clone();
@@ -20,7 +22,7 @@ export async function addInstancedDistrictCrowd(scene: Scene, people: HeroPerson
     const local = meshes.map(m => m.computeWorldMatrix(true).multiply(root.computeWorldMatrix(true).clone().invert()));
     const skeleton = meshes[0].skeleton!, stride = .85;
     const matrixSize=(skeleton.bones.length+1)*16,levels=5;
-    const atlas = new Float32Array(matrixSize*frames*levels);
+    const atlas = new Float32Array(matrixSize*(frames*levels+actions.length*actionFrames*actionLevels));
     const contact = new GroundContactIK(root, person.legs, () => ({height:0,normal:Vector3.Up()}));
     person.setFacing(Vector3.Forward());
     // Warm the same procedural contact solver before recording one complete stride.
@@ -39,11 +41,22 @@ export async function addInstancedDistrictCrowd(scene: Scene, people: HeroPerson
     for(let level=1;level<levels;level++)for(let f=0;f<frames;f++)for(let k=0;k<matrixSize;k++){
       const walk=atlas[f*matrixSize+k];atlas[(level*frames+f)*matrixSize+k]=walk+(idle[k]-walk)*level/(levels-1);
     }
+    const actionBase=frames*levels;
+    const savedMetadata=root.metadata;
+    for(const [action,name]of actions.entries()){
+      root.metadata={...savedMetadata,activity:name,atlasPose:true};
+      for(let f=0;f<actionFrames;f++){
+        idleContact.restore();person.update(8+action*2+f/12);idleContact.update(8+action*2+f/12);skeleton.prepare(true);
+        const pose=skeleton.getTransformMatrices(meshes[0]);
+        for(let level=1;level<=actionLevels;level++)for(let k=0;k<matrixSize;k++)atlas[(actionBase+(action*actionLevels+level-1)*actionFrames+f)*matrixSize+k]=idle[k]+(pose[k]-idle[k])*level/actionLevels;
+      }
+    }
+    root.metadata=savedMetadata;
     // Restore the original live hero's bind/IK state; DistrictLife starts its own clock.
     for(const v of saved){v.n.position.copyFrom(v.p);v.n.scaling.copyFrom(v.s);v.n.rotation.copyFrom(v.r);v.n.rotationQuaternion=v.q?.clone()??null;}
     root.position.copyFrom(position);root.rotationQuaternion=rotation??null;root.computeWorldMatrix(true);skeleton.prepare(true);
     const manager = new BakedVertexAnimationManager(scene);
-    manager.texture=RawTexture.CreateRGBATexture(atlas,(skeleton.bones.length+1)*4,frames*levels,scene,false,false,Texture.NEAREST_SAMPLINGMODE,1);
+    manager.texture=RawTexture.CreateRGBATexture(atlas,(skeleton.bones.length+1)*4,frames*levels+actions.length*actionFrames*actionLevels,scene,false,false,Texture.NEAREST_SAMPLINGMODE,1);
     manager.texture.name='crowd-pose-atlas-'+sex;manager.time=0;
     const sources=meshes.map((mesh,i)=>{
       const source=mesh.clone('crowd-source-'+sex+'-'+i,null,true)!;
@@ -78,7 +91,7 @@ export async function addInstancedDistrictCrowd(scene: Scene, people: HeroPerson
     });
     return {sources,local,manager,forward:person.facing().clone()};
   });
-  for(let i=9;i<180;i++){
+  for(let i=9;i<population.total;i++){
     const g=groups[i%2],root=new TransformNode('districtCrowdResident'+i,scene);
     root.parent=people[0].root.parent;root.metadata={resident:true,gpuCrowd:true};
     const parts=g.sources.map((source,j)=>{
@@ -91,7 +104,7 @@ export async function addInstancedDistrictCrowd(scene: Scene, people: HeroPerson
       return part;
     });
     const localForward=Vector3.TransformNormal(g.forward,(people[0].root.parent as TransformNode).computeWorldMatrix(true).clone().invert()).normalize();
-    let previous:Vector3|undefined,previousTime:number|undefined,blend=0,phase=(i*.61803398875)%1;
+    let previous:Vector3|undefined,previousTime:number|undefined,blend=0,actionWeight=0,lastAction='inspect',phase=(i*.61803398875)%1;
     const facing=()=>Vector3.TransformNormal(localForward,root.computeWorldMatrix(true)).normalize();
     people.push({root,legs:[],role:'CrowdResident'+i,facing,setFacing(direction){
       const d=Vector3.TransformNormal(direction,(root.parent as TransformNode).computeWorldMatrix(true).clone().invert());
@@ -102,10 +115,16 @@ export async function addInstancedDistrictCrowd(scene: Scene, people: HeroPerson
       phase=(phase+distance/.85)%1;previous=p.clone();previousTime=time;
       blend+=(Math.min(1,dt>0?distance/dt/.55:0)-blend)*(1-Math.exp(-dt*9));
       const level=Math.round((1-blend)*4);
-      const frame=(level===4?0:Math.floor(phase*frames))+level*frames;
+      let frame=(level===4?0:Math.floor(phase*frames))+level*frames;
+      const intent=root.metadata?.activity,active=actions.includes(intent==='deliver'?'inspect':intent)&&blend<.15;
+      if(active)lastAction=intent==='deliver'?'inspect':intent;
+      actionWeight+=((active?1:0)-actionWeight)*(1-Math.exp(-dt*4));
+      const actionLevel=Math.round(actionWeight*actionLevels);
+      if(actionLevel>0&&blend<.15)frame=frames*5+(actions.indexOf(lastAction)*actionLevels+actionLevel-1)*actionFrames+Math.floor(((time+i*.173)%2)/2*actionFrames);
+      root.metadata.poseIntent=active?lastAction:'locomotion';
       for(const part of parts){const settings=part.instancedBuffers.bakedVertexAnimationSettingsInstanced as Vector4;settings.set(frame,frame,0,0);}
     }});
   }
-  scene.metadata.gpuCrowd={additional:171,total:180,poseAtlases:2,poseFrames:frames,transitionLevels:5,geometry:'original anatomy, shared instanced meshes',lodDistances:[8,20],nearGeometry:'original full detail',liveSkeletons:9,skeletonsBefore,skeletonsAfter:scene.skeletons.length};
+  scene.metadata.gpuCrowd={additional:population.total-9,total:population.total,poseAtlases:2,poseFrames:frames,actionFrames,actionLevels,actions,atlasRows:frames*5+actions.length*actionFrames*actionLevels,transitionLevels:5,geometry:'original anatomy, shared instanced meshes',lodDistances:[8,20],nearGeometry:'original full detail',liveSkeletons:9,skeletonsBefore,skeletonsAfter:scene.skeletons.length};
   scene.onDisposeObservable.addOnce(()=>groups.forEach(g=>g.manager.dispose(true)));
 }

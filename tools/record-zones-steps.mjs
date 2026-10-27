@@ -1,0 +1,6 @@
+import fs from 'node:fs';import {createHash} from 'node:crypto';
+const hash=b=>createHash('sha256').update(b).digest('hex'),norm=b=>b.toString().replaceAll('\r\n','\n');
+const index=JSON.parse(fs.readFileSync('content/source-assets/zones-steps-baseline/index.json'));
+const files=Object.fromEntries(Object.entries(index).filter(([f,b])=>hash(fs.readFileSync(f))!==hash(fs.readFileSync(b))).map(([f,baseline])=>{const a=fs.readFileSync(f),b=fs.readFileSync(baseline);return[f,{baseline,beforeRaw:hash(b),afterRaw:hash(a),before:hash(norm(b)),after:hash(norm(a))}];}));
+const additions=['content/scene-data/district-population.json','apps/web-tour/src/scene/PopulationZones.ts','apps/web-tour/src/scene/VisitorTraversal.ts','tools/lib/zones-steps-revision.mjs','tools/validate-zones-steps.mjs','tools/audit-zones-steps.js'];
+fs.writeFileSync('content/scene-data/zones-steps.revision.json',JSON.stringify({date:'2026-10-27',scope:'126 residents with persistent 40/40/15/5 zone quotas; collision-aware visitor step-up and real quay/ramp support. Static meshes, rendering, camera bookmarks and route data unchanged.',files,additions:Object.fromEntries(additions.map(f=>[f,hash(fs.readFileSync(f))]))},null,2)+'\n');

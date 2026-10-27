@@ -1,0 +1,11 @@
+{
+  "total": 126,
+  "previousTotal": 180,
+  "rounding": "largest remainder; equal remainders follow zone order",
+  "zones": [
+    {"id":"temple","weight":40,"label":"Inside Ptah precinct: courtyard and shrine","bounds":{"minX":-12.6,"maxX":12.6,"minZ":49.2,"maxZ":91}},
+    {"id":"street","weight":40,"label":"Hero village lane between the existing houses","bounds":{"minX":-10.3,"maxX":-1.95,"minZ":-24.4,"maxZ":22}},
+    {"id":"route","weight":15,"label":"Arrival-to-temple route, excluding temple and village zones","corridorHalfWidth":2.4},
+    {"id":"free","weight":5,"label":"Other connected walkable open space"}
+  ]
+}

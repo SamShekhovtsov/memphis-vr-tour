@@ -62,3 +62,9 @@
 !docs/design/screenshots/*-crowd-clarity-before.png
 !docs/design/screenshots/*-crowd-clarity-after.png
 !docs/design/screenshots/street-entry-crowd-clarity-quality-only-after.png
+
+!docs/design/screenshots/*-zones-steps-views.png
+!docs/design/screenshots/street-entry-zones-steps-temple.png
+
+# Reproducible resident captures; exact reports are archived losslessly below.
+/docs/design/screenshots/*purposeful*.json

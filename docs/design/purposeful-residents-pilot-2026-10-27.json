@@ -1,0 +1,472 @@
+{
+  "baseline": "7556d34",
+  "population": 126,
+  "participants": 63,
+  "hardware": "Intel HD 4600 / D3D11",
+  "viewport": "1280x720",
+  "comparison": "Same final rendering/navigation; intelligence=legacy disables the 63 task brains. Alternating separate Chrome sessions, 300 simulated seconds of crowd warmup, 600 tour frames; 61 warmup frames excluded. Median of run percentiles; cinematic one pair is a smoke check.",
+  "performance": [
+    {
+      "tier": "balanced",
+      "runs": 3,
+      "pairs": [
+        {
+          "run": 1,
+          "before": {
+            "samples": 539,
+            "p50": 63.200000047683716,
+            "p95": 119.89999997615814,
+            "max": 216.80000007152557
+          },
+          "after": {
+            "samples": 539,
+            "p50": 66.39999997615814,
+            "p95": 118.69999992847443,
+            "max": 263
+          },
+          "brain": {
+            "averageMs": 0.051935840299171684,
+            "maxFrameMs": 10.299999833106995
+          }
+        },
+        {
+          "run": 2,
+          "before": {
+            "samples": 539,
+            "p50": 60.300000071525574,
+            "p95": 115.30000007152557,
+            "max": 276.39999997615814
+          },
+          "after": {
+            "samples": 539,
+            "p50": 60.299999952316284,
+            "p95": 131.89999997615814,
+            "max": 247.39999997615814
+          },
+          "brain": {
+            "averageMs": 0.042358803920703604,
+            "maxFrameMs": 7
+          }
+        },
+        {
+          "run": 3,
+          "before": {
+            "samples": 539,
+            "p50": 59,
+            "p95": 108,
+            "max": 310.2000000476837
+          },
+          "after": {
+            "samples": 539,
+            "p50": 57.60000002384186,
+            "p95": 114.5,
+            "max": 228
+          },
+          "brain": {
+            "averageMs": 0.04704093056178726,
+            "maxFrameMs": 6.5
+          }
+        }
+      ],
+      "before": {
+        "p50": 60.300000071525574,
+        "p95": 115.30000007152557
+      },
+      "after": {
+        "p50": 60.299999952316284,
+        "p95": 118.69999992847443
+      },
+      "changePercent": {
+        "p50": -1.9769368364563888e-7,
+        "p95": 2.9488290154723984
+      }
+    },
+    {
+      "tier": "cinematic",
+      "runs": 1,
+      "pairs": [
+        {
+          "run": 1,
+          "before": {
+            "samples": 539,
+            "p50": 86.89999997615814,
+            "p95": 151.89999997615814,
+            "max": 359.5
+          },
+          "after": {
+            "samples": 539,
+            "p50": 79.89999997615814,
+            "p95": 173.80000007152557,
+            "max": 287.2000000476837
+          },
+          "brain": {
+            "averageMs": 0.04305440498563803,
+            "maxFrameMs": 8.49999988079071
+          }
+        }
+      ],
+      "before": {
+        "p50": 86.89999997615814,
+        "p95": 151.89999997615814
+      },
+      "after": {
+        "p50": 79.89999997615814,
+        "p95": 173.80000007152557
+      },
+      "changePercent": {
+        "p50": -8.055235905547198,
+        "p95": 14.417379920213836
+      }
+    }
+  ],
+  "behavior": {
+    "checks": [
+      {
+        "name": "126 residents and 63 purposeful participants",
+        "passed": true,
+        "detail": {
+          "population": 126,
+          "participants": 63
+        }
+      },
+      {
+        "name": "Every purposeful resident has reachable activities",
+        "passed": true,
+        "detail": [
+          {
+            "id": "memphis-resident-003",
+            "candidates": 41
+          },
+          {
+            "id": "memphis-resident-004",
+            "candidates": 41
+          },
+          {
+            "id": "memphis-resident-005",
+            "candidates": 41
+          },
+          {
+            "id": "memphis-resident-006",
+            "candidates": 41
+          },
+          {
+            "id": "memphis-resident-007",
+            "candidates": 41
+          },
+          {
+            "id": "memphis-resident-008",
+            "candidates": 41
+          },
+          {
+            "id": "memphis-resident-009",
+            "candidates": 41
+          },
+          {
+            "id": "memphis-resident-010",
+            "candidates": 41
+          },
+          {
+            "id": "memphis-resident-011",
+            "candidates": 41
+          },
+          {
+            "id": "memphis-resident-012",
+            "candidates": 41
+          },
+          {
+            "id": "memphis-resident-013",
+            "candidates": 41
+          },
+          {
+            "id": "memphis-resident-014",
+            "candidates": 41
+          },
+          {
+            "id": "memphis-resident-015",
+            "candidates": 41
+          },
+          {
+            "id": "memphis-resident-016",
+            "candidates": 41
+          },
+          {
+            "id": "memphis-resident-017",
+            "candidates": 41
+          },
+          {
+            "id": "memphis-resident-018",
+            "candidates": 41
+          },
+          {
+            "id": "memphis-resident-019",
+            "candidates": 41
+          },
+          {
+            "id": "memphis-resident-020",
+            "candidates": 41
+          },
+          {
+            "id": "memphis-resident-021",
+            "candidates": 41
+          },
+          {
+            "id": "memphis-resident-022",
+            "candidates": 41
+          },
+          {
+            "id": "memphis-resident-023",
+            "candidates": 41
+          },
+          {
+            "id": "memphis-resident-024",
+            "candidates": 41
+          },
+          {
+            "id": "memphis-resident-025",
+            "candidates": 41
+          },
+          {
+            "id": "memphis-resident-026",
+            "candidates": 41
+          },
+          {
+            "id": "memphis-resident-027",
+            "candidates": 41
+          },
+          {
+            "id": "memphis-resident-028",
+            "candidates": 41
+          },
+          {
+            "id": "memphis-resident-000",
+            "candidates": 25
+          },
+          {
+            "id": "memphis-resident-002",
+            "candidates": 25
+          },
+          {
+            "id": "memphis-resident-054",
+            "candidates": 25
+          },
+          {
+            "id": "memphis-resident-055",
+            "candidates": 25
+          },
+          {
+            "id": "memphis-resident-056",
+            "candidates": 25
+          },
+          {
+            "id": "memphis-resident-057",
+            "candidates": 25
+          },
+          {
+            "id": "memphis-resident-058",
+            "candidates": 25
+          },
+          {
+            "id": "memphis-resident-059",
+            "candidates": 25
+          },
+          {
+            "id": "memphis-resident-060",
+            "candidates": 25
+          },
+          {
+            "id": "memphis-resident-061",
+            "candidates": 25
+          },
+          {
+            "id": "memphis-resident-062",
+            "candidates": 25
+          },
+          {
+            "id": "memphis-resident-063",
+            "candidates": 25
+          },
+          {
+            "id": "memphis-resident-064",
+            "candidates": 25
+          },
+          {
+            "id": "memphis-resident-065",
+            "candidates": 25
+          },
+          {
+            "id": "memphis-resident-066",
+            "candidates": 25
+          },
+          {
+            "id": "memphis-resident-067",
+            "candidates": 25
+          },
+          {
+            "id": "memphis-resident-068",
+            "candidates": 25
+          },
+          {
+            "id": "memphis-resident-069",
+            "candidates": 25
+          },
+          {
+            "id": "memphis-resident-070",
+            "candidates": 25
+          },
+          {
+            "id": "memphis-resident-071",
+            "candidates": 25
+          },
+          {
+            "id": "memphis-resident-072",
+            "candidates": 25
+          },
+          {
+            "id": "memphis-resident-073",
+            "candidates": 25
+          },
+          {
+            "id": "memphis-resident-074",
+            "candidates": 25
+          },
+          {
+            "id": "memphis-resident-075",
+            "candidates": 25
+          },
+          {
+            "id": "memphis-resident-076",
+            "candidates": 25
+          },
+          {
+            "id": "memphis-resident-101",
+            "candidates": 12
+          },
+          {
+            "id": "memphis-resident-102",
+            "candidates": 12
+          },
+          {
+            "id": "memphis-resident-103",
+            "candidates": 3
+          },
+          {
+            "id": "memphis-resident-104",
+            "candidates": 3
+          },
+          {
+            "id": "memphis-resident-105",
+            "candidates": 12
+          },
+          {
+            "id": "memphis-resident-106",
+            "candidates": 3
+          },
+          {
+            "id": "memphis-resident-107",
+            "candidates": 3
+          },
+          {
+            "id": "memphis-resident-108",
+            "candidates": 12
+          },
+          {
+            "id": "memphis-resident-109",
+            "candidates": 12
+          },
+          {
+            "id": "memphis-resident-120",
+            "candidates": 343
+          },
+          {
+            "id": "memphis-resident-121",
+            "candidates": 343
+          },
+          {
+            "id": "memphis-resident-122",
+            "candidates": 343
+          }
+        ]
+      },
+      {
+        "name": "At least 90% complete meaningful tasks within ten minutes",
+        "passed": true,
+        "detail": []
+      },
+      {
+        "name": "No zone or building violations",
+        "passed": true,
+        "detail": {
+          "violations": 0,
+          "collisions": 0
+        }
+      },
+      {
+        "name": "65 cm personal clearance retained",
+        "passed": true,
+        "detail": 0.6499998799947097
+      },
+      {
+        "name": "No early action completion",
+        "passed": true,
+        "detail": []
+      },
+      {
+        "name": "No backward locomotion or abrupt body reversals",
+        "passed": true,
+        "detail": {
+          "dot": 0.9999999999999989,
+          "turn": 1.6000000000000003
+        }
+      },
+      {
+        "name": "Intent animation shared across GPU residents",
+        "passed": true,
+        "detail": {
+          "additional": 117,
+          "total": 126,
+          "poseAtlases": 2,
+          "poseFrames": 64,
+          "actionFrames": 24,
+          "actionLevels": 3,
+          "actions": [
+            "inspect",
+            "work",
+            "rest",
+            "socialize"
+          ],
+          "atlasRows": 608,
+          "transitionLevels": 5,
+          "geometry": "original anatomy, shared instanced meshes",
+          "lodDistances": [
+            8,
+            20
+          ],
+          "nearGeometry": "original full detail",
+          "liveSkeletons": 9,
+          "skeletonsBefore": 21,
+          "skeletonsAfter": 21
+        }
+      },
+      {
+        "name": "Activity variation and paired conversations observed",
+        "passed": true,
+        "detail": {
+          "actions": {
+            "inspect": 33505,
+            "rest": 20509,
+            "deliver": 6316,
+            "work": 24782,
+            "socialize": 17950
+          },
+          "conversations": 66,
+          "queueSamples": 38030,
+          "promotions": 105
+        }
+      }
+    ],
+    "completedResidents": 63,
+    "completions": 555,
+    "averageLifeUpdateMs": 2.5384833339452744,
+    "decisionAverageMs": 0.04653269622927147
+  }
+}
