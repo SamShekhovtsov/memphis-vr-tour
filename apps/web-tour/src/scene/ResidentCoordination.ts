@@ -23,7 +23,7 @@ export class ResidentCoordination {
  release(id:string){for(const map of [this.leases,this.queues])for(const [key,v]of map)if(v.owner===id)map.delete(key);}
  ready(s:ActivityStation,id:string,now:number){
   if(!this.owns(s,id))return false;if(!s.pair)return true;
-  const partner=[...this.residents.values()].find(b=>b.profile.id!==id&&b.target?.pair===s.pair&&this.owns(b.target,b.profile.id)&&['align','act'].includes(b.stage));
+  const partner=[...this.residents.values()].find(b=>b.profile.id!==id&&b.target?.pair===s.pair&&this.owns(b.target!,b.profile.id)&&['align','act'].includes(b.stage));
   if(!partner)return false;
   if(!this.sessions.has(s.pair)||this.sessions.get(s.pair)!<now){this.sessions.set(s.pair,now+14);this.conversations++;}
   return true;

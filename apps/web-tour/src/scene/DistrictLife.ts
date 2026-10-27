@@ -74,7 +74,7 @@ export class DistrictLife {
      pathBudget--;
      if(brain?.target){a.path=this.nav.path(p,brain.destination!.node,a.pool,a.allow);if(!a.path.length)brain.abort(this.elapsed);else this.diagnostics.goals++;}
      const goals=brain?[]:[...a.pool];
-     for(let attempt=0;attempt<8;attempt++){const goal=goals[Math.floor(this.random()*goals.length)];if(a.recent.includes(goal)||Vector3.Distance(p,this.nav.nodes[goal])<3)continue;const path=this.nav.path(p,goal,a.pool,a.allow);if(path.length){a.path=path;a.recent.push(goal);if(a.recent.length>12)a.recent.shift();this.diagnostics.goals++;break;}}
+     for(let attempt=0;attempt<8&&goals.length;attempt++){const goal=goals[Math.floor(this.random()*goals.length)];if(a.recent.includes(goal)||Vector3.Distance(p,this.nav.nodes[goal])<3)continue;const path=this.nav.path(p,goal,a.pool,a.allow);if(path.length){a.path=path;a.recent.push(goal);if(a.recent.length>12)a.recent.shift();this.diagnostics.goals++;break;}}
      if(!a.path.length&&!brain)a.wait=2+this.random()*3;
     }
     let desiredSpeed=0,turning=false;
