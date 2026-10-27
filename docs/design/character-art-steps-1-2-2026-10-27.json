@@ -1,0 +1,414 @@
+{
+  "date": "2026-10-27",
+  "hardware": "Intel HD 4600 / D3D11",
+  "protocol": "Three alternating asset pairs per tier, 1280x720, 300 simulated seconds crowd warmup, 600 full-tour frames, first 61 excluded. Same controller, rendering, cameras and population in both modes. Source/asset bytes restored and hash-verified after each suite.",
+  "performance": [
+    {
+      "tier": "balanced",
+      "runs": 3,
+      "pairs": [
+        {
+          "run": 1,
+          "before": {
+            "samples": 539,
+            "p50": 47.90000009536743,
+            "p95": 80.89999997615814,
+            "max": 226.5
+          },
+          "after": {
+            "samples": 539,
+            "p50": 40.5,
+            "p95": 67.29999995231628,
+            "max": 176.60000002384186
+          }
+        },
+        {
+          "run": 2,
+          "before": {
+            "samples": 539,
+            "p50": 47.700000047683716,
+            "p95": 83,
+            "max": 166
+          },
+          "after": {
+            "samples": 539,
+            "p50": 39.300000071525574,
+            "p95": 66.5,
+            "max": 112.69999992847443
+          }
+        },
+        {
+          "run": 3,
+          "before": {
+            "samples": 539,
+            "p50": 47.10000002384186,
+            "p95": 81.10000002384186,
+            "max": 197.19999992847443
+          },
+          "after": {
+            "samples": 539,
+            "p50": 39.90000009536743,
+            "p95": 67.79999995231628,
+            "max": 136.30000007152557
+          }
+        }
+      ],
+      "before": {
+        "p50": 47.700000047683716,
+        "p95": 81.10000002384186
+      },
+      "after": {
+        "p50": 39.90000009536743,
+        "p95": 67.29999995231628
+      },
+      "changePercent": {
+        "p50": -16.35220114154915,
+        "p95": -17.01602967628685
+      }
+    },
+    {
+      "tier": "cinematic",
+      "runs": 3,
+      "pairs": [
+        {
+          "run": 1,
+          "before": {
+            "samples": 539,
+            "p50": 68.89999997615814,
+            "p95": 125.60000002384186,
+            "max": 170.89999997615814
+          },
+          "after": {
+            "samples": 539,
+            "p50": 57.39999997615814,
+            "p95": 111.39999997615814,
+            "max": 177.09999990463257
+          }
+        },
+        {
+          "run": 2,
+          "before": {
+            "samples": 539,
+            "p50": 66,
+            "p95": 122.10000002384186,
+            "max": 195.39999997615814
+          },
+          "after": {
+            "samples": 539,
+            "p50": 57.800000071525574,
+            "p95": 108.60000002384186,
+            "max": 190.60000002384186
+          }
+        },
+        {
+          "run": 3,
+          "before": {
+            "samples": 539,
+            "p50": 67.5,
+            "p95": 123.89999997615814,
+            "max": 177.60000002384186
+          },
+          "after": {
+            "samples": 539,
+            "p50": 57.60000002384186,
+            "p95": 115.39999997615814,
+            "max": 162.20000004768372
+          }
+        }
+      ],
+      "before": {
+        "p50": 67.5,
+        "p95": 123.89999997615814
+      },
+      "after": {
+        "p50": 57.60000002384186,
+        "p95": 111.39999997615814
+      },
+      "changePercent": {
+        "p50": -14.666666631345393,
+        "p95": -10.088781277163317
+      }
+    }
+  ],
+  "geometry": {
+    "beforeBytes": 3989432,
+    "afterBytes": 2609972,
+    "downloadChangePercent": -34.57785469209652,
+    "beforeTriangles": 63805,
+    "afterTriangles": 57896,
+    "referenceTopology": [
+      {
+        "sex": "female",
+        "verticesBeforeWeld": 53514,
+        "verticesAfterWeld": 53514,
+        "reducedVertices": 12844,
+        "triangles": 25684,
+        "boundaryEdges": 0,
+        "sha256": "248aa7ec4de0b398530af94ea53097a167ea3082641552938f6c937410d2eafb",
+        "sourceSha256": "a571a5872a5f9d75c013ce6d88b3484436cf2109bf133fbc31e42c41f52389f1"
+      },
+      {
+        "sex": "male",
+        "verticesBeforeWeld": 53514,
+        "verticesAfterWeld": 53514,
+        "reducedVertices": 12844,
+        "triangles": 25684,
+        "boundaryEdges": 0,
+        "sha256": "f82ce4b71fe55682d926e918d038cee03fa86153238f4d8e947f2be8a2bf5afc",
+        "sourceSha256": "d15a07e2b4cf1d08a3b91cb212a9a06a91438077f05a3f2a62f45351e8a71eb8"
+      }
+    ]
+  },
+  "matched": [
+    {
+      "view": "hero-street-main",
+      "camera": [
+        -6.08,
+        1.52,
+        -16.4
+      ]
+    },
+    {
+      "view": "street-entry",
+      "camera": [
+        -7,
+        1.7,
+        -28
+      ]
+    },
+    {
+      "view": "hero-street-material",
+      "camera": [
+        -8.9,
+        1.35,
+        -17.6
+      ]
+    },
+    {
+      "view": "male reference portrait",
+      "name": "glbAnimatedStreetActors-actorHeroStreetWalker",
+      "root": [
+        -3.16208553314209,
+        0.06245456635951996,
+        5.030416965484619
+      ],
+      "camera": [
+        -2.9920876602068622,
+        1.50245456635952,
+        6.430416965483003
+      ],
+      "target": [
+        -3.16208553314209,
+        1.4524545663595199,
+        5.030416965484619
+      ],
+      "fov": 0.65
+    },
+    {
+      "view": "female reference portrait",
+      "name": "districtResident0",
+      "root": [
+        6,
+        0.07500000298023224,
+        64.5
+      ],
+      "camera": [
+        6.17,
+        1.3550000029802323,
+        65.9
+      ],
+      "target": [
+        6,
+        1.3050000029802322,
+        64.5
+      ],
+      "fov": 0.65
+    }
+  ],
+  "inspections": [
+    {
+      "view": "side",
+      "name": "districtResident0",
+      "root": [
+        6,
+        0.07500000298023224,
+        64.5
+      ],
+      "camera": [
+        7.4,
+        1.3550000029802323,
+        64.67
+      ],
+      "target": [
+        6,
+        1.3050000029802322,
+        64.5
+      ],
+      "fov": 0.65
+    },
+    {
+      "view": "back",
+      "name": "districtResident0",
+      "root": [
+        6,
+        0.07500000298023224,
+        64.5
+      ],
+      "camera": [
+        6.17,
+        1.3550000029802323,
+        63.1
+      ],
+      "target": [
+        6,
+        1.3050000029802322,
+        64.5
+      ],
+      "fov": 0.65
+    }
+  ],
+  "poses": [
+    {
+      "sex": "female",
+      "pose": "neutral",
+      "concealedFaces": 5775,
+      "outwardRayMisses": 0,
+      "coveragePercent": 100
+    },
+    {
+      "sex": "female",
+      "pose": "stride-left",
+      "concealedFaces": 5775,
+      "outwardRayMisses": 0,
+      "coveragePercent": 100
+    },
+    {
+      "sex": "female",
+      "pose": "stride-right",
+      "concealedFaces": 5775,
+      "outwardRayMisses": 0,
+      "coveragePercent": 100
+    },
+    {
+      "sex": "female",
+      "pose": "bent-knees",
+      "concealedFaces": 5775,
+      "outwardRayMisses": 0,
+      "coveragePercent": 100
+    },
+    {
+      "sex": "female",
+      "pose": "reach",
+      "concealedFaces": 5775,
+      "outwardRayMisses": 0,
+      "coveragePercent": 100
+    },
+    {
+      "sex": "female",
+      "pose": "lift",
+      "concealedFaces": 5775,
+      "outwardRayMisses": 0,
+      "coveragePercent": 100
+    },
+    {
+      "sex": "female",
+      "pose": "torso-turn",
+      "concealedFaces": 5775,
+      "outwardRayMisses": 0,
+      "coveragePercent": 100
+    },
+    {
+      "sex": "male",
+      "pose": "neutral",
+      "concealedFaces": 1315,
+      "outwardRayMisses": 0,
+      "coveragePercent": 100
+    },
+    {
+      "sex": "male",
+      "pose": "stride-left",
+      "concealedFaces": 1315,
+      "outwardRayMisses": 0,
+      "coveragePercent": 100
+    },
+    {
+      "sex": "male",
+      "pose": "stride-right",
+      "concealedFaces": 1315,
+      "outwardRayMisses": 0,
+      "coveragePercent": 100
+    },
+    {
+      "sex": "male",
+      "pose": "bent-knees",
+      "concealedFaces": 1315,
+      "outwardRayMisses": 0,
+      "coveragePercent": 100
+    },
+    {
+      "sex": "male",
+      "pose": "reach",
+      "concealedFaces": 1315,
+      "outwardRayMisses": 0,
+      "coveragePercent": 100
+    },
+    {
+      "sex": "male",
+      "pose": "lift",
+      "concealedFaces": 1315,
+      "outwardRayMisses": 0,
+      "coveragePercent": 100
+    },
+    {
+      "sex": "male",
+      "pose": "torso-turn",
+      "concealedFaces": 1315,
+      "outwardRayMisses": 0,
+      "coveragePercent": 100
+    }
+  ],
+  "behavior": {
+    "passed": true,
+    "checks": [
+      {
+        "name": "126 residents and 63 purposeful participants",
+        "passed": true
+      },
+      {
+        "name": "Every purposeful resident has reachable activities",
+        "passed": true
+      },
+      {
+        "name": "At least 90% complete meaningful tasks within ten minutes",
+        "passed": true
+      },
+      {
+        "name": "No zone or building violations",
+        "passed": true
+      },
+      {
+        "name": "65 cm personal clearance retained",
+        "passed": true
+      },
+      {
+        "name": "No early action completion",
+        "passed": true
+      },
+      {
+        "name": "No backward locomotion or abrupt body reversals",
+        "passed": true
+      },
+      {
+        "name": "Intent animation shared across GPU residents",
+        "passed": true
+      },
+      {
+        "name": "Activity variation and paired conversations observed",
+        "passed": true
+      }
+    ],
+    "participants": 63,
+    "completedResidents": 63,
+    "completions": 555
+  }
+}

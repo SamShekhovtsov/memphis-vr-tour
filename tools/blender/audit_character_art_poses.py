@@ -8,7 +8,7 @@ sys.path.insert(0,str(Path(__file__).resolve().parent))
 from character_art_pass import Glb,ROOT,FOLDER,INDEX
 audit=json.loads((ROOT/'content/source-assets/characters/character-art-audit.json').read_text());results=[];unsafe={}
 for sex in ['female','male']:
- g=Glb(FOLDER/f'hero_{sex}.glb');original=Glb(ROOT/INDEX[(FOLDER/f'hero_{sex}.glb').relative_to(ROOT).as_posix()]);skin=g.j['skins'][0];inv=g.array(skin['inverseBindMatrices']).reshape(-1,4,4).transpose(0,2,1);bind=np.linalg.inv(inv)
+ g=Glb(FOLDER/f'hero_{sex}.glb');original=Glb(ROOT/f'content/source-assets/characters/character-art-reference-{sex}.glb') if next(r for r in audit if r['sex']==sex).get('referenceAnatomy') else Glb(ROOT/INDEX[(FOLDER/f'hero_{sex}.glb').relative_to(ROOT).as_posix()]);skin=g.j['skins'][0];inv=g.array(skin['inverseBindMatrices']).reshape(-1,4,4).transpose(0,2,1);bind=np.linalg.inv(inv)
  ids={node:i for i,node in enumerate(skin['joints'])};parents={child:ids.get(node) for node in skin['joints'] for child in g.j['nodes'][node].get('children',[])}
  removed=np.asarray(next(r for r in audit if r['sex']==sex)['concealedBodyTriangleIds']);tri=original.array(original.primitive('base')['indices']).reshape(-1,3)[removed]
  unsafe[sex]=set()
@@ -43,7 +43,7 @@ for sex in ['female','male']:
 (ROOT/'content/source-assets/characters/character-art-pose-audit.json').write_text(json.dumps(results,indent=2)+'\n');print(json.dumps(results,indent=2))
 
 if '--derive-safety' in sys.argv:
- path=ROOT/'content/source-assets/characters/character-art-coverage-safety.json'
+ path=ROOT/('content/source-assets/characters/character-art-reference-coverage-safety.json' if audit[0].get('referenceAnatomy') else 'content/source-assets/characters/character-art-coverage-safety.json')
  assert not path.exists(),'Do not silently overwrite accepted coverage safety'
  path.write_text(json.dumps({'scope':'Conservatively retain skin not covered along its outward normal in the seven documented stress poses','unsafeConcealedFaceIds':{s:sorted(v) for s,v in unsafe.items()}},indent=2)+'\n')
 else:

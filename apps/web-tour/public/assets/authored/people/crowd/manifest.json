@@ -8,14 +8,14 @@
       "skinWeightAudit": [
         {
           "mesh": "base",
-          "p99ErrorMetres": 1.992971473148807e-07,
-          "maxErrorMetres": 0.002990922668321121,
+          "p99ErrorMetres": 4.893988190103118e-05,
+          "maxErrorMetres": 0.0013975896056313895,
           "fourInfluences": true
         },
         {
           "mesh": "linen-bodice",
-          "p99ErrorMetres": 0.0015377852874282154,
-          "maxErrorMetres": 0.003928500226596973,
+          "p99ErrorMetres": 0.0014036429669974765,
+          "maxErrorMetres": 0.002665734042122677,
           "fourInfluences": false
         },
         {
@@ -25,10 +25,10 @@
           "fourInfluences": false
         }
       ],
-      "beforeTriangles": 30093,
-      "afterTriangles": 8827,
-      "sourceSha256": "3ddd64aa3bc3907de91e4bc9145671e68190098ed9db9d732e132f82ee234c08",
-      "sha256": "759824769efc5472a6a35c9287e2bd3b93ea54c50d415f8d4be881cc5c2978db",
+      "beforeTriangles": 28512,
+      "afterTriangles": 8039,
+      "sourceSha256": "985def4de429f3895f5f3b22a7ed6323d15412bb35159ea27ae3ca2e0a615509",
+      "sha256": "830821a5ec79501a98a56c389780b44533d7f01cc23663bd2fb05e0f7496cf28",
       "file": "apps/web-tour/public/assets/authored/people/crowd/hero_female_lod1.glb",
       "blend": "content/source-assets/characters/crowd-female-lod1.blend"
     },
@@ -39,14 +39,14 @@
       "skinWeightAudit": [
         {
           "mesh": "base",
-          "p99ErrorMetres": 0.00010928594788372353,
-          "maxErrorMetres": 0.0012651397270368673,
+          "p99ErrorMetres": 0.000302589411557482,
+          "maxErrorMetres": 0.0038455150453500383,
           "fourInfluences": true
         },
         {
           "mesh": "linen-bodice",
-          "p99ErrorMetres": 0.0017643969867715587,
-          "maxErrorMetres": 0.004107447136959591,
+          "p99ErrorMetres": 0.002070716983670281,
+          "maxErrorMetres": 0.004083223450854899,
           "fourInfluences": false
         },
         {
@@ -56,10 +56,10 @@
           "fourInfluences": false
         }
       ],
-      "beforeTriangles": 30093,
-      "afterTriangles": 2330,
-      "sourceSha256": "3ddd64aa3bc3907de91e4bc9145671e68190098ed9db9d732e132f82ee234c08",
-      "sha256": "9cabf89ed56ff5faea25e1dbc7daa23729bb26caf3aecbbfc0f3e6b5a77b4b6f",
+      "beforeTriangles": 28512,
+      "afterTriangles": 1783,
+      "sourceSha256": "985def4de429f3895f5f3b22a7ed6323d15412bb35159ea27ae3ca2e0a615509",
+      "sha256": "0a0f67297c294578146125df39db2a0550ed7cb536e960617cd542cbc9147f1c",
       "file": "apps/web-tour/public/assets/authored/people/crowd/hero_female_lod2.glb",
       "blend": "content/source-assets/characters/crowd-female-lod2.blend"
     },
@@ -70,8 +70,8 @@
       "skinWeightAudit": [
         {
           "mesh": "base",
-          "p99ErrorMetres": 2.3252873162365163e-07,
-          "maxErrorMetres": 0.003643383353315792,
+          "p99ErrorMetres": 0.00014969060267898827,
+          "maxErrorMetres": 0.003048502749003902,
           "fourInfluences": true
         },
         {
@@ -81,10 +81,10 @@
           "fourInfluences": false
         }
       ],
-      "beforeTriangles": 29522,
-      "afterTriangles": 8671,
-      "sourceSha256": "3f897eefa00883fc7b52b08adf46b2f7b772059e8e7ac5f8e20c8a57e444c7a1",
-      "sha256": "9a2314854f91e76575534790e14323bedfbb4fa568852f7a554703c4736c5a5d",
+      "beforeTriangles": 29544,
+      "afterTriangles": 8328,
+      "sourceSha256": "79ce30aa896aa6a1500c829a213b85d4c7ed109f15e220b62cbd08bff9f41fdc",
+      "sha256": "7b47738e11ba0efa6c965816d251bc2cd81d7ebdad40c9e04fc82528c7fd44f5",
       "file": "apps/web-tour/public/assets/authored/people/crowd/hero_male_lod1.glb",
       "blend": "content/source-assets/characters/crowd-male-lod1.blend"
     },
@@ -95,8 +95,8 @@
       "skinWeightAudit": [
         {
           "mesh": "base",
-          "p99ErrorMetres": 0.00011690250839128454,
-          "maxErrorMetres": 0.0033064629621303,
+          "p99ErrorMetres": 0.0005113747131534622,
+          "maxErrorMetres": 0.0042577181863518825,
           "fourInfluences": true
         },
         {
@@ -106,10 +106,10 @@
           "fourInfluences": false
         }
       ],
-      "beforeTriangles": 29522,
-      "afterTriangles": 2301,
-      "sourceSha256": "3f897eefa00883fc7b52b08adf46b2f7b772059e8e7ac5f8e20c8a57e444c7a1",
-      "sha256": "a1faea891431780a47b6bb7b70b39404fc9c9b9ea832516c8a76e5bee6298378",
+      "beforeTriangles": 29544,
+      "afterTriangles": 1846,
+      "sourceSha256": "79ce30aa896aa6a1500c829a213b85d4c7ed109f15e220b62cbd08bff9f41fdc",
+      "sha256": "1959e3eba630526923c0121149da2a21282204596164ecd4b6f0a1b45f838e55",
       "file": "apps/web-tour/public/assets/authored/people/crowd/hero_male_lod2.glb",
       "blend": "content/source-assets/characters/crowd-male-lod2.blend"
     }

@@ -26,86 +26,102 @@
     "apps/web-tour/public/assets/authored/people/hero_male.glb": {
       "baseline": "content/source-assets/character-art-baseline/3.glb",
       "beforeRaw": "41850a5e815ca504da76508ade0f88fda683052a8cf54ed34c30056297c36c2a",
-      "afterRaw": "3f897eefa00883fc7b52b08adf46b2f7b772059e8e7ac5f8e20c8a57e444c7a1",
+      "afterRaw": "79ce30aa896aa6a1500c829a213b85d4c7ed109f15e220b62cbd08bff9f41fdc",
       "before": "59a8aa6c4720b5283d84d4688de594651f47b8f51c294a9e01d8c646e3309708",
-      "after": "1f9dd60b4a12ce7d0e1ffd59edba25583a14c36cdc892c6f0d7ac372b6078822"
+      "after": "62042ce171df550644b6df85d1809c0e94a1036ad554a730ccce610e96fbfb2d"
     },
     "apps/web-tour/public/assets/authored/people/hero_female.glb": {
       "baseline": "content/source-assets/character-art-baseline/4.glb",
       "beforeRaw": "955e4006453dd48a4bd2bca05929a53fa9507457a105399b54395576ec474656",
-      "afterRaw": "3ddd64aa3bc3907de91e4bc9145671e68190098ed9db9d732e132f82ee234c08",
+      "afterRaw": "985def4de429f3895f5f3b22a7ed6323d15412bb35159ea27ae3ca2e0a615509",
       "before": "0cd4a24aa8d06c5e85bc579456dd7d41469497cfc5f801df37eed93c985a0d81",
-      "after": "decf0d77874e6ae224f5b2ad78175e44cac9fc85bdcdf64986c319884ce42028"
+      "after": "34aa6c643443f4626af7a37c2e10de429f454a7b98aff84174d8951065cfd8b1"
     },
     "apps/web-tour/public/assets/authored/people/manifest.json": {
       "baseline": "content/source-assets/character-art-baseline/5.snapshot",
       "beforeRaw": "19e51936749cf73588f073d4ac4817414941d6a8b01f46746fd29ca207aee09d",
-      "afterRaw": "16b31c613111684042502747de431ca9d169ddbbac93a1821018f6240090f911",
+      "afterRaw": "206863bcd40161c883a5141c0f239231b9debf967545ceda811826866eb8a7d0",
       "before": "e0c7b09f4970a3b9881779bac67e72acdaa328c75fbca14947c8c25f3ea3489a",
-      "after": "57de8079bde6198cc9e3d4dc841f47590d91c466e46baa63f370215acdcdb866"
+      "after": "206863bcd40161c883a5141c0f239231b9debf967545ceda811826866eb8a7d0"
     },
     "apps/web-tour/public/assets/authored/people/crowd/hero_male_lod1.glb": {
       "baseline": "content/source-assets/character-art-baseline/6.glb",
       "beforeRaw": "fba694c245398e8194b5d6a48185960462af7529cf11619e3e05445e99ed8936",
-      "afterRaw": "9a2314854f91e76575534790e14323bedfbb4fa568852f7a554703c4736c5a5d",
+      "afterRaw": "7b47738e11ba0efa6c965816d251bc2cd81d7ebdad40c9e04fc82528c7fd44f5",
       "before": "2e1efdde8ba41e27967545afcd4c667e49bdf43f431c0693991c1a78259d44ac",
-      "after": "247d630ab933f15fc2ab54803415f0cf461c4b5cf06bb8fdf70ec5655341363f"
+      "after": "a67cf4cde089f05e973961106e47e4743c0e19c0f8b8ed7f182cf548fe26fe71"
     },
     "apps/web-tour/public/assets/authored/people/crowd/hero_male_lod2.glb": {
       "baseline": "content/source-assets/character-art-baseline/7.glb",
       "beforeRaw": "a0f1865d97cf777ffac84efb7e51e28f706107dab9d47987761185b629081ca5",
-      "afterRaw": "a1faea891431780a47b6bb7b70b39404fc9c9b9ea832516c8a76e5bee6298378",
+      "afterRaw": "1959e3eba630526923c0121149da2a21282204596164ecd4b6f0a1b45f838e55",
       "before": "6a17e36e724208f1093bf554ca3bc19de57e5a69e03a3fc1a724b5aae4e98bee",
-      "after": "c43562580a05ba6d176c3e28afadee894e50cfd496c4a34aa9e2782b41e2503b"
+      "after": "b34e09304a8dbe8cc433b34d836cbcfe9b72e236d24131f9fe67e8e215221302"
     },
     "apps/web-tour/public/assets/authored/people/crowd/hero_female_lod1.glb": {
       "baseline": "content/source-assets/character-art-baseline/8.glb",
       "beforeRaw": "feec93005ad8b4d20c9fea6d3ea4c60c1557a69003edda86c5f15af880c4a013",
-      "afterRaw": "759824769efc5472a6a35c9287e2bd3b93ea54c50d415f8d4be881cc5c2978db",
+      "afterRaw": "830821a5ec79501a98a56c389780b44533d7f01cc23663bd2fb05e0f7496cf28",
       "before": "cac1ddd10bea3eba6d87b2e7c2899753835f75b112ff48253952c88fe7e7b814",
-      "after": "dbc0d32e02a20f48aa4b62a477aee2a80d79afac8074d1db4e439f68c05eae8e"
+      "after": "032feb94b6f3c8e0db4a31f356d1b5e8ce25956e69aa1ac2b61ef7b1a75b9ef3"
     },
     "apps/web-tour/public/assets/authored/people/crowd/hero_female_lod2.glb": {
       "baseline": "content/source-assets/character-art-baseline/9.glb",
       "beforeRaw": "58a573756ebd6dc9815d814580f5ad7b642e866b836f2b2c4697800ce77c4904",
-      "afterRaw": "9cabf89ed56ff5faea25e1dbc7daa23729bb26caf3aecbbfc0f3e6b5a77b4b6f",
+      "afterRaw": "0a0f67297c294578146125df39db2a0550ed7cb536e960617cd542cbc9147f1c",
       "before": "4424325260ccffdd89dc9eef34371b0ae0daa243cabbf65d1ecdbf70a6179f7a",
-      "after": "5659060d0a58ad4ee4f5f68e77933bb1942b510c398cf66c9a9d19b92bba1edd"
+      "after": "d57ae6efd8acbbd496354cf9665d28baf579a244e50493e86c51830aa13afaee"
     },
     "apps/web-tour/public/assets/authored/people/crowd/manifest.json": {
       "baseline": "content/source-assets/character-art-baseline/10.snapshot",
       "beforeRaw": "3bf167f39e58922413703ac8ba7f6a387997c55993506f5302724798c8467960",
-      "afterRaw": "ddfc485562ab1d3e9ba93fae9d315f93dbee63c5b020d5920dfbfb537a42b432",
+      "afterRaw": "ec0044feb55997db2adf41b538e7897db179dabed339d492b33fcfcf1f03a46d",
       "before": "993086f9f5986287b0ac85c2494b4c44f54e18c8fdfd688b919d754bb6bea4a8",
-      "after": "28187057cc88fb730f67086938d0ef5ce39a4874ad2abb4a452a6a110c457eeb"
+      "after": "ec0044feb55997db2adf41b538e7897db179dabed339d492b33fcfcf1f03a46d"
     },
     "content/source-assets/characters/crowd-female-lod1.blend": {
       "baseline": "content/source-assets/character-art-baseline/11.blend",
       "beforeRaw": "b4719c9288e3350d5795d62794db10ef20f48481dd6e1488930ab1c2e0edd47e",
-      "afterRaw": "8e40a9f76273fb7e7527a5accc3344663df4ef2d80226f93dfbead7e27106fae",
+      "afterRaw": "e661fd4db766698dc83bde154e30ec4d0edce50a36fc6c852e25f509adfe13e9",
       "before": "dd43078465ea6e578c8cebf1418580fb8272a46439e552e425ee4588cbf342a5",
-      "after": "d299cb65d32df6a2f35b26022034493a5f2f5aae5e7b5aa30cd1c36ba7840bcf"
+      "after": "045c0baf88374608ecfd104356db00c5a4ed1dd741455481bfac8e3600ac2434"
     },
     "content/source-assets/characters/crowd-female-lod2.blend": {
       "baseline": "content/source-assets/character-art-baseline/12.blend",
       "beforeRaw": "199d70b16f7aa142c8be958436b58567c74130f09c96ab78145b4a468900c9cc",
-      "afterRaw": "4579ceb29bc40f0991e97400d068101c248d6cb4bb767564ab2cceac05abaa89",
+      "afterRaw": "0ff47a6642dd7b8231674e79e25c8536767b91e59381c4a87d08240f5a525f55",
       "before": "2a420090d6291258519626df7638e60edab3bf7ddc058ccae85d123e1f629ab9",
-      "after": "70c7d0bb59199565221da87aa3e2a50aede2f9af465dd87242018f23e61c0dce"
+      "after": "8feebfe8665fb258b23ad39e9a90027f3653346ddc8c5157835e46c4008273ef"
     },
     "content/source-assets/characters/crowd-male-lod1.blend": {
       "baseline": "content/source-assets/character-art-baseline/13.blend",
       "beforeRaw": "ebe439be0b5d2d6ec79d6a44974e079ba33d058c27b9a9c43c2a9dbe418afa3b",
-      "afterRaw": "997bf8ee0cd132db3042a2cfed8c4bad610120add85097af0c5de2d37a3d626d",
+      "afterRaw": "1a45c1c0e5a507c9ccac770b8e0b208ed11dbb13c338a00e69595e237ab924c6",
       "before": "5ecc3eab2f008dac5151fe0b462ea8a2ce9930f85e3ee5927b0aad8e4a8ce928",
-      "after": "45f639e699c74e936cebe600e11a57af64fa12e00a8dda5d10a1296a68881819"
+      "after": "e53966e9cd1466de5db5ccdd79e7523fa7b96b283c3ec37c6ff557375b9b65d1"
     },
     "content/source-assets/characters/crowd-male-lod2.blend": {
       "baseline": "content/source-assets/character-art-baseline/14.blend",
       "beforeRaw": "6ce621188e68e48d60eccdcdb31b737cdece6ed21949be5ceb535da1b7bd9959",
-      "afterRaw": "310bc488e329043e1b36a8c66763ed4190d23736711a46c14d46aabdb557cea4",
+      "afterRaw": "2c3054c4f2b2cd7c9805028fe338b30bc0c22347613ce6e9fa23155b29714767",
       "before": "09276b921f733c21f3bde83f3b3402a5676804a5ec67688d4ae9c0b243e0fde5",
-      "after": "feee9a7060cc0125b5ea71bee886fe49ee52303a7b3395f6be4de026ac864996"
+      "after": "916b76d5e050793d45a8c1215d58ac479787127a2680ebed3c8423a90da780dd"
     }
+  },
+  "artifacts": {
+    "tools/blender/character_art_pass.py": "31aff49dbb476a55ec8d7914d2e330995f63ffb725b8742158dce7ac634d1536",
+    "tools/blender/prepare_character_reference.py": "23a7ae08f82b12fa69f05ebaf35ad1bac90ced0a4c45ca096e853586dfc3b75e",
+    "tools/blender/audit_character_art_poses.py": "5d09b82560c7df8de764e25921874122170f99542eef4abe357fbf595acb695e",
+    "tools/build-character-art.mjs": "d8908784120051603603ddd4bf558efed1ccfb28c1216da6850cdd671c97e9e4",
+    "tools/validate-character-art.mjs": "0d2f298468601c27e4f824abf17191a3a9b073e225f838f66cfbd5ef5a3474d7",
+    "content/source-assets/characters/character-art-reference-male.glb": "f82ce4b71fe55682d926e918d038cee03fa86153238f4d8e947f2be8a2bf5afc",
+    "content/source-assets/characters/character-art-male.blend": "3662c49f5ed7e1280077efba767df93d147a6a9d0b483a31c3f3eee71fb31b97",
+    "content/source-assets/characters/character-art-reference-female.glb": "248aa7ec4de0b398530af94ea53097a167ea3082641552938f6c937410d2eafb",
+    "content/source-assets/characters/character-art-female.blend": "45c524a00e9fc51ffed493ff6df985d77a7b174da888412a8d08095c49689011",
+    "content/source-assets/characters/character-art-audit.json": "70a6014bd8127e2b7b43e3d0aa9b3da00a1183f3126c8d9e7deb1080f5af6f7f",
+    "content/source-assets/characters/character-art-pose-audit.json": "95ef941d1c9723ec47cfa80029932530f615626fccb025acb21e7065c61d8ef3",
+    "content/source-assets/characters/character-art-coverage-safety.json": "ef6afbac56438ac585075ccc63a1c611e4c4a6584a81ecb1121a92a2e9baa2b5",
+    "content/source-assets/characters/character-art-reference-coverage-safety.json": "583575ac1b8948d7e0847281dbd9d76e2f83340fe605cb7fdc775d6735985acd",
+    "content/source-assets/characters/character-art-reference-topology.json": "47fa686ab2fbefdae487edeedcacfa3502f79a4ce78dea7fb5f5e9d14f66d85d"
   }
 }

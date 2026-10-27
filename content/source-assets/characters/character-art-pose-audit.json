@@ -2,98 +2,98 @@
   {
     "sex": "female",
     "pose": "neutral",
-    "concealedFaces": 3952,
+    "concealedFaces": 5775,
     "outwardRayMisses": 0,
     "coveragePercent": 100.0
   },
   {
     "sex": "female",
     "pose": "stride-left",
-    "concealedFaces": 3952,
+    "concealedFaces": 5775,
     "outwardRayMisses": 0,
     "coveragePercent": 100.0
   },
   {
     "sex": "female",
     "pose": "stride-right",
-    "concealedFaces": 3952,
+    "concealedFaces": 5775,
     "outwardRayMisses": 0,
     "coveragePercent": 100.0
   },
   {
     "sex": "female",
     "pose": "bent-knees",
-    "concealedFaces": 3952,
+    "concealedFaces": 5775,
     "outwardRayMisses": 0,
     "coveragePercent": 100.0
   },
   {
     "sex": "female",
     "pose": "reach",
-    "concealedFaces": 3952,
+    "concealedFaces": 5775,
     "outwardRayMisses": 0,
     "coveragePercent": 100.0
   },
   {
     "sex": "female",
     "pose": "lift",
-    "concealedFaces": 3952,
+    "concealedFaces": 5775,
     "outwardRayMisses": 0,
     "coveragePercent": 100.0
   },
   {
     "sex": "female",
     "pose": "torso-turn",
-    "concealedFaces": 3952,
+    "concealedFaces": 5775,
     "outwardRayMisses": 0,
     "coveragePercent": 100.0
   },
   {
     "sex": "male",
     "pose": "neutral",
-    "concealedFaces": 1072,
+    "concealedFaces": 1315,
     "outwardRayMisses": 0,
     "coveragePercent": 100.0
   },
   {
     "sex": "male",
     "pose": "stride-left",
-    "concealedFaces": 1072,
+    "concealedFaces": 1315,
     "outwardRayMisses": 0,
     "coveragePercent": 100.0
   },
   {
     "sex": "male",
     "pose": "stride-right",
-    "concealedFaces": 1072,
+    "concealedFaces": 1315,
     "outwardRayMisses": 0,
     "coveragePercent": 100.0
   },
   {
     "sex": "male",
     "pose": "bent-knees",
-    "concealedFaces": 1072,
+    "concealedFaces": 1315,
     "outwardRayMisses": 0,
     "coveragePercent": 100.0
   },
   {
     "sex": "male",
     "pose": "reach",
-    "concealedFaces": 1072,
+    "concealedFaces": 1315,
     "outwardRayMisses": 0,
     "coveragePercent": 100.0
   },
   {
     "sex": "male",
     "pose": "lift",
-    "concealedFaces": 1072,
+    "concealedFaces": 1315,
     "outwardRayMisses": 0,
     "coveragePercent": 100.0
   },
   {
     "sex": "male",
     "pose": "torso-turn",
-    "concealedFaces": 1072,
+    "concealedFaces": 1315,
     "outwardRayMisses": 0,
     "coveragePercent": 100.0
   }

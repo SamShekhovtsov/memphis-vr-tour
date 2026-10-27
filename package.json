@@ -20,7 +20,7 @@
     "validate:hero-anchors": "node tools/run-blender-asset-kit.mjs --layout-audit",
     "validate:hero": "node tools/validate-hero-bake.mjs",
     "validate:actors": "node tools/validate-actor-lock.mjs",
-    "build:people": "node tools/run-blender-asset-kit.mjs --hero-people",
+    "build:people": "node tools/build-character-art.mjs",
     "validate:people": "node tools/validate-hero-people.mjs",
     "validate:content": "node tools/validate-content.mjs",
     "validate:history": "node tools/validate-historical-compliance.mjs",
@@ -38,7 +38,8 @@
     "validate:zones-steps": "node tools/validate-zones-steps.mjs",
     "validate:resident-intelligence": "node tools/validate-purposeful-life.mjs && node tools/test-resident-intelligence.mjs",
     "qa:resident-intelligence": "node tools/qa-resident-intelligence.mjs",
-    "validate:character-art": "node tools/validate-character-art.mjs"
+    "validate:character-art": "node tools/validate-character-art.mjs",
+    "build:character-art": "node tools/build-character-art.mjs"
   },
   "engines": {
     "node": ">=22.0.0"

@@ -1,0 +1,22 @@
+[
+  {
+    "sex": "female",
+    "verticesBeforeWeld": 53514,
+    "verticesAfterWeld": 53514,
+    "reducedVertices": 12844,
+    "triangles": 25684,
+    "boundaryEdges": 0,
+    "sha256": "248aa7ec4de0b398530af94ea53097a167ea3082641552938f6c937410d2eafb",
+    "sourceSha256": "a571a5872a5f9d75c013ce6d88b3484436cf2109bf133fbc31e42c41f52389f1"
+  },
+  {
+    "sex": "male",
+    "verticesBeforeWeld": 53514,
+    "verticesAfterWeld": 53514,
+    "reducedVertices": 12844,
+    "triangles": 25684,
+    "boundaryEdges": 0,
+    "sha256": "f82ce4b71fe55682d926e918d038cee03fa86153238f4d8e947f2be8a2bf5afc",
+    "sourceSha256": "d15a07e2b4cf1d08a3b91cb212a9a06a91438077f05a3f2a62f45351e8a71eb8"
+  }
+]

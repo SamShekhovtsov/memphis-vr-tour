@@ -1,0 +1,86 @@
+[
+  {
+    "label": "character-art-cinematic-before-1",
+    "phase": "before",
+    "assets": {
+      "apps/web-tour/public/assets/authored/people/hero_male.glb": "41850a5e815ca504da76508ade0f88fda683052a8cf54ed34c30056297c36c2a",
+      "apps/web-tour/public/assets/authored/people/hero_female.glb": "955e4006453dd48a4bd2bca05929a53fa9507457a105399b54395576ec474656",
+      "apps/web-tour/public/assets/authored/people/manifest.json": "19e51936749cf73588f073d4ac4817414941d6a8b01f46746fd29ca207aee09d",
+      "apps/web-tour/public/assets/authored/people/crowd/hero_male_lod1.glb": "fba694c245398e8194b5d6a48185960462af7529cf11619e3e05445e99ed8936",
+      "apps/web-tour/public/assets/authored/people/crowd/hero_male_lod2.glb": "a0f1865d97cf777ffac84efb7e51e28f706107dab9d47987761185b629081ca5",
+      "apps/web-tour/public/assets/authored/people/crowd/hero_female_lod1.glb": "feec93005ad8b4d20c9fea6d3ea4c60c1557a69003edda86c5f15af880c4a013",
+      "apps/web-tour/public/assets/authored/people/crowd/hero_female_lod2.glb": "58a573756ebd6dc9815d814580f5ad7b642e866b836f2b2c4697800ce77c4904",
+      "apps/web-tour/public/assets/authored/people/crowd/manifest.json": "3bf167f39e58922413703ac8ba7f6a387997c55993506f5302724798c8467960"
+    }
+  },
+  {
+    "label": "character-art-cinematic-after-1",
+    "phase": "after",
+    "assets": {
+      "apps/web-tour/public/assets/authored/people/hero_male.glb": "79ce30aa896aa6a1500c829a213b85d4c7ed109f15e220b62cbd08bff9f41fdc",
+      "apps/web-tour/public/assets/authored/people/hero_female.glb": "985def4de429f3895f5f3b22a7ed6323d15412bb35159ea27ae3ca2e0a615509",
+      "apps/web-tour/public/assets/authored/people/manifest.json": "206863bcd40161c883a5141c0f239231b9debf967545ceda811826866eb8a7d0",
+      "apps/web-tour/public/assets/authored/people/crowd/hero_male_lod1.glb": "7b47738e11ba0efa6c965816d251bc2cd81d7ebdad40c9e04fc82528c7fd44f5",
+      "apps/web-tour/public/assets/authored/people/crowd/hero_male_lod2.glb": "1959e3eba630526923c0121149da2a21282204596164ecd4b6f0a1b45f838e55",
+      "apps/web-tour/public/assets/authored/people/crowd/hero_female_lod1.glb": "830821a5ec79501a98a56c389780b44533d7f01cc23663bd2fb05e0f7496cf28",
+      "apps/web-tour/public/assets/authored/people/crowd/hero_female_lod2.glb": "0a0f67297c294578146125df39db2a0550ed7cb536e960617cd542cbc9147f1c",
+      "apps/web-tour/public/assets/authored/people/crowd/manifest.json": "ec0044feb55997db2adf41b538e7897db179dabed339d492b33fcfcf1f03a46d"
+    }
+  },
+  {
+    "label": "character-art-cinematic-after-2",
+    "phase": "after",
+    "assets": {
+      "apps/web-tour/public/assets/authored/people/hero_male.glb": "79ce30aa896aa6a1500c829a213b85d4c7ed109f15e220b62cbd08bff9f41fdc",
+      "apps/web-tour/public/assets/authored/people/hero_female.glb": "985def4de429f3895f5f3b22a7ed6323d15412bb35159ea27ae3ca2e0a615509",
+      "apps/web-tour/public/assets/authored/people/manifest.json": "206863bcd40161c883a5141c0f239231b9debf967545ceda811826866eb8a7d0",
+      "apps/web-tour/public/assets/authored/people/crowd/hero_male_lod1.glb": "7b47738e11ba0efa6c965816d251bc2cd81d7ebdad40c9e04fc82528c7fd44f5",
+      "apps/web-tour/public/assets/authored/people/crowd/hero_male_lod2.glb": "1959e3eba630526923c0121149da2a21282204596164ecd4b6f0a1b45f838e55",
+      "apps/web-tour/public/assets/authored/people/crowd/hero_female_lod1.glb": "830821a5ec79501a98a56c389780b44533d7f01cc23663bd2fb05e0f7496cf28",
+      "apps/web-tour/public/assets/authored/people/crowd/hero_female_lod2.glb": "0a0f67297c294578146125df39db2a0550ed7cb536e960617cd542cbc9147f1c",
+      "apps/web-tour/public/assets/authored/people/crowd/manifest.json": "ec0044feb55997db2adf41b538e7897db179dabed339d492b33fcfcf1f03a46d"
+    }
+  },
+  {
+    "label": "character-art-cinematic-before-2",
+    "phase": "before",
+    "assets": {
+      "apps/web-tour/public/assets/authored/people/hero_male.glb": "41850a5e815ca504da76508ade0f88fda683052a8cf54ed34c30056297c36c2a",
+      "apps/web-tour/public/assets/authored/people/hero_female.glb": "955e4006453dd48a4bd2bca05929a53fa9507457a105399b54395576ec474656",
+      "apps/web-tour/public/assets/authored/people/manifest.json": "19e51936749cf73588f073d4ac4817414941d6a8b01f46746fd29ca207aee09d",
+      "apps/web-tour/public/assets/authored/people/crowd/hero_male_lod1.glb": "fba694c245398e8194b5d6a48185960462af7529cf11619e3e05445e99ed8936",
+      "apps/web-tour/public/assets/authored/people/crowd/hero_male_lod2.glb": "a0f1865d97cf777ffac84efb7e51e28f706107dab9d47987761185b629081ca5",
+      "apps/web-tour/public/assets/authored/people/crowd/hero_female_lod1.glb": "feec93005ad8b4d20c9fea6d3ea4c60c1557a69003edda86c5f15af880c4a013",
+      "apps/web-tour/public/assets/authored/people/crowd/hero_female_lod2.glb": "58a573756ebd6dc9815d814580f5ad7b642e866b836f2b2c4697800ce77c4904",
+      "apps/web-tour/public/assets/authored/people/crowd/manifest.json": "3bf167f39e58922413703ac8ba7f6a387997c55993506f5302724798c8467960"
+    }
+  },
+  {
+    "label": "character-art-cinematic-before-3",
+    "phase": "before",
+    "assets": {
+      "apps/web-tour/public/assets/authored/people/hero_male.glb": "41850a5e815ca504da76508ade0f88fda683052a8cf54ed34c30056297c36c2a",
+      "apps/web-tour/public/assets/authored/people/hero_female.glb": "955e4006453dd48a4bd2bca05929a53fa9507457a105399b54395576ec474656",
+      "apps/web-tour/public/assets/authored/people/manifest.json": "19e51936749cf73588f073d4ac4817414941d6a8b01f46746fd29ca207aee09d",
+      "apps/web-tour/public/assets/authored/people/crowd/hero_male_lod1.glb": "fba694c245398e8194b5d6a48185960462af7529cf11619e3e05445e99ed8936",
+      "apps/web-tour/public/assets/authored/people/crowd/hero_male_lod2.glb": "a0f1865d97cf777ffac84efb7e51e28f706107dab9d47987761185b629081ca5",
+      "apps/web-tour/public/assets/authored/people/crowd/hero_female_lod1.glb": "feec93005ad8b4d20c9fea6d3ea4c60c1557a69003edda86c5f15af880c4a013",
+      "apps/web-tour/public/assets/authored/people/crowd/hero_female_lod2.glb": "58a573756ebd6dc9815d814580f5ad7b642e866b836f2b2c4697800ce77c4904",
+      "apps/web-tour/public/assets/authored/people/crowd/manifest.json": "3bf167f39e58922413703ac8ba7f6a387997c55993506f5302724798c8467960"
+    }
+  },
+  {
+    "label": "character-art-cinematic-after-3",
+    "phase": "after",
+    "assets": {
+      "apps/web-tour/public/assets/authored/people/hero_male.glb": "79ce30aa896aa6a1500c829a213b85d4c7ed109f15e220b62cbd08bff9f41fdc",
+      "apps/web-tour/public/assets/authored/people/hero_female.glb": "985def4de429f3895f5f3b22a7ed6323d15412bb35159ea27ae3ca2e0a615509",
+      "apps/web-tour/public/assets/authored/people/manifest.json": "206863bcd40161c883a5141c0f239231b9debf967545ceda811826866eb8a7d0",
+      "apps/web-tour/public/assets/authored/people/crowd/hero_male_lod1.glb": "7b47738e11ba0efa6c965816d251bc2cd81d7ebdad40c9e04fc82528c7fd44f5",
+      "apps/web-tour/public/assets/authored/people/crowd/hero_male_lod2.glb": "1959e3eba630526923c0121149da2a21282204596164ecd4b6f0a1b45f838e55",
+      "apps/web-tour/public/assets/authored/people/crowd/hero_female_lod1.glb": "830821a5ec79501a98a56c389780b44533d7f01cc23663bd2fb05e0f7496cf28",
+      "apps/web-tour/public/assets/authored/people/crowd/hero_female_lod2.glb": "0a0f67297c294578146125df39db2a0550ed7cb536e960617cd542cbc9147f1c",
+      "apps/web-tour/public/assets/authored/people/crowd/manifest.json": "ec0044feb55997db2adf41b538e7897db179dabed339d492b33fcfcf1f03a46d"
+    }
+  }
+]

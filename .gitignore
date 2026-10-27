@@ -68,3 +68,11 @@
 
 # Reproducible resident captures; exact reports are archived losslessly below.
 /docs/design/screenshots/*purposeful*.json
+
+# Character-art raw reports are losslessly archived with SHA-256 in performance/character-art.
+/docs/design/screenshots/*character-art*.json
+/docs/design/screenshots/*character-female*.json
+/docs/design/screenshots/*character-male*.json
+/docs/design/screenshots/*character-normal-diagnostic*.json
+/docs/design/screenshots/*character-shadow-diagnostic*.json
+/tools/.character-art-benchmark-*.mjs

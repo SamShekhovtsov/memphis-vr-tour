@@ -1,0 +1,155 @@
+{
+  "format": "gzip; exact original JSON bytes",
+  "files": {
+    "hero-street-main-character-art-tour-before-1.json": {
+      "archive": "hero-street-main-character-art-tour-before-1.json.gz",
+      "sha256": "5043ba02c17aa6b50d194185c4977cf8351162183282bce769b45b9cab38dc73",
+      "bytes": 996091,
+      "compressedBytes": 197696
+    },
+    "hero-street-main-character-art-tour-after-1.json": {
+      "archive": "hero-street-main-character-art-tour-after-1.json.gz",
+      "sha256": "a175d754fc0d3e851f3b92fac33a28ab9a5358d81c10c09356dc3c62b8ac47ec",
+      "bytes": 995631,
+      "compressedBytes": 197879
+    },
+    "hero-street-main-character-art-tour-before-2.json": {
+      "archive": "hero-street-main-character-art-tour-before-2.json.gz",
+      "sha256": "d568bd2f91b138bf7d583bffad93dcca4b3313fd8ebc45997e75f91a24ee902a",
+      "bytes": 994541,
+      "compressedBytes": 197555
+    },
+    "hero-street-main-character-art-tour-after-2.json": {
+      "archive": "hero-street-main-character-art-tour-after-2.json.gz",
+      "sha256": "411c8c381833f72390b3f72ca03f56ce38e98636bd4c273ebd188421aee1443e",
+      "bytes": 995856,
+      "compressedBytes": 197889
+    },
+    "hero-street-main-character-art-tour-before-3.json": {
+      "archive": "hero-street-main-character-art-tour-before-3.json.gz",
+      "sha256": "1b2ed15d464d5a3972398bb05200ee02fdfe4abe7f4a7282b940a89318df203a",
+      "bytes": 994943,
+      "compressedBytes": 197672
+    },
+    "hero-street-main-character-art-tour-after-3.json": {
+      "archive": "hero-street-main-character-art-tour-after-3.json.gz",
+      "sha256": "6e917d65a66fac6cc40579390c5ac923e3b0867c5f244fdcaf0c4a37eb6eb053",
+      "bytes": 996269,
+      "compressedBytes": 197971
+    },
+    "hero-street-main-character-art-cinematic-before-1.json": {
+      "archive": "hero-street-main-character-art-cinematic-before-1.json.gz",
+      "sha256": "55f9796a5633eeddb50858c0fdc3b4f318b57f6bef9944e337807e9392075bfd",
+      "bytes": 994780,
+      "compressedBytes": 197995
+    },
+    "hero-street-main-character-art-cinematic-after-1.json": {
+      "archive": "hero-street-main-character-art-cinematic-after-1.json.gz",
+      "sha256": "1914c937de2f63acd6f100114a47b95e47b8dbeac3fb1adc8b32441042686be9",
+      "bytes": 996121,
+      "compressedBytes": 198096
+    },
+    "hero-street-main-character-art-cinematic-before-2.json": {
+      "archive": "hero-street-main-character-art-cinematic-before-2.json.gz",
+      "sha256": "40837e7d03baafd5401fa20f4b091fd7508d2065c2d56023279096c51d62d506",
+      "bytes": 996040,
+      "compressedBytes": 197952
+    },
+    "hero-street-main-character-art-cinematic-after-2.json": {
+      "archive": "hero-street-main-character-art-cinematic-after-2.json.gz",
+      "sha256": "dca8157c58cce59171cb2d437c75c249621c7247af4a7c14c8bff6ae99d53b94",
+      "bytes": 995570,
+      "compressedBytes": 198079
+    },
+    "hero-street-main-character-art-cinematic-before-3.json": {
+      "archive": "hero-street-main-character-art-cinematic-before-3.json.gz",
+      "sha256": "9f1d4084072164af99b9db00e615b707b762ffefa773110f9755d72273455b46",
+      "bytes": 994718,
+      "compressedBytes": 197892
+    },
+    "hero-street-main-character-art-cinematic-after-3.json": {
+      "archive": "hero-street-main-character-art-cinematic-after-3.json.gz",
+      "sha256": "2f8d0504d5607d21d4eeafc1b687baf851d2f4191665d407b2b842353038e072",
+      "bytes": 996222,
+      "compressedBytes": 198219
+    },
+    "hero-street-main-character-art-before.json": {
+      "archive": "hero-street-main-character-art-before.json.gz",
+      "sha256": "e6ddc68d3a1cfbf94e511a3a157cc17fb7d99c8610528631d82de92bf09b1be2",
+      "bytes": 88379,
+      "compressedBytes": 7463
+    },
+    "hero-street-main-character-art-after.json": {
+      "archive": "hero-street-main-character-art-after.json.gz",
+      "sha256": "ee5eb59cd28d40d5475af2e1d27bdee5643703cd96cc0cf0f905246a39e58db4",
+      "bytes": 88332,
+      "compressedBytes": 7455
+    },
+    "street-entry-character-art-before.json": {
+      "archive": "street-entry-character-art-before.json.gz",
+      "sha256": "2ca239c03c418e984ff68f72470845b0582a5698feb68a57cb22864325e4a061",
+      "bytes": 88359,
+      "compressedBytes": 7462
+    },
+    "street-entry-character-art-after.json": {
+      "archive": "street-entry-character-art-after.json.gz",
+      "sha256": "ad30548c51a52f7d3958633781acf05fdb0cffc819a2c2a67b7f40cd7b1b7732",
+      "bytes": 88373,
+      "compressedBytes": 7468
+    },
+    "hero-street-material-character-art-before.json": {
+      "archive": "hero-street-material-character-art-before.json.gz",
+      "sha256": "6f67466946afe718252bb45e0aa6abda262a0d5d42663a5dd75bc8095a3b5d03",
+      "bytes": 88355,
+      "compressedBytes": 7465
+    },
+    "hero-street-material-character-art-after.json": {
+      "archive": "hero-street-material-character-art-after.json.gz",
+      "sha256": "17eb3181f4b029c0a2c23b5b04a24d0c9cb09cd2ed99959cb88e9087452d66e7",
+      "bytes": 88354,
+      "compressedBytes": 7463
+    },
+    "hero-street-main-character-male-before.json": {
+      "archive": "hero-street-main-character-male-before.json.gz",
+      "sha256": "ec5832317948f04032be4eacf8945b9bb19043a9ffd757ffd99cdbe270ffd012",
+      "bytes": 88779,
+      "compressedBytes": 7582
+    },
+    "hero-street-main-character-male-after.json": {
+      "archive": "hero-street-main-character-male-after.json.gz",
+      "sha256": "15d782b6752c7f3c1dd0cdbb762160975949284bf10e0646fe52a1e2d97e0cb5",
+      "bytes": 88750,
+      "compressedBytes": 7584
+    },
+    "hero-street-main-character-female-before.json": {
+      "archive": "hero-street-main-character-female-before.json.gz",
+      "sha256": "a0c1405ddbca22f00c9a0fe1e311823bdcde2b03c00bba2e050835e5fc30f110",
+      "bytes": 88665,
+      "compressedBytes": 7564
+    },
+    "hero-street-main-character-female-after.json": {
+      "archive": "hero-street-main-character-female-after.json.gz",
+      "sha256": "daa6ac43740757a9a2756c94656e713567c103140ff2a8fa1416bc111f47b7ac",
+      "bytes": 88665,
+      "compressedBytes": 7559
+    },
+    "hero-street-main-character-female-side.json": {
+      "archive": "hero-street-main-character-female-side.json.gz",
+      "sha256": "0495c046802238cf51deeac839413c7d1ca2e495b56b3821cb586812ac0c24f9",
+      "bytes": 88648,
+      "compressedBytes": 7553
+    },
+    "hero-street-main-character-female-back.json": {
+      "archive": "hero-street-main-character-female-back.json.gz",
+      "sha256": "05d1cfaace411c6352a35b7eb0c1c8e3a5d4027a9f4239249321555f1d3296d7",
+      "bytes": 88666,
+      "compressedBytes": 7566
+    },
+    "hero-street-main-character-art-behavior.json": {
+      "archive": "hero-street-main-character-art-behavior.json.gz",
+      "sha256": "72b4e8a311301a0f22adeb2f42bf06f9bee255aa690bb9965bdcafed7785011e",
+      "bytes": 209545,
+      "compressedBytes": 13732
+    }
+  }
+}

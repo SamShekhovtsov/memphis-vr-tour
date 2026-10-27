@@ -50,3 +50,7 @@ Walk normally to step up or down low obstacles automatically (maximum rise 38 cm
 ## Purposeful resident behavior
 
 Half of the population (63 of 126) now has stable roles and personality traits, committed activities, limited-capacity work/rest places, physical waiting slots, paired conversations and intent-driven shared GPU gestures. The 51/50/19/6 area allocation remains unchanged. No model download, inference server, paid API or added live skeleton is required. See [six-step implementation and measurements](docs/design/purposeful-residents-2026-10-27.md). Diagnostic `?intelligence=legacy` restores random-goal behavior for comparisons; geometry, camera and rendering settings are unchanged.
+
+## Character realism steps 1–2 — 27 October 2026
+
+Garment coverage and connected male/female reference anatomy are complete. The corrected Blender 5.1 import merges glTF vertices before reduction, repairing torn faces/body surfaces. Eyes have a separate opaque material; cropped scalp and crowd LODs are rebuilt. `npm run build:people` now uses the corrected character-art pipeline. Population, behavior, placements, navigation and stored cameras are preserved. Full build and 14 pose checks pass. Matched screenshots, performance and remaining art limitations: [character-art report](docs/design/character-art-steps-1-2-2026-10-27.md). HD4600 balanced median/p95: 47.7/81.1 → 39.9/67.3 ms; cinematic: 67.5/123.9 → 57.6/111.4 ms. No deployment.
