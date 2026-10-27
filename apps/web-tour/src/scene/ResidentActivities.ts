@@ -5,6 +5,7 @@ export type ActivityKind='inspect'|'work'|'rest'|'socialize'|'deliver';
 export interface ActivityStation {
  readonly id:string; readonly kind:ActivityKind; readonly zone:PopulationZone;
  readonly node:number; readonly point:Vector3; readonly face:Vector3;
+ readonly pair?:string; readonly queue?:{node:number;point:Vector3};
  readonly anchor:string; readonly capacity:1; readonly duration:number;
 }
 /** Scene-derived affordances. No decorative geometry or collider is added/moved.
@@ -30,5 +31,14 @@ export function buildActivityStations(nav:DistrictNavigation,zones:PopulationZon
   const face=zone==='temple'?new Vector3(-p.x,0,89-p.z).normalize():new Vector3(0,0,1);
   result.push({id:`place-${node}`,kind,zone,node,point:p.clone(),face,anchor:zone==='temple'?'existing Ptah courtyard':'existing district ground',capacity:1,duration:kind==='rest'?18:12});used.add(node);
  }
- return result;
+ for(const station of [...result]){
+  const nearby=nav.adjacency[station.node].find(n=>!used.has(n)&&zones.classify(nav.nodes[n].x,nav.nodes[n].z)===station.zone&&nav.adjacency[n].length>=6&&result.every(s=>Vector3.DistanceSquared(s.point,nav.nodes[n])>=1.35**2));
+  if(nearby===undefined)continue;const point=nav.nodes[nearby];used.add(nearby);
+  if(station.kind==='socialize'){
+   const pair=station.id,face=point.subtract(station.point).normalize();
+   result[result.indexOf(station)]={...station,pair,face};
+   result.push({...station,id:pair+'-partner',pair,node:nearby,point:point.clone(),face:face.negate()});
+  }else if(station.kind==='work'||station.kind==='deliver')result[result.indexOf(station)]={...station,queue:{node:nearby,point:point.clone()}};
+ }
+ return result.filter(s=>s.kind!=='socialize'||!!s.pair);
 }

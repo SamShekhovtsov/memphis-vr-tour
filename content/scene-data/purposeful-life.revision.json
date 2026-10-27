@@ -5,9 +5,9 @@
     "apps/web-tour/src/scene/DistrictLife.ts": {
       "baseline": "content/source-assets/purposeful-life-baseline/0.snapshot",
       "beforeRaw": "c806c9c84da11e16b9fcf0d7f0e1a9a50636993113e7296240f64173557a381d",
-      "afterRaw": "9f7a45eb328237b1114bb527c3f70114bd6be9932407ee99d3e439d155f20084",
+      "afterRaw": "e3d5177f75a58e1bd9110b505aed0edba861948f0ef7e9c631bea9e35b8571a2",
       "before": "c806c9c84da11e16b9fcf0d7f0e1a9a50636993113e7296240f64173557a381d",
-      "after": "9f7a45eb328237b1114bb527c3f70114bd6be9932407ee99d3e439d155f20084"
+      "after": "e3d5177f75a58e1bd9110b505aed0edba861948f0ef7e9c631bea9e35b8571a2"
     },
     "tools/lib/zones-steps-revision.mjs": {
       "baseline": "content/source-assets/purposeful-life-baseline/3.snapshot",
@@ -26,7 +26,8 @@
   },
   "additions": {
     "apps/web-tour/src/scene/ResidentProfiles.ts": "160a5d6e92ecb714c2157cdfa16d9b74729d76add4d7e090e69505dcfb9d8e84",
-    "apps/web-tour/src/scene/ResidentActivities.ts": "d4da09210150c21639094063a2e201a353ea4f9bc98cf27a9abd8be9dfa61bcb",
-    "apps/web-tour/src/scene/ResidentBrain.ts": "ae6f3b5dd4b1258a267912fec871dbdd46ac9927b1db4e65194b0a4b775dc915"
+    "apps/web-tour/src/scene/ResidentActivities.ts": "e886a072525b0a7ddd714e8634f2b5f141051bf52d11e556a677091c09ddfcac",
+    "apps/web-tour/src/scene/ResidentBrain.ts": "bf4695816923e4290c19faf6e3fce72fcdcb5ed1f782b61f65ab7d50443411bc",
+    "apps/web-tour/src/scene/ResidentCoordination.ts": "675fb116f1bb2ff43cc0d6b4dd44031414198942460152fc2533a119c3550837"
   }
 }

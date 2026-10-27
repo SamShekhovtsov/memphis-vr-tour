@@ -26,3 +26,15 @@ brain.tick(70,target.point,1);assert.equal(brain.stage,'travel');assert.notEqual
 brain.tick(200,{x:999,z:999},1);assert.equal(brain.failed,1,'Unreachable/blocked tasks expire');
 console.log('Committed task sequence, facing, dwell, completion, recent-memory and timeout tests passed');
 
+
+const coordinationSource=fs.readFileSync('apps/web-tour/src/scene/ResidentCoordination.ts','utf8');
+const {ResidentCoordination}=await import('data:text/javascript;base64,'+Buffer.from(ts.transpileModule(coordinationSource,{compilerOptions:{module:ts.ModuleKind.ESNext,target:ts.ScriptTarget.ES2022}}).outputText).toString('base64'));
+const coordinator=new ResidentCoordination(),slot={...stations[0],queue:{node:20,point:{x:3,z:3}}};
+assert.ok(coordinator.acquire(slot,'a',0));assert.ok(coordinator.acquire(slot,'b',0));assert.equal(coordinator.acquire(slot,'c',0),false);
+assert.ok(coordinator.owns(slot,'a'));assert.ok(coordinator.queued(slot,'b'));coordinator.release('a');coordinator.heartbeat(slot,'b',1);assert.ok(coordinator.owns(slot,'b'));assert.equal(coordinator.promotions,1);
+coordinator.prune(10);assert.equal(coordinator.leases.size,0,'Abandoned reservations expire');
+const social={...stations[1],id:'pair-a',pair:'pair'},socialB={...social,id:'pair-b'};
+coordinator.acquire(social,'a',20);coordinator.acquire(socialB,'b',20);
+coordinator.residents.set('a',{profile:{id:'a'},stage:'align',target:social});coordinator.residents.set('b',{profile:{id:'b'},stage:'travel',target:socialB});
+assert.equal(coordinator.ready(social,'a',20),false,'No talking to an absent partner');coordinator.residents.get('b').stage='align';assert.ok(coordinator.ready(social,'a',20));assert.equal(coordinator.endAt(social),coordinator.endAt(socialB));
+console.log('Capacity, physical queue, promotion, expiry and paired-conversation tests passed');

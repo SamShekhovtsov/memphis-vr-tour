@@ -1,3 +1,4 @@
+import { ResidentCoordination } from './ResidentCoordination';
 import { ResidentBrain } from './ResidentBrain';
 import { buildActivityStations } from './ResidentActivities';
 import { profilePopulation } from './ResidentProfiles';
@@ -8,6 +9,7 @@ import {GroundContactIK} from './GroundContactIK';
 import {DistrictNavigation} from './DistrictNavigation';
 const angle=(v:number)=>Math.atan2(Math.sin(v),Math.cos(v));
 export class DistrictLife {
+ readonly coordination=new ResidentCoordination();
  readonly brains=new Map<number,ResidentBrain>();
  readonly stations:ReturnType<typeof buildActivityStations>;
  readonly profiles:ReturnType<typeof profilePopulation>;
@@ -30,7 +32,8 @@ export class DistrictLife {
    if(person.workPoint){const d=person.workPoint().subtract(person.root.getAbsolutePosition());d.y=0;if(d.lengthSquared()>1e-6)person.setFacing(d.normalize());}
    const face=person.facing();this.agents.push({person,heading:Math.atan2(face.x,face.z),speed:0,wait:person.workPoint?0:1+this.random()*4,path:[],recent:[],travel:0,pause:8+this.random()*22,nextPose:0,stuck:0,zone:this.zones.assignments[index],pool:this.zones.pool(index,p),allow:(x,z)=>this.zones.allows(index,x,z)});
   }
-  for(const [i,profile]of this.profiles)this.brains.set(i,new ResidentBrain(profile,this.stations,this.agents[i].pool));
+  for(const [i,profile]of this.profiles)this.brains.set(i,new ResidentBrain(profile,this.stations,this.agents[i].pool,this.coordination));
+  for(const brain of this.brains.values())this.coordination.register(brain);
   if(new URLSearchParams(location.search).get('intelligence')==='legacy')this.brains.clear();
   for(const group of scene.animationGroups.filter(g=>g.name.startsWith('glbAnimatedStreetActors')))group.stop();
   const shadow=scene.getLightByName('lowGoldSun')?.getShadowGenerator();
@@ -58,7 +61,10 @@ export class DistrictLife {
       brain.tick(this.elapsed,p,dot);brain.nextDecision=Math.max(brain.nextDecision,this.elapsed+.5+(index%5)*.025);
      }
      person.root.metadata.activity=brain.intent;person.root.metadata.activityStage=brain.stage;
-     a.wait=brain.stage==='travel'?0:1;
+     const destination=brain.destination;
+     if(person.root.metadata.taskDestination!==destination?.node){a.path=[];person.root.metadata.taskDestination=destination?.node;}
+     const atQueue=!!brain.target&&this.coordination.queued(brain.target,brain.profile.id)&&!!destination&&Math.hypot(p.x-destination.point.x,p.z-destination.point.z)<.24;
+     a.wait=brain.stage==='travel'&&!atQueue?0:1;
      if(brain.stage==='align'||brain.stage==='act'){
       a.path=[];const direction=brain.target!.face,target=Math.atan2(direction.x,direction.z);a.heading+=Math.max(-1.6*dt,Math.min(1.6*dt,angle(target-a.heading)));
      }
@@ -66,7 +72,7 @@ export class DistrictLife {
     if(!brain&&a.wait<=0&&a.pause<=0){a.wait=1.5+this.random()*6;a.pause=8+this.random()*25;this.diagnostics.pauses++;person.root.metadata.gazeYaw=(this.random()-.5)*.6;}
     if(a.wait<=0&&!a.path.length&&pathBudget>0){
      pathBudget--;
-     if(brain?.target){a.path=this.nav.path(p,brain.target.node,a.pool,a.allow);if(!a.path.length)brain.abort(this.elapsed);else this.diagnostics.goals++;}
+     if(brain?.target){a.path=this.nav.path(p,brain.destination!.node,a.pool,a.allow);if(!a.path.length)brain.abort(this.elapsed);else this.diagnostics.goals++;}
      const goals=brain?[]:[...a.pool];
      for(let attempt=0;attempt<8;attempt++){const goal=goals[Math.floor(this.random()*goals.length)];if(a.recent.includes(goal)||Vector3.Distance(p,this.nav.nodes[goal])<3)continue;const path=this.nav.path(p,goal,a.pool,a.allow);if(path.length){a.path=path;a.recent.push(goal);if(a.recent.length>12)a.recent.shift();this.diagnostics.goals++;break;}}
      if(!a.path.length&&!brain)a.wait=2+this.random()*3;
