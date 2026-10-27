@@ -46,3 +46,7 @@ See the [180-person crowd and clarity comparison](docs/design/crowd-and-clarity-
 Current allocation: 51 people inside the Ptah temple, 50 in the hero village lane, 19 on the remaining arrival route, and 6 in open space. This is a 30% cut from 180, with whole-person rounding of 40/40/15/5 percent. Regions and weights are in `content/scene-data/district-population.json`; NPCs wander within those areas. Zone edges are routing rules and add no visitor collision walls.
 
 Walk normally to step up or down low obstacles automatically (maximum rise 38 cm). The arrival quay and tilted ramp provide actual support. Tall walls and low ceilings still block traversal; hold F remains the explicit flight override. See [population, step-up evidence and final views](docs/design/population-zones-and-steps-2026-10-27.md).
+
+## Purposeful resident behavior
+
+Half of the population (63 of 126) now has stable roles and personality traits, committed activities, limited-capacity work/rest places, physical waiting slots, paired conversations and intent-driven shared GPU gestures. The 51/50/19/6 area allocation remains unchanged. No model download, inference server, paid API or added live skeleton is required. See [six-step implementation and measurements](docs/design/purposeful-residents-2026-10-27.md). Diagnostic `?intelligence=legacy` restores random-goal behavior for comparisons; geometry, camera and rendering settings are unchanged.

@@ -1,3 +1,4 @@
+import authored from '../../../../content/scene-data/hero-street.anchors-lock.json';
 import { Vector3 } from '@babylonjs/core';
 import type { DistrictNavigation } from './DistrictNavigation';
 import type { PopulationZones, PopulationZone } from './PopulationZones';
@@ -12,10 +13,20 @@ export interface ActivityStation {
  * Every standing point is a supported navigation node; path checks still apply. */
 export function buildActivityStations(nav:DistrictNavigation,zones:PopulationZones):ActivityStation[]{
  const result:ActivityStation[]=[],used=new Set<number>();
- const anchors=nav.scene.meshes.filter(m=>m.isEnabled()&&m.isVisible&&!/human|person|crowd|collision|shadow|lod/i.test(m.name)&&/table|jar|offering|canopy|cloth|bench|pillar|pier/i.test(m.name));
+ for(const anchor of [...authored.anchors].sort((a,b)=>Number(/workBench/.test(b.name))-Number(/workBench/.test(a.name)))){
+  if(!/workBench|edgeJar|edgeBasket/.test(anchor.name))continue;
+  const m=anchor.matrix,center=new Vector3(-m[3]-16.5,m[11],-m[7]);
+  if(zones.classify(center.x,center.z)!=='street')continue;
+  if(result.some(s=>Vector3.DistanceSquared(s.point,center)<2.6**2))continue;
+  const found=nav.nodes.map((p,node)=>({p,node,d:Math.hypot(p.x-center.x,p.z-center.z)})).filter(v=>v.d>=.75&&v.d<2&&!used.has(v.node)&&zones.classify(v.p.x,v.p.z)==='street').sort((a,b)=>a.d-b.d)[0];
+  if(!found)continue;const {p,node}=found,face=center.subtract(p);face.y=0;face.normalize();
+  const kind:ActivityKind=/workBench/.test(anchor.name)?'work':'inspect';
+  result.push({id:'authored-'+anchor.name,kind,zone:'street',node,point:p.clone(),face,anchor:anchor.name,capacity:1,duration:kind==='work'?24:12});used.add(node);
+ }
+ const anchors=nav.scene.meshes.filter(m=>m.isEnabled()&&m.isVisible&&!/human|person|actor|crowd|collision|shadow|lod/i.test(m.name)&&/table|jar|offering|canopy|cloth|bench|pillar|pier/i.test(m.name));
  for(const mesh of anchors){
   mesh.computeWorldMatrix(true);const b=mesh.getBoundingInfo().boundingBox,center=b.centerWorld;
-  if(b.maximumWorld.y>4||b.maximumWorld.y<.15)continue;
+  if(b.maximumWorld.y>4||b.maximumWorld.y<.15||result.some(s=>Vector3.DistanceSquared(s.point,center)<2.6**2))continue;
   const kind:ActivityKind=/table/i.test(mesh.name)?'work':/jar/i.test(mesh.name)?'deliver':/cloth|canopy|bench/i.test(mesh.name)?'rest':'inspect';
   const candidates=nav.nodes.map((p,node)=>({p,node,d:Math.hypot(p.x-center.x,p.z-center.z)})).filter(v=>v.d>=.7&&v.d<2.8&&!used.has(v.node)).sort((a,b)=>a.d-b.d);
   const found=candidates.find(({p})=>nav.walkable(p.x,p.z,.46));if(!found)continue;

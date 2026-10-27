@@ -25,5 +25,5 @@
  check('No backward locomotion or abrupt body reversals',life.diagnostics.minimumFacingDot>.99&&life.diagnostics.maxTurnPerSecond<=1.601,{dot:life.diagnostics.minimumFacingDot,turn:life.diagnostics.maxTurnPerSecond});
  check('Intent animation shared across GPU residents',scene.metadata.gpuCrowd.actions?.length===4&&scene.metadata.gpuCrowd.liveSkeletons===9,scene.metadata.gpuCrowd);
  check('Activity variation and paired conversations observed',Object.keys(actions).length>=3&&life.coordination.conversations>0,{actions,conversations:life.coordination.conversations,queueSamples,promotions:life.coordination.promotions});
- return {passed:checks.every(c=>c.passed),checks,tasks,actionSamples,averageLifeUpdateMs:brainMs/6000,elapsed:life.elapsed};
+ return {passed:checks.every(c=>c.passed),checks,tasks,actionSamples,averageLifeUpdateMs:brainMs/6000,brainTiming:life.brainTiming,elapsed:life.elapsed};
 })()

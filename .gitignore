@@ -65,3 +65,6 @@
 
 !docs/design/screenshots/*-zones-steps-views.png
 !docs/design/screenshots/street-entry-zones-steps-temple.png
+
+# Reproducible resident captures; exact reports are archived losslessly below.
+/docs/design/screenshots/*purposeful*.json

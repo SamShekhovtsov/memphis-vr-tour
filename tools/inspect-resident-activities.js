@@ -1,0 +1,1 @@
+(()=>{const {scene,life}=window.memphisDistrictQA;return {stations:life.stations.filter(s=>s.zone==='street'),meshes:scene.meshes.filter(m=>/table|bench|pot|jar/i.test(m.name)&&m.isEnabled()&&m.isVisible).map(m=>({name:m.name,position:m.getBoundingInfo().boundingBox.centerWorld.asArray()}))};})()

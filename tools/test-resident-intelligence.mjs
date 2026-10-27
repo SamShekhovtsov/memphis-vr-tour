@@ -38,3 +38,8 @@ coordinator.acquire(social,'a',20);coordinator.acquire(socialB,'b',20);
 coordinator.residents.set('a',{profile:{id:'a'},stage:'align',target:social});coordinator.residents.set('b',{profile:{id:'b'},stage:'travel',target:socialB});
 assert.equal(coordinator.ready(social,'a',20),false,'No talking to an absent partner');coordinator.residents.get('b').stage='align';assert.ok(coordinator.ready(social,'a',20));assert.equal(coordinator.endAt(social),coordinator.endAt(socialB));
 console.log('Capacity, physical queue, promotion, expiry and paired-conversation tests passed');
+
+const blockedBrain=new ResidentBrain(api.createProfile(8,'street'),stations,new Set(stations.map(s=>s.node)));
+blockedBrain.stationAllowed=()=>false;blockedBrain.tick(1,{x:0,z:0},1);assert.equal(blockedBrain.target,undefined,'Do not reserve visitor-occupied activity points');
+blockedBrain.stationAllowed=()=>true;blockedBrain.tick(3,{x:0,z:0},1);const busyTarget=blockedBrain.target;blockedBrain.stationAllowed=()=>false;blockedBrain.tick(4,busyTarget.point,1);assert.equal(blockedBrain.stage,'cooldown');
+console.log('Visitor-occupied destination filtering and safe task interruption passed');

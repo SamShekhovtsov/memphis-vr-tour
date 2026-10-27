@@ -16,7 +16,7 @@
  check('NPCs remain outside building collisions',collisions===0,collisions);
  check('Personal clearance retained',minGap>=.64,minGap);
  check('Natural facing and bounded turns',life.diagnostics.minimumFacingDot>.99&&life.diagnostics.maxTurnPerSecond<=1.601,{dot:life.diagnostics.minimumFacingDot,turn:life.diagnostics.maxTurnPerSecond});
- check('Roamers continue travelling within each area',life.diagnostics.states.filter(p=>p.role!=='StoneWorker').every(p=>p.travel>2),life.diagnostics.states.filter(p=>p.role!=='StoneWorker'&&p.travel<=2));
+ check('Residents travel or finish a committed local activity',life.diagnostics.states.filter(p=>p.role!=='StoneWorker').every(p=>p.travel>2||[...life.brains].some(([i,b])=>people[i].root.name===p.name&&b.completed>0)),life.diagnostics.states.filter(p=>p.role!=='StoneWorker'&&p.travel<=2));
  const worker=people.find(p=>p.role==='StoneWorker');let handSamples=0,maxHandError=0;
  for(let f=0;f<300;f++){time+=.05;life.update(time,true);const errors=worker.handContactErrors();handSamples+=errors.length;maxHandError=Math.max(maxHandError,...errors);if(f%60===0)await new Promise(requestAnimationFrame);}
  const wp=worker.workPoint(),rp=worker.root.getAbsolutePosition();
