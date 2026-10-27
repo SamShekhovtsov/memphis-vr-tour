@@ -1,3 +1,4 @@
+import { profilePopulation } from './ResidentProfiles';
 import { PopulationZones, type PopulationZone } from './PopulationZones';
 import {Scene,ShadowGenerator,Vector3} from '@babylonjs/core';
 import type {HeroPerson} from './HeroPeople';
@@ -5,6 +6,7 @@ import {GroundContactIK} from './GroundContactIK';
 import {DistrictNavigation} from './DistrictNavigation';
 const angle=(v:number)=>Math.atan2(Math.sin(v),Math.cos(v));
 export class DistrictLife {
+ readonly profiles:ReturnType<typeof profilePopulation>;
  readonly zones:PopulationZones;readonly contacts:GroundContactIK[];private agents:{person:HeroPerson;heading:number;speed:number;wait:number;path:Vector3[];recent:number[];travel:number;pause:number;nextPose:number;stuck:number;zone:PopulationZone;pool:ReadonlySet<number>;allow:(x:number,z:number)=>boolean}[]=[];
  private shadows=new Map<number,{meshes:ReturnType<HeroPerson['root']['getChildMeshes']>;enabled:boolean}>();
  private previous?:number;private random:()=>number;private elapsed=0;
@@ -13,6 +15,8 @@ export class DistrictLife {
   let seed=1979;const deterministic=new URLSearchParams(location.search).has('qa');
   this.random=deterministic?()=>{seed=(Math.imul(seed,1664525)+1013904223)>>>0;return seed/4294967296;}:()=>crypto.getRandomValues(new Uint32Array(1))[0]/4294967296;
   this.zones=new PopulationZones(nav,people);
+  this.profiles=profilePopulation(this.zones.assignments,new Set(people.flatMap((p,i)=>p.workPoint?[i]:[])));
+  scene.metadata.residentIntelligence={participants:this.profiles.size,total:people.length,profiles:[...this.profiles.values()]};
   this.contacts=people.map(p=>new GroundContactIK(p.root,p.legs,point=>{const h=nav.height(point.x,point.z);return h===undefined?undefined:{height:h,normal:Vector3.Up()};}));
   for(const [index,person]of people.entries()){
    this.zones.spawn(index,people,this.random);

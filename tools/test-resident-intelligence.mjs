@@ -1,0 +1,11 @@
+import assert from 'node:assert/strict';
+import {build} from 'esbuild';
+const bundle=await build({stdin:{contents:`export * from './apps/web-tour/src/scene/ResidentProfiles';`,resolveDir:process.cwd()},bundle:true,write:false,platform:'node',format:'esm'});
+const api=await import('data:text/javascript;base64,'+Buffer.from(bundle.outputFiles[0].text).toString('base64'));
+const zones=[...Array(51).fill('temple'),...Array(50).fill('street'),...Array(19).fill('route'),...Array(6).fill('free')];
+const profiles=api.profilePopulation(zones,new Set([52]));
+assert.equal(profiles.size,63);assert.equal(new Set([...profiles.values()].map(p=>p.id)).size,63);
+assert.deepEqual([...profiles], [...api.profilePopulation(zones,new Set([52]))]);
+assert.deepEqual(Object.fromEntries(['temple','street','route','free'].map(z=>[z,[...profiles.values()].filter(p=>p.zone===z).length])),{temple:26,street:25,route:9,free:3});
+assert.ok(new Set([...profiles.values()].map(p=>p.pace)).size>60);
+console.log('63 stable, distinct resident profiles; stratified 26/25/9/3 coverage passed');
