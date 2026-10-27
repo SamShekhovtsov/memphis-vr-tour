@@ -1,0 +1,57 @@
+{
+  "date": "2026-10-27",
+  "scope": "User-defined steps5 asymmetric contact actions, step6 whole-body motion/eyelids and bounded GPU interpolation prototype; no appearance-variety changes",
+  "files": {
+    "apps/web-tour/src/scene/HeroPeople.ts": {
+      "baseline": "content/source-assets/character-action-baseline/0.snapshot",
+      "beforeRaw": "76d33083c499425f0d25a9f7c8375c4bb9b93f252e6f4aed443ab764c01a935f",
+      "afterRaw": "60fb563eefa82a91b2a4b61380bac2eb9e2215bcfea626334d447632b80a9c91",
+      "before": "76d33083c499425f0d25a9f7c8375c4bb9b93f252e6f4aed443ab764c01a935f",
+      "after": "60fb563eefa82a91b2a4b61380bac2eb9e2215bcfea626334d447632b80a9c91"
+    },
+    "apps/web-tour/src/scene/InstancedDistrictCrowd.ts": {
+      "baseline": "content/source-assets/character-action-baseline/1.snapshot",
+      "beforeRaw": "2696a54d97311695d493c38df284f9968bec8842ec6000f3880f1bc23a5f1f08",
+      "afterRaw": "d970f885825afd539dcc931ae7b97241d836bce682b62814c654daa554110716",
+      "before": "2696a54d97311695d493c38df284f9968bec8842ec6000f3880f1bc23a5f1f08",
+      "after": "d970f885825afd539dcc931ae7b97241d836bce682b62814c654daa554110716"
+    },
+    "apps/web-tour/src/scene/DistrictLife.ts": {
+      "baseline": "content/source-assets/character-action-baseline/2.snapshot",
+      "beforeRaw": "cb2634965e1f52cba0e028ec4496d39cb15622cdc539b8c84ee89f195e829319",
+      "afterRaw": "1279c355e7b9850b6a3a7994f3201abec519c14bce5d3cc33da284c083c7f1a2",
+      "before": "cb2634965e1f52cba0e028ec4496d39cb15622cdc539b8c84ee89f195e829319",
+      "after": "1279c355e7b9850b6a3a7994f3201abec519c14bce5d3cc33da284c083c7f1a2"
+    },
+    "tools/lib/character-surface-revision.mjs": {
+      "baseline": "content/source-assets/character-action-baseline/3.snapshot",
+      "beforeRaw": "b2c0f0f946d6e65f2758e5252eb3e6217f1a8361a631d17c61de4f07f6b35d06",
+      "afterRaw": "4e356010450c6f0ed3f761027ca3ea3aebd34fbb512a611b68bfdaae3ea674bb",
+      "before": "b2c0f0f946d6e65f2758e5252eb3e6217f1a8361a631d17c61de4f07f6b35d06",
+      "after": "4e356010450c6f0ed3f761027ca3ea3aebd34fbb512a611b68bfdaae3ea674bb"
+    },
+    "tools/validate-character-surfaces.mjs": {
+      "baseline": "content/source-assets/character-action-baseline/4.snapshot",
+      "beforeRaw": "3b3d37e5ffd0103246fc29987b1c21239960f7b36b6c2e0510f59d7fcf7dd0a8",
+      "afterRaw": "510f6ee6bfeb2cd7d715daa645e49c3358660808501654817d5de856f7ebb25e",
+      "before": "3b3d37e5ffd0103246fc29987b1c21239960f7b36b6c2e0510f59d7fcf7dd0a8",
+      "after": "510f6ee6bfeb2cd7d715daa645e49c3358660808501654817d5de856f7ebb25e"
+    }
+  },
+  "artifacts": {
+    "apps/web-tour/src/scene/CharacterActionPose.ts": "48edd79939635a5ad0fab566ad8d0d003a0d88d659c0bca88c7eb3278e91d5d5",
+    "apps/web-tour/src/scene/CharacterContactTargets.ts": "0f1324aef8db1d071bcfbb03fbe5e743d241753b8985d258d5e3a40681723548",
+    "apps/web-tour/src/scene/CharacterEyelids.ts": "91c633e44ade693567340c514d238856d7f5056832005757ca7d8e8dac7f89be",
+    "tools/audit-character-actions.js": "804faa8af3e1df3e6296c0bef3258439e48bf7668e18cfc1205a21e5b3212e20",
+    "tools/benchmark-character-actions.mjs": "ab7ddc8d4fcc19503feed91a423fcab3d840d7d5223654ea60c1adc69d4df737",
+    "tools/capture-character-actions-motion.mjs": "3f5909e2f1ee1d4edaea36f701584698f132859ca9d24b8bb51522d163836364",
+    "tools/report-character-actions.mjs": "77c947fe323fab69c2a8af1ceb9c93dbfa86146be0708ae1d374f229f515b26b",
+    "tools/view-character-blink-open.js": "84e4c75a7478304c5a9bed80fc308f22bb867d095f15d5fa57836d2b189cbb47",
+    "tools/view-character-blink-closed.js": "7ad722d53674cc0a0695b8e3729137c25b5a622989b2c51e98672c853212f08e",
+    "tools/validate-character-actions.mjs": "3875f1810f420b2cf5d90c6707c657d8529132eb0adf14bdcd40dc7ae23f0b72",
+    "tools/test-character-actions.mjs": "bad5f0d0f8bd65d3df0ac56bf31ccff2b6238035874a58181347a83fd6d3f8e9",
+    "tools/lib/character-action-revision.mjs": "acf406d740d207927ee14240232e094c2b044270a757fc4c2b4c3a961845369e",
+    "content/source-assets/character-action-baseline/index.json": "09cc59c6e9521788163532275cd78e00260e5943638d383a9d1c1324f48faf7c",
+    "content/source-assets/character-action-baseline/locked.json": "8bbbca6d71283113e66da83dfce9f3ad97d653d804996035731ef9bddd813266"
+  }
+}

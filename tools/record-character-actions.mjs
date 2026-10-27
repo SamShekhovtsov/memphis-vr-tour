@@ -1,0 +1,8 @@
+import fs from 'node:fs';import {createHash} from 'node:crypto';
+const sha=b=>createHash('sha256').update(b).digest('hex'),norm=b=>b.toString().replaceAll('\r\n','\n');
+const index=JSON.parse(fs.readFileSync('content/source-assets/character-action-baseline/index.json'));
+const files=Object.fromEntries(Object.entries(index).map(([f,baseline])=>{const a=fs.readFileSync(f),b=fs.readFileSync(baseline);return[f,{baseline,beforeRaw:sha(b),afterRaw:sha(a),before:sha(norm(b)),after:sha(norm(a))}];}));
+const additions=['CharacterActionPose','CharacterContactTargets','CharacterEyelids'].map(n=>'apps/web-tour/src/scene/'+n+'.ts');
+const artifacts=[...additions,'tools/audit-character-actions.js','tools/benchmark-character-actions.mjs','tools/capture-character-actions-motion.mjs','tools/report-character-actions.mjs','tools/view-character-blink-open.js','tools/view-character-blink-closed.js','tools/validate-character-actions.mjs','tools/test-character-actions.mjs','tools/lib/character-action-revision.mjs','content/source-assets/character-action-baseline/index.json','content/source-assets/character-action-baseline/locked.json'];
+for(const f of artifacts)if(!f.includes('-baseline/'))fs.writeFileSync(f,fs.readFileSync(f,'utf8').replaceAll('\r\n','\n'));
+fs.writeFileSync('content/scene-data/character-action.revision.json',JSON.stringify({date:'2026-10-27',scope:'User-defined steps5 asymmetric contact actions, step6 whole-body motion/eyelids and bounded GPU interpolation prototype; no appearance-variety changes',files,artifacts:Object.fromEntries(artifacts.map(f=>[f,sha(fs.readFileSync(f))]))},null,2)+'\n');

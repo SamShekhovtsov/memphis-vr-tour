@@ -1,0 +1,7 @@
+{
+  "apps/web-tour/src/scene/HeroPeople.ts": "content/source-assets/character-action-baseline/0.snapshot",
+  "apps/web-tour/src/scene/InstancedDistrictCrowd.ts": "content/source-assets/character-action-baseline/1.snapshot",
+  "apps/web-tour/src/scene/DistrictLife.ts": "content/source-assets/character-action-baseline/2.snapshot",
+  "tools/lib/character-surface-revision.mjs": "content/source-assets/character-action-baseline/3.snapshot",
+  "tools/validate-character-surfaces.mjs": "content/source-assets/character-action-baseline/4.snapshot"
+}

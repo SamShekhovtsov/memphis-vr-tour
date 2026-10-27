@@ -58,3 +58,7 @@ Garment coverage and connected male/female reference anatomy are complete. The c
 ## Character skin, hair and linen steps 3–4 — 27 October 2026
 
 The accepted character geometry, positions, behavior, district and cameras are locked. The new surface pass adds anatomical skin pigment/roughness, finer cropped-scalp response and quieter linen weave. It uses the same six/nine resident maps by quality tier, with nine-map delivery reduced from 999,138 to 497,216 bytes. Matched balanced/cinematic portraits, street views, performance results and remaining art limits: [steps 3–4 report](docs/design/character-surfaces-steps-3-4-2026-10-27.md). `npm run validate:character-surfaces` checks the current maps and 79 locked files. No deployment.
+
+## Character action and motion steps 5–6 — 27 October 2026
+
+These are the user-clarified character steps: asymmetric authored contact/observation gestures, then coordinated body/idle motion, blinks and a measured six-resident interpolation pilot. They are not the older street roadmap's shadow/human-upgrade numbers. Population, task decisions, positions, route, district and cameras remain locked. [Matched images,30-second before/after previews and performance](docs/design/character-actions-steps-5-6-2026-10-27.md). HD4600 median/p95: balanced40.3/67.1→39.9/69.1ms; cinematic62.4/124.8→59.2/115.3ms. No added draws; pose texture storage +12.23MiB. No deployment.

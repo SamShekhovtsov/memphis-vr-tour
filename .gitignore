@@ -80,3 +80,11 @@
 # Character surface capture JSON is archived losslessly under performance/character-surface.
 /docs/design/screenshots/*character-surface*.json
 /tools/.character-surface-benchmark-*.mjs
+
+# Character-action raw captures are archived losslessly with their comparison report.
+/docs/design/screenshots/*character-actions*.json
+/docs/design/screenshots/*character-action-*.json
+/docs/design/screenshots/*character-polish*.json
+/tools/.character-action-benchmark-*.mjs
+/tools/.capture-character-actions-motion.mjs
+/tools/.encode-character-actions-motion.py

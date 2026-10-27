@@ -66,6 +66,8 @@ export class DistrictLife {
       const decisionStart=performance.now();
       brain.tick(this.elapsed,p,dot);brain.nextDecision=Math.max(brain.nextDecision,this.elapsed+(Vector3.DistanceSquared(p,camera)>35**2?1:.5)+(index%5)*.025);brainMs+=performance.now()-decisionStart;
      }
+     if(person.root.metadata.activity!==brain.intent)person.root.metadata.actionStarted=time;
+     person.root.metadata.actionStation=brain.stage==='act'?brain.target:undefined;
      person.root.metadata.activity=brain.intent;person.root.metadata.activityStage=brain.stage;
      const destination=brain.destination;
      if(person.root.metadata.taskDestination!==destination?.node){a.path=[];person.root.metadata.taskDestination=destination?.node;}

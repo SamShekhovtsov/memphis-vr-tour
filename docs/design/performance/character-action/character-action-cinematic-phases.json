@@ -1,0 +1,56 @@
+[
+  {
+    "label": "character-action-cinematic-before-1",
+    "phase": "before",
+    "assets": {
+      "apps/web-tour/src/scene/HeroPeople.ts": "76d33083c499425f0d25a9f7c8375c4bb9b93f252e6f4aed443ab764c01a935f",
+      "apps/web-tour/src/scene/InstancedDistrictCrowd.ts": "2696a54d97311695d493c38df284f9968bec8842ec6000f3880f1bc23a5f1f08",
+      "apps/web-tour/src/scene/DistrictLife.ts": "cb2634965e1f52cba0e028ec4496d39cb15622cdc539b8c84ee89f195e829319"
+    }
+  },
+  {
+    "label": "character-action-cinematic-after-1",
+    "phase": "after",
+    "assets": {
+      "apps/web-tour/src/scene/HeroPeople.ts": "60fb563eefa82a91b2a4b61380bac2eb9e2215bcfea626334d447632b80a9c91",
+      "apps/web-tour/src/scene/InstancedDistrictCrowd.ts": "d970f885825afd539dcc931ae7b97241d836bce682b62814c654daa554110716",
+      "apps/web-tour/src/scene/DistrictLife.ts": "1279c355e7b9850b6a3a7994f3201abec519c14bce5d3cc33da284c083c7f1a2"
+    }
+  },
+  {
+    "label": "character-action-cinematic-after-2",
+    "phase": "after",
+    "assets": {
+      "apps/web-tour/src/scene/HeroPeople.ts": "60fb563eefa82a91b2a4b61380bac2eb9e2215bcfea626334d447632b80a9c91",
+      "apps/web-tour/src/scene/InstancedDistrictCrowd.ts": "d970f885825afd539dcc931ae7b97241d836bce682b62814c654daa554110716",
+      "apps/web-tour/src/scene/DistrictLife.ts": "1279c355e7b9850b6a3a7994f3201abec519c14bce5d3cc33da284c083c7f1a2"
+    }
+  },
+  {
+    "label": "character-action-cinematic-before-2",
+    "phase": "before",
+    "assets": {
+      "apps/web-tour/src/scene/HeroPeople.ts": "76d33083c499425f0d25a9f7c8375c4bb9b93f252e6f4aed443ab764c01a935f",
+      "apps/web-tour/src/scene/InstancedDistrictCrowd.ts": "2696a54d97311695d493c38df284f9968bec8842ec6000f3880f1bc23a5f1f08",
+      "apps/web-tour/src/scene/DistrictLife.ts": "cb2634965e1f52cba0e028ec4496d39cb15622cdc539b8c84ee89f195e829319"
+    }
+  },
+  {
+    "label": "character-action-cinematic-before-3",
+    "phase": "before",
+    "assets": {
+      "apps/web-tour/src/scene/HeroPeople.ts": "76d33083c499425f0d25a9f7c8375c4bb9b93f252e6f4aed443ab764c01a935f",
+      "apps/web-tour/src/scene/InstancedDistrictCrowd.ts": "2696a54d97311695d493c38df284f9968bec8842ec6000f3880f1bc23a5f1f08",
+      "apps/web-tour/src/scene/DistrictLife.ts": "cb2634965e1f52cba0e028ec4496d39cb15622cdc539b8c84ee89f195e829319"
+    }
+  },
+  {
+    "label": "character-action-cinematic-after-3",
+    "phase": "after",
+    "assets": {
+      "apps/web-tour/src/scene/HeroPeople.ts": "60fb563eefa82a91b2a4b61380bac2eb9e2215bcfea626334d447632b80a9c91",
+      "apps/web-tour/src/scene/InstancedDistrictCrowd.ts": "d970f885825afd539dcc931ae7b97241d836bce682b62814c654daa554110716",
+      "apps/web-tour/src/scene/DistrictLife.ts": "1279c355e7b9850b6a3a7994f3201abec519c14bce5d3cc33da284c083c7f1a2"
+    }
+  }
+]

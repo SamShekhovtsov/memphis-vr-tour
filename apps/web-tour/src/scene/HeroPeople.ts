@@ -1,9 +1,13 @@
-import { Quaternion, Scene, SceneLoader, ShadowGenerator, TransformNode, Vector3, AbstractMesh } from "@babylonjs/core";
+import { Quaternion, Scene, SceneLoader, ShadowGenerator, TransformNode, Vector3, AbstractMesh,Mesh } from "@babylonjs/core";
 import { addInstancedDistrictCrowd } from "./InstancedDistrictCrowd";
 import { aim, solveContactLeg, type ContactLeg } from "./GroundContactIK";
 import { workerLean, workerDrop, workerSupportHeight, finishWorkerHand } from "./HeroWorkerPose";
 import { solveArm } from "./NaturalArmPose";
 import { createPeopleMaterialBinder } from "./HeroPeopleMaterials";
+import {actionPose,actionEnvelope} from './CharacterActionPose';
+import {characterContactTargets} from './CharacterContactTargets';
+import {bindCharacterEyelids} from './CharacterEyelids';
+import type {ActivityStation} from './ResidentActivities';
 
 export interface HeroPerson {
   root: TransformNode;
@@ -22,6 +26,8 @@ export async function loadHeroPeople(scene: Scene): Promise<HeroPerson[]> {
   if (new URLSearchParams(location.search).has("legacyPeople")) return [];
   const people: HeroPerson[] = [];
   const bindPeopleMaterials = createPeopleMaterialBinder(scene);
+  const contactTarget=characterContactTargets(scene);
+  scene.metadata.characterActions={time:0,contacts:0,rejectedContacts:0};
   const containers = await Promise.all(["female", "male"].map(sex =>
     SceneLoader.LoadAssetContainerAsync("/assets/authored/people/", `hero_${sex}.glb`, scene)));
   const legacy = new URLSearchParams(location.search).get('population')==='legacy';
@@ -103,12 +109,14 @@ export async function loadHeroPeople(scene: Scene): Promise<HeroPerson[]> {
     const hip=bone('root'),restHip=hip.position.clone(),handGoals:Vector3[]=[];
     const handContactErrors=()=>workBlock&&workBlend>.985?arms.map((arm,i)=>{arm.foot.computeWorldMatrix(true);return handGoals[i]?Vector3.Distance(arm.foot.getAbsolutePosition(),handGoals[i]):0;}):[];
     const upperBody = nodes.filter(n => /upperarm|lowerarm|wrist|spine0[15]|-head$/.test(n.name));
-    let previous: Vector3 | undefined, previousTime: number | undefined, phase = 0, blend = 0, gaze = 0, workBlend = 1, intentWeight=0;
+    const fingers=['L','R'].map(side=>nodes.filter(n=>new RegExp(`finger[1-5]-[1-3]\\.${side}$`).test(n.name)).map(n=>({node:n,open:n.rotationQuaternion!.clone(),closed:n.rotationQuaternion!.multiply(Quaternion.RotationAxis(Vector3.Right(),.38))})));
+    let previous: Vector3 | undefined, previousTime: number | undefined, phase = 0, blend = 0, gaze = 0, workBlend = 1, intentWeight=0,lastAction='inspect',actionStart=0,priorActivity='idle';
+    let lastStation:ActivityStation|undefined;
     people.push({ root, legs, role, facing, setFacing, wristAngles, handContactErrors, workPoint:workBlock?()=>workBlock.getAbsolutePosition().clone():undefined, update(time) {
       root.computeWorldMatrix(true);
       const current = root.getAbsolutePosition().clone();
       const dt = previousTime === undefined ? 0 : Math.max(0, Math.min(.1, time - previousTime));
-      if(!legacy)workBlend+=((root.metadata?.workActive===false?0:1)-workBlend)*(1-Math.exp(-dt*4));
+      if(!legacy)workBlend+=((root.metadata?.workActive===false?0:workBlock?actionEnvelope(time):1)-workBlend)*(1-Math.exp(-dt*4));
       if(!legacy&&workBlock){
         const offset=facing().scale(.13*workBlend).add(Vector3.Down().scale(.15*workBlend));
         hip.position.copyFrom(restHip).addInPlace(Vector3.TransformNormal(offset,(hip.parent as TransformNode).computeWorldMatrix(true).clone().invert()));hip.computeWorldMatrix(true);
@@ -116,12 +124,35 @@ export async function loadHeroPeople(scene: Scene): Promise<HeroPerson[]> {
       const distance = previous ? Vector3.Distance(current, previous) : 0;
       const speed = dt > 0 ? distance / dt : 0;
       const activity=root.metadata?.activity??'idle';
+      if(root.metadata?.actionStation)lastStation=root.metadata.actionStation;
+      root.metadata.handContact=undefined;
+      if(activity!=='idle'){lastAction=activity;if(priorActivity==='idle')actionStart=root.metadata?.actionStarted??time;}priorActivity=activity;
+      const actionTime=root.metadata?.atlasPose?time:time-actionStart,poseActivity=activity==='idle'?lastAction:activity;
+      scene.metadata.characterActions.time=time;
       intentWeight=root.metadata?.atlasPose?1:intentWeight+((activity==='idle'?0:1)-intentWeight)*(1-Math.exp(-dt*4));
       // Distance-driven arm rhythm; blend toward a relaxed idle when slowing.
       phase += distance * Math.PI * 2 / .85;
       blend += (Math.min(1, speed / .55) - blend) * (1 - Math.exp(-dt * 8));
       for (const n of upperBody) n.rotationQuaternion!.copyFrom(rest.get(n)!);
       const world = root.computeWorldMatrix(true);
+      // Shift the pelvis within the support polygon; the existing foot IK
+      // remains the sole owner of leg contact. Never translate the path root.
+      if(!legacy&&role!=='Carrier'&&!workBlock){
+        const sway=Math.sin(phase)*.008*blend+Math.sin(time*Math.PI*.5+index)*.009*(1-blend);
+        hip.position.copyFrom(restHip).addInPlace(new Vector3(sway,Math.sin(time*Math.PI*.5+index)*.002*(1-blend),0));hip.computeWorldMatrix(true);
+        const shoulder=bone('spine01');if(shoulder)shoulder.rotationQuaternion=shoulder.rotationQuaternion!.multiply(Quaternion.RotationAxis(Vector3.Forward(),-.02*sway/.01));
+        if(lastStation&&!root.metadata?.atlasPose&&intentWeight>.001){
+          arms[0].upper.computeWorldMatrix(true);arms[0].knee.computeWorldMatrix(true);arms[0].foot.computeWorldMatrix(true);
+          const shoulderPoint=arms[0].upper.getAbsolutePosition(),length=Vector3.Distance(shoulderPoint,arms[0].knee.getAbsolutePosition())+Vector3.Distance(arms[0].knee.getAbsolutePosition(),arms[0].foot.getAbsolutePosition());
+          const support=contactTarget(lastStation,shoulderPoint,length+.30),weight=actionEnvelope(actionTime)*intentWeight*(1-blend);
+          if(support&&weight>.001){
+            hip.position.y-=.12*weight;hip.computeWorldMatrix(true);
+            const pelvis=bone('spine05');pelvis.computeWorldMatrix(true);head.computeWorldMatrix(true);
+            const a=pelvis.getAbsolutePosition(),b=head.getAbsolutePosition(),toward=support.subtract(a);toward.y=0;toward.normalize();
+            aim(pelvis,b.subtract(a),b.subtract(a).add(toward.scale(.24*weight)).subtract(Vector3.Up().scale(.08*weight)));
+          }
+        }
+      }
       const forward = Vector3.TransformNormal(Vector3.Forward(), world).normalize();
       let workPoint: Vector3 | undefined;
       if (workBlock && (legacy||workBlend>.001)) {
@@ -141,6 +172,8 @@ export async function loadHeroPeople(scene: Scene): Promise<HeroPerson[]> {
         spine.rotationQuaternion=spine.rotationQuaternion!.multiply(Quaternion.RotationAxis(Vector3.Right(),breath+(activity==='rest'?.025:activity==='work'?.045:0)*intentWeight));
       }
       for (const [side, arm] of arms.entries()) {
+        if(role!=='Carrier'&&!workBlock)for(const finger of fingers[side])finger.node.rotationQuaternion!.copyFrom(finger.open);
+        let actualContact:Vector3|undefined;
         const sign = side === 0 ? 1 : -1;
         let local = new Vector3(sign * .24, .84, .07 + Math.sin(phase + side * Math.PI) * .13 * blend);
         if (role === "Carrier") local = new Vector3(sign * .17, 1.84, .045);
@@ -164,13 +197,23 @@ export async function loadHeroPeople(scene: Scene): Promise<HeroPerson[]> {
               const contact=workPoint.subtract(front.scale(side===0?.08:.12)).add(right.scale(side===0?-.09:.12)).add(Vector3.Up().scale(side===0?.24+.025*Math.sin(time*3):.035));
               goal=Vector3.Lerp(goal,contact,workBlend);
             }
-            if(!workBlock&&activity!=='idle'){
+            if(!workBlock&&intentWeight>.001){
               // Modest empty-hand inspection and conversational gestures. Do not
               // pretend to grip distant props or break the forearm/wrist chain.
-              const wave=Math.sin(time*Math.PI),weight=intentWeight*(1-blend);
-              const lift=activity==='work'?.25:activity==='socialize'?(side===0?.24:.12):activity==='inspect'||activity==='deliver'?.12:.01;
-              const reach=activity==='work'?.25:activity==='socialize'?.13:activity==='inspect'||activity==='deliver'?.1:0;
-              goal=goal.add(Vector3.Up().scale(lift*weight)).add(front.scale((reach+(activity==='socialize'||activity==='work'?.025*wave:0))*weight));
+              const pose=actionPose(poseActivity,actionTime,side,index),weight=intentWeight*(1-blend);
+              goal=goal.add(Vector3.Up().scale(pose.lift*weight)).add(front.scale(pose.reach*weight));
+              for(const finger of fingers[side])Quaternion.SlerpToRef(finger.open,finger.closed,pose.curl*weight,finger.node.rotationQuaternion!);
+              if(pose.contact&&!root.metadata?.atlasPose){
+                const point=contactTarget(lastStation,shoulder,length);
+                if(point){
+                  // Wrist goal compensates for the middle-knuckle offset; the
+                  // support hand lies forward along the actual top triangle.
+                  const wrist=point.subtract(point.subtract(shoulder).normalize().scale(.055));
+                  goal=Vector3.Lerp(goal,wrist,pose.envelope*weight);
+                  if(pose.envelope*weight>.985)actualContact=point;
+                  root.metadata.handContact={point:point.asArray(),side,weight:pose.envelope*weight};
+                }else root.metadata.handContact=undefined;
+              }
             }
           }else if(role==='Carrier'){
             head.computeWorldMatrix(true);goal=head.getAbsolutePosition().add(Vector3.Up().scale(.16)).add(outward.scale(.14)).add(front.scale(.02));
@@ -183,6 +226,12 @@ export async function loadHeroPeople(scene: Scene): Promise<HeroPerson[]> {
           let desired=role==='Carrier'?Vector3.Up():role==='StoneWorker'&&workPoint&&side===1?Vector3.Lerp(forearm,front,workBlend).normalize():forearm;
           const angle=Math.acos(Math.max(-1,Math.min(1,Vector3.Dot(forearm,desired))));if(angle>.6)desired=Vector3.Lerp(forearm,desired,.6/angle).normalize();
           aim(arm.foot,along,desired);
+          if(actualContact){
+            middle.computeWorldMatrix(true);const correction=actualContact.subtract(middle.getAbsolutePosition());
+            solveArm(arm,goal.add(correction),outward.add(front.scale(.35)));
+            middle.computeWorldMatrix(true);arm.foot.computeWorldMatrix(true);
+            root.metadata.handContact.error=Vector3.Distance(actualContact,middle.getAbsolutePosition());
+          }
           if(tool&&workPoint&&side===0){
             const inverse=arm.foot.computeWorldMatrix(true).clone().invert();
             tool.position.copyFrom(Vector3.TransformCoordinates(middle.getAbsolutePosition(),inverse));
@@ -207,10 +256,12 @@ export async function loadHeroPeople(scene: Scene): Promise<HeroPerson[]> {
         const eye=bone('eye.L');eye?.computeWorldMatrix(true);head.computeWorldMatrix(true);
         if(eye&&Math.abs(gaze)>.001){const v=eye.getAbsolutePosition().subtract(head.getAbsolutePosition()),c=Math.cos(gaze),s=Math.sin(gaze);aim(head,v,new Vector3(v.x*c+v.z*s,v.y,v.z*c-v.x*s));}
       }
+      if(!legacy&&role!=='Carrier')head.rotationQuaternion=head.rotationQuaternion!.multiply(Quaternion.RotationAxis(Vector3.Right(),.012*Math.sin(time*Math.PI*.5+index)*(1-blend)));
       previous = current; previousTime = time;
     }});
     for (const mesh of avatar.getChildMeshes()) {
       bindPeopleMaterials(mesh);
+      if(mesh instanceof Mesh)bindCharacterEyelids(mesh,index);
       mesh.receiveShadows = true; mesh.isPickable = false;
       const shadows = scene.getLightByName("lowGoldSun")?.getShadowGenerator();
       if (shadows instanceof ShadowGenerator) shadows.addShadowCaster(mesh, false);

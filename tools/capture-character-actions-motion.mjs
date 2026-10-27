@@ -1,0 +1,10 @@
+import fs from 'node:fs';import assert from 'node:assert/strict';import {execFileSync} from 'node:child_process';import {createHash} from 'node:crypto';
+const sha=b=>createHash('sha256').update(b).digest('hex'),scene='apps/web-tour/src/scene/MemphisWhiteWallsScene.ts';
+const index=JSON.parse(fs.readFileSync('content/source-assets/character-action-baseline/index.json')),files=Object.keys(index).filter(f=>f.startsWith('apps/web-tour/src/scene/'));
+const originals=new Map([scene,...files].map(f=>[f,fs.readFileSync(f)])),capture='tools/.capture-character-actions-motion.mjs',encoder='tools/.encode-character-actions-motion.py';
+try{
+ let s=originals.get(scene).toString().replace('frames: 300, start:','frames: 900, start:').replace('Math.min(299, review.frame) / 299','Math.min(899, review.frame) / 899').replace('Math.min(300, review.frame + 1)','Math.min(900, review.frame + 1)').replace('review.frame >= 300','review.frame >= 900').replace('Math.min(299, review.frame - 1)','Math.min(899, review.frame - 1)');fs.writeFileSync(scene,s);
+ let c=fs.readFileSync('tools/capture-hero-shot.mjs','utf8').replace('tools/encode-route-review.py',encoder).replace('Date.now() + 60000','Date.now() + 180000').replace('simulationSeconds:10','simulationSeconds:30').replace('300-frame','900-frame').replace('10-second','30-second');fs.writeFileSync(capture,c);
+ fs.writeFileSync(encoder,fs.readFileSync('tools/encode-route-review.py','utf8').replaceAll('10000','30000').replace('/ 300 *','/ 900 *').replace("- 150)","- 450)"));
+ for(const phase of ['before','after']){for(const f of files)fs.writeFileSync(f,phase==='before'?fs.readFileSync(index[f]):originals.get(f));execFileSync(process.execPath,[capture,`character-actions-30s-${phase}`,'--hardware','--motion'],{stdio:'inherit'});}
+}finally{for(const [f,b]of originals){fs.writeFileSync(f,b);assert.equal(sha(fs.readFileSync(f)),sha(b));}for(const f of [capture,encoder])if(fs.existsSync(f))fs.unlinkSync(f);console.log('All motion instrumentation and final presentation source restored by hash');}

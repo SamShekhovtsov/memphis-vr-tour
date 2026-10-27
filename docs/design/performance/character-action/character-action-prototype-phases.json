@@ -1,0 +1,20 @@
+[
+  {
+    "label": "character-action-prototype-before-1",
+    "phase": "before",
+    "assets": {
+      "apps/web-tour/src/scene/HeroPeople.ts": "60fb563eefa82a91b2a4b61380bac2eb9e2215bcfea626334d447632b80a9c91",
+      "apps/web-tour/src/scene/InstancedDistrictCrowd.ts": "00aef493c4276b460a574f1bbbb0ffd1f514f93e0e1b940cd1efed7ab5b1dbfd",
+      "apps/web-tour/src/scene/DistrictLife.ts": "1279c355e7b9850b6a3a7994f3201abec519c14bce5d3cc33da284c083c7f1a2"
+    }
+  },
+  {
+    "label": "character-action-prototype-after-1",
+    "phase": "after",
+    "assets": {
+      "apps/web-tour/src/scene/HeroPeople.ts": "60fb563eefa82a91b2a4b61380bac2eb9e2215bcfea626334d447632b80a9c91",
+      "apps/web-tour/src/scene/InstancedDistrictCrowd.ts": "d970f885825afd539dcc931ae7b97241d836bce682b62814c654daa554110716",
+      "apps/web-tour/src/scene/DistrictLife.ts": "1279c355e7b9850b6a3a7994f3201abec519c14bce5d3cc33da284c083c7f1a2"
+    }
+  }
+]
