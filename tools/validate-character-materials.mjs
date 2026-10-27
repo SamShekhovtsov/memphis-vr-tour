@@ -1,3 +1,4 @@
+import {artRead} from './lib/character-art-revision.mjs';
 import {interactionExpected,priorInteractionSource} from './lib/district-interaction-revision.mjs';
 import fs from 'node:fs';
 import assert from 'node:assert/strict';
@@ -7,7 +8,7 @@ const root='apps/web-tour/public/assets/authored/people/';
 const lockFile='content/scene-data/hero-people.material-lock.json';
 const hash=b=>createHash('sha256').update(b).digest('hex');
 const jsonHash=j=>hash(JSON.stringify(j));
-const readGlb=file=>{const b=fs.readFileSync(file),n=b.readUInt32LE(12);return {j:JSON.parse(b.subarray(20,20+n)),bin:b.subarray(28+n)};};
+const readGlb=file=>{const b=artRead(file),n=b.readUInt32LE(12);return {j:JSON.parse(b.subarray(20,20+n)),bin:b.subarray(28+n)};};
 const originalAvatar=()=>fs.readFileSync('content/generated/people-materials-before/HeroPeople.ts','utf8').replaceAll('\r\n','\n');
 if(process.argv.includes('--record')) {
   assert.ok(!fs.existsSync(lockFile),'Do not overwrite the original material baseline');

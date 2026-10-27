@@ -1,0 +1,17 @@
+{
+  "tools/lib/purposeful-life-revision.mjs": "content/source-assets/character-art-baseline/0.snapshot",
+  "tools/validate-purposeful-life.mjs": "content/source-assets/character-art-baseline/1.snapshot",
+  "tools/validate-character-materials.mjs": "content/source-assets/character-art-baseline/2.snapshot",
+  "apps/web-tour/public/assets/authored/people/hero_male.glb": "content/source-assets/character-art-baseline/3.glb",
+  "apps/web-tour/public/assets/authored/people/hero_female.glb": "content/source-assets/character-art-baseline/4.glb",
+  "apps/web-tour/public/assets/authored/people/manifest.json": "content/source-assets/character-art-baseline/5.snapshot",
+  "apps/web-tour/public/assets/authored/people/crowd/hero_male_lod1.glb": "content/source-assets/character-art-baseline/6.glb",
+  "apps/web-tour/public/assets/authored/people/crowd/hero_male_lod2.glb": "content/source-assets/character-art-baseline/7.glb",
+  "apps/web-tour/public/assets/authored/people/crowd/hero_female_lod1.glb": "content/source-assets/character-art-baseline/8.glb",
+  "apps/web-tour/public/assets/authored/people/crowd/hero_female_lod2.glb": "content/source-assets/character-art-baseline/9.glb",
+  "apps/web-tour/public/assets/authored/people/crowd/manifest.json": "content/source-assets/character-art-baseline/10.snapshot",
+  "content/source-assets/characters/crowd-female-lod1.blend": "content/source-assets/character-art-baseline/11.blend",
+  "content/source-assets/characters/crowd-female-lod2.blend": "content/source-assets/character-art-baseline/12.blend",
+  "content/source-assets/characters/crowd-male-lod1.blend": "content/source-assets/character-art-baseline/13.blend",
+  "content/source-assets/characters/crowd-male-lod2.blend": "content/source-assets/character-art-baseline/14.blend"
+}

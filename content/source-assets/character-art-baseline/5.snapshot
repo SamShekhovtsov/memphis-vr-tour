@@ -1,0 +1,133 @@
+{
+  "id": "hero-people-v1",
+  "assets": [
+    {
+      "id": "male",
+      "fileName": "hero_male.glb",
+      "sourceSha256": "d15a07e2b4cf1d08a3b91cb212a9a06a91438077f05a3f2a62f45351e8a71eb8",
+      "triangles": 30514,
+      "bones": 163,
+      "bytes": 1921056,
+      "license": "CC0-1.0"
+    },
+    {
+      "id": "female",
+      "fileName": "hero_female.glb",
+      "sourceSha256": "a571a5872a5f9d75c013ce6d88b3484436cf2109bf133fbc31e42c41f52389f1",
+      "triangles": 33291,
+      "bones": 163,
+      "bytes": 2068376,
+      "license": "CC0-1.0"
+    }
+  ],
+  "materialRefinement": {
+    "id": "hero-people-materials-v1",
+    "date": "2026-10-25",
+    "source": "Project-authored procedural PBR maps and bind-pose tone masks; no external media",
+    "geometryChanged": false,
+    "skinDetailUvRepeat": 16,
+    "maps": {
+      "hair-albedo.webp": {
+        "bytes": 75634,
+        "sha256": "126d5ed0ff0d33aaaa4e7c8315ebf69e0f017fbb26e1e05c985407cb7fbe6f4d"
+      },
+      "hair-normal.webp": {
+        "bytes": 295846,
+        "sha256": "e394bd8e7ee03e70effd531ffc39c49c724c562c1ee6263b4c10db17ccc7c415"
+      },
+      "hair-orm.webp": {
+        "bytes": 44912,
+        "sha256": "af723aea3a888aecad7df8bf383cb2730d1cdcd5a38b9383f06ff52fc71bd6fa"
+      },
+      "linen-albedo.webp": {
+        "bytes": 87950,
+        "sha256": "16f34d74826091c1713ce7f5f0e4c3d48f2ecd725bc38fb69a6c3efb7a46a71d"
+      },
+      "linen-normal.webp": {
+        "bytes": 203660,
+        "sha256": "dff12aef07cd8ee49c43d9c20dfcd97b25fd0f7533e8a5cfe95f43086c05536e"
+      },
+      "linen-orm.webp": {
+        "bytes": 62922,
+        "sha256": "59cfdf555db876c4c075622fce8e85c8cf91e2092f896d5a4823ce1dda8b7804"
+      },
+      "skin-albedo.webp": {
+        "bytes": 36766,
+        "sha256": "42a23dbf2f1b18a8b03f8aa57ed83ff9b7d55f2121fa3e47cc0a8235541cfa4d"
+      },
+      "skin-normal.webp": {
+        "bytes": 132348,
+        "sha256": "7b0f125617475f81a28cce394074d6ae9412511300b551633ee902aa964aaf00"
+      },
+      "skin-orm.webp": {
+        "bytes": 59100,
+        "sha256": "c33e0ff8e633480d5dfd24ba375702bfa68db5db6048019886f78c2c7d719458"
+      }
+    },
+    "normalConvention": "glTF tangent space",
+    "skinCoverage": "Legacy QA fallback only; fitted garments use opaque skin",
+    "packing": {
+      "r": "unused white AO",
+      "g": "roughness",
+      "b": "metallic zero"
+    },
+    "browserTiers": {
+      "balanced": {
+        "ormMaps": false,
+        "extraFiberLobes": false,
+        "roughness": {
+          "skin": 0.64,
+          "hair": 0.53,
+          "linen": 0.94
+        }
+      },
+      "cinematic": {
+        "ormMaps": true,
+        "extraFiberLobes": true
+      }
+    },
+    "engineBindings": {
+      "baseColorFactor": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "vertexColour": "linear RGB multiply; fitted skin is opaque, legacy coverage alpha may be ignored",
+      "albedoColorSpace": "sRGB",
+      "normalAndOrmColorSpace": "linear",
+      "skin": {
+        "uvSet": 0,
+        "repeat": 16,
+        "normalStrength": 0.32,
+        "dielectricF0Factor": 0.75,
+        "alphaMode": "OPAQUE"
+      },
+      "hair": {
+        "uvSet": 0,
+        "repeat": 1,
+        "normalStrength": 0.65,
+        "dielectricF0Factor": 0.9,
+        "anisotropy": 0.25
+      },
+      "linen": {
+        "uvSet": 0,
+        "repeat": 1,
+        "normalStrength": 0.35,
+        "dielectricF0Factor": 0.9,
+        "sheenIntensity": 0.18,
+        "sheenRoughness": 0.88
+      }
+    }
+  },
+  "garmentFit": {
+    "sideClearanceMaxMeters": 0.036,
+    "frontBackClearanceMaxMeters": 0.07,
+    "upperWrapLegInfluenceMax": 0.78,
+    "kneeHemLegInfluenceMax": 1.0,
+    "waistSpineInfluenceMax": 0.85,
+    "longHem": "smooth upper/lower-leg blend",
+    "verticalPositions": "unchanged",
+    "rootAndRig": "unchanged"
+  }
+}

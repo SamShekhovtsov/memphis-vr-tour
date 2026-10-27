@@ -1,0 +1,111 @@
+{
+  "date": "2026-10-27",
+  "scope": "Garment coverage/clearance and two reference character bases; scene, behavior, cameras, rig and material textures preserved",
+  "files": {
+    "tools/lib/purposeful-life-revision.mjs": {
+      "baseline": "content/source-assets/character-art-baseline/0.snapshot",
+      "beforeRaw": "066367ef503db1b95965e5c01ebb1eab894d7fd217ae23f68b94afa7acae7283",
+      "afterRaw": "1f43622c13c461bdc07dc66bacd8205ec45fcc5dadfa595fbb5195412041f7aa",
+      "before": "066367ef503db1b95965e5c01ebb1eab894d7fd217ae23f68b94afa7acae7283",
+      "after": "1f43622c13c461bdc07dc66bacd8205ec45fcc5dadfa595fbb5195412041f7aa"
+    },
+    "tools/validate-purposeful-life.mjs": {
+      "baseline": "content/source-assets/character-art-baseline/1.snapshot",
+      "beforeRaw": "f59eefc031bf782b21fc6d27c76d80a3280b225715708dd32d2bea4ca10001c1",
+      "afterRaw": "b1620c6a92a5b09b481fd25f16fd18863258edb5f942b7b53f2ed8356a432cb5",
+      "before": "f59eefc031bf782b21fc6d27c76d80a3280b225715708dd32d2bea4ca10001c1",
+      "after": "b1620c6a92a5b09b481fd25f16fd18863258edb5f942b7b53f2ed8356a432cb5"
+    },
+    "tools/validate-character-materials.mjs": {
+      "baseline": "content/source-assets/character-art-baseline/2.snapshot",
+      "beforeRaw": "80d42889cb6a13a35257b53d9425adba0df98e8103f9daa28ab3078c839023e0",
+      "afterRaw": "193d38b57c0e466967534e0c9a22f57fcf283d03813a89a7af0deecef17ccd17",
+      "before": "80d42889cb6a13a35257b53d9425adba0df98e8103f9daa28ab3078c839023e0",
+      "after": "193d38b57c0e466967534e0c9a22f57fcf283d03813a89a7af0deecef17ccd17"
+    },
+    "apps/web-tour/public/assets/authored/people/hero_male.glb": {
+      "baseline": "content/source-assets/character-art-baseline/3.glb",
+      "beforeRaw": "41850a5e815ca504da76508ade0f88fda683052a8cf54ed34c30056297c36c2a",
+      "afterRaw": "3f897eefa00883fc7b52b08adf46b2f7b772059e8e7ac5f8e20c8a57e444c7a1",
+      "before": "59a8aa6c4720b5283d84d4688de594651f47b8f51c294a9e01d8c646e3309708",
+      "after": "1f9dd60b4a12ce7d0e1ffd59edba25583a14c36cdc892c6f0d7ac372b6078822"
+    },
+    "apps/web-tour/public/assets/authored/people/hero_female.glb": {
+      "baseline": "content/source-assets/character-art-baseline/4.glb",
+      "beforeRaw": "955e4006453dd48a4bd2bca05929a53fa9507457a105399b54395576ec474656",
+      "afterRaw": "3ddd64aa3bc3907de91e4bc9145671e68190098ed9db9d732e132f82ee234c08",
+      "before": "0cd4a24aa8d06c5e85bc579456dd7d41469497cfc5f801df37eed93c985a0d81",
+      "after": "decf0d77874e6ae224f5b2ad78175e44cac9fc85bdcdf64986c319884ce42028"
+    },
+    "apps/web-tour/public/assets/authored/people/manifest.json": {
+      "baseline": "content/source-assets/character-art-baseline/5.snapshot",
+      "beforeRaw": "19e51936749cf73588f073d4ac4817414941d6a8b01f46746fd29ca207aee09d",
+      "afterRaw": "16b31c613111684042502747de431ca9d169ddbbac93a1821018f6240090f911",
+      "before": "e0c7b09f4970a3b9881779bac67e72acdaa328c75fbca14947c8c25f3ea3489a",
+      "after": "57de8079bde6198cc9e3d4dc841f47590d91c466e46baa63f370215acdcdb866"
+    },
+    "apps/web-tour/public/assets/authored/people/crowd/hero_male_lod1.glb": {
+      "baseline": "content/source-assets/character-art-baseline/6.glb",
+      "beforeRaw": "fba694c245398e8194b5d6a48185960462af7529cf11619e3e05445e99ed8936",
+      "afterRaw": "9a2314854f91e76575534790e14323bedfbb4fa568852f7a554703c4736c5a5d",
+      "before": "2e1efdde8ba41e27967545afcd4c667e49bdf43f431c0693991c1a78259d44ac",
+      "after": "247d630ab933f15fc2ab54803415f0cf461c4b5cf06bb8fdf70ec5655341363f"
+    },
+    "apps/web-tour/public/assets/authored/people/crowd/hero_male_lod2.glb": {
+      "baseline": "content/source-assets/character-art-baseline/7.glb",
+      "beforeRaw": "a0f1865d97cf777ffac84efb7e51e28f706107dab9d47987761185b629081ca5",
+      "afterRaw": "a1faea891431780a47b6bb7b70b39404fc9c9b9ea832516c8a76e5bee6298378",
+      "before": "6a17e36e724208f1093bf554ca3bc19de57e5a69e03a3fc1a724b5aae4e98bee",
+      "after": "c43562580a05ba6d176c3e28afadee894e50cfd496c4a34aa9e2782b41e2503b"
+    },
+    "apps/web-tour/public/assets/authored/people/crowd/hero_female_lod1.glb": {
+      "baseline": "content/source-assets/character-art-baseline/8.glb",
+      "beforeRaw": "feec93005ad8b4d20c9fea6d3ea4c60c1557a69003edda86c5f15af880c4a013",
+      "afterRaw": "759824769efc5472a6a35c9287e2bd3b93ea54c50d415f8d4be881cc5c2978db",
+      "before": "cac1ddd10bea3eba6d87b2e7c2899753835f75b112ff48253952c88fe7e7b814",
+      "after": "dbc0d32e02a20f48aa4b62a477aee2a80d79afac8074d1db4e439f68c05eae8e"
+    },
+    "apps/web-tour/public/assets/authored/people/crowd/hero_female_lod2.glb": {
+      "baseline": "content/source-assets/character-art-baseline/9.glb",
+      "beforeRaw": "58a573756ebd6dc9815d814580f5ad7b642e866b836f2b2c4697800ce77c4904",
+      "afterRaw": "9cabf89ed56ff5faea25e1dbc7daa23729bb26caf3aecbbfc0f3e6b5a77b4b6f",
+      "before": "4424325260ccffdd89dc9eef34371b0ae0daa243cabbf65d1ecdbf70a6179f7a",
+      "after": "5659060d0a58ad4ee4f5f68e77933bb1942b510c398cf66c9a9d19b92bba1edd"
+    },
+    "apps/web-tour/public/assets/authored/people/crowd/manifest.json": {
+      "baseline": "content/source-assets/character-art-baseline/10.snapshot",
+      "beforeRaw": "3bf167f39e58922413703ac8ba7f6a387997c55993506f5302724798c8467960",
+      "afterRaw": "ddfc485562ab1d3e9ba93fae9d315f93dbee63c5b020d5920dfbfb537a42b432",
+      "before": "993086f9f5986287b0ac85c2494b4c44f54e18c8fdfd688b919d754bb6bea4a8",
+      "after": "28187057cc88fb730f67086938d0ef5ce39a4874ad2abb4a452a6a110c457eeb"
+    },
+    "content/source-assets/characters/crowd-female-lod1.blend": {
+      "baseline": "content/source-assets/character-art-baseline/11.blend",
+      "beforeRaw": "b4719c9288e3350d5795d62794db10ef20f48481dd6e1488930ab1c2e0edd47e",
+      "afterRaw": "8e40a9f76273fb7e7527a5accc3344663df4ef2d80226f93dfbead7e27106fae",
+      "before": "dd43078465ea6e578c8cebf1418580fb8272a46439e552e425ee4588cbf342a5",
+      "after": "d299cb65d32df6a2f35b26022034493a5f2f5aae5e7b5aa30cd1c36ba7840bcf"
+    },
+    "content/source-assets/characters/crowd-female-lod2.blend": {
+      "baseline": "content/source-assets/character-art-baseline/12.blend",
+      "beforeRaw": "199d70b16f7aa142c8be958436b58567c74130f09c96ab78145b4a468900c9cc",
+      "afterRaw": "4579ceb29bc40f0991e97400d068101c248d6cb4bb767564ab2cceac05abaa89",
+      "before": "2a420090d6291258519626df7638e60edab3bf7ddc058ccae85d123e1f629ab9",
+      "after": "70c7d0bb59199565221da87aa3e2a50aede2f9af465dd87242018f23e61c0dce"
+    },
+    "content/source-assets/characters/crowd-male-lod1.blend": {
+      "baseline": "content/source-assets/character-art-baseline/13.blend",
+      "beforeRaw": "ebe439be0b5d2d6ec79d6a44974e079ba33d058c27b9a9c43c2a9dbe418afa3b",
+      "afterRaw": "997bf8ee0cd132db3042a2cfed8c4bad610120add85097af0c5de2d37a3d626d",
+      "before": "5ecc3eab2f008dac5151fe0b462ea8a2ce9930f85e3ee5927b0aad8e4a8ce928",
+      "after": "45f639e699c74e936cebe600e11a57af64fa12e00a8dda5d10a1296a68881819"
+    },
+    "content/source-assets/characters/crowd-male-lod2.blend": {
+      "baseline": "content/source-assets/character-art-baseline/14.blend",
+      "beforeRaw": "6ce621188e68e48d60eccdcdb31b737cdece6ed21949be5ceb535da1b7bd9959",
+      "afterRaw": "310bc488e329043e1b36a8c66763ed4190d23736711a46c14d46aabdb557cea4",
+      "before": "09276b921f733c21f3bde83f3b3402a5676804a5ec67688d4ae9c0b243e0fde5",
+      "after": "feee9a7060cc0125b5ea71bee886fe49ee52303a7b3395f6be4de026ac864996"
+    }
+  }
+}
